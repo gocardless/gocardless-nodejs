@@ -1,0 +1,28 @@
+---
+# This is a scaffold CircleCI config to help you get started with yours, and
+# check if CircleCI has been properly integrated with your new repository.
+#
+# Refer to CircleCI's configuration reference to build on:
+# https://circleci.com/docs/2.0/configuration-reference/
+
+version: 2
+
+jobs:
+  make me a bagel:
+    docker:
+      - image: circleci/ruby:latest
+    steps:
+      - add_ssh_keys
+      - checkout
+      - run:
+          command: |
+            set +x
+            git clone git@github.com:gocardless/healthcheck.git || \
+            echo "Something went wrong, please let Developer Enablement know"
+            echo "Everything seems to be hooked-up properly. Here's a bagel!"
+
+workflows:
+  version: 2
+  make me a bagel:
+    jobs:
+    - make me a bagel
