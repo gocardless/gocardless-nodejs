@@ -2,6 +2,7 @@
   "name": "gocardless",
   "description": "Client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments<",
   "author": "GoCardless Ltd",
+  "version": "0.1.0",
   "keywords": [
     "gocardless",
     "payments",

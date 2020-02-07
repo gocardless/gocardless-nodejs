@@ -5,4 +5,6 @@ const Environments = {
   SANDBOX: 'SANDBOX',
 };
 
-module.exports = Environments;
+module.exports = {
+  Environments
+};

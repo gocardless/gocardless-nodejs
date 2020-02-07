@@ -1,13 +1,16 @@
 'use strict';
 
 const os = require('os');
+const process = require('process');
 const _ = require('lodash');
 const uuidv4 = require('uuid/v4');
+const { URLSearchParams } = require('url');
 const got = require('got');
 
+const Constants = require('../Constants');
 const GoCardlessException = require('../GoCardlessException');
 
-function Api(token, environment = Environments.LIVE, options = {}) {
+function Api(token, environment = Constants.Environments.LIVE, options = {}) {
   this._token = token;
   this._environment = environment;
 
@@ -39,12 +42,12 @@ const getHeaders = (headers, token) => ({
 const getRequestBody = (method, requestParameters, payloadKey) => {
   if ((method === 'POST' || method === 'PUT') && requestParameters) {
     if (payloadKey) {
-      json = {
+      return {
         [payloadKey]: requestParameters,
       };
     }
     else {
-      json = requestParameters;
+      return requestParameters;
     }
   }
 
@@ -88,17 +91,19 @@ Api.prototype.request = async function({
 
   const json = getRequestBody(method, requestParameters, payloadKey);
 
+  const requestOptions = {
+    agent: this._agent,
+    prefixUrl: this._baseUrl,
+    method,
+    responseType: 'json',
+    headers,
+    searchParams,
+    json,
+  };
+
   const request = got(
     path,
-    {
-      agent: this._agent,
-      prefixUrl: this._baseUrl,
-      method,
-      responseType: 'json',
-      headers,
-      searchParams,
-      json,
-    },
+    requestOptions,
   );
 
   try {
@@ -106,6 +111,7 @@ Api.prototype.request = async function({
 
     return {
       ...response.body,
+      request: requestOptions,
       response: {
         headers: response.headers,
         statusCode: response.statusCode,

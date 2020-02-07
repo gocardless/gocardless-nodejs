@@ -1,6 +1,6 @@
 'use strict';
 
-const Environments = require('./Constants');
+const Constants = require('./Constants');
 const Api = require('./api/Api');
 
 const BankDetailsLookups = require('./services/BankDetailsLookups');
@@ -21,7 +21,7 @@ const RedirectFlows = require('./services/RedirectFlows');
 const Refunds = require('./services/Refunds');
 const Subscriptions = require('./services/Subscriptions');
 
-function GoCardlessClient(token, environment = Environments.LIVE, options = {}) {
+function GoCardlessClient(token, environment = Constants.Environments.LIVE, options = {}) {
   this._api = new Api(token, environment, options);
 
   this._bankDetailsLookups = undefined;
