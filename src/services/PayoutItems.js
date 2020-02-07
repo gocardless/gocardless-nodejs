@@ -14,6 +14,7 @@ PayoutItems.prototype.list = async function(requestParameters = {}, headers = {}
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'payout_items',
     headers,
     fetch: undefined,
   };

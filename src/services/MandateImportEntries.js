@@ -14,6 +14,7 @@ MandateImportEntries.prototype.create = async function(requestParameters = {}, h
     urlParameters,
     requestParameters,
     payloadKey: 'mandate_import_entries',
+    envelope: 'mandate_import_entries',
     headers,
     fetch: undefined,
   };
@@ -31,6 +32,7 @@ MandateImportEntries.prototype.list = async function(requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'mandate_import_entries',
     headers,
     fetch: undefined,
   };

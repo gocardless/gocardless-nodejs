@@ -14,6 +14,7 @@ MandateImports.prototype.create = async function(requestParameters = {}, headers
     urlParameters,
     requestParameters,
     payloadKey: 'mandate_imports',
+    envelope: 'mandate_imports',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -33,6 +34,7 @@ MandateImports.prototype.find = async function(identity, requestParameters = {},
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'mandate_imports',
     headers,
     fetch: undefined,
   };
@@ -52,6 +54,7 @@ MandateImports.prototype.submit = async function(identity, requestParameters = {
     urlParameters,
     requestParameters,
     payloadKey: 'data',
+    envelope: 'mandate_imports',
     headers,
     fetch: undefined,
   };
@@ -71,6 +74,7 @@ MandateImports.prototype.cancel = async function(identity, requestParameters = {
     urlParameters,
     requestParameters,
     payloadKey: 'data',
+    envelope: 'mandate_imports',
     headers,
     fetch: undefined,
   };

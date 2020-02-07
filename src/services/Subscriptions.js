@@ -14,6 +14,7 @@ Subscriptions.prototype.create = async function(requestParameters = {}, headers 
     urlParameters,
     requestParameters,
     payloadKey: 'subscriptions',
+    envelope: 'subscriptions',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -31,6 +32,7 @@ Subscriptions.prototype.list = async function(requestParameters = {}, headers = 
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'subscriptions',
     headers,
     fetch: undefined,
   };
@@ -64,6 +66,7 @@ Subscriptions.prototype.find = async function(identity, requestParameters = {}, 
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'subscriptions',
     headers,
     fetch: undefined,
   };
@@ -83,6 +86,7 @@ Subscriptions.prototype.update = async function(identity, requestParameters = {}
     urlParameters,
     requestParameters,
     payloadKey: 'subscriptions',
+    envelope: 'subscriptions',
     headers,
     fetch: undefined,
   };
@@ -102,6 +106,7 @@ Subscriptions.prototype.cancel = async function(identity, requestParameters = {}
     urlParameters,
     requestParameters,
     payloadKey: 'data',
+    envelope: 'subscriptions',
     headers,
     fetch: undefined,
   };

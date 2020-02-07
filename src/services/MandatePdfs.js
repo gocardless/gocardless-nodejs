@@ -14,6 +14,7 @@ MandatePdfs.prototype.create = async function(requestParameters = {}, headers = 
     urlParameters,
     requestParameters,
     payloadKey: 'mandate_pdfs',
+    envelope: 'mandate_pdfs',
     headers,
     fetch: undefined,
   };

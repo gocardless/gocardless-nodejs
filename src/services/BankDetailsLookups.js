@@ -14,6 +14,7 @@ BankDetailsLookups.prototype.create = async function(requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: 'bank_details_lookups',
+    envelope: 'bank_details_lookups',
     headers,
     fetch: undefined,
   };

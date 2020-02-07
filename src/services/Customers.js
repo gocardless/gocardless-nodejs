@@ -14,6 +14,7 @@ Customers.prototype.create = async function(requestParameters = {}, headers = {}
     urlParameters,
     requestParameters,
     payloadKey: 'customers',
+    envelope: 'customers',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -31,6 +32,7 @@ Customers.prototype.list = async function(requestParameters = {}, headers = {}) 
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'customers',
     headers,
     fetch: undefined,
   };
@@ -64,6 +66,7 @@ Customers.prototype.find = async function(identity, requestParameters = {}, head
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'customers',
     headers,
     fetch: undefined,
   };
@@ -83,6 +86,7 @@ Customers.prototype.update = async function(identity, requestParameters = {}, he
     urlParameters,
     requestParameters,
     payloadKey: 'customers',
+    envelope: 'customers',
     headers,
     fetch: undefined,
   };
@@ -102,6 +106,7 @@ Customers.prototype.remove = async function(identity, requestParameters = {}, he
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'customers',
     headers,
     fetch: undefined,
   };

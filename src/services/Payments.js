@@ -14,6 +14,7 @@ Payments.prototype.create = async function(requestParameters = {}, headers = {})
     urlParameters,
     requestParameters,
     payloadKey: 'payments',
+    envelope: 'payments',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -31,6 +32,7 @@ Payments.prototype.list = async function(requestParameters = {}, headers = {}) {
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'payments',
     headers,
     fetch: undefined,
   };
@@ -64,6 +66,7 @@ Payments.prototype.find = async function(identity, requestParameters = {}, heade
     urlParameters,
     requestParameters,
     payloadKey: undefined,
+    envelope: 'payments',
     headers,
     fetch: undefined,
   };
@@ -83,6 +86,7 @@ Payments.prototype.update = async function(identity, requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: 'payments',
+    envelope: 'payments',
     headers,
     fetch: undefined,
   };
@@ -102,6 +106,7 @@ Payments.prototype.cancel = async function(identity, requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: 'data',
+    envelope: 'payments',
     headers,
     fetch: undefined,
   };
@@ -121,6 +126,7 @@ Payments.prototype.retry = async function(identity, requestParameters = {}, head
     urlParameters,
     requestParameters,
     payloadKey: 'data',
+    envelope: 'payments',
     headers,
     fetch: undefined,
   };
