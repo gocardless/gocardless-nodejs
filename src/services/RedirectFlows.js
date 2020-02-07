@@ -14,7 +14,6 @@ RedirectFlows.prototype.create = async function(requestParameters = {}, headers 
     urlParameters,
     requestParameters,
     payloadKey: 'redirect_flows',
-    envelope: 'redirect_flows',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -34,7 +33,6 @@ RedirectFlows.prototype.find = async function(identity, requestParameters = {}, 
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'redirect_flows',
     headers,
     fetch: undefined,
   };
@@ -54,7 +52,6 @@ RedirectFlows.prototype.complete = async function(identity, requestParameters = 
     urlParameters,
     requestParameters,
     payloadKey: 'data',
-    envelope: 'redirect_flows',
     headers,
     fetch: undefined,
   };

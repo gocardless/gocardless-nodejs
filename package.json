@@ -1,13 +1,21 @@
 {
   "name": "gocardless",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments<",
+  "author": "GoCardless Ltd",
+  "keywords": [
+    "gocardless",
+    "payments",
+    "rest",
+    "api",
+    "direct debit"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gocardless/gocardless-nodejs.git"
+  },
   "scripts": {
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "got": "^10.2.2",
     "lodash": "^4.17.15",
@@ -15,5 +23,16 @@
   },
   "devDependencies": {
     "jest": "^25.1.0"
-  }
+  },
+  "files": [
+    "src",
+    "index.js",
+    "index.d.ts"
+  ],
+  "main": "./src",
+  "types": "./index.d.ts",
+  "engines": {
+    "node": ">=10.0"
+  },
+  "license": "MIT"
 }

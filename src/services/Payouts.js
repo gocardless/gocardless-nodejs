@@ -14,7 +14,6 @@ Payouts.prototype.list = async function(requestParameters = {}, headers = {}) {
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'payouts',
     headers,
     fetch: undefined,
   };
@@ -48,7 +47,6 @@ Payouts.prototype.find = async function(identity, requestParameters = {}, header
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'payouts',
     headers,
     fetch: undefined,
   };

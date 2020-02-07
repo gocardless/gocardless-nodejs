@@ -14,7 +14,6 @@ Creditors.prototype.create = async function(requestParameters = {}, headers = {}
     urlParameters,
     requestParameters,
     payloadKey: 'creditors',
-    envelope: 'creditors',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -32,7 +31,6 @@ Creditors.prototype.list = async function(requestParameters = {}, headers = {}) 
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'creditors',
     headers,
     fetch: undefined,
   };
@@ -66,7 +64,6 @@ Creditors.prototype.find = async function(identity, requestParameters = {}, head
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'creditors',
     headers,
     fetch: undefined,
   };
@@ -86,7 +83,6 @@ Creditors.prototype.update = async function(identity, requestParameters = {}, he
     urlParameters,
     requestParameters,
     payloadKey: 'creditors',
-    envelope: 'creditors',
     headers,
     fetch: undefined,
   };

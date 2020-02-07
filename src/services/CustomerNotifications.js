@@ -16,7 +16,6 @@ CustomerNotifications.prototype.handle = async function(identity, requestParamet
     urlParameters,
     requestParameters,
     payloadKey: 'data',
-    envelope: 'customer_notifications',
     headers,
     fetch: undefined,
   };

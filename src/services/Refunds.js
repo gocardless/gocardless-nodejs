@@ -14,7 +14,6 @@ Refunds.prototype.create = async function(requestParameters = {}, headers = {}) 
     urlParameters,
     requestParameters,
     payloadKey: 'refunds',
-    envelope: 'refunds',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -32,7 +31,6 @@ Refunds.prototype.list = async function(requestParameters = {}, headers = {}) {
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'refunds',
     headers,
     fetch: undefined,
   };
@@ -66,7 +64,6 @@ Refunds.prototype.find = async function(identity, requestParameters = {}, header
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'refunds',
     headers,
     fetch: undefined,
   };
@@ -86,7 +83,6 @@ Refunds.prototype.update = async function(identity, requestParameters = {}, head
     urlParameters,
     requestParameters,
     payloadKey: 'refunds',
-    envelope: 'refunds',
     headers,
     fetch: undefined,
   };

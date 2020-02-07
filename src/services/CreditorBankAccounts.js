@@ -14,7 +14,6 @@ CreditorBankAccounts.prototype.create = async function(requestParameters = {}, h
     urlParameters,
     requestParameters,
     payloadKey: 'creditor_bank_accounts',
-    envelope: 'creditor_bank_accounts',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -32,7 +31,6 @@ CreditorBankAccounts.prototype.list = async function(requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'creditor_bank_accounts',
     headers,
     fetch: undefined,
   };
@@ -66,7 +64,6 @@ CreditorBankAccounts.prototype.find = async function(identity, requestParameters
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'creditor_bank_accounts',
     headers,
     fetch: undefined,
   };
@@ -86,7 +83,6 @@ CreditorBankAccounts.prototype.disable = async function(identity, requestParamet
     urlParameters,
     requestParameters,
     payloadKey: 'data',
-    envelope: 'creditor_bank_accounts',
     headers,
     fetch: undefined,
   };

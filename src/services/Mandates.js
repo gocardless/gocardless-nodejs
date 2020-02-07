@@ -14,7 +14,6 @@ Mandates.prototype.create = async function(requestParameters = {}, headers = {})
     urlParameters,
     requestParameters,
     payloadKey: 'mandates',
-    envelope: 'mandates',
     headers,
     fetch: async (identity, headers) => await this.find(identity, {}, headers),
   };
@@ -32,7 +31,6 @@ Mandates.prototype.list = async function(requestParameters = {}, headers = {}) {
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'mandates',
     headers,
     fetch: undefined,
   };
@@ -66,7 +64,6 @@ Mandates.prototype.find = async function(identity, requestParameters = {}, heade
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'mandates',
     headers,
     fetch: undefined,
   };
@@ -86,7 +83,6 @@ Mandates.prototype.update = async function(identity, requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: 'mandates',
-    envelope: 'mandates',
     headers,
     fetch: undefined,
   };
@@ -106,7 +102,6 @@ Mandates.prototype.cancel = async function(identity, requestParameters = {}, hea
     urlParameters,
     requestParameters,
     payloadKey: 'data',
-    envelope: 'mandates',
     headers,
     fetch: undefined,
   };
@@ -126,7 +121,6 @@ Mandates.prototype.reinstate = async function(identity, requestParameters = {}, 
     urlParameters,
     requestParameters,
     payloadKey: 'data',
-    envelope: 'mandates',
     headers,
     fetch: undefined,
   };

@@ -14,7 +14,6 @@ Events.prototype.list = async function(requestParameters = {}, headers = {}) {
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'events',
     headers,
     fetch: undefined,
   };
@@ -48,7 +47,6 @@ Events.prototype.find = async function(identity, requestParameters = {}, headers
     urlParameters,
     requestParameters,
     payloadKey: undefined,
-    envelope: 'events',
     headers,
     fetch: undefined,
   };

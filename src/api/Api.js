@@ -7,15 +7,14 @@ const got = require('got');
 
 const GoCardlessException = require('../GoCardlessException');
 
-// TODO: Return the response
 function Api(token, environment = Environments.LIVE, options = {}) {
   this._token = token;
   this._environment = environment;
 
-  this._baseUrl = 'https://api.gocardless.com/';
+  this._baseUrl = 'https://api.gocardless.com';
 
   if (this._environment === 'SANDBOX') {
-    this._baseUrl = 'https://api-sandbox.gocardless.com/';
+    this._baseUrl = 'https://api-sandbox.gocardless.com';
   }
 
   this._agent = undefined;
@@ -25,6 +24,31 @@ function Api(token, environment = Environments.LIVE, options = {}) {
   }
 
   this.raise_on_idempotency_conflict = options.raise_on_idempotency_conflict || false;
+}
+
+const getHeaders = (headers, token) => ({
+  ...headers,
+  'Accept': 'application/json',
+  'Authorization': `Bearer ${token}`,
+  'GoCardless-Version': '2015-07-06',
+  'GoCardless-Client-Version': '0.1.0',
+  'GoCardless-Client-Library': 'gocardless-nodejs',
+  'User-Agent': `gocardless-nodejs/0.1.0 node/${process.version} ${os.platform()}/${os.release()}`,
+});
+
+const getRequestBody = (method, requestParameters, payloadKey) => {
+  if ((method === 'POST' || method === 'PUT') && requestParameters) {
+    if (payloadKey) {
+      json = {
+        [payloadKey]: requestParameters,
+      };
+    }
+    else {
+      json = requestParameters;
+    }
+  }
+
+  return undefined;
 }
 
 const mapQueryParameters = (obj) => {
@@ -47,16 +71,10 @@ Api.prototype.request = async function({
   urlParameters = [],
   requestParameters = {},
   payloadKey = '',
-  envelope = '',
   headers = {},
   fetch,
 }) {
-  headers['Accept'] = 'application/json';
-  headers['Authorization'] = `Bearer ${this._token}`;
-  headers['GoCardless-Version'] = '2015-07-06';
-  headers['GoCardless-Client-Version'] = '0.1.0';
-  headers['GoCardless-Client-Library'] = 'gocardless-nodejs';
-  headers['User-Agent'] = `gocardless-nodejs/0.1.0 node/${process.version} ${os.platform()}/${os.release()}`;
+  headers = getHeaders(headers, this._token);
 
   urlParameters.forEach(urlParameter => {
     path = path.replace(`:${urlParameter.key}`, urlParameter.value);
@@ -68,17 +86,7 @@ Api.prototype.request = async function({
     headers['Idempotency-Key'] = uuidv4();
   }
 
-  let json = undefined;
-  if ((method === 'POST' || method === 'PUT') && requestParameters) {
-    if (payloadKey) {
-      json = {
-        [payloadKey]: requestParameters,
-      };
-    }
-    else {
-      json = requestParameters;
-    }
-  }
+  const json = getRequestBody(method, requestParameters, payloadKey);
 
   const request = got(
     path,
@@ -96,11 +104,15 @@ Api.prototype.request = async function({
   try {
     const response = await request;
 
-    if (envelope) {
-      return response.body[envelope];
-    }
-
-    return response.body;
+    return {
+      ...response.body,
+      response: {
+        headers: response.headers,
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage,
+        url: response.url
+      }
+    };
   } catch (error) {
     const { response } = error;
 
