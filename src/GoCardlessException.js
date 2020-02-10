@@ -5,7 +5,7 @@ function GoCardlessException(response) {
   const {
     message,
     errors,
-    documentaton_url: documentatonUrl,
+    documentation_url: documentationUrl,
     type,
     request_id: requestId,
     code,
@@ -13,7 +13,7 @@ function GoCardlessException(response) {
 
   this.message = message;
   this.errors = errors;
-  this.documentatonUrl = documentatonUrl;
+  this.documentationUrl = documentationUrl;
   this.type = type;
   this.requestId = requestId;
   this.code = code;

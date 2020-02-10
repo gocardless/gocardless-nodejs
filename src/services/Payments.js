@@ -40,18 +40,17 @@ Payments.prototype.list = async function(requestParameters = {}, headers = {}) {
   return response;
 }
 
-Payments.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Payments.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.payments.forEach(p => items.push(p));
+    for (let payment of list.payments) {
+      yield payment;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Payments.prototype.find = async function(identity, requestParameters = {}, headers = {}) {
