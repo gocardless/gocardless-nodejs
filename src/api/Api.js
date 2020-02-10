@@ -72,6 +72,32 @@ const isIdempotencyConflict = (response) => {
    response.body.error.errors[0].reason === 'idempotent_creation_conflict';
 }
 
+Api.prototype.createRequestOptions = function({
+  method = 'GET',
+  requestParameters = {},
+  payloadKey = '',
+  headers = {},
+}) {
+  headers = getHeaders(headers, this._token);
+  const searchParams = method === 'GET' ? new URLSearchParams(mapQueryParameters(requestParameters)) : undefined;
+
+  if (method === 'POST' && !headers['Idempotency-Key']) {
+    headers['Idempotency-Key'] = uuidv4();
+  }
+
+  const json = getRequestBody(method, requestParameters, payloadKey);
+
+  return {
+    agent: this._agent,
+    prefixUrl: this._baseUrl,
+    method,
+    responseType: 'json',
+    headers,
+    searchParams,
+    json,
+  };
+}
+
 Api.prototype.request = async function({
   path,
   method = 'GET',
@@ -81,29 +107,16 @@ Api.prototype.request = async function({
   headers = {},
   fetch,
 }) {
-  headers = getHeaders(headers, this._token);
-
   urlParameters.forEach(urlParameter => {
     path = path.replace(`:${urlParameter.key}`, urlParameter.value);
   });
 
-  const searchParams = method === 'GET' ? new URLSearchParams(mapQueryParameters(requestParameters)) : undefined;
-
-  if (method === 'POST' && !headers['Idempotency-Key']) {
-    headers['Idempotency-Key'] = uuidv4();
-  }
-
-  const json = getRequestBody(method, requestParameters, payloadKey);
-
-  const requestOptions = {
-    agent: this._agent,
-    prefixUrl: this._baseUrl,
+  const requestOptions = this.createRequestOptions({
     method,
-    responseType: 'json',
+    requestParameters,
+    payloadKey,
     headers,
-    searchParams,
-    json,
-  };
+  });
 
   const request = got(
     path,
