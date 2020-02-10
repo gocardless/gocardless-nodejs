@@ -16,7 +16,7 @@ function Api(token, environment = Constants.Environments.LIVE, options = {}) {
 
   this._baseUrl = 'https://api.gocardless.com';
 
-  if (this._environment === 'SANDBOX') {
+  if (this._environment === Constants.Environments.SANDBOX) {
     this._baseUrl = 'https://api-sandbox.gocardless.com';
   }
 
