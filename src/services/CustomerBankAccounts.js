@@ -40,18 +40,17 @@ CustomerBankAccounts.prototype.list = async function(requestParameters = {}, hea
   return response;
 }
 
-CustomerBankAccounts.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+CustomerBankAccounts.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.customer_bank_accounts.forEach(p => items.push(p));
+    for (let customer_bank_account of list.customer_bank_accounts) {
+      yield customer_bank_account;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 CustomerBankAccounts.prototype.find = async function(identity, requestParameters = {}, headers = {}) {

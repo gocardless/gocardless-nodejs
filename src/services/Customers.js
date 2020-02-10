@@ -40,18 +40,17 @@ Customers.prototype.list = async function(requestParameters = {}, headers = {}) 
   return response;
 }
 
-Customers.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Customers.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.customers.forEach(p => items.push(p));
+    for (let customer of list.customers) {
+      yield customer;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Customers.prototype.find = async function(identity, requestParameters = {}, headers = {}) {

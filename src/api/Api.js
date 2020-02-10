@@ -29,6 +29,10 @@ function Api(token, environment = Constants.Environments.LIVE, options = {}) {
   this.raise_on_idempotency_conflict = options.raise_on_idempotency_conflict || false;
 }
 
+const processVersion = process.Version;
+const osPlatform = os.platform();
+const osRelease = os.release();
+
 const getHeaders = (headers, token) => ({
   ...headers,
   'Accept': 'application/json',
@@ -36,7 +40,7 @@ const getHeaders = (headers, token) => ({
   'GoCardless-Version': '2015-07-06',
   'GoCardless-Client-Version': '0.1.0',
   'GoCardless-Client-Library': 'gocardless-nodejs',
-  'User-Agent': `gocardless-nodejs/0.1.0 node/${process.version} ${os.platform()}/${os.release()}`,
+  'User-Agent': `gocardless-nodejs/0.1.0 node/${processVersion} ${osPlatform}/${osRelease}`,
 });
 
 const getRequestBody = (method, requestParameters, payloadKey) => {

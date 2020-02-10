@@ -40,18 +40,17 @@ Mandates.prototype.list = async function(requestParameters = {}, headers = {}) {
   return response;
 }
 
-Mandates.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Mandates.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.mandates.forEach(p => items.push(p));
+    for (let mandate of list.mandates) {
+      yield mandate;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Mandates.prototype.find = async function(identity, requestParameters = {}, headers = {}) {

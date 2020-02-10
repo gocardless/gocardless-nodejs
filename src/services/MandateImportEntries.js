@@ -40,18 +40,17 @@ MandateImportEntries.prototype.list = async function(requestParameters = {}, hea
   return response;
 }
 
-MandateImportEntries.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+MandateImportEntries.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.mandate_import_entries.forEach(p => items.push(p));
+    for (let mandate_import_entry of list.mandate_import_entries) {
+      yield mandate_import_entry;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 module.exports = MandateImportEntries;

@@ -40,18 +40,17 @@ Subscriptions.prototype.list = async function(requestParameters = {}, headers = 
   return response;
 }
 
-Subscriptions.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Subscriptions.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.subscriptions.forEach(p => items.push(p));
+    for (let subscription of list.subscriptions) {
+      yield subscription;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Subscriptions.prototype.find = async function(identity, requestParameters = {}, headers = {}) {

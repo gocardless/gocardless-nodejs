@@ -23,18 +23,17 @@ PayoutItems.prototype.list = async function(requestParameters = {}, headers = {}
   return response;
 }
 
-PayoutItems.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+PayoutItems.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.payout_items.forEach(p => items.push(p));
+    for (let payout_item of list.payout_items) {
+      yield payout_item;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 module.exports = PayoutItems;

@@ -40,18 +40,17 @@ Refunds.prototype.list = async function(requestParameters = {}, headers = {}) {
   return response;
 }
 
-Refunds.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Refunds.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.refunds.forEach(p => items.push(p));
+    for (let refund of list.refunds) {
+      yield refund;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Refunds.prototype.find = async function(identity, requestParameters = {}, headers = {}) {

@@ -40,18 +40,17 @@ Creditors.prototype.list = async function(requestParameters = {}, headers = {}) 
   return response;
 }
 
-Creditors.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Creditors.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.creditors.forEach(p => items.push(p));
+    for (let creditor of list.creditors) {
+      yield creditor;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Creditors.prototype.find = async function(identity, requestParameters = {}, headers = {}) {

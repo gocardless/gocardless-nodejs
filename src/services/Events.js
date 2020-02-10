@@ -23,18 +23,17 @@ Events.prototype.list = async function(requestParameters = {}, headers = {}) {
   return response;
 }
 
-Events.prototype.all = async function(requestParameters = {}, headers = {}) {
-  const items = [];
+Events.prototype.all = async function*(requestParameters = {}, headers = {}) {
   let cursor = undefined;
   do {
     let list = await this.list({ ...requestParameters, after: cursor }, headers);
 
-    list.events.forEach(p => items.push(p));
+    for (let event of list.events) {
+      yield event;
+    }
 
     cursor = list.meta.cursors.after;
   } while (cursor);
-
-  return items;
 }
 
 Events.prototype.find = async function(identity, requestParameters = {}, headers = {}) {
