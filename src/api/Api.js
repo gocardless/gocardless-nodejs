@@ -29,7 +29,7 @@ function Api(token, environment = Constants.Environments.LIVE, options = {}) {
   this.raise_on_idempotency_conflict = options.raise_on_idempotency_conflict || false;
 }
 
-const processVersion = process.Version;
+const processVersion = process.version;
 const osPlatform = os.platform();
 const osRelease = os.release();
 

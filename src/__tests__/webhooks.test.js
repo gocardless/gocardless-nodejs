@@ -3,7 +3,7 @@ const fs = require("fs");
 const webhook = require("../webhooks");
 
 const request_body = JSON.stringify(
-  JSON.parse(fs.readFileSync("template/src/__tests__/fixtures/webhook_body.json", "utf8"))
+  JSON.parse(fs.readFileSync("src/__tests__/fixtures/webhook_body.json", "utf8"))
 );
 
 
