@@ -51,8 +51,8 @@ function parse(body, webhook_secret, signature_header) {
 function verify_signature(body, webhook_secret, signature_header) {
   const raw_digest = CryptoJS.HmacSHA256(body, webhook_secret);
 
-  const buffer_digest = new Buffer(raw_digest.toString(CryptoJS.enc.Hex));
-  const buffer_signature_header = new Buffer(signature_header);
+  const buffer_digest = Buffer.from(raw_digest.toString(CryptoJS.enc.Hex));
+  const buffer_signature_header = Buffer.from(signature_header);
 
   if (!(safeCompare(buffer_digest, buffer_signature_header))) {
     throw new InvalidSignatureError();
