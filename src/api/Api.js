@@ -33,6 +33,13 @@ const processVersion = process.version;
 const osPlatform = os.platform();
 const osRelease = os.release();
 
+const methods = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+};
+
 const getHeaders = (headers, token) => ({
   ...headers,
   'Accept': 'application/json',
@@ -44,7 +51,7 @@ const getHeaders = (headers, token) => ({
 });
 
 const getRequestBody = (method, requestParameters, payloadKey) => {
-  if ((method === 'POST' || method === 'PUT') && requestParameters) {
+  if ((method === methods.POST || method === methods.PUT) && requestParameters) {
     if (payloadKey) {
       return {
         [payloadKey]: requestParameters,
@@ -73,15 +80,15 @@ const isIdempotencyConflict = (response) => {
 }
 
 Api.prototype.createRequestOptions = function({
-  method = 'GET',
+  method = methods.GET,
   requestParameters = {},
   payloadKey = '',
   headers = {},
 }) {
   headers = getHeaders(headers, this._token);
-  const searchParams = method === 'GET' ? new URLSearchParams(mapQueryParameters(requestParameters)) : undefined;
+  const searchParams = method === methods.GET ? new URLSearchParams(mapQueryParameters(requestParameters)) : undefined;
 
-  if (method === 'POST' && !headers['Idempotency-Key']) {
+  if (method === methods.POST && !headers['Idempotency-Key']) {
     headers['Idempotency-Key'] = uuidv4();
   }
 
@@ -100,7 +107,7 @@ Api.prototype.createRequestOptions = function({
 
 Api.prototype.request = async function({
   path,
-  method = 'GET',
+  method = methods.GET,
   urlParameters = [],
   requestParameters = {},
   payloadKey = '',

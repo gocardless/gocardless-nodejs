@@ -11,6 +11,10 @@ jest.mock('process', () => {
   };
 });
 
+jest.mock('uuid/v4', () => {
+  return jest.fn(() => 'uuid/v4');
+});
+
 jest.mock('got', () => {
   return jest.fn((p1) => p1);
 });
@@ -19,7 +23,7 @@ const Api = require('../Api');
 const Constants = require('../../Constants');
 
 describe('api', () => {
-  describe('the request', () => {
+  describe('createRequestOptions', () => {
     const token = 'my-token';
     const api = new Api(token);
 
@@ -111,6 +115,43 @@ describe('api', () => {
         const searchParams = requestOptions.searchParams;
 
         expect(searchParams).toBeUndefined();
+      });
+    });
+
+    describe('idemptency key', () => {
+      test('it is not set when it is a GET request', () => {
+        const requestOptions = api.createRequestOptions({});
+
+        const headers = requestOptions.headers;
+
+        expect(headers['Idempotency-Key']).toBeUndefined();
+      });
+
+      test('it is not overriden when set', () => {
+        const options = {
+          method: 'POST',
+          headers: {
+            'Idempotency-Key': 'custom'
+          },
+        };
+
+        const requestOptions = api.createRequestOptions(options);
+
+        const headers = requestOptions.headers;
+
+        expect(headers['Idempotency-Key']).toBe('custom');
+      });
+
+      test('it is genrated when not set', () => {
+        const options = {
+          method: 'POST',
+        };
+
+        const requestOptions = api.createRequestOptions(options);
+
+        const headers = requestOptions.headers;
+
+        expect(headers['Idempotency-Key']).toBe('uuid/v4');
       });
     });
 
