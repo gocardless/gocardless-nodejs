@@ -25,6 +25,7 @@
     "buffer-equal-constant-time": "1.0.1"
   },
   "devDependencies": {
+    "@types/node": "^13.1.2",
     "jest": "^25.1.0"
   },
   "files": [
