@@ -8,13 +8,15 @@
         "allowJs": true,
         "target": "es2018",
         "noImplicitAny": false,
+        "pretty": true,
         "moduleResolution": "node",
         "declaration": true,
         "sourceMap": true,
         "outDir": "dist",
         "baseUrl": ".",
         "noImplicitAny": false,
-        "noImplicitReturns": true,
+        "noImplicitReturns": false,
+        "skipLibCheck": true,
         "paths": {
             "*": [
                 "node_modules/*",

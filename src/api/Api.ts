@@ -175,6 +175,3 @@ class Api {
       response.body.error.errors[0].reason === 'idempotent_creation_conflict';
   }
 }
-
-
-module.exports = Api;
