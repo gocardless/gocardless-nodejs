@@ -1,44 +1,45 @@
-
-
 'use strict';
 
-interface CustomerNotification {
+import { CustomerNotification } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface CustomerNotificationResponse extends CustomerNotification {
+  request: object;
+  response: object;
 }
 
-interface CustomerNotificationResponse {
-  customernotification: CustomerNotification,
-  request: object,
-  response: object,
+interface CustomerNotificationListResponse extends CustomerNotification {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface CustomerNotificationListResponse {
-  customernotification: CustomerNotification[],
-  request: object,
-  response: object,
-}
+class CustomerNotificationService {
+  private api: Api;
 
-function CustomerNotifications(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-CustomerNotifications.prototype.handle = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<CustomerNotificationResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
+  async handle(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<CustomerNotificationResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  const request = {
-    path: '/customer_notifications/:identity/actions/handle',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'data',
-    headers,
-    fetch: undefined,
-  };
+    const request = {
+      path: '/customer_notifications/:identity/actions/handle',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  const response = await this._api.request(request);
-
-  return response;
+    const response: CustomerNotificationResponse = await this.api.request(
+      request
+    );
+    return response;
+  }
 }

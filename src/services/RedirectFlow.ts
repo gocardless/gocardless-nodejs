@@ -1,82 +1,82 @@
-
-
 'use strict';
 
-interface RedirectFlow {
+import { RedirectFlow } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface RedirectFlowResponse extends RedirectFlow {
+  request: object;
+  response: object;
 }
 
-interface RedirectFlowResponse {
-  redirectflow: RedirectFlow,
-  request: object,
-  response: object,
+interface RedirectFlowListResponse extends RedirectFlow {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface RedirectFlowListResponse {
-  redirectflow: RedirectFlow[],
-  request: object,
-  response: object,
-}
+class RedirectFlowService {
+  private api: Api;
 
-function RedirectFlows(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-RedirectFlows.prototype.create = async function(requestParameters: object = {}, headers: object = {}): Promise<RedirectFlowResponse> {
-  const urlParameters = [];
+  async create(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<RedirectFlowResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/redirect_flows',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'redirect_flows',
+      headers,
+      fetch: async (identity, headers) => this.find(identity, headers),
+    };
 
-  const request = {
-    path: '/redirect_flows',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'redirect_flows',
-    headers,
-    fetch: async (identity, headers) => await this.find(identity, headers),
-  };
+    const response: RedirectFlowResponse = await this.api.request(request);
+    return response;
+  }
 
-  const response = await this._api.request(request);
+  async find(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<RedirectFlowResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  return response;
-}
+    const request = {
+      path: '/redirect_flows/:identity',
+      method: 'GET',
+      urlParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-RedirectFlows.prototype.find = async function(identity: string, headers: object = {}): Promise<RedirectFlowResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
+    const response: RedirectFlowResponse = await this.api.request(request);
+    return response;
+  }
 
-  const request = {
-    path: '/redirect_flows/:identity',
-    method: 'GET',
-    urlParameters,
-    
-    payloadKey: undefined,
-    headers,
-    fetch: undefined,
-  };
+  async complete(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<RedirectFlowResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  const response = await this._api.request(request);
+    const request = {
+      path: '/redirect_flows/:identity/actions/complete',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  return response;
-}
-
-RedirectFlows.prototype.complete = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<RedirectFlowResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
-
-  const request = {
-    path: '/redirect_flows/:identity/actions/complete',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'data',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
+    const response: RedirectFlowResponse = await this.api.request(request);
+    return response;
+  }
 }

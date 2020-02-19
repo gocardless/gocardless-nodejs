@@ -40,14 +40,17 @@ class Api {
         if (options.proxy) {
             this._agent = options.proxy;
         }
-        this.raise_on_idempotency_conflict = options.raise_on_idempotency_conflict || false;
+        this.raiseOnIdempotencyConflict =
+            options.raiseOnIdempotencyConflict || false;
         this.processVersion = process.version;
         this.osPlatform = os.platform();
         this.osRelease = os.release();
     }
-    createRequestOptions(method = HTTPMethod.Get, requestParameters = {}, payloadKey = '', headers = {}) {
+    createRequestOptions(method = 'get', requestParameters = {}, payloadKey = '', headers = {}) {
         headers = this.getHeaders(headers, this._token);
-        const searchParams = method === HTTPMethod.Get ? new url.URLSearchParams(this.mapQueryParameters(requestParameters)) : undefined;
+        const searchParams = method === 'get'
+            ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))
+            : undefined;
         if (method === 'POST' && !headers['Idempotency-Key']) {
             headers['Idempotency-Key'] = uuidv4();
         }
@@ -55,14 +58,14 @@ class Api {
         return {
             agent: this._agent,
             prefixUrl: this._baseUrl,
-            method,
+            method: method,
             responseType: 'json',
             headers,
             searchParams,
             json,
         };
     }
-    async request(path, method = HTTPMethod.Get, urlParameters = [], requestParameters = {}, payloadKey = '', headers = {}, fetch) {
+    async request({ path, method, urlParameters = [], requestParameters = {}, payloadKey = '', headers = {}, fetch, }) {
         urlParameters.forEach(urlParameter => {
             path = path.replace(`:${urlParameter.key}`, urlParameter.value);
         });
@@ -77,15 +80,16 @@ class Api {
                     headers: response.headers,
                     statusCode: response.statusCode,
                     statusMessage: response.statusMessage,
-                    url: response.url
-                }
+                    url: response.url,
+                },
             };
         }
         catch (error) {
             const { response } = error;
-            if (this.isIdempotencyConflict(response) && !this.raise_on_idempotency_conflict) {
+            if (this.isIdempotencyConflict(response) &&
+                !this.raiseOnIdempotencyConflict) {
                 const resourceId = response.body.error.errors[0].links.conflicting_resource_id;
-                return await fetch(resourceId, headers);
+                return fetch(resourceId, headers);
             }
             if (response) {
                 throw new GoCardlessException(response);
@@ -96,8 +100,8 @@ class Api {
     getHeaders(headers, token) {
         return {
             ...headers,
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
             'GoCardless-Version': '2015-07-06',
             'GoCardless-Client-Version': '0.1.0',
             'GoCardless-Client-Library': 'gocardless-nodejs',
@@ -105,7 +109,7 @@ class Api {
         };
     }
     getRequestBody(method, requestParameters, payloadKey) {
-        if ((method === HTTPMethod.Post || method === HTTPMethod.Put) && requestParameters) {
+        if ((method === 'post' || method === 'put') && requestParameters) {
             if (payloadKey) {
                 return {
                     [payloadKey]: requestParameters,
@@ -118,16 +122,16 @@ class Api {
         return undefined;
     }
     mapQueryParameters(obj) {
-        return _.keys(obj)
-            .map(k => [k, obj[k]]);
+        return _.keys(obj).map(k => [k, obj[k]]);
     }
     isIdempotencyConflict(response) {
-        return response.statusCode === 409 &&
+        return (response.statusCode === 409 &&
             response.body &&
             response.body.error &&
             response.body.error.errors &&
             response.body.error.errors[0] &&
-            response.body.error.errors[0].reason === 'idempotent_creation_conflict';
+            response.body.error.errors[0].reason === 'idempotent_creation_conflict');
     }
 }
+exports.Api = Api;
 //# sourceMappingURL=Api.js.map

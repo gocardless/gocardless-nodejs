@@ -1,42 +1,41 @@
-
-
 'use strict';
 
-interface BankDetailsLookup {
+import { BankDetailsLookup } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface BankDetailsLookupResponse extends BankDetailsLookup {
+  request: object;
+  response: object;
 }
 
-interface BankDetailsLookupResponse {
-  bankdetailslookup: BankDetailsLookup,
-  request: object,
-  response: object,
+interface BankDetailsLookupListResponse extends BankDetailsLookup {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface BankDetailsLookupListResponse {
-  bankdetailslookup: BankDetailsLookup[],
-  request: object,
-  response: object,
-}
+class BankDetailsLookupService {
+  private api: Api;
 
-function BankDetailsLookups(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-BankDetailsLookups.prototype.create = async function(requestParameters: object = {}, headers: object = {}): Promise<BankDetailsLookupResponse> {
-  const urlParameters = [];
+  async create(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<BankDetailsLookupResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/bank_details_lookups',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'bank_details_lookups',
+      headers,
+      fetch: undefined,
+    };
 
-  const request = {
-    path: '/bank_details_lookups',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'bank_details_lookups',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
+    const response: BankDetailsLookupResponse = await this.api.request(request);
+    return response;
+  }
 }

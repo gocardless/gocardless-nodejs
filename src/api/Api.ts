@@ -10,35 +10,55 @@ import got from 'got';
 import Constants = require('../Constants');
 import GoCardlessException = require('../GoCardlessException');
 
-
 enum Environment {
-    Live = "LIVE",
+  Live = 'LIVE',
 }
 
 enum HTTPMethod {
-    Post = "POST",
-    Get = "GET",
-    Put = "PUT",
+  Post = 'POST',
+  Get = 'GET',
+  Put = 'PUT',
 }
 
-type APIOptions = {
-    proxy?: any
-    raise_on_idempotency_conflict: boolean
+interface APIOptions {
+  proxy?: object;
+  raiseOnIdempotencyConflict: boolean;
 }
 
+interface APIResponse {
+  body: any;
+  headers: any;
+  statusCode: number;
+  statusMessage?: string;
+  url: string;
+}
 
-class Api {
+interface APIRequestParameters {
+  path: string;
+  method: string;
+  urlParameters?: any;
+  requestParameters?: object;
+  payloadKey?: string;
+  headers?: object;
+  fetch: any;
+}
+
+export class Api {
   private _token: string;
   private _environment: Environment;
   private _baseUrl: string;
-  private _agent: any;
-  private raise_on_idempotency_conflict: boolean;
+  private _agent: object;
+  private raiseOnIdempotencyConflict: boolean;
 
   private processVersion: string;
   private osPlatform: any;
-  private osRelease: any;
+  private osRelease: string;
 
-  constructor(token: string, environment = Environment.Live, options: APIOptions) {
+  constructor(
+    token: string,
+    environment = Environment.Live,
+    options: APIOptions
+  ) {
     this._token = token;
     this._environment = environment;
 
@@ -52,22 +72,26 @@ class Api {
       this._agent = options.proxy;
     }
 
-    this.raise_on_idempotency_conflict = options.raise_on_idempotency_conflict || false;
+    this.raiseOnIdempotencyConflict =
+      options.raiseOnIdempotencyConflict || false;
 
     this.processVersion = process.version;
     this.osPlatform = os.platform();
     this.osRelease = os.release();
   }
 
-  public createRequestOptions(
-      method = HTTPMethod.Get,
-      requestParameters = {},
-      payloadKey = '',
-      headers = {},
-    ) {
+  createRequestOptions(
+    method = 'get',
+    requestParameters = {},
+    payloadKey = '',
+    headers = {}
+  ) {
     headers = this.getHeaders(headers, this._token);
 
-    const searchParams = method === HTTPMethod.Get ? new url.URLSearchParams(this.mapQueryParameters(requestParameters)) : undefined;
+    const searchParams =
+      method === 'get'
+        ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))
+        : undefined;
 
     if (method === 'POST' && !headers['Idempotency-Key']) {
       headers['Idempotency-Key'] = uuidv4();
@@ -75,39 +99,39 @@ class Api {
 
     const json = this.getRequestBody(method, requestParameters, payloadKey);
     return {
-        agent: this._agent,
-        prefixUrl: this._baseUrl,
-        method,
-        responseType: 'json' as 'json',
-        headers,
-        searchParams,
-        json,
+      agent: this._agent,
+      prefixUrl: this._baseUrl,
+      method: method as any,
+      responseType: 'json' as 'json',
+      headers,
+      searchParams,
+      json,
     };
   }
 
-  public async request(
-      path: string,
-      method = HTTPMethod.Get,
-      urlParameters = [],
-      requestParameters = {},
-      payloadKey = '',
-      headers = {},
-      fetch,
-      ) {
+  async request({
+    path,
+    method,
+    urlParameters = [],
+    requestParameters = {},
+    payloadKey = '',
+    headers = {},
+    fetch,
+  }: APIRequestParameters) {
     urlParameters.forEach(urlParameter => {
-        path = path.replace(`:${urlParameter.key}`, urlParameter.value);
-        });
+      path = path.replace(`:${urlParameter.key}`, urlParameter.value);
+    });
 
     const requestOptions = this.createRequestOptions(
-        method,
-        requestParameters,
-        payloadKey,
-        headers,
+      method,
+      requestParameters,
+      payloadKey,
+      headers
     );
     const request = got(path, requestOptions);
 
     try {
-      const response: any = await request;
+      const response: APIResponse = await request;
       return {
         ...response.body,
         request: requestOptions,
@@ -115,15 +139,19 @@ class Api {
           headers: response.headers,
           statusCode: response.statusCode,
           statusMessage: response.statusMessage,
-          url: response.url
-          }
+          url: response.url,
+        },
       };
     } catch (error) {
       const { response } = error;
 
-      if (this.isIdempotencyConflict(response) && !this.raise_on_idempotency_conflict) {
-        const resourceId = response.body.error.errors[0].links.conflicting_resource_id;
-        return await fetch(resourceId, headers);
+      if (
+        this.isIdempotencyConflict(response) &&
+        !this.raiseOnIdempotencyConflict
+      ) {
+        const resourceId =
+          response.body.error.errors[0].links.conflicting_resource_id;
+        return fetch(resourceId, headers);
       }
 
       if (response) {
@@ -137,23 +165,22 @@ class Api {
   private getHeaders(headers, token) {
     return {
       ...headers,
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-        'GoCardless-Version': '2015-07-06',
-        'GoCardless-Client-Version': '0.1.0',
-        'GoCardless-Client-Library': 'gocardless-nodejs',
-        'User-Agent': `gocardless-nodejs/0.1.0 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
-    }
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'GoCardless-Version': '2015-07-06',
+      'GoCardless-Client-Version': '0.1.0',
+      'GoCardless-Client-Library': 'gocardless-nodejs',
+      'User-Agent': `gocardless-nodejs/0.1.0 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+    };
   }
 
-  private getRequestBody(method: HTTPMethod, requestParameters, payloadKey) {
-    if ((method === HTTPMethod.Post || method === HTTPMethod.Put) && requestParameters) {
+  private getRequestBody(method: string, requestParameters, payloadKey) {
+    if ((method === 'post' || method === 'put') && requestParameters) {
       if (payloadKey) {
         return {
           [payloadKey]: requestParameters,
         };
-      }
-      else {
+      } else {
         return requestParameters;
       }
     }
@@ -162,16 +189,17 @@ class Api {
   }
 
   private mapQueryParameters(obj) {
-    return _.keys(obj)
-      .map(k => [k, obj[k]]);
+    return _.keys(obj).map(k => [k, obj[k]]);
   }
 
   private isIdempotencyConflict(response) {
-    return response.statusCode === 409 &&
+    return (
+      response.statusCode === 409 &&
       response.body &&
       response.body.error &&
       response.body.error.errors &&
       response.body.error.errors[0] &&
-      response.body.error.errors[0].reason === 'idempotent_creation_conflict';
+      response.body.error.errors[0].reason === 'idempotent_creation_conflict'
+    );
   }
 }

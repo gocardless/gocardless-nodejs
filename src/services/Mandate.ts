@@ -1,160 +1,150 @@
-
-
 'use strict';
 
-interface Mandate {
+import { Mandate } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface MandateResponse extends Mandate {
+  request: object;
+  response: object;
 }
 
-interface MandateResponse {
-  mandate: Mandate,
-  request: object,
-  response: object,
+interface MandateListResponse extends Mandate {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface MandateListResponse {
-  mandate: Mandate[],
-  request: object,
-  response: object,
-}
+class MandateService {
+  private api: Api;
 
-function Mandates(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-Mandates.prototype.create = async function(requestParameters: object = {}, headers: object = {}): Promise<MandateResponse> {
-  const urlParameters = [];
+  async create(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/mandates',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'mandates',
+      headers,
+      fetch: async (identity, headers) => this.find(identity, headers),
+    };
 
-  const request = {
-    path: '/mandates',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'mandates',
-    headers,
-    fetch: async (identity, headers) => await this.find(identity, headers),
-  };
+    const response: MandateResponse = await this.api.request(request);
+    return response;
+  }
 
-  const response = await this._api.request(request);
+  // TODO: Should this be an iterator return type?
+  // Maybe AsyncIterableIterator<Payment>
+  // Might need this in tsconfig to work properly:
+  // {
+  //  "lib": ["esnext.asynciterable"]
+  // }
+  // https://github.com/octokit/rest.js/issues/1189
+  async list(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateListResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/mandates',
+      method: 'GET',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  return response;
-}
+    const response: MandateListResponse = await this.api.request(request);
+    return response;
+  }
 
-Mandates.prototype.list = async function(requestParameters: object = {}, headers: object = {}): Promise<MandateListResponse> {
-  const urlParameters = [];
+  async find(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  const request = {
-    path: '/mandates',
-    method: 'GET',
-    urlParameters,
-    requestParameters,
-    payloadKey: undefined,
-    headers,
-    fetch: undefined,
-  };
+    const request = {
+      path: '/mandates/:identity',
+      method: 'GET',
+      urlParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  const response = await this._api.request(request);
+    const response: MandateResponse = await this.api.request(request);
+    return response;
+  }
 
-  return response;
-}
+  async update(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-// TODO: Should this be an iterator return type?
-// Maybe AsyncIterableIterator<Payment>
-// Might need this in tsconfig to work properly:
-// {
-//  "lib": ["esnext.asynciterable"]
-// }
-// https://github.com/octokit/rest.js/issues/1189
-Mandates.prototype.all = async function*(requestParameters: object = {}, headers: object = {}): any {
-  let cursor = undefined;
-  do {
-    let list = await this.list({ ...requestParameters, after: cursor }, headers);
+    const request = {
+      path: '/mandates/:identity',
+      method: 'PUT',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'mandates',
+      headers,
+      fetch: null,
+    };
 
-    for (let mandate of list.mandates) {
-      yield mandate;
-    }
+    const response: MandateResponse = await this.api.request(request);
+    return response;
+  }
 
-    cursor = list.meta.cursors.after;
-  } while (cursor);
-}
+  async cancel(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-Mandates.prototype.find = async function(identity: string, headers: object = {}): Promise<MandateResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
+    const request = {
+      path: '/mandates/:identity/actions/cancel',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  const request = {
-    path: '/mandates/:identity',
-    method: 'GET',
-    urlParameters,
-    
-    payloadKey: undefined,
-    headers,
-    fetch: undefined,
-  };
+    const response: MandateResponse = await this.api.request(request);
+    return response;
+  }
 
-  const response = await this._api.request(request);
+  async reinstate(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  return response;
-}
+    const request = {
+      path: '/mandates/:identity/actions/reinstate',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-Mandates.prototype.update = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<MandateResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
-
-  const request = {
-    path: '/mandates/:identity',
-    method: 'PUT',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'mandates',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
-}
-
-Mandates.prototype.cancel = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<MandateResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
-
-  const request = {
-    path: '/mandates/:identity/actions/cancel',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'data',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
-}
-
-Mandates.prototype.reinstate = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<MandateResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
-
-  const request = {
-    path: '/mandates/:identity/actions/reinstate',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'data',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
+    const response: MandateResponse = await this.api.request(request);
+    return response;
+  }
 }

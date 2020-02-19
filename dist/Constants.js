@@ -4,6 +4,6 @@ const Environments = {
     SANDBOX: 'SANDBOX',
 };
 module.exports = {
-    Environments
+    Environments,
 };
 //# sourceMappingURL=Constants.js.map

@@ -1,5 +1,5 @@
 /** Type for a bankdetailslookup resource. */
-interface BankDetailsLookup {
+export interface BankDetailsLookup {
   // Array of [schemes](#mandates_scheme) supported for this bank account. This
   // will be an empty array if the bank account is not reachable by any schemes.
   available_debit_schemes: BankDetailsLookupAvailableDebitScheme[];
@@ -26,7 +26,7 @@ enum BankDetailsLookupAvailableDebitScheme {
 }
 
 /** Type for a creditor resource. */
-interface Creditor {
+export interface Creditor {
   // The first line of the creditor's address.
   address_line1: string;
 
@@ -117,7 +117,7 @@ enum CreditorFxPayoutCurrency {
 }
 
 /** Type for a creditorlinks resource. */
-interface CreditorLinks {
+export interface CreditorLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in AUD.
   default_aud_payout_account: string;
@@ -148,7 +148,7 @@ interface CreditorLinks {
 }
 
 /** Type for a creditorschemeidentifier resource. */
-interface CreditorSchemeIdentifier {
+export interface CreditorSchemeIdentifier {
   // The first line of the support address.
   address_line1: string;
 
@@ -232,7 +232,7 @@ enum CreditorVerificationStatus {
 }
 
 /** Type for a creditorbankaccount resource. */
-interface CreditorBankAccount {
+export interface CreditorBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
@@ -285,14 +285,14 @@ enum CreditorBankAccountAccountType {
 }
 
 /** Type for a creditorbankaccountlinks resource. */
-interface CreditorBankAccountLinks {
+export interface CreditorBankAccountLinks {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
   creditor: string;
 }
 
 /** Type for a customer resource. */
-interface Customer {
+export interface Customer {
   // The first line of the customer's address.
   address_line1: string;
 
@@ -371,7 +371,7 @@ interface Customer {
 }
 
 /** Type for a customerbankaccount resource. */
-interface CustomerBankAccount {
+export interface CustomerBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
@@ -424,14 +424,14 @@ enum CustomerBankAccountAccountType {
 }
 
 /** Type for a customerbankaccountlinks resource. */
-interface CustomerBankAccountLinks {
+export interface CustomerBankAccountLinks {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
   // account.
   customer: string;
 }
 
 /** Type for a customernotification resource. */
-interface CustomerNotification {
+export interface CustomerNotification {
   // The action that was taken on the notification. Currently this can only be
   // `handled`,
   // which means the integrator sent the notification themselves.
@@ -462,7 +462,7 @@ enum CustomerNotificationActionTaken {
 }
 
 /** Type for a customernotificationlinks resource. */
-interface CustomerNotificationLinks {
+export interface CustomerNotificationLinks {
   // The customer who should be contacted with this notification.
   customer: string;
 
@@ -489,7 +489,7 @@ enum CustomerNotificationType {
 }
 
 /** Type for a event resource. */
-interface Event {
+export interface Event {
   // What has happened to the resource.
   action: string;
 
@@ -531,7 +531,7 @@ interface Event {
 }
 
 /** Type for a eventcustomernotification resource. */
-interface EventCustomerNotification {
+export interface EventCustomerNotification {
   // Time after which GoCardless will send the notification by email.
   deadline: string;
 
@@ -552,7 +552,7 @@ enum EventCustomerNotificationType {
 }
 
 /** Type for a eventdetails resource. */
-interface EventDetails {
+export interface EventDetails {
   // What triggered the event. _Note:_ `cause` is our simplified and predictable
   // key indicating what triggered the event.
   cause: string;
@@ -602,7 +602,7 @@ enum EventDetailsScheme {
 }
 
 /** Type for a eventlinks resource. */
-interface EventLinks {
+export interface EventLinks {
   // If `resource_type` is `mandates`, this is the ID of the
   // [mandate](#core-endpoints-mandates) which has been updated.
   mandate: string;
@@ -657,7 +657,7 @@ enum EventResourceType {
 }
 
 /** Type for a mandate resource. */
-interface Mandate {
+export interface Mandate {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at: string;
@@ -711,7 +711,7 @@ interface Mandate {
 }
 
 /** Type for a mandatelinks resource. */
-interface MandateLinks {
+export interface MandateLinks {
   // ID of the associated [creditor](#core-endpoints-creditors).
   creditor: string;
 
@@ -738,7 +738,7 @@ enum MandateStatus {
 }
 
 /** Type for a mandateimport resource. */
-interface MandateImport {
+export interface MandateImport {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at: string;
@@ -780,7 +780,7 @@ enum MandateImportStatus {
 }
 
 /** Type for a mandateimportentry resource. */
-interface MandateImportEntry {
+export interface MandateImportEntry {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at: string;
@@ -797,7 +797,7 @@ interface MandateImportEntry {
 }
 
 /** Type for a mandateimportentrylinks resource. */
-interface MandateImportEntryLinks {
+export interface MandateImportEntryLinks {
   // The ID of the customer which was created when the mandate import was
   // processed.
   customer: string;
@@ -818,7 +818,7 @@ interface MandateImportEntryLinks {
 }
 
 /** Type for a mandatepdf resource. */
-interface MandatePdf {
+export interface MandatePdf {
   // The date and time at which the `url` will expire (10 minutes after the
   // original request).
   expires_at: string;
@@ -830,7 +830,7 @@ interface MandatePdf {
 }
 
 /** Type for a payment resource. */
-interface Payment {
+export interface Payment {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
   amount: string;
@@ -921,7 +921,7 @@ enum PaymentCurrency {
 }
 
 /** Type for a paymentfx resource. */
-interface PaymentFx {
+export interface PaymentFx {
   // Estimated rate that will be used in the foreign exchange of the `amount`
   // into the `fx_currency`.
   // This will vary based on the prevailing market rate until the moment that it
@@ -957,7 +957,7 @@ enum PaymentFxFxCurrency {
 }
 
 /** Type for a paymentlinks resource. */
-interface PaymentLinks {
+export interface PaymentLinks {
   // ID of [creditor](#core-endpoints-creditors) to which the collected payment
   // will be sent.
   creditor: string;
@@ -990,7 +990,7 @@ enum PaymentStatus {
 }
 
 /** Type for a payout resource. */
-interface Payout {
+export interface Payout {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount: string;
 
@@ -1063,7 +1063,7 @@ enum PayoutCurrency {
 }
 
 /** Type for a payoutfx resource. */
-interface PayoutFx {
+export interface PayoutFx {
   // Estimated rate that will be used in the foreign exchange of the `amount`
   // into the `fx_currency`.
   // This will vary based on the prevailing market rate until the moment that it
@@ -1099,7 +1099,7 @@ enum PayoutFxFxCurrency {
 }
 
 /** Type for a payoutlinks resource. */
-interface PayoutLinks {
+export interface PayoutLinks {
   // ID of [creditor](#core-endpoints-creditors) who will receive this payout,
   // i.e. the owner of the `creditor_bank_account`.
   creditor: string;
@@ -1120,7 +1120,7 @@ enum PayoutStatus {
 }
 
 /** Type for a payoutitem resource. */
-interface PayoutItem {
+export interface PayoutItem {
   // The positive (credit) or negative (debit) value of the item, in fractional
   // currency;
   // the lowest denomination for the currency (e.g. pence in GBP, cents in EUR),
@@ -1169,7 +1169,7 @@ interface PayoutItem {
 }
 
 /** Type for a payoutitemlinks resource. */
-interface PayoutItemLinks {
+export interface PayoutItemLinks {
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
   mandate: string;
@@ -1190,7 +1190,7 @@ enum PayoutItemType {
 }
 
 /** Type for a redirectflow resource. */
-interface RedirectFlow {
+export interface RedirectFlow {
   // The URL of a confirmation page, which you may optionally redirect the
   // customer to rather than use your own page, that confirms in their chosen
   // language that their Direct Debit has been set up successfully. Only
@@ -1239,7 +1239,7 @@ interface RedirectFlow {
 }
 
 /** Type for a redirectflowlinks resource. */
-interface RedirectFlowLinks {
+export interface RedirectFlowLinks {
   // The [creditor](#core-endpoints-creditors) for whom the mandate will be
   // created. The `name` of the creditor will be displayed on the payment page.
   creditor: string;
@@ -1272,7 +1272,7 @@ enum RedirectFlowScheme {
 }
 
 /** Type for a refund resource. */
-interface Refund {
+export interface Refund {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount: string;
 
@@ -1315,7 +1315,7 @@ interface Refund {
 }
 
 /** Type for a refundfx resource. */
-interface RefundFx {
+export interface RefundFx {
   // Estimated rate that will be used in the foreign exchange of the `amount`
   // into the `fx_currency`.
   // This will vary based on the prevailing market rate until the moment that it
@@ -1351,7 +1351,7 @@ enum RefundFxFxCurrency {
 }
 
 /** Type for a refundlinks resource. */
-interface RefundLinks {
+export interface RefundLinks {
   // ID of the [mandate](#core-endpoints-mandates) against which the refund is
   // being made.
   mandate: string;
@@ -1403,7 +1403,7 @@ enum FxCurrency {
 interface Metadata extends JsonMap {}
 
 /** Type for a subscription resource. */
-interface Subscription {
+export interface Subscription {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
   amount: string;
@@ -1501,7 +1501,7 @@ enum SubscriptionIntervalUnit {
 }
 
 /** Type for a subscriptionlinks resource. */
-interface SubscriptionLinks {
+export interface SubscriptionLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // subscription will create payments against.
   mandate: string;
@@ -1531,7 +1531,7 @@ enum SubscriptionStatus {
 }
 
 /** Type for a subscriptionupcomingpayment resource. */
-interface SubscriptionUpcomingPayment {
+export interface SubscriptionUpcomingPayment {
   // The amount of this payment, in minor unit (e.g. pence in GBP, cents in
   // EUR).
   amount: string;

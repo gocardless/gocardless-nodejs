@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const Environments = {
   LIVE: 'LIVE',
@@ -6,5 +6,5 @@ const Environments = {
 };
 
 module.exports = {
-  Environments
+  Environments,
 };

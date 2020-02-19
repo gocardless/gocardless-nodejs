@@ -1,42 +1,41 @@
-
-
 'use strict';
 
-interface MandatePdf {
+import { MandatePdf } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface MandatePdfResponse extends MandatePdf {
+  request: object;
+  response: object;
 }
 
-interface MandatePdfResponse {
-  mandatepdf: MandatePdf,
-  request: object,
-  response: object,
+interface MandatePdfListResponse extends MandatePdf {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface MandatePdfListResponse {
-  mandatepdf: MandatePdf[],
-  request: object,
-  response: object,
-}
+class MandatePdfService {
+  private api: Api;
 
-function MandatePdfs(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-MandatePdfs.prototype.create = async function(requestParameters: object = {}, headers: object = {}): Promise<MandatePdfResponse> {
-  const urlParameters = [];
+  async create(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandatePdfResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/mandate_pdfs',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'mandate_pdfs',
+      headers,
+      fetch: undefined,
+    };
 
-  const request = {
-    path: '/mandate_pdfs',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'mandate_pdfs',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
+    const response: MandatePdfResponse = await this.api.request(request);
+    return response;
+  }
 }

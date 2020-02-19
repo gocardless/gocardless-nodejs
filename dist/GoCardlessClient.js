@@ -44,7 +44,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'bankDetailsLookups', {
             this._bankDetailsLookups = new BankDetailsLookups(this._api);
         }
         return this._bankDetailsLookups;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'creditors', {
     get: function () {
@@ -52,7 +52,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'creditors', {
             this._creditors = new Creditors(this._api);
         }
         return this._creditors;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'creditorBankAccounts', {
     get: function () {
@@ -60,7 +60,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'creditorBankAccounts', {
             this._creditorBankAccounts = new CreditorBankAccounts(this._api);
         }
         return this._creditorBankAccounts;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'customers', {
     get: function () {
@@ -68,7 +68,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'customers', {
             this._customers = new Customers(this._api);
         }
         return this._customers;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'customerBankAccounts', {
     get: function () {
@@ -76,7 +76,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'customerBankAccounts', {
             this._customerBankAccounts = new CustomerBankAccounts(this._api);
         }
         return this._customerBankAccounts;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'customerNotifications', {
     get: function () {
@@ -84,7 +84,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'customerNotifications', {
             this._customerNotifications = new CustomerNotifications(this._api);
         }
         return this._customerNotifications;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'events', {
     get: function () {
@@ -92,7 +92,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'events', {
             this._events = new Events(this._api);
         }
         return this._events;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'mandates', {
     get: function () {
@@ -100,7 +100,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'mandates', {
             this._mandates = new Mandates(this._api);
         }
         return this._mandates;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'mandateImports', {
     get: function () {
@@ -108,7 +108,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'mandateImports', {
             this._mandateImports = new MandateImports(this._api);
         }
         return this._mandateImports;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'mandateImportEntries', {
     get: function () {
@@ -116,7 +116,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'mandateImportEntries', {
             this._mandateImportEntries = new MandateImportEntries(this._api);
         }
         return this._mandateImportEntries;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'mandatePdfs', {
     get: function () {
@@ -124,7 +124,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'mandatePdfs', {
             this._mandatePdfs = new MandatePdfs(this._api);
         }
         return this._mandatePdfs;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'payments', {
     get: function () {
@@ -132,7 +132,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'payments', {
             this._payments = new Payments(this._api);
         }
         return this._payments;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'payouts', {
     get: function () {
@@ -140,7 +140,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'payouts', {
             this._payouts = new Payouts(this._api);
         }
         return this._payouts;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'payoutItems', {
     get: function () {
@@ -148,7 +148,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'payoutItems', {
             this._payoutItems = new PayoutItems(this._api);
         }
         return this._payoutItems;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'redirectFlows', {
     get: function () {
@@ -156,7 +156,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'redirectFlows', {
             this._redirectFlows = new RedirectFlows(this._api);
         }
         return this._redirectFlows;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'refunds', {
     get: function () {
@@ -164,7 +164,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'refunds', {
             this._refunds = new Refunds(this._api);
         }
         return this._refunds;
-    }
+    },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'subscriptions', {
     get: function () {
@@ -172,7 +172,7 @@ Object.defineProperty(GoCardlessClient.prototype, 'subscriptions', {
             this._subscriptions = new Subscriptions(this._api);
         }
         return this._subscriptions;
-    }
+    },
 });
 module.exports = GoCardlessClient;
 //# sourceMappingURL=GoCardlessClient.js.map

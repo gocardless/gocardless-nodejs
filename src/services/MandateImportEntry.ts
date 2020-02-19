@@ -1,80 +1,71 @@
-
-
 'use strict';
 
-interface MandateImportEntry {
+import { MandateImportEntry } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface MandateImportEntryResponse extends MandateImportEntry {
+  request: object;
+  response: object;
 }
 
-interface MandateImportEntryResponse {
-  mandateimportentry: MandateImportEntry,
-  request: object,
-  response: object,
+interface MandateImportEntryListResponse extends MandateImportEntry {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface MandateImportEntryListResponse {
-  mandateimportentry: MandateImportEntry[],
-  request: object,
-  response: object,
-}
+class MandateImportEntryService {
+  private api: Api;
 
-function MandateImportEntries(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-MandateImportEntries.prototype.create = async function(requestParameters: object = {}, headers: object = {}): Promise<MandateImportEntryResponse> {
-  const urlParameters = [];
+  async create(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateImportEntryResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/mandate_import_entries',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'mandate_import_entries',
+      headers,
+      fetch: undefined,
+    };
 
-  const request = {
-    path: '/mandate_import_entries',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'mandate_import_entries',
-    headers,
-    fetch: undefined,
-  };
+    const response: MandateImportEntryResponse = await this.api.request(
+      request
+    );
+    return response;
+  }
 
-  const response = await this._api.request(request);
+  // TODO: Should this be an iterator return type?
+  // Maybe AsyncIterableIterator<Payment>
+  // Might need this in tsconfig to work properly:
+  // {
+  //  "lib": ["esnext.asynciterable"]
+  // }
+  // https://github.com/octokit/rest.js/issues/1189
+  async list(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateImportEntryListResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/mandate_import_entries',
+      method: 'GET',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  return response;
-}
-
-MandateImportEntries.prototype.list = async function(requestParameters: object = {}, headers: object = {}): Promise<MandateImportEntryListResponse> {
-  const urlParameters = [];
-
-  const request = {
-    path: '/mandate_import_entries',
-    method: 'GET',
-    urlParameters,
-    requestParameters,
-    payloadKey: undefined,
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
-}
-
-// TODO: Should this be an iterator return type?
-// Maybe AsyncIterableIterator<Payment>
-// Might need this in tsconfig to work properly:
-// {
-//  "lib": ["esnext.asynciterable"]
-// }
-// https://github.com/octokit/rest.js/issues/1189
-MandateImportEntries.prototype.all = async function*(requestParameters: object = {}, headers: object = {}): any {
-  let cursor = undefined;
-  do {
-    let list = await this.list({ ...requestParameters, after: cursor }, headers);
-
-    for (let mandate_import_entry of list.mandate_import_entries) {
-      yield mandate_import_entry;
-    }
-
-    cursor = list.meta.cursors.after;
-  } while (cursor);
+    const response: MandateImportEntryListResponse = await this.api.request(
+      request
+    );
+    return response;
+  }
 }

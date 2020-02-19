@@ -1,21 +1,22 @@
 'use strict';
-function CustomerNotifications(api) {
-    this._api = api;
+Object.defineProperty(exports, "__esModule", { value: true });
+class CustomerNotificationService {
+    constructor(api) {
+        this.api = api;
+    }
+    async handle(identity, requestParameters, headers = {}) {
+        const urlParameters = [{ key: 'identity', value: identity }];
+        const request = {
+            path: '/customer_notifications/:identity/actions/handle',
+            method: 'POST',
+            urlParameters,
+            requestParameters,
+            payloadKey: null,
+            headers,
+            fetch: null,
+        };
+        const response = await this.api.request(request);
+        return response;
+    }
 }
-CustomerNotifications.prototype.handle = async function (identity, requestParameters = {}, headers = {}) {
-    const urlParameters = [
-        { key: 'identity', value: identity },
-    ];
-    const request = {
-        path: '/customer_notifications/:identity/actions/handle',
-        method: 'POST',
-        urlParameters,
-        requestParameters,
-        payloadKey: 'data',
-        headers,
-        fetch: undefined,
-    };
-    const response = await this._api.request(request);
-    return response;
-};
 //# sourceMappingURL=CustomerNotification.js.map

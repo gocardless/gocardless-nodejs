@@ -1,102 +1,103 @@
-
-
 'use strict';
 
-interface MandateImport {
+import { MandateImport } from '../types/Types';
+import { Api } from '../api/Api';
 
+interface MandateImportResponse extends MandateImport {
+  request: object;
+  response: object;
 }
 
-interface MandateImportResponse {
-  mandateimport: MandateImport,
-  request: object,
-  response: object,
+interface MandateImportListResponse extends MandateImport {
+  request: object;
+  response: object;
 }
 
-// TODO: This wont be needed on every resource...e.g. delete?
-interface MandateImportListResponse {
-  mandateimport: MandateImport[],
-  request: object,
-  response: object,
-}
+class MandateImportService {
+  private api: Api;
 
-function MandateImports(api) {
-  this._api = api;
-}
+  constructor(api) {
+    this.api = api;
+  }
 
-MandateImports.prototype.create = async function(requestParameters: object = {}, headers: object = {}): Promise<MandateImportResponse> {
-  const urlParameters = [];
+  async create(
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateImportResponse> {
+    const urlParameters = [];
+    const request = {
+      path: '/mandate_imports',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'mandate_imports',
+      headers,
+      fetch: async (identity, headers) => this.find(identity, headers),
+    };
 
-  const request = {
-    path: '/mandate_imports',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'mandate_imports',
-    headers,
-    fetch: async (identity, headers) => await this.find(identity, headers),
-  };
+    const response: MandateImportResponse = await this.api.request(request);
+    return response;
+  }
 
-  const response = await this._api.request(request);
+  async find(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateImportResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  return response;
-}
+    const request = {
+      path: '/mandate_imports/:identity',
+      method: 'GET',
+      urlParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-MandateImports.prototype.find = async function(identity: string, headers: object = {}): Promise<MandateImportResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
+    const response: MandateImportResponse = await this.api.request(request);
+    return response;
+  }
 
-  const request = {
-    path: '/mandate_imports/:identity',
-    method: 'GET',
-    urlParameters,
-    
-    payloadKey: undefined,
-    headers,
-    fetch: undefined,
-  };
+  async submit(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateImportResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  const response = await this._api.request(request);
+    const request = {
+      path: '/mandate_imports/:identity/actions/submit',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  return response;
-}
+    const response: MandateImportResponse = await this.api.request(request);
+    return response;
+  }
 
-MandateImports.prototype.submit = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<MandateImportResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
+  async cancel(
+    identity: string,
+    requestParameters: object,
+    headers: object = {}
+  ): Promise<MandateImportResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
 
-  const request = {
-    path: '/mandate_imports/:identity/actions/submit',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'data',
-    headers,
-    fetch: undefined,
-  };
+    const request = {
+      path: '/mandate_imports/:identity/actions/cancel',
+      method: 'POST',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      headers,
+      fetch: null,
+    };
 
-  const response = await this._api.request(request);
-
-  return response;
-}
-
-MandateImports.prototype.cancel = async function(identity: string, requestParameters: object = {}, headers: object = {}): Promise<MandateImportResponse> {
-  const urlParameters = [
-    { key: 'identity', value: identity},
-  ];
-
-  const request = {
-    path: '/mandate_imports/:identity/actions/cancel',
-    method: 'POST',
-    urlParameters,
-    requestParameters,
-    payloadKey: 'data',
-    headers,
-    fetch: undefined,
-  };
-
-  const response = await this._api.request(request);
-
-  return response;
+    const response: MandateImportResponse = await this.api.request(request);
+    return response;
+  }
 }

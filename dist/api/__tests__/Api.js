@@ -1,7 +1,7 @@
 jest.mock('os', () => {
     return {
         platform: () => 'darwin/18.7.0',
-        release: () => '18.7.0'
+        release: () => '18.7.0',
     };
 });
 jest.mock('process', () => {
@@ -13,7 +13,7 @@ jest.mock('uuid/v4', () => {
     return jest.fn(() => 'uuid/v4');
 });
 jest.mock('got', () => {
-    return jest.fn((p1) => p1);
+    return jest.fn(p1 => p1);
 });
 const Api = require('../Api');
 const Constants = require('../../Constants');
@@ -94,7 +94,7 @@ describe('api', () => {
                 const options = {
                     method: 'POST',
                     headers: {
-                        'Idempotency-Key': 'custom'
+                        'Idempotency-Key': 'custom',
                     },
                 };
                 const requestOptions = api.createRequestOptions(options);
@@ -130,8 +130,7 @@ describe('api', () => {
                 };
                 const requestOptions = api.createRequestOptions(options);
                 const json = requestOptions.json;
-                expect(JSON.stringify(json))
-                    .toBe(JSON.stringify(options.requestParameters));
+                expect(JSON.stringify(json)).toBe(JSON.stringify(options.requestParameters));
             });
         });
     });

@@ -1,7 +1,7 @@
 jest.mock('os', () => {
   return {
     platform: () => 'darwin/18.7.0',
-    release: () => '18.7.0'
+    release: () => '18.7.0',
   };
 });
 
@@ -16,7 +16,7 @@ jest.mock('uuid/v4', () => {
 });
 
 jest.mock('got', () => {
-  return jest.fn((p1) => p1);
+  return jest.fn(p1 => p1);
 });
 
 const Api = require('../Api');
@@ -84,7 +84,9 @@ describe('api', () => {
       expect(headers['GoCardless-Client-Library']).toBe('gocardless-nodejs');
       expect(headers['GoCardless-Client-Version']).toBe('0.1.0');
       expect(headers['GoCardless-Version']).toBe('2015-07-06');
-      expect(headers['User-Agent']).toBe('gocardless-nodejs/0.1.0 node/v12.14.1 darwin/18.7.0/18.7.0');
+      expect(headers['User-Agent']).toBe(
+        'gocardless-nodejs/0.1.0 node/v12.14.1 darwin/18.7.0/18.7.0'
+      );
     });
 
     describe('searchParams', () => {
@@ -131,7 +133,7 @@ describe('api', () => {
         const options = {
           method: 'POST',
           headers: {
-            'Idempotency-Key': 'custom'
+            'Idempotency-Key': 'custom',
           },
         };
 
@@ -182,8 +184,9 @@ describe('api', () => {
 
         const json = requestOptions.json;
 
-        expect(JSON.stringify(json))
-          .toBe(JSON.stringify(options.requestParameters));
+        expect(JSON.stringify(json)).toBe(
+          JSON.stringify(options.requestParameters)
+        );
       });
     });
   });
