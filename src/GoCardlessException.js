@@ -1,7 +1,9 @@
 'use strict';
 
 function GoCardlessException(response) {
-  const { body: { error } } = response;
+  const {
+    body: { error },
+  } = response;
   const {
     message,
     errors,
