@@ -4,7 +4,7 @@ export interface BankDetailsLookup {
     bank_name: string;
     bic: string;
 }
-declare enum BankDetailsLookupAvailableDebitScheme {
+export declare enum BankDetailsLookupAvailableDebitScheme {
     Ach = "ACH",
     Autogiro = "AUTOGIRO",
     Bacs = "BACS",
@@ -23,17 +23,31 @@ export interface Creditor {
     city: string;
     country_code: string;
     created_at: string;
+    custom_payment_pages_enabled: boolean;
     fx_payout_currency: CreditorFxPayoutCurrency;
     id: string;
     links: CreditorLinks;
     logo_url: string;
+    mandate_imports_enabled: boolean;
+    merchant_responsible_for_notifications: boolean;
     name: string;
     postal_code: string;
     region: string;
     scheme_identifiers: CreditorSchemeIdentifier[];
     verification_status: CreditorVerificationStatus;
 }
-declare enum CreditorFxPayoutCurrency {
+/** Type for a creditorupdaterequestlinks resource. */
+export interface CreditorUpdateRequestLinks {
+    default_aud_payout_account: string;
+    default_cad_payout_account: string;
+    default_dkk_payout_account: string;
+    default_eur_payout_account: string;
+    default_gbp_payout_account: string;
+    default_nzd_payout_account: string;
+    default_sek_payout_account: string;
+    default_usd_payout_account: string;
+}
+export declare enum CreditorFxPayoutCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -52,6 +66,7 @@ export interface CreditorLinks {
     default_gbp_payout_account: string;
     default_nzd_payout_account: string;
     default_sek_payout_account: string;
+    default_usd_payout_account: string;
 }
 /** Type for a creditorschemeidentifier resource. */
 export interface CreditorSchemeIdentifier {
@@ -71,7 +86,7 @@ export interface CreditorSchemeIdentifier {
     region: string;
     scheme: CreditorSchemeIdentifierScheme;
 }
-declare enum CreditorSchemeIdentifierCurrency {
+export declare enum CreditorSchemeIdentifierCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -81,7 +96,7 @@ declare enum CreditorSchemeIdentifierCurrency {
     SEK = "SEK",
     USD = "USD"
 }
-declare enum CreditorSchemeIdentifierScheme {
+export declare enum CreditorSchemeIdentifierScheme {
     Ach = "ACH",
     Autogiro = "AUTOGIRO",
     Bacs = "BACS",
@@ -91,7 +106,7 @@ declare enum CreditorSchemeIdentifierScheme {
     Pad = "PAD",
     Sepa = "SEPA"
 }
-declare enum CreditorVerificationStatus {
+export declare enum CreditorVerificationStatus {
     Successful = "SUCCESSFUL",
     InReview = "IN_REVIEW",
     ActionRequired = "ACTION_REQUIRED"
@@ -108,9 +123,13 @@ export interface CreditorBankAccount {
     enabled: boolean;
     id: string;
     links: CreditorBankAccountLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
 }
-declare enum CreditorBankAccountAccountType {
+/** Type for a creditorbankaccountcreaterequestlinks resource. */
+export interface CreditorBankAccountCreateRequestLinks {
+    creditor: string;
+}
+export declare enum CreditorBankAccountAccountType {
     Savings = "SAVINGS",
     Checking = "CHECKING"
 }
@@ -133,11 +152,21 @@ export interface Customer {
     given_name: string;
     id: string;
     language: string;
-    metadata: Metadata;
+    metadata: JsonMap;
     phone_number: string;
     postal_code: string;
     region: string;
     swedish_identity_number: string;
+}
+export declare enum CustomerCurrency {
+    AUD = "AUD",
+    CAD = "CAD",
+    DKK = "DKK",
+    EUR = "EUR",
+    GBP = "GBP",
+    NZD = "NZD",
+    SEK = "SEK",
+    USD = "USD"
 }
 /** Type for a customerbankaccount resource. */
 export interface CustomerBankAccount {
@@ -151,9 +180,14 @@ export interface CustomerBankAccount {
     enabled: boolean;
     id: string;
     links: CustomerBankAccountLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
 }
-declare enum CustomerBankAccountAccountType {
+/** Type for a customerbankaccountcreaterequestlinks resource. */
+export interface CustomerBankAccountCreateRequestLinks {
+    customer: string;
+    customer_bank_account_token: string;
+}
+export declare enum CustomerBankAccountAccountType {
     Savings = "SAVINGS",
     Checking = "CHECKING"
 }
@@ -170,7 +204,7 @@ export interface CustomerNotification {
     links: CustomerNotificationLinks;
     type: CustomerNotificationType;
 }
-declare enum CustomerNotificationActionTaken {
+export declare enum CustomerNotificationActionTaken {
     Handled = "HANDLED"
 }
 /** Type for a customernotificationlinks resource. */
@@ -182,10 +216,14 @@ export interface CustomerNotificationLinks {
     refund: string;
     subscription: string;
 }
-declare enum CustomerNotificationType {
+export declare enum CustomerNotificationType {
     PaymentCreated = "PAYMENT_CREATED",
+    PaymentCancelled = "PAYMENT_CANCELLED",
     MandateCreated = "MANDATE_CREATED",
-    SubscriptionCreated = "SUBSCRIPTION_CREATED"
+    SubscriptionCreated = "SUBSCRIPTION_CREATED",
+    SubscriptionCancelled = "SUBSCRIPTION_CANCELLED",
+    InstalmentScheduleCreated = "INSTALMENT_SCHEDULE_CREATED",
+    InstalmentScheduleCancelled = "INSTALMENT_SCHEDULE_CANCELLED"
 }
 /** Type for a event resource. */
 export interface Event {
@@ -195,8 +233,17 @@ export interface Event {
     details: EventDetails;
     id: string;
     links: EventLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
     resource_type: EventResourceType;
+}
+export declare enum EventInclude {
+    Payment = "PAYMENT",
+    Mandate = "MANDATE",
+    Payout = "PAYOUT",
+    Refund = "REFUND",
+    Subscription = "SUBSCRIPTION",
+    InstalmentSchedule = "INSTALMENT_SCHEDULE",
+    Creditor = "CREDITOR"
 }
 /** Type for a eventcustomernotification resource. */
 export interface EventCustomerNotification {
@@ -205,10 +252,14 @@ export interface EventCustomerNotification {
     mandatory: boolean;
     type: EventCustomerNotificationType;
 }
-declare enum EventCustomerNotificationType {
+export declare enum EventCustomerNotificationType {
     PaymentCreated = "PAYMENT_CREATED",
+    PaymentCancelled = "PAYMENT_CANCELLED",
     MandateCreated = "MANDATE_CREATED",
-    SubscriptionCreated = "SUBSCRIPTION_CREATED"
+    SubscriptionCreated = "SUBSCRIPTION_CREATED",
+    SubscriptionCancelled = "SUBSCRIPTION_CANCELLED",
+    InstalmentScheduleCreated = "INSTALMENT_SCHEDULE_CREATED",
+    InstalmentScheduleCancelled = "INSTALMENT_SCHEDULE_CANCELLED"
 }
 /** Type for a eventdetails resource. */
 export interface EventDetails {
@@ -217,14 +268,15 @@ export interface EventDetails {
     origin: EventDetailsOrigin;
     reason_code: string;
     scheme: EventDetailsScheme;
+    will_attempt_retry: boolean;
 }
-declare enum EventDetailsOrigin {
+export declare enum EventDetailsOrigin {
     Bank = "BANK",
     Api = "API",
     Gocardless = "GOCARDLESS",
     Customer = "CUSTOMER"
 }
-declare enum EventDetailsScheme {
+export declare enum EventDetailsScheme {
     Ach = "ACH",
     Autogiro = "AUTOGIRO",
     Bacs = "BACS",
@@ -237,6 +289,8 @@ declare enum EventDetailsScheme {
 }
 /** Type for a eventlinks resource. */
 export interface EventLinks {
+    creditor: string;
+    instalment_schedule: string;
     mandate: string;
     new_customer_bank_account: string;
     new_mandate: string;
@@ -248,24 +302,71 @@ export interface EventLinks {
     refund: string;
     subscription: string;
 }
-declare enum EventResourceType {
+export declare enum EventResourceType {
     Payments = "PAYMENTS",
     Mandates = "MANDATES",
     Payouts = "PAYOUTS",
     Refunds = "REFUNDS",
-    Subscriptions = "SUBSCRIPTIONS"
+    Subscriptions = "SUBSCRIPTIONS",
+    InstalmentSchedules = "INSTALMENT_SCHEDULES",
+    Creditors = "CREDITORS"
+}
+/** Type for a instalmentschedule resource. */
+export interface InstalmentSchedule {
+    created_at: string;
+    currency: InstalmentScheduleCurrency;
+    id: string;
+    links: InstalmentScheduleLinks;
+    metadata: JsonMap;
+    name: string;
+    payment_errors: JsonMap;
+    status: InstalmentScheduleStatus;
+    total_amount: string;
+}
+/** Type for a instalmentschedulecreaterequestlinks resource. */
+export interface InstalmentScheduleCreateRequestLinks {
+    mandate: string;
+}
+export declare enum InstalmentScheduleCurrency {
+    AUD = "AUD",
+    CAD = "CAD",
+    DKK = "DKK",
+    EUR = "EUR",
+    GBP = "GBP",
+    NZD = "NZD",
+    SEK = "SEK",
+    USD = "USD"
+}
+/** Type for a instalmentschedulelinks resource. */
+export interface InstalmentScheduleLinks {
+    customer: string;
+    mandate: string;
+    payments: string[];
+}
+export declare enum InstalmentScheduleStatus {
+    Pending = "PENDING",
+    Active = "ACTIVE",
+    CreationFailed = "CREATION_FAILED",
+    Completed = "COMPLETED",
+    Cancelled = "CANCELLED",
+    Errored = "ERRORED"
 }
 /** Type for a mandate resource. */
 export interface Mandate {
     created_at: string;
     id: string;
     links: MandateLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
     next_possible_charge_date: string;
     payments_require_approval: boolean;
     reference: string;
     scheme: string;
     status: MandateStatus;
+}
+/** Type for a mandatecreaterequestlinks resource. */
+export interface MandateCreateRequestLinks {
+    creditor: string;
+    customer_bank_account: string;
 }
 /** Type for a mandatelinks resource. */
 export interface MandateLinks {
@@ -274,7 +375,7 @@ export interface MandateLinks {
     customer_bank_account: string;
     new_mandate: string;
 }
-declare enum MandateStatus {
+export declare enum MandateStatus {
     PendingCustomerApproval = "PENDING_CUSTOMER_APPROVAL",
     PendingSubmission = "PENDING_SUBMISSION",
     Submitted = "SUBMITTED",
@@ -287,10 +388,20 @@ declare enum MandateStatus {
 export interface MandateImport {
     created_at: string;
     id: string;
-    scheme: string;
+    scheme: MandateImportScheme;
     status: MandateImportStatus;
 }
-declare enum MandateImportStatus {
+export declare enum MandateImportScheme {
+    Ach = "ACH",
+    Autogiro = "AUTOGIRO",
+    Bacs = "BACS",
+    Becs = "BECS",
+    BecsNz = "BECS_NZ",
+    Betalingsservice = "BETALINGSSERVICE",
+    Pad = "PAD",
+    SepaCore = "SEPA_CORE"
+}
+export declare enum MandateImportStatus {
     Created = "CREATED",
     Submitted = "SUBMITTED",
     Cancelled = "CANCELLED",
@@ -302,6 +413,43 @@ export interface MandateImportEntry {
     created_at: string;
     links: MandateImportEntryLinks;
     record_identifier: string;
+}
+/** Type for a mandateimportentryamendment resource. */
+export interface MandateImportEntryAmendment {
+    original_creditor_id: string;
+    original_creditor_name: string;
+    original_mandate_reference: string;
+}
+/** Type for a mandateimportentrybankaccount resource. */
+export interface MandateImportEntryBankAccount {
+    account_holder_name: string;
+    account_number: string;
+    bank_code: string;
+    branch_code: string;
+    country_code: string;
+    iban: string;
+}
+/** Type for a mandateimportentrycustomer resource. */
+export interface MandateImportEntryCustomer {
+    address_line1: string;
+    address_line2: string;
+    address_line3: string;
+    city: string;
+    company_name: string;
+    country_code: string;
+    danish_identity_number: string;
+    email: string;
+    family_name: string;
+    given_name: string;
+    language: string;
+    phone_number: string;
+    postal_code: string;
+    region: string;
+    swedish_identity_number: string;
+}
+/** Type for a mandateimportentrycreaterequestlinks resource. */
+export interface MandateImportEntryCreateRequestLinks {
+    mandate_import: string;
 }
 /** Type for a mandateimportentrylinks resource. */
 export interface MandateImportEntryLinks {
@@ -315,6 +463,19 @@ export interface MandatePdf {
     expires_at: string;
     url: string;
 }
+export declare enum MandatePdfAccountType {
+    Savings = "SAVINGS",
+    Checking = "CHECKING"
+}
+/** Type for a mandatepdfcreaterequestlinks resource. */
+export interface MandatePdfCreateRequestLinks {
+    mandate: string;
+}
+export declare enum MandatePdfSubscriptionFrequency {
+    Weekly = "WEEKLY",
+    Monthly = "MONTHLY",
+    Yearly = "YEARLY"
+}
 /** Type for a payment resource. */
 export interface Payment {
     amount: string;
@@ -326,11 +487,23 @@ export interface Payment {
     fx: PaymentFx;
     id: string;
     links: PaymentLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
     reference: string;
+    retry_if_possible: boolean;
     status: PaymentStatus;
 }
-declare enum PaymentCurrency {
+/** Type for a paymentcreaterequestlinks resource. */
+export interface PaymentCreateRequestLinks {
+    mandate: string;
+}
+/** Type for a paymentchargedate resource. */
+export interface PaymentChargeDate {
+    gt: string;
+    gte: string;
+    lt: string;
+    lte: string;
+}
+export declare enum PaymentCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -347,7 +520,7 @@ export interface PaymentFx {
     fx_amount: string;
     fx_currency: PaymentFxFxCurrency;
 }
-declare enum PaymentFxFxCurrency {
+export declare enum PaymentFxFxCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -360,11 +533,12 @@ declare enum PaymentFxFxCurrency {
 /** Type for a paymentlinks resource. */
 export interface PaymentLinks {
     creditor: string;
+    instalment_schedule: string;
     mandate: string;
     payout: string;
     subscription: string;
 }
-declare enum PaymentStatus {
+export declare enum PaymentStatus {
     PendingCustomerApproval = "PENDING_CUSTOMER_APPROVAL",
     PendingSubmission = "PENDING_SUBMISSION",
     Submitted = "SUBMITTED",
@@ -389,7 +563,7 @@ export interface Payout {
     reference: string;
     status: PayoutStatus;
 }
-declare enum PayoutCurrency {
+export declare enum PayoutCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -406,7 +580,7 @@ export interface PayoutFx {
     fx_amount: string;
     fx_currency: PayoutFxFxCurrency;
 }
-declare enum PayoutFxFxCurrency {
+export declare enum PayoutFxFxCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -421,13 +595,14 @@ export interface PayoutLinks {
     creditor: string;
     creditor_bank_account: string;
 }
-declare enum PayoutPayoutType {
+export declare enum PayoutPayoutType {
     Merchant = "MERCHANT",
     Partner = "PARTNER"
 }
-declare enum PayoutStatus {
+export declare enum PayoutStatus {
     Pending = "PENDING",
-    Paid = "PAID"
+    Paid = "PAID",
+    Bounced = "BOUNCED"
 }
 /** Type for a payoutitem resource. */
 export interface PayoutItem {
@@ -440,7 +615,7 @@ export interface PayoutItemLinks {
     mandate: string;
     payment: string;
 }
-declare enum PayoutItemType {
+export declare enum PayoutItemType {
     PaymentPaidOut = "PAYMENT_PAID_OUT",
     PaymentFailed = "PAYMENT_FAILED",
     PaymentChargedBack = "PAYMENT_CHARGED_BACK",
@@ -448,7 +623,8 @@ declare enum PayoutItemType {
     Refund = "REFUND",
     GocardlessFee = "GOCARDLESS_FEE",
     AppFee = "APP_FEE",
-    RevenueShare = "REVENUE_SHARE"
+    RevenueShare = "REVENUE_SHARE",
+    SurchargeFee = "SURCHARGE_FEE"
 }
 /** Type for a redirectflow resource. */
 export interface RedirectFlow {
@@ -462,6 +638,28 @@ export interface RedirectFlow {
     session_token: string;
     success_redirect_url: string;
 }
+/** Type for a redirectflowcreaterequestlinks resource. */
+export interface RedirectFlowCreateRequestLinks {
+    creditor: string;
+}
+/** Type for a redirectflowprefilledcustomer resource. */
+export interface RedirectFlowPrefilledCustomer {
+    address_line1: string;
+    address_line2: string;
+    address_line3: string;
+    city: string;
+    company_name: string;
+    country_code: string;
+    danish_identity_number: string;
+    email: string;
+    family_name: string;
+    given_name: string;
+    language: string;
+    phone_number: string;
+    postal_code: string;
+    region: string;
+    swedish_identity_number: string;
+}
 /** Type for a redirectflowlinks resource. */
 export interface RedirectFlowLinks {
     creditor: string;
@@ -469,7 +667,7 @@ export interface RedirectFlowLinks {
     customer_bank_account: string;
     mandate: string;
 }
-declare enum RedirectFlowScheme {
+export declare enum RedirectFlowScheme {
     Ach = "ACH",
     Autogiro = "AUTOGIRO",
     Bacs = "BACS",
@@ -487,8 +685,18 @@ export interface Refund {
     fx: RefundFx;
     id: string;
     links: RefundLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
     reference: string;
+    status: RefundStatus;
+}
+/** Type for a refundcreaterequestlinks resource. */
+export interface RefundCreateRequestLinks {
+    mandate: string;
+    payment: string;
+}
+export declare enum RefundRefundType {
+    Mandate = "MANDATE",
+    Payment = "PAYMENT"
 }
 /** Type for a refundfx resource. */
 export interface RefundFx {
@@ -497,7 +705,7 @@ export interface RefundFx {
     fx_amount: string;
     fx_currency: RefundFxFxCurrency;
 }
-declare enum RefundFxFxCurrency {
+export declare enum RefundFxFxCurrency {
     AUD = "AUD",
     CAD = "CAD",
     DKK = "DKK",
@@ -512,8 +720,46 @@ export interface RefundLinks {
     mandate: string;
     payment: string;
 }
-import { JsonMap } from './utils/json';
-interface Metadata extends JsonMap {
+export declare enum RefundStatus {
+    Created = "CREATED",
+    PendingSubmission = "PENDING_SUBMISSION",
+    Submitted = "SUBMITTED",
+    Paid = "PAID",
+    Cancelled = "CANCELLED",
+    Bounced = "BOUNCED",
+    FundsReturned = "FUNDS_RETURNED"
+}
+declare type JsonField = boolean | number | string | null;
+export interface JsonMap {
+    [key: string]: JsonField | JsonMap | JsonArray;
+}
+export interface JsonArray extends Array<JsonField> {
+}
+export interface ResponseMetadata {
+    request: object;
+    response: object;
+}
+export interface Fx {
+    exchange_rate: string;
+    estimated_exchange_rate: string;
+    fx_amount: string;
+    fx_currency: FxCurrency;
+}
+export declare enum FxCurrency {
+    AUD = "AUD",
+    CAD = "CAD",
+    DKK = "DKK",
+    EUR = "EUR",
+    GBP = "GBP",
+    NZD = "NZD",
+    SEK = "SEK",
+    USD = "USD"
+}
+export interface CreatedAtFilter {
+    greaterThan?: string;
+    greaterThanOrEqual?: string;
+    lessThan?: string;
+    lessThanOrEqual?: string;
 }
 /** Type for a subscription resource. */
 export interface Subscription {
@@ -527,15 +773,20 @@ export interface Subscription {
     interval: string;
     interval_unit: SubscriptionIntervalUnit;
     links: SubscriptionLinks;
-    metadata: Metadata;
+    metadata: JsonMap;
     month: SubscriptionMonth;
     name: string;
     payment_reference: string;
+    retry_if_possible: boolean;
     start_date: string;
     status: SubscriptionStatus;
     upcoming_payments: SubscriptionUpcomingPayment[];
 }
-declare enum SubscriptionIntervalUnit {
+/** Type for a subscriptioncreaterequestlinks resource. */
+export interface SubscriptionCreateRequestLinks {
+    mandate: string;
+}
+export declare enum SubscriptionIntervalUnit {
     Weekly = "WEEKLY",
     Monthly = "MONTHLY",
     Yearly = "YEARLY"
@@ -544,7 +795,7 @@ declare enum SubscriptionIntervalUnit {
 export interface SubscriptionLinks {
     mandate: string;
 }
-declare enum SubscriptionMonth {
+export declare enum SubscriptionMonth {
     January = "JANUARY",
     February = "FEBRUARY",
     March = "MARCH",
@@ -558,7 +809,7 @@ declare enum SubscriptionMonth {
     November = "NOVEMBER",
     December = "DECEMBER"
 }
-declare enum SubscriptionStatus {
+export declare enum SubscriptionStatus {
     PendingCustomerApproval = "PENDING_CUSTOMER_APPROVAL",
     CustomerApprovalDenied = "CUSTOMER_APPROVAL_DENIED",
     Active = "ACTIVE",

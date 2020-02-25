@@ -1,16 +1,97 @@
 'use strict';
 
-import { Creditor } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  Creditor,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+  CreatedAtFilter,
+  CreditorUpdateRequestLinks,
+} from '../types/Types';
 
 interface CreditorResponse extends Creditor {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface CreditorListResponse extends Creditor {
-  request: object;
-  response: object;
+interface CreditorListResponse extends Array<Creditor> {
+  __metadata__: ResponseMetadata;
+}
+
+interface CreditorCreateRequest {
+  // The first line of the creditor's address.
+  address_line1?: string;
+
+  // The second line of the creditor's address.
+  address_line2?: string;
+
+  // The third line of the creditor's address.
+  address_line3?: string;
+
+  // The city of the creditor's address.
+  city?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string;
+
+  //
+
+  // The creditor's name.
+  name: string;
+
+  // The creditor's postal code.
+  postal_code?: string;
+
+  // The creditor's address region, county or department.
+  region?: string;
+}
+
+interface CreditorListRequest {
+  // Cursor pointing to the start of the desired set.
+  after?: string;
+
+  // Cursor pointing to the end of the desired set.
+  before?: string;
+
+  //
+  created_at?: CreatedAtFilter;
+
+  // Number of records to return.
+  limit?: string;
+}
+
+interface CreditorUpdateRequest {
+  // The first line of the creditor's address.
+  address_line1?: string;
+
+  // The second line of the creditor's address.
+  address_line2?: string;
+
+  // The third line of the creditor's address.
+  address_line3?: string;
+
+  // The city of the creditor's address.
+  city?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string;
+
+  //
+  links?: CreditorUpdateRequestLinks;
+
+  // The creditor's name.
+  name?: string;
+
+  // The creditor's postal code.
+  postal_code?: string;
+
+  // The creditor's address region, county or department.
+  region?: string;
 }
 
 class CreditorService {
@@ -21,7 +102,7 @@ class CreditorService {
   }
 
   async create(
-    requestParameters: object,
+    requestParameters: CreditorCreateRequest,
     headers: object = {}
   ): Promise<CreditorResponse> {
     const urlParameters = [];
@@ -39,15 +120,8 @@ class CreditorService {
     return response;
   }
 
-  // TODO: Should this be an iterator return type?
-  // Maybe AsyncIterableIterator<Payment>
-  // Might need this in tsconfig to work properly:
-  // {
-  //  "lib": ["esnext.asynciterable"]
-  // }
-  // https://github.com/octokit/rest.js/issues/1189
   async list(
-    requestParameters: object,
+    requestParameters: CreditorListRequest,
     headers: object = {}
   ): Promise<CreditorListResponse> {
     const urlParameters = [];
@@ -67,15 +141,14 @@ class CreditorService {
 
   async find(
     identity: string,
-    requestParameters: object,
     headers: object = {}
   ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/creditors/:identity',
       method: 'GET',
       urlParameters,
+
       payloadKey: null,
       headers,
       fetch: null,
@@ -87,11 +160,10 @@ class CreditorService {
 
   async update(
     identity: string,
-    requestParameters: object,
+    requestParameters: CreditorUpdateRequest,
     headers: object = {}
   ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/creditors/:identity',
       method: 'PUT',

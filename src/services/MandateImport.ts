@@ -1,16 +1,29 @@
 'use strict';
 
-import { MandateImport } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  MandateImport,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+  MandateImportScheme,
+} from '../types/Types';
 
 interface MandateImportResponse extends MandateImport {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface MandateImportListResponse extends MandateImport {
-  request: object;
-  response: object;
+interface MandateImportListResponse extends Array<MandateImport> {
+  __metadata__: ResponseMetadata;
+}
+
+interface MandateImportCreateRequest {
+  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  scheme: MandateImportScheme;
 }
 
 class MandateImportService {
@@ -21,7 +34,7 @@ class MandateImportService {
   }
 
   async create(
-    requestParameters: object,
+    requestParameters: MandateImportCreateRequest,
     headers: object = {}
   ): Promise<MandateImportResponse> {
     const urlParameters = [];
@@ -41,15 +54,14 @@ class MandateImportService {
 
   async find(
     identity: string,
-    requestParameters: object,
     headers: object = {}
   ): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/mandate_imports/:identity',
       method: 'GET',
       urlParameters,
+
       payloadKey: null,
       headers,
       fetch: null,
@@ -61,16 +73,14 @@ class MandateImportService {
 
   async submit(
     identity: string,
-    requestParameters: object,
     headers: object = {}
   ): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/mandate_imports/:identity/actions/submit',
       method: 'POST',
       urlParameters,
-      requestParameters,
+
       payloadKey: null,
       headers,
       fetch: null,
@@ -82,16 +92,14 @@ class MandateImportService {
 
   async cancel(
     identity: string,
-    requestParameters: object,
     headers: object = {}
   ): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/mandate_imports/:identity/actions/cancel',
       method: 'POST',
       urlParameters,
-      requestParameters,
+
       payloadKey: null,
       headers,
       fetch: null,

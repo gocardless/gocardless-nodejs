@@ -1,16 +1,22 @@
 'use strict';
 
-import { CustomerNotification } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  CustomerNotification,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+} from '../types/Types';
 
 interface CustomerNotificationResponse extends CustomerNotification {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface CustomerNotificationListResponse extends CustomerNotification {
-  request: object;
-  response: object;
+interface CustomerNotificationListResponse extends Array<CustomerNotification> {
+  __metadata__: ResponseMetadata;
 }
 
 class CustomerNotificationService {
@@ -22,16 +28,14 @@ class CustomerNotificationService {
 
   async handle(
     identity: string,
-    requestParameters: object,
     headers: object = {}
   ): Promise<CustomerNotificationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/customer_notifications/:identity/actions/handle',
       method: 'POST',
       urlParameters,
-      requestParameters,
+
       payloadKey: null,
       headers,
       fetch: null,
