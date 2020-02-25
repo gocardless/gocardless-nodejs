@@ -1,17 +1,17 @@
 'use strict';
 Object.defineProperty(exports, "__esModule", { value: true });
-class PaymentService {
+class InstalmentScheduleService {
     constructor(api) {
         this.api = api;
     }
     async create(requestParameters, headers = {}) {
         const urlParameters = [];
         const request = {
-            path: '/payments',
+            path: '/instalment_schedules',
             method: 'POST',
             urlParameters,
             requestParameters,
-            payloadKey: 'payments',
+            payloadKey: 'instalment_schedules',
             headers,
             fetch: async (identity, headers) => this.find(identity, headers),
         };
@@ -21,7 +21,7 @@ class PaymentService {
     async list(requestParameters, headers = {}) {
         const urlParameters = [];
         const request = {
-            path: '/payments',
+            path: '/instalment_schedules',
             method: 'GET',
             urlParameters,
             requestParameters,
@@ -35,7 +35,7 @@ class PaymentService {
     async find(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
-            path: '/payments/:identity',
+            path: '/instalment_schedules/:identity',
             method: 'GET',
             urlParameters,
             payloadKey: null,
@@ -45,41 +45,12 @@ class PaymentService {
         const response = await this.api.request(request);
         return response;
     }
-    async update(identity, requestParameters, headers = {}) {
+    async cancel(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
-            path: '/payments/:identity',
-            method: 'PUT',
-            urlParameters,
-            requestParameters,
-            payloadKey: 'payments',
-            headers,
-            fetch: null,
-        };
-        const response = await this.api.request(request);
-        return response;
-    }
-    async cancel(identity, requestParameters, headers = {}) {
-        const urlParameters = [{ key: 'identity', value: identity }];
-        const request = {
-            path: '/payments/:identity/actions/cancel',
+            path: '/instalment_schedules/:identity/actions/cancel',
             method: 'POST',
             urlParameters,
-            requestParameters,
-            payloadKey: null,
-            headers,
-            fetch: null,
-        };
-        const response = await this.api.request(request);
-        return response;
-    }
-    async retry(identity, requestParameters, headers = {}) {
-        const urlParameters = [{ key: 'identity', value: identity }];
-        const request = {
-            path: '/payments/:identity/actions/retry',
-            method: 'POST',
-            urlParameters,
-            requestParameters,
             payloadKey: null,
             headers,
             fetch: null,
@@ -88,4 +59,4 @@ class PaymentService {
         return response;
     }
 }
-//# sourceMappingURL=Payment.js.map
+//# sourceMappingURL=InstalmentSchedule.js.map

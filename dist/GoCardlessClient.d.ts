@@ -10,6 +10,7 @@ declare class GoCardlessClient {
     _customerBankAccounts: any;
     _customerNotifications: any;
     _events: any;
+    _instalmentSchedules: any;
     _mandates: any;
     _mandateImports: any;
     _mandateImportEntries: any;
@@ -27,6 +28,7 @@ declare class GoCardlessClient {
     get customerBankAccounts(): any;
     get customerNotifications(): any;
     get events(): any;
+    get instalmentSchedules(): any;
     get mandates(): any;
     get mandateImports(): any;
     get mandateImportEntries(): any;

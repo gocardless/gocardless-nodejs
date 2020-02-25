@@ -1,16 +1,65 @@
 'use strict';
 
-import { Payout } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  Payout,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+  CreatedAtFilter,
+  PayoutPayoutType,
+  PayoutStatus,
+} from '../types/Types';
 
 interface PayoutResponse extends Payout {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface PayoutListResponse extends Payout {
-  request: object;
-  response: object;
+interface PayoutListResponse extends Array<Payout> {
+  __metadata__: ResponseMetadata;
+}
+
+interface PayoutListRequest {
+  // Cursor pointing to the start of the desired set.
+  after?: string;
+
+  // Cursor pointing to the end of the desired set.
+  before?: string;
+
+  //
+  created_at?: CreatedAtFilter;
+
+  // Unique identifier, beginning with "CR".
+  creditor?: string;
+
+  // Unique identifier, beginning with "BA".
+  creditor_bank_account?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // supported.
+  currency?: PayoutCurrency;
+
+  // Number of records to return.
+  limit?: string;
+
+  // Whether a payout contains merchant revenue or partner fees.
+  payout_type?: PayoutPayoutType;
+
+  // Reference which appears on the creditor's bank statement.
+  reference?: string;
+
+  // One of:
+  // <ul>
+  // <li>`pending`: the payout has been created, but not yet sent to the
+  // banks</li>
+  // <li>`paid`: the payout has been sent to the banks</li>
+  // <li>`bounced`: the payout bounced when sent, the payout can be retried.</li>
+  // </ul>
+  status?: PayoutStatus;
 }
 
 class PayoutService {
@@ -20,15 +69,8 @@ class PayoutService {
     this.api = api;
   }
 
-  // TODO: Should this be an iterator return type?
-  // Maybe AsyncIterableIterator<Payment>
-  // Might need this in tsconfig to work properly:
-  // {
-  //  "lib": ["esnext.asynciterable"]
-  // }
-  // https://github.com/octokit/rest.js/issues/1189
   async list(
-    requestParameters: object,
+    requestParameters: PayoutListRequest,
     headers: object = {}
   ): Promise<PayoutListResponse> {
     const urlParameters = [];
@@ -46,17 +88,13 @@ class PayoutService {
     return response;
   }
 
-  async find(
-    identity: string,
-    requestParameters: object,
-    headers: object = {}
-  ): Promise<PayoutResponse> {
+  async find(identity: string, headers: object = {}): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/payouts/:identity',
       method: 'GET',
       urlParameters,
+
       payloadKey: null,
       headers,
       fetch: null,

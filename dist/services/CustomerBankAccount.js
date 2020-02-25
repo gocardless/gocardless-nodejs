@@ -18,13 +18,6 @@ class CustomerBankAccountService {
         const response = await this.api.request(request);
         return response;
     }
-    // TODO: Should this be an iterator return type?
-    // Maybe AsyncIterableIterator<Payment>
-    // Might need this in tsconfig to work properly:
-    // {
-    //  "lib": ["esnext.asynciterable"]
-    // }
-    // https://github.com/octokit/rest.js/issues/1189
     async list(requestParameters, headers = {}) {
         const urlParameters = [];
         const request = {
@@ -39,7 +32,7 @@ class CustomerBankAccountService {
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, requestParameters, headers = {}) {
+    async find(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/customer_bank_accounts/:identity',
@@ -66,13 +59,12 @@ class CustomerBankAccountService {
         const response = await this.api.request(request);
         return response;
     }
-    async disable(identity, requestParameters, headers = {}) {
+    async disable(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/customer_bank_accounts/:identity/actions/disable',
             method: 'POST',
             urlParameters,
-            requestParameters,
             payloadKey: null,
             headers,
             fetch: null,

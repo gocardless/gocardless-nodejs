@@ -1,16 +1,60 @@
 'use strict';
 
-import { MandateImportEntry } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  MandateImportEntry,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+  MandateImportEntryAmendment,
+  MandateImportEntryBankAccount,
+  MandateImportEntryCustomer,
+  MandateImportEntryCreateRequestLinks,
+} from '../types/Types';
 
 interface MandateImportEntryResponse extends MandateImportEntry {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface MandateImportEntryListResponse extends MandateImportEntry {
-  request: object;
-  response: object;
+interface MandateImportEntryListResponse extends Array<MandateImportEntry> {
+  __metadata__: ResponseMetadata;
+}
+
+interface MandateImportEntryCreateRequest {
+  //
+  amendment?: MandateImportEntryAmendment;
+
+  //
+  bank_account: MandateImportEntryBankAccount;
+
+  //
+  customer: MandateImportEntryCustomer;
+
+  //
+  links: MandateImportEntryCreateRequestLinks;
+
+  // A unique identifier for this entry, which you can use (once the import has
+  // been
+  // processed by GoCardless) to identify the records that have been created.
+  //
+  record_identifier?: string;
+}
+
+interface MandateImportEntryListRequest {
+  // Cursor pointing to the start of the desired set.
+  after?: string;
+
+  // Cursor pointing to the end of the desired set.
+  before?: string;
+
+  // Number of records to return.
+  limit?: string;
+
+  // Unique identifier, beginning with "IM".
+  mandate_import: string;
 }
 
 class MandateImportEntryService {
@@ -21,7 +65,7 @@ class MandateImportEntryService {
   }
 
   async create(
-    requestParameters: object,
+    requestParameters: MandateImportEntryCreateRequest,
     headers: object = {}
   ): Promise<MandateImportEntryResponse> {
     const urlParameters = [];
@@ -41,15 +85,8 @@ class MandateImportEntryService {
     return response;
   }
 
-  // TODO: Should this be an iterator return type?
-  // Maybe AsyncIterableIterator<Payment>
-  // Might need this in tsconfig to work properly:
-  // {
-  //  "lib": ["esnext.asynciterable"]
-  // }
-  // https://github.com/octokit/rest.js/issues/1189
   async list(
-    requestParameters: object,
+    requestParameters: MandateImportEntryListRequest,
     headers: object = {}
   ): Promise<MandateImportEntryListResponse> {
     const urlParameters = [];

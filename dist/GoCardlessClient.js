@@ -8,6 +8,7 @@ const Customers = require('./services/Customers');
 const CustomerBankAccounts = require('./services/CustomerBankAccounts');
 const CustomerNotifications = require('./services/CustomerNotifications');
 const Events = require('./services/Events');
+const InstalmentSchedules = require('./services/InstalmentSchedules');
 const Mandates = require('./services/Mandates');
 const MandateImports = require('./services/MandateImports');
 const MandateImportEntries = require('./services/MandateImportEntries');
@@ -27,6 +28,7 @@ function GoCardlessClient(token, environment = Constants.Environments.LIVE, opti
     this._customerBankAccounts = undefined;
     this._customerNotifications = undefined;
     this._events = undefined;
+    this._instalmentSchedules = undefined;
     this._mandates = undefined;
     this._mandateImports = undefined;
     this._mandateImportEntries = undefined;
@@ -92,6 +94,14 @@ Object.defineProperty(GoCardlessClient.prototype, 'events', {
             this._events = new Events(this._api);
         }
         return this._events;
+    },
+});
+Object.defineProperty(GoCardlessClient.prototype, 'instalmentSchedules', {
+    get: function () {
+        if (!this._instalmentSchedules) {
+            this._instalmentSchedules = new InstalmentSchedules(this._api);
+        }
+        return this._instalmentSchedules;
     },
 });
 Object.defineProperty(GoCardlessClient.prototype, 'mandates', {
