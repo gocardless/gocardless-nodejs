@@ -163,19 +163,8 @@ export class Api {
   }
 
   private getHeaders(headers, token) {
-    // These are some recommended headers to ensure our requests are more secure.
-    const secureHeaders = {
-      'X-Content-Type-Options': 'nosniff',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-      'Cache-control': 'no-store Pragma: no-cache',
-      'X-Frame-Options': 'deny Referrer-Policy: strict-origin',
-      'Content-Security-Policy':
-        "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';",
-    };
-
     return {
       ...headers,
-      ...secureHeaders,
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
       'GoCardless-Version': '2015-07-06',
