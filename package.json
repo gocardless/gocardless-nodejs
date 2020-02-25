@@ -1,8 +1,21 @@
 {
-  "name": "gocardless",
-  "description": "Client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments<",
-  "author": "GoCardless Ltd",
+  "name": "gocardless-nodejs",
   "version": "0.1.0",
+  "description": "Node.js client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments",
+  "author": "GoCardless Ltd <merchant-int-exp-team@gocardless.com>",
+  "contributors": [
+    "Andrew Tallos <atallos@gocardless.com>",
+    "Simon Grimshaw <simongrimshaw@gocardless.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gocardless/gocardless-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gocardless/gocardless-nodejs/issues"
+  },
+  "homepage": "https://github.com/gocardless/gocardless-nodejs#readme",
+  "license": "MIT",
   "keywords": [
     "gocardless",
     "payments",
@@ -10,22 +23,18 @@
     "api",
     "direct debit"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gocardless/gocardless-nodejs.git"
-  },
   "scripts": {
     "test": "jest"
   },
   "dependencies": {
-    "got": "^10.6.0",
+    "got": "^10.2.2",
     "lodash": "^4.17.15",
     "uuid": "^3.4.0",
-    "crypto-js": "4.0.0",
+    "crypto-js": "3.1.9-1",
     "buffer-equal-constant-time": "1.0.1"
   },
   "devDependencies": {
-    "@types/node": "^13.7.4",
+    "@types/node": "^13.1.2",
     "jest": "^25.1.0"
   },
   "files": [
@@ -37,6 +46,5 @@
   "types": "./index.d.ts",
   "engines": {
     "node": ">=10.0"
-  },
-  "license": "MIT"
+  }
 }
