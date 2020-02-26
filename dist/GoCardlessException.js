@@ -1,4 +1,5 @@
 'use strict';
+Object.defineProperty(exports, "__esModule", { value: true });
 function GoCardlessException(response) {
     const { body: { error }, } = response;
     const { message, errors, documentation_url: documentationUrl, type, request_id: requestId, code, } = error;
@@ -9,5 +10,5 @@ function GoCardlessException(response) {
     this.requestId = requestId;
     this.code = code;
 }
-module.exports = GoCardlessException;
+exports.GoCardlessException = GoCardlessException;
 //# sourceMappingURL=GoCardlessException.js.map
