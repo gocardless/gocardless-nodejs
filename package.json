@@ -37,13 +37,8 @@
     "@types/node": "^13.1.2",
     "jest": "^25.1.0"
   },
-  "files": [
-    "src",
-    "index.js",
-    "index.d.ts"
-  ],
-  "main": "./src",
-  "types": "./index.d.ts",
+  "main": "dist/GoCardlessClient.js",
+  "types": "types/Types.d.ts",
   "engines": {
     "node": ">=10.0"
   }
