@@ -11,6 +11,6 @@ interface PayoutItemListRequest {
 export declare class PayoutItemService {
     private api;
     constructor(api: any);
-    list(requestParameters: PayoutItemListRequest, headers?: object): Promise<PayoutItemListResponse>;
+    list(requestParameters: PayoutItemListRequest): Promise<PayoutItemListResponse>;
 }
 export {};

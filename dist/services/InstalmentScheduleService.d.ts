@@ -28,9 +28,9 @@ interface InstalmentScheduleListRequest {
 export declare class InstalmentScheduleService {
     private api;
     constructor(api: any);
-    create(requestParameters: InstalmentScheduleCreateRequest, headers?: object): Promise<InstalmentScheduleResponse>;
-    list(requestParameters: InstalmentScheduleListRequest, headers?: object): Promise<InstalmentScheduleListResponse>;
-    find(identity: string, headers?: object): Promise<InstalmentScheduleResponse>;
-    cancel(identity: string, headers?: object): Promise<InstalmentScheduleResponse>;
+    create(requestParameters: InstalmentScheduleCreateRequest, idempotencyKey?: string): Promise<InstalmentScheduleResponse>;
+    list(requestParameters: InstalmentScheduleListRequest): Promise<InstalmentScheduleListResponse>;
+    find(identity: string): Promise<InstalmentScheduleResponse>;
+    cancel(identity: string): Promise<InstalmentScheduleResponse>;
 }
 export {};

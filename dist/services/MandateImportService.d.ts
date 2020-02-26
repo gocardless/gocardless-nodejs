@@ -8,9 +8,9 @@ interface MandateImportCreateRequest {
 export declare class MandateImportService {
     private api;
     constructor(api: any);
-    create(requestParameters: MandateImportCreateRequest, headers?: object): Promise<MandateImportResponse>;
-    find(identity: string, headers?: object): Promise<MandateImportResponse>;
-    submit(identity: string, headers?: object): Promise<MandateImportResponse>;
-    cancel(identity: string, headers?: object): Promise<MandateImportResponse>;
+    create(requestParameters: MandateImportCreateRequest, idempotencyKey?: string): Promise<MandateImportResponse>;
+    find(identity: string): Promise<MandateImportResponse>;
+    submit(identity: string): Promise<MandateImportResponse>;
+    cancel(identity: string): Promise<MandateImportResponse>;
 }
 export {};

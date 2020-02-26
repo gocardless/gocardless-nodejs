@@ -4,14 +4,13 @@ class CustomerNotificationService {
     constructor(api) {
         this.api = api;
     }
-    async handle(identity, headers = {}) {
+    async handle(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/customer_notifications/:identity/actions/handle',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

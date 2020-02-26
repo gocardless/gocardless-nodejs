@@ -102,17 +102,17 @@ export class RefundService {
 
   async create(
     requestParameters: RefundCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<RefundResponse> {
     const urlParameters = [];
     const request = {
       path: '/refunds',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'refunds',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: RefundResponse = await this.api.request(request);
@@ -120,17 +120,15 @@ export class RefundService {
   }
 
   async list(
-    requestParameters: RefundListRequest,
-    headers: object = {}
+    requestParameters: RefundListRequest
   ): Promise<RefundListResponse> {
     const urlParameters = [];
     const request = {
       path: '/refunds',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -138,15 +136,14 @@ export class RefundService {
     return response;
   }
 
-  async find(identity: string, headers: object = {}): Promise<RefundResponse> {
+  async find(identity: string): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/refunds/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -156,17 +153,15 @@ export class RefundService {
 
   async update(
     identity: string,
-    requestParameters: RefundUpdateRequest,
-    headers: object = {}
+    requestParameters: RefundUpdateRequest
   ): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/refunds/:identity',
-      method: 'PUT',
+      method: 'put',
       urlParameters,
       requestParameters,
       payloadKey: 'refunds',
-      headers,
       fetch: null,
     };
 

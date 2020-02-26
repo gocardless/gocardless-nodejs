@@ -66,16 +66,16 @@ export class MandateImportEntryService {
 
   async create(
     requestParameters: MandateImportEntryCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<MandateImportEntryResponse> {
     const urlParameters = [];
     const request = {
       path: '/mandate_import_entries',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'mandate_import_entries',
-      headers,
+      idempotencyKey,
       fetch: undefined,
     };
 
@@ -86,17 +86,15 @@ export class MandateImportEntryService {
   }
 
   async list(
-    requestParameters: MandateImportEntryListRequest,
-    headers: object = {}
+    requestParameters: MandateImportEntryListRequest
   ): Promise<MandateImportEntryListResponse> {
     const urlParameters = [];
     const request = {
       path: '/mandate_import_entries',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

@@ -20,7 +20,7 @@ interface PayoutListRequest {
 export declare class PayoutService {
     private api;
     constructor(api: any);
-    list(requestParameters: PayoutListRequest, headers?: object): Promise<PayoutListResponse>;
-    find(identity: string, headers?: object): Promise<PayoutResponse>;
+    list(requestParameters: PayoutListRequest): Promise<PayoutListResponse>;
+    find(identity: string): Promise<PayoutResponse>;
 }
 export {};

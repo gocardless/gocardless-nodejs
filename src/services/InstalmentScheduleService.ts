@@ -109,17 +109,17 @@ export class InstalmentScheduleService {
 
   async create(
     requestParameters: InstalmentScheduleCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const request = {
       path: '/instalment_schedules',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'instalment_schedules',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: InstalmentScheduleResponse = await this.api.request(
@@ -129,17 +129,15 @@ export class InstalmentScheduleService {
   }
 
   async list(
-    requestParameters: InstalmentScheduleListRequest,
-    headers: object = {}
+    requestParameters: InstalmentScheduleListRequest
   ): Promise<InstalmentScheduleListResponse> {
     const urlParameters = [];
     const request = {
       path: '/instalment_schedules',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -149,18 +147,14 @@ export class InstalmentScheduleService {
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<InstalmentScheduleResponse> {
+  async find(identity: string): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/instalment_schedules/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -170,18 +164,14 @@ export class InstalmentScheduleService {
     return response;
   }
 
-  async cancel(
-    identity: string,
-    headers: object = {}
-  ): Promise<InstalmentScheduleResponse> {
+  async cancel(identity: string): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/instalment_schedules/:identity/actions/cancel',
-      method: 'POST',
+      method: 'post',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

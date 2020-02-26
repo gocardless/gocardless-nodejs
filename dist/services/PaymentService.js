@@ -4,84 +4,79 @@ class PaymentService {
     constructor(api) {
         this.api = api;
     }
-    async create(requestParameters, headers = {}) {
+    async create(requestParameters, idempotencyKey = '') {
         const urlParameters = [];
         const request = {
             path: '/payments',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: 'payments',
-            headers,
-            fetch: async (identity, headers) => this.find(identity, headers),
+            idempotencyKey,
+            fetch: async (identity) => this.find(identity),
         };
         const response = await this.api.request(request);
         return response;
     }
-    async list(requestParameters, headers = {}) {
+    async list(requestParameters) {
         const urlParameters = [];
         const request = {
             path: '/payments',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, headers = {}) {
+    async find(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/payments/:identity',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async update(identity, requestParameters, headers = {}) {
+    async update(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/payments/:identity',
-            method: 'PUT',
+            method: 'put',
             urlParameters,
             requestParameters,
             payloadKey: 'payments',
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async cancel(identity, requestParameters, headers = {}) {
+    async cancel(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/payments/:identity/actions/cancel',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async retry(identity, requestParameters, headers = {}) {
+    async retry(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/payments/:identity/actions/retry',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

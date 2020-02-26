@@ -35,9 +35,9 @@ interface CreditorUpdateRequest {
 export declare class CreditorService {
     private api;
     constructor(api: any);
-    create(requestParameters: CreditorCreateRequest, headers?: object): Promise<CreditorResponse>;
-    list(requestParameters: CreditorListRequest, headers?: object): Promise<CreditorListResponse>;
-    find(identity: string, headers?: object): Promise<CreditorResponse>;
-    update(identity: string, requestParameters: CreditorUpdateRequest, headers?: object): Promise<CreditorResponse>;
+    create(requestParameters: CreditorCreateRequest, idempotencyKey?: string): Promise<CreditorResponse>;
+    list(requestParameters: CreditorListRequest): Promise<CreditorListResponse>;
+    find(identity: string): Promise<CreditorResponse>;
+    update(identity: string, requestParameters: CreditorUpdateRequest): Promise<CreditorResponse>;
 }
 export {};

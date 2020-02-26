@@ -70,35 +70,31 @@ export class RedirectFlowService {
 
   async create(
     requestParameters: RedirectFlowCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [];
     const request = {
       path: '/redirect_flows',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'redirect_flows',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: RedirectFlowResponse = await this.api.request(request);
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<RedirectFlowResponse> {
+  async find(identity: string): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/redirect_flows/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -108,17 +104,15 @@ export class RedirectFlowService {
 
   async complete(
     identity: string,
-    requestParameters: RedirectFlowCompleteRequest,
-    headers: object = {}
+    requestParameters: RedirectFlowCompleteRequest
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/redirect_flows/:identity/actions/complete',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

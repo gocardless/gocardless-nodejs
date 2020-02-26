@@ -4,69 +4,65 @@ class CustomerBankAccountService {
     constructor(api) {
         this.api = api;
     }
-    async create(requestParameters, headers = {}) {
+    async create(requestParameters, idempotencyKey = '') {
         const urlParameters = [];
         const request = {
             path: '/customer_bank_accounts',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: 'customer_bank_accounts',
-            headers,
-            fetch: async (identity, headers) => this.find(identity, headers),
+            idempotencyKey,
+            fetch: async (identity) => this.find(identity),
         };
         const response = await this.api.request(request);
         return response;
     }
-    async list(requestParameters, headers = {}) {
+    async list(requestParameters) {
         const urlParameters = [];
         const request = {
             path: '/customer_bank_accounts',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, headers = {}) {
+    async find(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/customer_bank_accounts/:identity',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async update(identity, requestParameters, headers = {}) {
+    async update(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/customer_bank_accounts/:identity',
-            method: 'PUT',
+            method: 'put',
             urlParameters,
             requestParameters,
             payloadKey: 'customer_bank_accounts',
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async disable(identity, headers = {}) {
+    async disable(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/customer_bank_accounts/:identity/actions/disable',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

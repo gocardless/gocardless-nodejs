@@ -98,18 +98,14 @@ export class EventService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: EventListRequest,
-    headers: object = {}
-  ): Promise<EventListResponse> {
+  async list(requestParameters: EventListRequest): Promise<EventListResponse> {
     const urlParameters = [];
     const request = {
       path: '/events',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -117,15 +113,14 @@ export class EventService {
     return response;
   }
 
-  async find(identity: string, headers: object = {}): Promise<EventResponse> {
+  async find(identity: string): Promise<EventResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/events/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

@@ -162,17 +162,17 @@ export class SubscriptionService {
 
   async create(
     requestParameters: SubscriptionCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<SubscriptionResponse> {
     const urlParameters = [];
     const request = {
       path: '/subscriptions',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'subscriptions',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: SubscriptionResponse = await this.api.request(request);
@@ -180,17 +180,15 @@ export class SubscriptionService {
   }
 
   async list(
-    requestParameters: SubscriptionListRequest,
-    headers: object = {}
+    requestParameters: SubscriptionListRequest
   ): Promise<SubscriptionListResponse> {
     const urlParameters = [];
     const request = {
       path: '/subscriptions',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -198,18 +196,14 @@ export class SubscriptionService {
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<SubscriptionResponse> {
+  async find(identity: string): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/subscriptions/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -219,17 +213,15 @@ export class SubscriptionService {
 
   async update(
     identity: string,
-    requestParameters: SubscriptionUpdateRequest,
-    headers: object = {}
+    requestParameters: SubscriptionUpdateRequest
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/subscriptions/:identity',
-      method: 'PUT',
+      method: 'put',
       urlParameters,
       requestParameters,
       payloadKey: 'subscriptions',
-      headers,
       fetch: null,
     };
 
@@ -239,17 +231,15 @@ export class SubscriptionService {
 
   async cancel(
     identity: string,
-    requestParameters: SubscriptionCancelRequest,
-    headers: object = {}
+    requestParameters: SubscriptionCancelRequest
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/subscriptions/:identity/actions/cancel',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

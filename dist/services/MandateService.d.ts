@@ -35,11 +35,11 @@ interface MandateReinstateRequest {
 export declare class MandateService {
     private api;
     constructor(api: any);
-    create(requestParameters: MandateCreateRequest, headers?: object): Promise<MandateResponse>;
-    list(requestParameters: MandateListRequest, headers?: object): Promise<MandateListResponse>;
-    find(identity: string, headers?: object): Promise<MandateResponse>;
-    update(identity: string, requestParameters: MandateUpdateRequest, headers?: object): Promise<MandateResponse>;
-    cancel(identity: string, requestParameters: MandateCancelRequest, headers?: object): Promise<MandateResponse>;
-    reinstate(identity: string, requestParameters: MandateReinstateRequest, headers?: object): Promise<MandateResponse>;
+    create(requestParameters: MandateCreateRequest, idempotencyKey?: string): Promise<MandateResponse>;
+    list(requestParameters: MandateListRequest): Promise<MandateListResponse>;
+    find(identity: string): Promise<MandateResponse>;
+    update(identity: string, requestParameters: MandateUpdateRequest): Promise<MandateResponse>;
+    cancel(identity: string, requestParameters: MandateCancelRequest): Promise<MandateResponse>;
+    reinstate(identity: string, requestParameters: MandateReinstateRequest): Promise<MandateResponse>;
 }
 export {};

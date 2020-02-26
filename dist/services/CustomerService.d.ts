@@ -51,10 +51,10 @@ interface CustomerUpdateRequest {
 export declare class CustomerService {
     private api;
     constructor(api: any);
-    create(requestParameters: CustomerCreateRequest, headers?: object): Promise<CustomerResponse>;
-    list(requestParameters: CustomerListRequest, headers?: object): Promise<CustomerListResponse>;
-    find(identity: string, headers?: object): Promise<CustomerResponse>;
-    update(identity: string, requestParameters: CustomerUpdateRequest, headers?: object): Promise<CustomerResponse>;
-    remove(identity: string, headers?: object): Promise<CustomerResponse>;
+    create(requestParameters: CustomerCreateRequest, idempotencyKey?: string): Promise<CustomerResponse>;
+    list(requestParameters: CustomerListRequest): Promise<CustomerListResponse>;
+    find(identity: string): Promise<CustomerResponse>;
+    update(identity: string, requestParameters: CustomerUpdateRequest): Promise<CustomerResponse>;
+    remove(identity: string): Promise<CustomerResponse>;
 }
 export {};

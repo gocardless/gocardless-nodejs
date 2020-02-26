@@ -1,5 +1,4 @@
 'use strict';
-Object.defineProperty(exports, "__esModule", { value: true });
 const Constants_1 = require("./Constants");
 const Api_1 = require("./api/Api");
 const BankDetailsLookupService_1 = require("./services/BankDetailsLookupService");
@@ -151,5 +150,5 @@ class GoCardlessClient {
         return this._subscriptions;
     }
 }
-exports.GoCardlessClient = GoCardlessClient;
+module.exports = GoCardlessClient;
 //# sourceMappingURL=GoCardlessClient.js.map

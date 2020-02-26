@@ -4,84 +4,79 @@ class MandateService {
     constructor(api) {
         this.api = api;
     }
-    async create(requestParameters, headers = {}) {
+    async create(requestParameters, idempotencyKey = '') {
         const urlParameters = [];
         const request = {
             path: '/mandates',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: 'mandates',
-            headers,
-            fetch: async (identity, headers) => this.find(identity, headers),
+            idempotencyKey,
+            fetch: async (identity) => this.find(identity),
         };
         const response = await this.api.request(request);
         return response;
     }
-    async list(requestParameters, headers = {}) {
+    async list(requestParameters) {
         const urlParameters = [];
         const request = {
             path: '/mandates',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, headers = {}) {
+    async find(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandates/:identity',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async update(identity, requestParameters, headers = {}) {
+    async update(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandates/:identity',
-            method: 'PUT',
+            method: 'put',
             urlParameters,
             requestParameters,
             payloadKey: 'mandates',
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async cancel(identity, requestParameters, headers = {}) {
+    async cancel(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandates/:identity/actions/cancel',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async reinstate(identity, requestParameters, headers = {}) {
+    async reinstate(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandates/:identity/actions/reinstate',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

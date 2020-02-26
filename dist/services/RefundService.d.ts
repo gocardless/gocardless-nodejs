@@ -27,9 +27,9 @@ interface RefundUpdateRequest {
 export declare class RefundService {
     private api;
     constructor(api: any);
-    create(requestParameters: RefundCreateRequest, headers?: object): Promise<RefundResponse>;
-    list(requestParameters: RefundListRequest, headers?: object): Promise<RefundListResponse>;
-    find(identity: string, headers?: object): Promise<RefundResponse>;
-    update(identity: string, requestParameters: RefundUpdateRequest, headers?: object): Promise<RefundResponse>;
+    create(requestParameters: RefundCreateRequest, idempotencyKey?: string): Promise<RefundResponse>;
+    list(requestParameters: RefundListRequest): Promise<RefundListResponse>;
+    find(identity: string): Promise<RefundResponse>;
+    update(identity: string, requestParameters: RefundUpdateRequest): Promise<RefundResponse>;
 }
 export {};

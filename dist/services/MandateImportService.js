@@ -4,54 +4,51 @@ class MandateImportService {
     constructor(api) {
         this.api = api;
     }
-    async create(requestParameters, headers = {}) {
+    async create(requestParameters, idempotencyKey = '') {
         const urlParameters = [];
         const request = {
             path: '/mandate_imports',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: 'mandate_imports',
-            headers,
-            fetch: async (identity, headers) => this.find(identity, headers),
+            idempotencyKey,
+            fetch: async (identity) => this.find(identity),
         };
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, headers = {}) {
+    async find(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandate_imports/:identity',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async submit(identity, headers = {}) {
+    async submit(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandate_imports/:identity/actions/submit',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async cancel(identity, headers = {}) {
+    async cancel(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandate_imports/:identity/actions/cancel',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

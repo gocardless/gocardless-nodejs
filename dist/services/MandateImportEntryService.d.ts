@@ -21,7 +21,7 @@ interface MandateImportEntryListRequest {
 export declare class MandateImportEntryService {
     private api;
     constructor(api: any);
-    create(requestParameters: MandateImportEntryCreateRequest, headers?: object): Promise<MandateImportEntryResponse>;
-    list(requestParameters: MandateImportEntryListRequest, headers?: object): Promise<MandateImportEntryListResponse>;
+    create(requestParameters: MandateImportEntryCreateRequest, idempotencyKey?: string): Promise<MandateImportEntryResponse>;
+    list(requestParameters: MandateImportEntryListRequest): Promise<MandateImportEntryListResponse>;
 }
 export {};

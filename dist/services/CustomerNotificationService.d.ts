@@ -5,6 +5,6 @@ interface CustomerNotificationResponse extends CustomerNotification {
 export declare class CustomerNotificationService {
     private api;
     constructor(api: any);
-    handle(identity: string, headers?: object): Promise<CustomerNotificationResponse>;
+    handle(identity: string): Promise<CustomerNotificationResponse>;
 }
 export {};

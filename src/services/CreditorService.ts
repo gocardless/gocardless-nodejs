@@ -103,17 +103,17 @@ export class CreditorService {
 
   async create(
     requestParameters: CreditorCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<CreditorResponse> {
     const urlParameters = [];
     const request = {
       path: '/creditors',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'creditors',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: CreditorResponse = await this.api.request(request);
@@ -121,17 +121,15 @@ export class CreditorService {
   }
 
   async list(
-    requestParameters: CreditorListRequest,
-    headers: object = {}
+    requestParameters: CreditorListRequest
   ): Promise<CreditorListResponse> {
     const urlParameters = [];
     const request = {
       path: '/creditors',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -139,18 +137,14 @@ export class CreditorService {
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<CreditorResponse> {
+  async find(identity: string): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/creditors/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -160,17 +154,15 @@ export class CreditorService {
 
   async update(
     identity: string,
-    requestParameters: CreditorUpdateRequest,
-    headers: object = {}
+    requestParameters: CreditorUpdateRequest
   ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/creditors/:identity',
-      method: 'PUT',
+      method: 'put',
       urlParameters,
       requestParameters,
       payloadKey: 'creditors',
-      headers,
       fetch: null,
     };
 

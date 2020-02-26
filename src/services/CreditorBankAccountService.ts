@@ -103,17 +103,17 @@ export class CreditorBankAccountService {
 
   async create(
     requestParameters: CreditorBankAccountCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<CreditorBankAccountResponse> {
     const urlParameters = [];
     const request = {
       path: '/creditor_bank_accounts',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'creditor_bank_accounts',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: CreditorBankAccountResponse = await this.api.request(
@@ -123,17 +123,15 @@ export class CreditorBankAccountService {
   }
 
   async list(
-    requestParameters: CreditorBankAccountListRequest,
-    headers: object = {}
+    requestParameters: CreditorBankAccountListRequest
   ): Promise<CreditorBankAccountListResponse> {
     const urlParameters = [];
     const request = {
       path: '/creditor_bank_accounts',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -143,18 +141,14 @@ export class CreditorBankAccountService {
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<CreditorBankAccountResponse> {
+  async find(identity: string): Promise<CreditorBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/creditor_bank_accounts/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -164,18 +158,14 @@ export class CreditorBankAccountService {
     return response;
   }
 
-  async disable(
-    identity: string,
-    headers: object = {}
-  ): Promise<CreditorBankAccountResponse> {
+  async disable(identity: string): Promise<CreditorBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/creditor_bank_accounts/:identity/actions/disable',
-      method: 'POST',
+      method: 'post',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

@@ -164,17 +164,17 @@ export class PaymentService {
 
   async create(
     requestParameters: PaymentCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<PaymentResponse> {
     const urlParameters = [];
     const request = {
       path: '/payments',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'payments',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: PaymentResponse = await this.api.request(request);
@@ -182,17 +182,15 @@ export class PaymentService {
   }
 
   async list(
-    requestParameters: PaymentListRequest,
-    headers: object = {}
+    requestParameters: PaymentListRequest
   ): Promise<PaymentListResponse> {
     const urlParameters = [];
     const request = {
       path: '/payments',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -200,15 +198,14 @@ export class PaymentService {
     return response;
   }
 
-  async find(identity: string, headers: object = {}): Promise<PaymentResponse> {
+  async find(identity: string): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/payments/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -218,17 +215,15 @@ export class PaymentService {
 
   async update(
     identity: string,
-    requestParameters: PaymentUpdateRequest,
-    headers: object = {}
+    requestParameters: PaymentUpdateRequest
   ): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/payments/:identity',
-      method: 'PUT',
+      method: 'put',
       urlParameters,
       requestParameters,
       payloadKey: 'payments',
-      headers,
       fetch: null,
     };
 
@@ -238,17 +233,15 @@ export class PaymentService {
 
   async cancel(
     identity: string,
-    requestParameters: PaymentCancelRequest,
-    headers: object = {}
+    requestParameters: PaymentCancelRequest
   ): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/payments/:identity/actions/cancel',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -258,17 +251,15 @@ export class PaymentService {
 
   async retry(
     identity: string,
-    requestParameters: PaymentRetryRequest,
-    headers: object = {}
+    requestParameters: PaymentRetryRequest
   ): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/payments/:identity/actions/retry',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
