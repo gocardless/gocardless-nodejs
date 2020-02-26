@@ -1,4 +1,4 @@
-export namespace Environments {
-    export const LIVE: string;
-    export const SANDBOX: string;
+export declare enum Environments {
+    Live = "LIVE",
+    Sandbox = "SANDBOX"
 }

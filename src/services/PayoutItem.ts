@@ -1,16 +1,36 @@
 'use strict';
 
-import { PayoutItem } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  PayoutItem,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+} from '../types/Types';
 
 interface PayoutItemResponse extends PayoutItem {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface PayoutItemListResponse extends PayoutItem {
-  request: object;
-  response: object;
+interface PayoutItemListResponse extends Array<PayoutItem> {
+  __metadata__: ResponseMetadata;
+}
+
+interface PayoutItemListRequest {
+  // Cursor pointing to the start of the desired set.
+  after?: string;
+
+  // Cursor pointing to the end of the desired set.
+  before?: string;
+
+  // Number of records to return.
+  limit?: string;
+
+  // Unique identifier, beginning with "PO".
+  payout: string;
 }
 
 class PayoutItemService {
@@ -20,15 +40,8 @@ class PayoutItemService {
     this.api = api;
   }
 
-  // TODO: Should this be an iterator return type?
-  // Maybe AsyncIterableIterator<Payment>
-  // Might need this in tsconfig to work properly:
-  // {
-  //  "lib": ["esnext.asynciterable"]
-  // }
-  // https://github.com/octokit/rest.js/issues/1189
   async list(
-    requestParameters: object,
+    requestParameters: PayoutItemListRequest,
     headers: object = {}
   ): Promise<PayoutItemListResponse> {
     const urlParameters = [];

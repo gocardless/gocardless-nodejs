@@ -16,24 +16,14 @@ const _ = require("lodash");
 const uuidv4 = require("uuid/v4");
 const url = __importStar(require("url"));
 const got_1 = __importDefault(require("got"));
-const Constants = require("../Constants");
-const GoCardlessException = require("../GoCardlessException");
-var Environment;
-(function (Environment) {
-    Environment["Live"] = "LIVE";
-})(Environment || (Environment = {}));
-var HTTPMethod;
-(function (HTTPMethod) {
-    HTTPMethod["Post"] = "POST";
-    HTTPMethod["Get"] = "GET";
-    HTTPMethod["Put"] = "PUT";
-})(HTTPMethod || (HTTPMethod = {}));
+const Constants_1 = require("../Constants");
+const GoCardlessException_1 = require("../GoCardlessException");
 class Api {
-    constructor(token, environment = Environment.Live, options) {
+    constructor(token, environment = Constants_1.Environments.Live, options) {
         this._token = token;
         this._environment = environment;
         this._baseUrl = 'https://api.gocardless.com';
-        if (this._environment === Constants.Environments.SANDBOX) {
+        if (this._environment === Constants_1.Environments.Sandbox) {
             this._baseUrl = 'https://api-sandbox.gocardless.com';
         }
         this._agent = undefined;
@@ -92,7 +82,7 @@ class Api {
                 return fetch(resourceId, headers);
             }
             if (response) {
-                throw new GoCardlessException(response);
+                throw new GoCardlessException_1.GoCardlessException(response);
             }
             throw error;
         }

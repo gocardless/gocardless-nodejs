@@ -7,22 +7,12 @@ import uuidv4 = require('uuid/v4');
 import * as url from 'url';
 import got from 'got';
 
-import Constants = require('../Constants');
-import GoCardlessException = require('../GoCardlessException');
-
-enum Environment {
-  Live = 'LIVE',
-}
-
-enum HTTPMethod {
-  Post = 'POST',
-  Get = 'GET',
-  Put = 'PUT',
-}
+import { Environments } from '../Constants';
+import { GoCardlessException } from '../GoCardlessException';
 
 interface APIOptions {
   proxy?: object;
-  raiseOnIdempotencyConflict: boolean;
+  raiseOnIdempotencyConflict?: boolean;
 }
 
 interface APIResponse {
@@ -45,7 +35,7 @@ interface APIRequestParameters {
 
 export class Api {
   private _token: string;
-  private _environment: Environment;
+  private _environment: Environments;
   private _baseUrl: string;
   private _agent: object;
   private raiseOnIdempotencyConflict: boolean;
@@ -56,14 +46,14 @@ export class Api {
 
   constructor(
     token: string,
-    environment = Environment.Live,
+    environment = Environments.Live,
     options: APIOptions
   ) {
     this._token = token;
     this._environment = environment;
 
     this._baseUrl = 'https://api.gocardless.com';
-    if (this._environment === Constants.Environments.SANDBOX) {
+    if (this._environment === Environments.Sandbox) {
       this._baseUrl = 'https://api-sandbox.gocardless.com';
     }
 

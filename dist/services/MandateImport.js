@@ -18,7 +18,7 @@ class MandateImportService {
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, requestParameters, headers = {}) {
+    async find(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandate_imports/:identity',
@@ -31,13 +31,12 @@ class MandateImportService {
         const response = await this.api.request(request);
         return response;
     }
-    async submit(identity, requestParameters, headers = {}) {
+    async submit(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandate_imports/:identity/actions/submit',
             method: 'POST',
             urlParameters,
-            requestParameters,
             payloadKey: null,
             headers,
             fetch: null,
@@ -45,13 +44,12 @@ class MandateImportService {
         const response = await this.api.request(request);
         return response;
     }
-    async cancel(identity, requestParameters, headers = {}) {
+    async cancel(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/mandate_imports/:identity/actions/cancel',
             method: 'POST',
             urlParameters,
-            requestParameters,
             payloadKey: null,
             headers,
             fetch: null,

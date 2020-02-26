@@ -1,16 +1,64 @@
 'use strict';
 
-import { RedirectFlow } from '../types/Types';
 import { Api } from '../api/Api';
+import {
+  RedirectFlow,
+  ResponseMetadata,
+  JsonMap,
+  PaymentCurrency,
+  CustomerCurrency,
+  InstalmentScheduleCurrency,
+  PayoutCurrency,
+  RedirectFlowCreateRequestLinks,
+  RedirectFlowPrefilledCustomer,
+  RedirectFlowScheme,
+} from '../types/Types';
 
 interface RedirectFlowResponse extends RedirectFlow {
-  request: object;
-  response: object;
+  __metadata__: ResponseMetadata;
 }
 
-interface RedirectFlowListResponse extends RedirectFlow {
-  request: object;
-  response: object;
+interface RedirectFlowListResponse extends Array<RedirectFlow> {
+  __metadata__: ResponseMetadata;
+}
+
+interface RedirectFlowCreateRequest {
+  // A description of the item the customer is paying for. This will be shown on
+  // the hosted payment pages.
+  description?: string;
+
+  //
+  links: RedirectFlowCreateRequestLinks;
+
+  // Information used to prefill the payment page so your customer doesn't have to
+  // re-type details you already hold about them. It will be stored unvalidated
+  // and the customer will be able to review and amend it before completing the
+  // form.
+  prefilled_customer?: RedirectFlowPrefilledCustomer;
+
+  // The Direct Debit scheme of the mandate. If specified, the payment pages will
+  // only allow the set-up of a mandate for the specified scheme. It is
+  // recommended that you leave this blank so the most appropriate scheme is
+  // picked based on the customer's bank account.
+  scheme?: RedirectFlowScheme;
+
+  // The customer's session ID must be provided when the redirect flow is set up
+  // and again when it is completed. This allows integrators to ensure that the
+  // user who was originally sent to the GoCardless payment pages is the one who
+  // has completed them.
+  session_token: string;
+
+  // The URL to redirect to upon successful mandate setup. You must use a URL
+  // beginning `https` in the live environment.
+  success_redirect_url: string;
+}
+
+interface RedirectFlowCompleteRequest {
+  // The customer's session ID must be provided when the redirect flow is set up
+  // and again when it is completed. This allows integrators to ensure that the
+  // user who was originally sent to the GoCardless payment pages is the one who
+  // has completed them.
+  session_token: string;
 }
 
 class RedirectFlowService {
@@ -21,7 +69,7 @@ class RedirectFlowService {
   }
 
   async create(
-    requestParameters: object,
+    requestParameters: RedirectFlowCreateRequest,
     headers: object = {}
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [];
@@ -41,15 +89,14 @@ class RedirectFlowService {
 
   async find(
     identity: string,
-    requestParameters: object,
     headers: object = {}
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/redirect_flows/:identity',
       method: 'GET',
       urlParameters,
+
       payloadKey: null,
       headers,
       fetch: null,
@@ -61,11 +108,10 @@ class RedirectFlowService {
 
   async complete(
     identity: string,
-    requestParameters: object,
+    requestParameters: RedirectFlowCompleteRequest,
     headers: object = {}
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-
     const request = {
       path: '/redirect_flows/:identity/actions/complete',
       method: 'POST',

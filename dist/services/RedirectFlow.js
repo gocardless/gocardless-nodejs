@@ -18,7 +18,7 @@ class RedirectFlowService {
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, requestParameters, headers = {}) {
+    async find(identity, headers = {}) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/redirect_flows/:identity',

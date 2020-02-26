@@ -1,11 +1,9 @@
 /// <reference types="node" />
 import * as url from 'url';
-declare enum Environment {
-    Live = "LIVE"
-}
+import { Environments } from '../Constants';
 interface APIOptions {
     proxy?: object;
-    raiseOnIdempotencyConflict: boolean;
+    raiseOnIdempotencyConflict?: boolean;
 }
 interface APIRequestParameters {
     path: string;
@@ -25,7 +23,7 @@ export declare class Api {
     private processVersion;
     private osPlatform;
     private osRelease;
-    constructor(token: string, environment: Environment, options: APIOptions);
+    constructor(token: string, environment: Environments, options: APIOptions);
     createRequestOptions(method?: string, requestParameters?: {}, payloadKey?: string, headers?: {}): {
         agent: object;
         prefixUrl: string;
