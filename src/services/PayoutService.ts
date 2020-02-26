@@ -70,17 +70,15 @@ export class PayoutService {
   }
 
   async list(
-    requestParameters: PayoutListRequest,
-    headers: object = {}
+    requestParameters: PayoutListRequest
   ): Promise<PayoutListResponse> {
     const urlParameters = [];
     const request = {
       path: '/payouts',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -88,15 +86,14 @@ export class PayoutService {
     return response;
   }
 
-  async find(identity: string, headers: object = {}): Promise<PayoutResponse> {
+  async find(identity: string): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/payouts/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

@@ -29,7 +29,7 @@ interface APIRequestParameters {
   urlParameters?: any;
   requestParameters?: object;
   payloadKey?: string;
-  headers?: object;
+  idempotencyKey?: string;
   fetch: any;
 }
 
@@ -70,20 +70,85 @@ export class Api {
     this.osRelease = os.release();
   }
 
-  createRequestOptions(
+  async request({
+    path,
+    method,
+    urlParameters = [],
+    requestParameters = {},
+    payloadKey = '',
+    idempotencyKey = '',
+    fetch,
+  }: APIRequestParameters) {
+    urlParameters.forEach(urlParameter => {
+      path = path.replace(`:${urlParameter.key}`, urlParameter.value);
+    });
+
+    const requestOptions = this.createRequestOptions(
+      method,
+      requestParameters,
+      payloadKey,
+      idempotencyKey
+    );
+    const request = got(path, requestOptions);
+
+    try {
+      const response: APIResponse = await request;
+      return {
+        ...response.body,
+        __metadata__: {
+          response: {
+            headers: response.headers,
+            statusCode: response.statusCode,
+            statusMessage: response.statusMessage,
+            url: response.url,
+          },
+        },
+      };
+    } catch (error) {
+      const { response } = error;
+
+      if (
+        this.isIdempotencyConflict(response) &&
+        !this.raiseOnIdempotencyConflict
+      ) {
+        const resourceId =
+          response.body.error.errors[0].links.conflicting_resource_id;
+        return fetch(resourceId);
+      }
+
+      if (response) {
+        throw new GoCardlessException(response);
+      }
+
+      throw error;
+    }
+  }
+
+  private getHeaders(token) {
+    return {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+      'GoCardless-Version': '2015-07-06',
+      'GoCardless-Client-Version': '0.1.0',
+      'GoCardless-Client-Library': 'gocardless-nodejs',
+      'User-Agent': `gocardless-nodejs/0.1.0 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+    };
+  }
+
+  private createRequestOptions(
     method = 'get',
     requestParameters = {},
     payloadKey = '',
-    headers = {}
+    idempotencyKey = ''
   ) {
-    headers = this.getHeaders(headers, this._token);
+    const headers = this.getHeaders(this._token);
 
     const searchParams =
       method === 'get'
         ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))
         : undefined;
 
-    if (method === 'POST' && !headers['Idempotency-Key']) {
+    if (method === 'POST' && !idempotencyKey) {
       headers['Idempotency-Key'] = uuidv4();
     }
 
@@ -96,71 +161,6 @@ export class Api {
       headers,
       searchParams,
       json,
-    };
-  }
-
-  async request({
-    path,
-    method,
-    urlParameters = [],
-    requestParameters = {},
-    payloadKey = '',
-    headers = {},
-    fetch,
-  }: APIRequestParameters) {
-    urlParameters.forEach(urlParameter => {
-      path = path.replace(`:${urlParameter.key}`, urlParameter.value);
-    });
-
-    const requestOptions = this.createRequestOptions(
-      method,
-      requestParameters,
-      payloadKey,
-      headers
-    );
-    const request = got(path, requestOptions);
-
-    try {
-      const response: APIResponse = await request;
-      return {
-        ...response.body,
-        request: requestOptions,
-        response: {
-          headers: response.headers,
-          statusCode: response.statusCode,
-          statusMessage: response.statusMessage,
-          url: response.url,
-        },
-      };
-    } catch (error) {
-      const { response } = error;
-
-      if (
-        this.isIdempotencyConflict(response) &&
-        !this.raiseOnIdempotencyConflict
-      ) {
-        const resourceId =
-          response.body.error.errors[0].links.conflicting_resource_id;
-        return fetch(resourceId, headers);
-      }
-
-      if (response) {
-        throw new GoCardlessException(response);
-      }
-
-      throw error;
-    }
-  }
-
-  private getHeaders(headers, token) {
-    return {
-      ...headers,
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-      'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '0.1.0',
-      'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/0.1.0 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
   }
 

@@ -42,11 +42,11 @@ interface PaymentRetryRequest {
 export declare class PaymentService {
     private api;
     constructor(api: any);
-    create(requestParameters: PaymentCreateRequest, headers?: object): Promise<PaymentResponse>;
-    list(requestParameters: PaymentListRequest, headers?: object): Promise<PaymentListResponse>;
-    find(identity: string, headers?: object): Promise<PaymentResponse>;
-    update(identity: string, requestParameters: PaymentUpdateRequest, headers?: object): Promise<PaymentResponse>;
-    cancel(identity: string, requestParameters: PaymentCancelRequest, headers?: object): Promise<PaymentResponse>;
-    retry(identity: string, requestParameters: PaymentRetryRequest, headers?: object): Promise<PaymentResponse>;
+    create(requestParameters: PaymentCreateRequest, idempotencyKey?: string): Promise<PaymentResponse>;
+    list(requestParameters: PaymentListRequest): Promise<PaymentListResponse>;
+    find(identity: string): Promise<PaymentResponse>;
+    update(identity: string, requestParameters: PaymentUpdateRequest): Promise<PaymentResponse>;
+    cancel(identity: string, requestParameters: PaymentCancelRequest): Promise<PaymentResponse>;
+    retry(identity: string, requestParameters: PaymentRetryRequest): Promise<PaymentResponse>;
 }
 export {};

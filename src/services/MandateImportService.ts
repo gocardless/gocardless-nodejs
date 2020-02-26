@@ -35,35 +35,31 @@ export class MandateImportService {
 
   async create(
     requestParameters: MandateImportCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<MandateImportResponse> {
     const urlParameters = [];
     const request = {
       path: '/mandate_imports',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'mandate_imports',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: MandateImportResponse = await this.api.request(request);
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<MandateImportResponse> {
+  async find(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/mandate_imports/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -71,18 +67,14 @@ export class MandateImportService {
     return response;
   }
 
-  async submit(
-    identity: string,
-    headers: object = {}
-  ): Promise<MandateImportResponse> {
+  async submit(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/mandate_imports/:identity/actions/submit',
-      method: 'POST',
+      method: 'post',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -90,18 +82,14 @@ export class MandateImportService {
     return response;
   }
 
-  async cancel(
-    identity: string,
-    headers: object = {}
-  ): Promise<MandateImportResponse> {
+  async cancel(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/mandate_imports/:identity/actions/cancel',
-      method: 'POST',
+      method: 'post',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

@@ -4,29 +4,28 @@ class MandateImportEntryService {
     constructor(api) {
         this.api = api;
     }
-    async create(requestParameters, headers = {}) {
+    async create(requestParameters, idempotencyKey = '') {
         const urlParameters = [];
         const request = {
             path: '/mandate_import_entries',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: 'mandate_import_entries',
-            headers,
+            idempotencyKey,
             fetch: undefined,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async list(requestParameters, headers = {}) {
+    async list(requestParameters) {
         const urlParameters = [];
         const request = {
             path: '/mandate_import_entries',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

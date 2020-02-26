@@ -105,17 +105,17 @@ export class CustomerBankAccountService {
 
   async create(
     requestParameters: CustomerBankAccountCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [];
     const request = {
       path: '/customer_bank_accounts',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'customer_bank_accounts',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: CustomerBankAccountResponse = await this.api.request(
@@ -125,17 +125,15 @@ export class CustomerBankAccountService {
   }
 
   async list(
-    requestParameters: CustomerBankAccountListRequest,
-    headers: object = {}
+    requestParameters: CustomerBankAccountListRequest
   ): Promise<CustomerBankAccountListResponse> {
     const urlParameters = [];
     const request = {
       path: '/customer_bank_accounts',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -145,18 +143,14 @@ export class CustomerBankAccountService {
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<CustomerBankAccountResponse> {
+  async find(identity: string): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customer_bank_accounts/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -168,17 +162,15 @@ export class CustomerBankAccountService {
 
   async update(
     identity: string,
-    requestParameters: CustomerBankAccountUpdateRequest,
-    headers: object = {}
+    requestParameters: CustomerBankAccountUpdateRequest
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customer_bank_accounts/:identity',
-      method: 'PUT',
+      method: 'put',
       urlParameters,
       requestParameters,
       payloadKey: 'customer_bank_accounts',
-      headers,
       fetch: null,
     };
 
@@ -188,18 +180,14 @@ export class CustomerBankAccountService {
     return response;
   }
 
-  async disable(
-    identity: string,
-    headers: object = {}
-  ): Promise<CustomerBankAccountResponse> {
+  async disable(identity: string): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customer_bank_accounts/:identity/actions/disable',
-      method: 'POST',
+      method: 'post',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

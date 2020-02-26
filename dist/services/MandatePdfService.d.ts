@@ -31,6 +31,6 @@ interface MandatePdfCreateRequest {
 export declare class MandatePdfService {
     private api;
     constructor(api: any);
-    create(requestParameters: MandatePdfCreateRequest, headers?: object): Promise<MandatePdfResponse>;
+    create(requestParameters: MandatePdfCreateRequest, idempotencyKey?: string): Promise<MandatePdfResponse>;
 }
 export {};

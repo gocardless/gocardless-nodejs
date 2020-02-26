@@ -29,9 +29,9 @@ interface CreditorBankAccountListRequest {
 export declare class CreditorBankAccountService {
     private api;
     constructor(api: any);
-    create(requestParameters: CreditorBankAccountCreateRequest, headers?: object): Promise<CreditorBankAccountResponse>;
-    list(requestParameters: CreditorBankAccountListRequest, headers?: object): Promise<CreditorBankAccountListResponse>;
-    find(identity: string, headers?: object): Promise<CreditorBankAccountResponse>;
-    disable(identity: string, headers?: object): Promise<CreditorBankAccountResponse>;
+    create(requestParameters: CreditorBankAccountCreateRequest, idempotencyKey?: string): Promise<CreditorBankAccountResponse>;
+    list(requestParameters: CreditorBankAccountListRequest): Promise<CreditorBankAccountListResponse>;
+    find(identity: string): Promise<CreditorBankAccountResponse>;
+    disable(identity: string): Promise<CreditorBankAccountResponse>;
 }
 export {};

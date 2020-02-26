@@ -4,28 +4,26 @@ class EventService {
     constructor(api) {
         this.api = api;
     }
-    async list(requestParameters, headers = {}) {
+    async list(requestParameters) {
         const urlParameters = [];
         const request = {
             path: '/events',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, headers = {}) {
+    async find(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/events/:identity',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

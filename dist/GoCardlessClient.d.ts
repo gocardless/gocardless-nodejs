@@ -17,7 +17,7 @@ import { PayoutItemService } from './services/PayoutItemService';
 import { RedirectFlowService } from './services/RedirectFlowService';
 import { RefundService } from './services/RefundService';
 import { SubscriptionService } from './services/SubscriptionService';
-export declare class GoCardlessClient {
+declare class GoCardlessClient {
     private _api;
     private _bankDetailsLookups;
     private _creditors;
@@ -57,3 +57,4 @@ export declare class GoCardlessClient {
     get refunds(): RefundService;
     get subscriptions(): SubscriptionService;
 }
+export = GoCardlessClient;

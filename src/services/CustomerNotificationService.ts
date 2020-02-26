@@ -26,18 +26,14 @@ export class CustomerNotificationService {
     this.api = api;
   }
 
-  async handle(
-    identity: string,
-    headers: object = {}
-  ): Promise<CustomerNotificationResponse> {
+  async handle(identity: string): Promise<CustomerNotificationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customer_notifications/:identity/actions/handle',
-      method: 'POST',
+      method: 'post',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

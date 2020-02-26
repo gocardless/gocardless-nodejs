@@ -51,16 +51,16 @@ export class BankDetailsLookupService {
 
   async create(
     requestParameters: BankDetailsLookupCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<BankDetailsLookupResponse> {
     const urlParameters = [];
     const request = {
       path: '/bank_details_lookups',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'bank_details_lookups',
-      headers,
+      idempotencyKey,
       fetch: undefined,
     };
 

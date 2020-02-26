@@ -190,17 +190,17 @@ export class CustomerService {
 
   async create(
     requestParameters: CustomerCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<CustomerResponse> {
     const urlParameters = [];
     const request = {
       path: '/customers',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'customers',
-      headers,
-      fetch: async (identity, headers) => this.find(identity, headers),
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response: CustomerResponse = await this.api.request(request);
@@ -208,17 +208,15 @@ export class CustomerService {
   }
 
   async list(
-    requestParameters: CustomerListRequest,
-    headers: object = {}
+    requestParameters: CustomerListRequest
   ): Promise<CustomerListResponse> {
     const urlParameters = [];
     const request = {
       path: '/customers',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -226,18 +224,14 @@ export class CustomerService {
     return response;
   }
 
-  async find(
-    identity: string,
-    headers: object = {}
-  ): Promise<CustomerResponse> {
+  async find(identity: string): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customers/:identity',
-      method: 'GET',
+      method: 'get',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 
@@ -247,17 +241,15 @@ export class CustomerService {
 
   async update(
     identity: string,
-    requestParameters: CustomerUpdateRequest,
-    headers: object = {}
+    requestParameters: CustomerUpdateRequest
   ): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customers/:identity',
-      method: 'PUT',
+      method: 'put',
       urlParameters,
       requestParameters,
       payloadKey: 'customers',
-      headers,
       fetch: null,
     };
 
@@ -265,18 +257,14 @@ export class CustomerService {
     return response;
   }
 
-  async remove(
-    identity: string,
-    headers: object = {}
-  ): Promise<CustomerResponse> {
+  async remove(identity: string): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const request = {
       path: '/customers/:identity',
-      method: 'DELETE',
+      method: 'delete',
       urlParameters,
 
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

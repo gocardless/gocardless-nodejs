@@ -23,7 +23,7 @@ interface EventListRequest {
 export declare class EventService {
     private api;
     constructor(api: any);
-    list(requestParameters: EventListRequest, headers?: object): Promise<EventListResponse>;
-    find(identity: string, headers?: object): Promise<EventResponse>;
+    list(requestParameters: EventListRequest): Promise<EventListResponse>;
+    find(identity: string): Promise<EventResponse>;
 }
 export {};

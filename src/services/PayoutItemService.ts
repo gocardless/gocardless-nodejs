@@ -41,17 +41,15 @@ export class PayoutItemService {
   }
 
   async list(
-    requestParameters: PayoutItemListRequest,
-    headers: object = {}
+    requestParameters: PayoutItemListRequest
   ): Promise<PayoutItemListResponse> {
     const urlParameters = [];
     const request = {
       path: '/payout_items',
-      method: 'GET',
+      method: 'get',
       urlParameters,
       requestParameters,
       payloadKey: null,
-      headers,
       fetch: null,
     };
 

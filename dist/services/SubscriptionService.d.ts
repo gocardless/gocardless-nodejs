@@ -44,10 +44,10 @@ interface SubscriptionCancelRequest {
 export declare class SubscriptionService {
     private api;
     constructor(api: any);
-    create(requestParameters: SubscriptionCreateRequest, headers?: object): Promise<SubscriptionResponse>;
-    list(requestParameters: SubscriptionListRequest, headers?: object): Promise<SubscriptionListResponse>;
-    find(identity: string, headers?: object): Promise<SubscriptionResponse>;
-    update(identity: string, requestParameters: SubscriptionUpdateRequest, headers?: object): Promise<SubscriptionResponse>;
-    cancel(identity: string, requestParameters: SubscriptionCancelRequest, headers?: object): Promise<SubscriptionResponse>;
+    create(requestParameters: SubscriptionCreateRequest, idempotencyKey?: string): Promise<SubscriptionResponse>;
+    list(requestParameters: SubscriptionListRequest): Promise<SubscriptionListResponse>;
+    find(identity: string): Promise<SubscriptionResponse>;
+    update(identity: string, requestParameters: SubscriptionUpdateRequest): Promise<SubscriptionResponse>;
+    cancel(identity: string, requestParameters: SubscriptionCancelRequest): Promise<SubscriptionResponse>;
 }
 export {};

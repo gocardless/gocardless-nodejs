@@ -4,42 +4,40 @@ class RedirectFlowService {
     constructor(api) {
         this.api = api;
     }
-    async create(requestParameters, headers = {}) {
+    async create(requestParameters, idempotencyKey = '') {
         const urlParameters = [];
         const request = {
             path: '/redirect_flows',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: 'redirect_flows',
-            headers,
-            fetch: async (identity, headers) => this.find(identity, headers),
+            idempotencyKey,
+            fetch: async (identity) => this.find(identity),
         };
         const response = await this.api.request(request);
         return response;
     }
-    async find(identity, headers = {}) {
+    async find(identity) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/redirect_flows/:identity',
-            method: 'GET',
+            method: 'get',
             urlParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);
         return response;
     }
-    async complete(identity, requestParameters, headers = {}) {
+    async complete(identity, requestParameters) {
         const urlParameters = [{ key: 'identity', value: identity }];
         const request = {
             path: '/redirect_flows/:identity/actions/complete',
-            method: 'POST',
+            method: 'post',
             urlParameters,
             requestParameters,
             payloadKey: null,
-            headers,
             fetch: null,
         };
         const response = await this.api.request(request);

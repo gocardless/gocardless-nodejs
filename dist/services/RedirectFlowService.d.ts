@@ -16,8 +16,8 @@ interface RedirectFlowCompleteRequest {
 export declare class RedirectFlowService {
     private api;
     constructor(api: any);
-    create(requestParameters: RedirectFlowCreateRequest, headers?: object): Promise<RedirectFlowResponse>;
-    find(identity: string, headers?: object): Promise<RedirectFlowResponse>;
-    complete(identity: string, requestParameters: RedirectFlowCompleteRequest, headers?: object): Promise<RedirectFlowResponse>;
+    create(requestParameters: RedirectFlowCreateRequest, idempotencyKey?: string): Promise<RedirectFlowResponse>;
+    find(identity: string): Promise<RedirectFlowResponse>;
+    complete(identity: string, requestParameters: RedirectFlowCompleteRequest): Promise<RedirectFlowResponse>;
 }
 export {};

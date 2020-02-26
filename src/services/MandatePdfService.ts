@@ -134,16 +134,16 @@ export class MandatePdfService {
 
   async create(
     requestParameters: MandatePdfCreateRequest,
-    headers: object = {}
+    idempotencyKey = ''
   ): Promise<MandatePdfResponse> {
     const urlParameters = [];
     const request = {
       path: '/mandate_pdfs',
-      method: 'POST',
+      method: 'post',
       urlParameters,
       requestParameters,
       payloadKey: 'mandate_pdfs',
-      headers,
+      idempotencyKey,
       fetch: undefined,
     };
 

@@ -39,7 +39,7 @@ import { RefundService } from './services/RefundService';
 
 import { SubscriptionService } from './services/SubscriptionService';
 
-export class GoCardlessClient {
+class GoCardlessClient {
   private _api: Api;
 
   private _bankDetailsLookups: BankDetailsLookupService;
@@ -228,3 +228,5 @@ export class GoCardlessClient {
     return this._subscriptions;
   }
 }
+
+export = GoCardlessClient;

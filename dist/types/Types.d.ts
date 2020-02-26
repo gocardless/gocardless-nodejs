@@ -736,7 +736,6 @@ export interface JsonMap {
 export interface JsonArray extends Array<JsonField> {
 }
 export interface ResponseMetadata {
-    request: object;
     response: object;
 }
 export interface Fx {

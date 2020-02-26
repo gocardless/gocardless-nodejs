@@ -12,6 +12,6 @@ interface BankDetailsLookupCreateRequest {
 export declare class BankDetailsLookupService {
     private api;
     constructor(api: any);
-    create(requestParameters: BankDetailsLookupCreateRequest, headers?: object): Promise<BankDetailsLookupResponse>;
+    create(requestParameters: BankDetailsLookupCreateRequest, idempotencyKey?: string): Promise<BankDetailsLookupResponse>;
 }
 export {};

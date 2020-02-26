@@ -31,10 +31,10 @@ interface CustomerBankAccountUpdateRequest {
 export declare class CustomerBankAccountService {
     private api;
     constructor(api: any);
-    create(requestParameters: CustomerBankAccountCreateRequest, headers?: object): Promise<CustomerBankAccountResponse>;
-    list(requestParameters: CustomerBankAccountListRequest, headers?: object): Promise<CustomerBankAccountListResponse>;
-    find(identity: string, headers?: object): Promise<CustomerBankAccountResponse>;
-    update(identity: string, requestParameters: CustomerBankAccountUpdateRequest, headers?: object): Promise<CustomerBankAccountResponse>;
-    disable(identity: string, headers?: object): Promise<CustomerBankAccountResponse>;
+    create(requestParameters: CustomerBankAccountCreateRequest, idempotencyKey?: string): Promise<CustomerBankAccountResponse>;
+    list(requestParameters: CustomerBankAccountListRequest): Promise<CustomerBankAccountListResponse>;
+    find(identity: string): Promise<CustomerBankAccountResponse>;
+    update(identity: string, requestParameters: CustomerBankAccountUpdateRequest): Promise<CustomerBankAccountResponse>;
+    disable(identity: string): Promise<CustomerBankAccountResponse>;
 }
 export {};
