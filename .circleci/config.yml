@@ -1,28 +1,62 @@
----
-# This is a scaffold CircleCI config to help you get started with yours, and
-# check if CircleCI has been properly integrated with your new repository.
-#
-# Refer to CircleCI's configuration reference to build on:
-# https://circleci.com/docs/2.0/configuration-reference/
-
 version: 2
+references:
+  build_directory: &build_directory
+    '/built-library'
+
+  dist_folder: &dist_folder
+    '/built-library/dist'
+
+  node_image: &node_image
+    working_directory: *build_directory
+    docker:
+      - image: "node:10"
 
 jobs:
-  make me a bagel:
-    docker:
-      - image: circleci/ruby:latest
+  transpile_library:
+    <<: *node_image
     steps:
-      - add_ssh_keys
       - checkout
+      - run: npm install
+      - run: npm install -g typescript
+      - run: tsc -p .
+      - persist_to_workspace:
+          root: *build_directory
+          paths:
+            - "*"
+    environment:
+      OUT_DIR: *build_directory
+      DIST_FOLDER: *dist_folder
+
+  publish_to_npm:
+    <<: *node_image
+    steps:
+      - checkout
+      - attach_workspace:
+          at: *build_directory
+      - run: cp package.json $DIST_FOLDER
+      - run: npm install
       - run:
-          command: |
-            set +x
-            git clone git@github.com:gocardless/healthcheck.git || \
-            echo "Something went wrong, please let Developer Enablement know"
-            echo "Everything seems to be hooked-up properly. Here's a bagel!"
+          name: Authenticate w/NPM.
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > .npmrc
+      - run:
+          name: Publish the library.
+          # XXX: Remove the `dry-run` flag.
+          command: npm publish $DIST_FOLDER --dry-run
+          # XXX: Remove the `dry-run` flag.
+    environment:
+      OUT_DIR: *build_directory
+      DIST_FOLDER: *dist_folder
+
 
 workflows:
   version: 2
-  make me a bagel:
+  deploy_library:
     jobs:
-    - make me a bagel
+      - transpile_library
+      - publish_to_npm:
+          requires:
+            - transpile_library
+          filters:
+            branches:
+              only:
+                - master
