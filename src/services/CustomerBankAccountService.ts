@@ -126,7 +126,7 @@ export class CustomerBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -144,12 +144,26 @@ export class CustomerBankAccountService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CustomerBankAccountListResponse = {
-      customer_bank_accounts: response.body['customer_bank_accounts'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: CustomerBankAccountListRequest
+  ): AsyncGenerator<CustomerBankAccount, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const customerbankaccount of list.customer_bank_accounts) {
+        yield customerbankaccount;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<CustomerBankAccountResponse> {
@@ -169,7 +183,7 @@ export class CustomerBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -192,7 +206,7 @@ export class CustomerBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async disable(identity: string): Promise<CustomerBankAccountResponse> {
@@ -212,6 +226,6 @@ export class CustomerBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

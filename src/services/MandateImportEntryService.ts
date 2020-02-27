@@ -85,7 +85,7 @@ export class MandateImportEntryService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -103,11 +103,25 @@ export class MandateImportEntryService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: MandateImportEntryListResponse = {
-      mandate_import_entries: response.body['mandate_import_entries'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: MandateImportEntryListRequest
+  ): AsyncGenerator<MandateImportEntry, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const mandateimportentry of list.mandate_import_entries) {
+        yield mandateimportentry;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 }

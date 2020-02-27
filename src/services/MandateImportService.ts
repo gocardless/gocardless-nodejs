@@ -54,7 +54,7 @@ export class MandateImportService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async find(identity: string): Promise<MandateImportResponse> {
@@ -74,7 +74,7 @@ export class MandateImportService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async submit(identity: string): Promise<MandateImportResponse> {
@@ -94,7 +94,7 @@ export class MandateImportService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async cancel(identity: string): Promise<MandateImportResponse> {
@@ -114,6 +114,6 @@ export class MandateImportService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

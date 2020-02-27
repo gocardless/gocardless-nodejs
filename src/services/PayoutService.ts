@@ -84,12 +84,26 @@ export class PayoutService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PayoutListResponse = {
-      payouts: response.body['payouts'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: PayoutListRequest
+  ): AsyncGenerator<Payout, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const payout of list.payouts) {
+        yield payout;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<PayoutResponse> {
@@ -109,6 +123,6 @@ export class PayoutService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

@@ -128,7 +128,7 @@ export class InstalmentScheduleService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -146,12 +146,26 @@ export class InstalmentScheduleService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: InstalmentScheduleListResponse = {
-      instalment_schedules: response.body['instalment_schedules'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: InstalmentScheduleListRequest
+  ): AsyncGenerator<InstalmentSchedule, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const instalmentschedule of list.instalment_schedules) {
+        yield instalmentschedule;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<InstalmentScheduleResponse> {
@@ -171,7 +185,7 @@ export class InstalmentScheduleService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async cancel(identity: string): Promise<InstalmentScheduleResponse> {
@@ -191,6 +205,6 @@ export class InstalmentScheduleService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

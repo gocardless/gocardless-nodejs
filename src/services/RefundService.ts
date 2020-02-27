@@ -121,7 +121,7 @@ export class RefundService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -139,12 +139,26 @@ export class RefundService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: RefundListResponse = {
-      refunds: response.body['refunds'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: RefundListRequest
+  ): AsyncGenerator<Refund, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const refund of list.refunds) {
+        yield refund;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<RefundResponse> {
@@ -164,7 +178,7 @@ export class RefundService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -187,6 +201,6 @@ export class RefundService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

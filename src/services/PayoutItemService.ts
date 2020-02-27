@@ -55,11 +55,25 @@ export class PayoutItemService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PayoutItemListResponse = {
-      payout_items: response.body['payout_items'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: PayoutItemListRequest
+  ): AsyncGenerator<PayoutItem, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const payoutitem of list.payout_items) {
+        yield payoutitem;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 }

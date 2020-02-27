@@ -82,10 +82,10 @@ describe('api', () => {
       expect(headers['Accept']).toBe('application/json');
       expect(headers['Authorization']).toBe(`Bearer ${token}`);
       expect(headers['GoCardless-Client-Library']).toBe('gocardless-nodejs');
-      expect(headers['GoCardless-Client-Version']).toBe('0.1.0');
+      expect(headers['GoCardless-Client-Version']).toBe('0.2.0');
       expect(headers['GoCardless-Version']).toBe('2015-07-06');
       expect(headers['User-Agent']).toBe(
-        'gocardless-nodejs/0.1.0 node/v12.14.1 darwin/18.7.0/18.7.0'
+        'gocardless-nodejs/0.2.0 node/v12.14.1 darwin/18.7.0/18.7.0'
       );
     });
 

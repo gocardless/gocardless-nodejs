@@ -70,6 +70,6 @@ export class BankDetailsLookupService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

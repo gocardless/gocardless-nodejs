@@ -153,6 +153,6 @@ export class MandatePdfService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

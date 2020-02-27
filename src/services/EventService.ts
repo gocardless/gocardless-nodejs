@@ -111,12 +111,26 @@ export class EventService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: EventListResponse = {
-      events: response.body['events'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: EventListRequest
+  ): AsyncGenerator<Event, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const event of list.events) {
+        yield event;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<EventResponse> {
@@ -136,6 +150,6 @@ export class EventService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }
