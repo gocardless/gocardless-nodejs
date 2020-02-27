@@ -5,6 +5,7 @@ import {
   Subscription,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -20,7 +21,7 @@ interface SubscriptionResponse extends Subscription, APIResponse {}
 
 interface SubscriptionListResponse extends APIResponse {
   subscriptions: Subscription[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface SubscriptionCreateRequest {

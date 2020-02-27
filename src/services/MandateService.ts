@@ -5,6 +5,7 @@ import {
   Mandate,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface MandateResponse extends Mandate, APIResponse {}
 
 interface MandateListResponse extends APIResponse {
   mandates: Mandate[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface MandateCreateRequest {

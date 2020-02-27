@@ -5,6 +5,7 @@ import {
   CustomerBankAccount,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -20,7 +21,7 @@ interface CustomerBankAccountResponse
 
 interface CustomerBankAccountListResponse extends APIResponse {
   customer_bank_accounts: CustomerBankAccount[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface CustomerBankAccountCreateRequest {

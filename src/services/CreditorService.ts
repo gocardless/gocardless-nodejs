@@ -5,6 +5,7 @@ import {
   Creditor,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -17,7 +18,7 @@ interface CreditorResponse extends Creditor, APIResponse {}
 
 interface CreditorListResponse extends APIResponse {
   creditors: Creditor[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface CreditorCreateRequest {

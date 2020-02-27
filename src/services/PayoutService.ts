@@ -5,6 +5,7 @@ import {
   Payout,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface PayoutResponse extends Payout, APIResponse {}
 
 interface PayoutListResponse extends APIResponse {
   payouts: Payout[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface PayoutListRequest {

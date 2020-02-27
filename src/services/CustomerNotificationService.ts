@@ -5,6 +5,7 @@ import {
   CustomerNotification,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -17,7 +18,7 @@ interface CustomerNotificationResponse
 
 interface CustomerNotificationListResponse extends APIResponse {
   customer_notifications: CustomerNotification[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 export class CustomerNotificationService {

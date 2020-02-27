@@ -5,6 +5,7 @@ import {
   MandatePdf,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface MandatePdfResponse extends MandatePdf, APIResponse {}
 
 interface MandatePdfListResponse extends APIResponse {
   mandate_pdfs: MandatePdf[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface MandatePdfCreateRequest {

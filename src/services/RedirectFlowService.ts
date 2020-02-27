@@ -5,6 +5,7 @@ import {
   RedirectFlow,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface RedirectFlowResponse extends RedirectFlow, APIResponse {}
 
 interface RedirectFlowListResponse extends APIResponse {
   redirect_flows: RedirectFlow[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface RedirectFlowCreateRequest {

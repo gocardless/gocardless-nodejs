@@ -5,6 +5,7 @@ import {
   Refund,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface RefundResponse extends Refund, APIResponse {}
 
 interface RefundListResponse extends APIResponse {
   refunds: Refund[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface RefundCreateRequest {

@@ -5,6 +5,7 @@ import {
   Event,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface EventResponse extends Event, APIResponse {}
 
 interface EventListResponse extends APIResponse {
   events: Event[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface EventListRequest {

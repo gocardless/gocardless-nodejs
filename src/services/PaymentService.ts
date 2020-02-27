@@ -5,6 +5,7 @@ import {
   Payment,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -21,7 +22,7 @@ interface PaymentResponse extends Payment, APIResponse {}
 
 interface PaymentListResponse extends APIResponse {
   payments: Payment[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface PaymentCreateRequest {

@@ -5,6 +5,7 @@ import {
   Customer,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -16,7 +17,7 @@ interface CustomerResponse extends Customer, APIResponse {}
 
 interface CustomerListResponse extends APIResponse {
   customers: Customer[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface CustomerCreateRequest {
