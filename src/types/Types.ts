@@ -1903,8 +1903,8 @@ export interface JsonMap {
 }
 export interface JsonArray extends Array<JsonField> {}
 
-export interface ResponseMetadata {
-  response: object;
+export interface APIResponse {
+  __response__: object;
 }
 
 export interface Fx {

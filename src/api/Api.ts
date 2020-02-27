@@ -94,14 +94,12 @@ export class Api {
     try {
       const response: APIResponse = await request;
       return {
-        ...response.body,
-        __metadata__: {
-          response: {
-            headers: response.headers,
-            statusCode: response.statusCode,
-            statusMessage: response.statusMessage,
-            url: response.url,
-          },
+        body: response.body,
+        __response__: {
+          headers: response.headers,
+          statusCode: response.statusCode,
+          statusMessage: response.statusMessage,
+          url: response.url,
         },
       };
     } catch (error) {

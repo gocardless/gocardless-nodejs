@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   CreditorBankAccount,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,13 @@ import {
   CreatedAtFilter,
 } from '../types/Types';
 
-interface CreditorBankAccountResponse extends CreditorBankAccount {
-  __metadata__: ResponseMetadata;
-}
+interface CreditorBankAccountResponse
+  extends CreditorBankAccount,
+    APIResponse {}
 
-interface CreditorBankAccountListResponse extends Array<CreditorBankAccount> {
-  __metadata__: ResponseMetadata;
+interface CreditorBankAccountListResponse extends APIResponse {
+  creditor_bank_accounts: CreditorBankAccount[];
+  meta: JsonMap;
 }
 
 interface CreditorBankAccountCreateRequest {
@@ -106,7 +107,7 @@ export class CreditorBankAccountService {
     idempotencyKey = ''
   ): Promise<CreditorBankAccountResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/creditor_bank_accounts',
       method: 'post',
       urlParameters,
@@ -116,9 +117,12 @@ export class CreditorBankAccountService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: CreditorBankAccountResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorBankAccountResponse = {
+      ...response.body['creditor_bank_accounts'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -126,7 +130,7 @@ export class CreditorBankAccountService {
     requestParameters: CreditorBankAccountListRequest
   ): Promise<CreditorBankAccountListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/creditor_bank_accounts',
       method: 'get',
       urlParameters,
@@ -135,15 +139,19 @@ export class CreditorBankAccountService {
       fetch: null,
     };
 
-    const response: CreditorBankAccountListResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorBankAccountListResponse = {
+      creditor_bank_accounts: response.body['creditor_bank_accounts'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<CreditorBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/creditor_bank_accounts/:identity',
       method: 'get',
       urlParameters,
@@ -152,15 +160,18 @@ export class CreditorBankAccountService {
       fetch: null,
     };
 
-    const response: CreditorBankAccountResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorBankAccountResponse = {
+      ...response.body['creditor_bank_accounts'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async disable(identity: string): Promise<CreditorBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/creditor_bank_accounts/:identity/actions/disable',
       method: 'post',
       urlParameters,
@@ -169,9 +180,12 @@ export class CreditorBankAccountService {
       fetch: null,
     };
 
-    const response: CreditorBankAccountResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorBankAccountResponse = {
+      ...response.body['creditor_bank_accounts'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

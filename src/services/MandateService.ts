@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Mandate,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   MandateStatus,
 } from '../types/Types';
 
-interface MandateResponse extends Mandate {
-  __metadata__: ResponseMetadata;
-}
+interface MandateResponse extends Mandate, APIResponse {}
 
-interface MandateListResponse extends Array<Mandate> {
-  __metadata__: ResponseMetadata;
+interface MandateListResponse extends APIResponse {
+  mandates: Mandate[];
+  meta: JsonMap;
 }
 
 interface MandateCreateRequest {
@@ -115,7 +114,7 @@ export class MandateService {
     idempotencyKey = ''
   ): Promise<MandateResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/mandates',
       method: 'post',
       urlParameters,
@@ -125,7 +124,12 @@ export class MandateService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: MandateResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateResponse = {
+      ...response.body['mandates'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -133,7 +137,7 @@ export class MandateService {
     requestParameters: MandateListRequest
   ): Promise<MandateListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/mandates',
       method: 'get',
       urlParameters,
@@ -142,13 +146,19 @@ export class MandateService {
       fetch: null,
     };
 
-    const response: MandateListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateListResponse = {
+      mandates: response.body['mandates'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandates/:identity',
       method: 'get',
       urlParameters,
@@ -157,7 +167,12 @@ export class MandateService {
       fetch: null,
     };
 
-    const response: MandateResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateResponse = {
+      ...response.body['mandates'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -166,7 +181,7 @@ export class MandateService {
     requestParameters: MandateUpdateRequest
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandates/:identity',
       method: 'put',
       urlParameters,
@@ -175,7 +190,12 @@ export class MandateService {
       fetch: null,
     };
 
-    const response: MandateResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateResponse = {
+      ...response.body['mandates'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -184,7 +204,7 @@ export class MandateService {
     requestParameters: MandateCancelRequest
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandates/:identity/actions/cancel',
       method: 'post',
       urlParameters,
@@ -193,7 +213,12 @@ export class MandateService {
       fetch: null,
     };
 
-    const response: MandateResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateResponse = {
+      ...response.body['mandates'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -202,7 +227,7 @@ export class MandateService {
     requestParameters: MandateReinstateRequest
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandates/:identity/actions/reinstate',
       method: 'post',
       urlParameters,
@@ -211,7 +236,12 @@ export class MandateService {
       fetch: null,
     };
 
-    const response: MandateResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateResponse = {
+      ...response.body['mandates'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

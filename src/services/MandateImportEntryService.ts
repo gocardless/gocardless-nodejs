@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   MandateImportEntry,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -15,12 +15,11 @@ import {
   MandateImportEntryCreateRequestLinks,
 } from '../types/Types';
 
-interface MandateImportEntryResponse extends MandateImportEntry {
-  __metadata__: ResponseMetadata;
-}
+interface MandateImportEntryResponse extends MandateImportEntry, APIResponse {}
 
-interface MandateImportEntryListResponse extends Array<MandateImportEntry> {
-  __metadata__: ResponseMetadata;
+interface MandateImportEntryListResponse extends APIResponse {
+  mandate_import_entries: MandateImportEntry[];
+  meta: JsonMap;
 }
 
 interface MandateImportEntryCreateRequest {
@@ -69,7 +68,7 @@ export class MandateImportEntryService {
     idempotencyKey = ''
   ): Promise<MandateImportEntryResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/mandate_import_entries',
       method: 'post',
       urlParameters,
@@ -79,9 +78,12 @@ export class MandateImportEntryService {
       fetch: undefined,
     };
 
-    const response: MandateImportEntryResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateImportEntryResponse = {
+      ...response.body['mandate_import_entries'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -89,7 +91,7 @@ export class MandateImportEntryService {
     requestParameters: MandateImportEntryListRequest
   ): Promise<MandateImportEntryListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/mandate_import_entries',
       method: 'get',
       urlParameters,
@@ -98,9 +100,13 @@ export class MandateImportEntryService {
       fetch: null,
     };
 
-    const response: MandateImportEntryListResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateImportEntryListResponse = {
+      mandate_import_entries: response.body['mandate_import_entries'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

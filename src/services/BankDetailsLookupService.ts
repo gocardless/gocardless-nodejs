@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   BankDetailsLookup,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -11,12 +11,11 @@ import {
   PayoutCurrency,
 } from '../types/Types';
 
-interface BankDetailsLookupResponse extends BankDetailsLookup {
-  __metadata__: ResponseMetadata;
-}
+interface BankDetailsLookupResponse extends BankDetailsLookup, APIResponse {}
 
-interface BankDetailsLookupListResponse extends Array<BankDetailsLookup> {
-  __metadata__: ResponseMetadata;
+interface BankDetailsLookupListResponse extends APIResponse {
+  bank_details_lookups: BankDetailsLookup[];
+  meta: JsonMap;
 }
 
 interface BankDetailsLookupCreateRequest {
@@ -54,7 +53,7 @@ export class BankDetailsLookupService {
     idempotencyKey = ''
   ): Promise<BankDetailsLookupResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/bank_details_lookups',
       method: 'post',
       urlParameters,
@@ -64,7 +63,12 @@ export class BankDetailsLookupService {
       fetch: undefined,
     };
 
-    const response: BankDetailsLookupResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BankDetailsLookupResponse = {
+      ...response.body['bank_details_lookups'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

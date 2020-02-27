@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   CustomerNotification,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -11,12 +11,13 @@ import {
   PayoutCurrency,
 } from '../types/Types';
 
-interface CustomerNotificationResponse extends CustomerNotification {
-  __metadata__: ResponseMetadata;
-}
+interface CustomerNotificationResponse
+  extends CustomerNotification,
+    APIResponse {}
 
-interface CustomerNotificationListResponse extends Array<CustomerNotification> {
-  __metadata__: ResponseMetadata;
+interface CustomerNotificationListResponse extends APIResponse {
+  customer_notifications: CustomerNotification[];
+  meta: JsonMap;
 }
 
 export class CustomerNotificationService {
@@ -28,7 +29,7 @@ export class CustomerNotificationService {
 
   async handle(identity: string): Promise<CustomerNotificationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/customer_notifications/:identity/actions/handle',
       method: 'post',
       urlParameters,
@@ -37,9 +38,12 @@ export class CustomerNotificationService {
       fetch: null,
     };
 
-    const response: CustomerNotificationResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CustomerNotificationResponse = {
+      ...response.body['customer_notifications'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

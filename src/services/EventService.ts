@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Event,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   EventResourceType,
 } from '../types/Types';
 
-interface EventResponse extends Event {
-  __metadata__: ResponseMetadata;
-}
+interface EventResponse extends Event, APIResponse {}
 
-interface EventListResponse extends Array<Event> {
-  __metadata__: ResponseMetadata;
+interface EventListResponse extends APIResponse {
+  events: Event[];
+  meta: JsonMap;
 }
 
 interface EventListRequest {
@@ -100,7 +99,7 @@ export class EventService {
 
   async list(requestParameters: EventListRequest): Promise<EventListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/events',
       method: 'get',
       urlParameters,
@@ -109,13 +108,19 @@ export class EventService {
       fetch: null,
     };
 
-    const response: EventListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: EventListResponse = {
+      events: response.body['events'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<EventResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/events/:identity',
       method: 'get',
       urlParameters,
@@ -124,7 +129,12 @@ export class EventService {
       fetch: null,
     };
 
-    const response: EventResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: EventResponse = {
+      ...response.body['events'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

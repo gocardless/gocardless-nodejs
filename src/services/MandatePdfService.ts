@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   MandatePdf,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   MandatePdfSubscriptionFrequency,
 } from '../types/Types';
 
-interface MandatePdfResponse extends MandatePdf {
-  __metadata__: ResponseMetadata;
-}
+interface MandatePdfResponse extends MandatePdf, APIResponse {}
 
-interface MandatePdfListResponse extends Array<MandatePdf> {
-  __metadata__: ResponseMetadata;
+interface MandatePdfListResponse extends APIResponse {
+  mandate_pdfs: MandatePdf[];
+  meta: JsonMap;
 }
 
 interface MandatePdfCreateRequest {
@@ -137,7 +136,7 @@ export class MandatePdfService {
     idempotencyKey = ''
   ): Promise<MandatePdfResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/mandate_pdfs',
       method: 'post',
       urlParameters,
@@ -147,7 +146,12 @@ export class MandatePdfService {
       fetch: undefined,
     };
 
-    const response: MandatePdfResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandatePdfResponse = {
+      ...response.body['mandate_pdfs'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }
