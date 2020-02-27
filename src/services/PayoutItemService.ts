@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   PayoutItem,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -11,12 +11,11 @@ import {
   PayoutCurrency,
 } from '../types/Types';
 
-interface PayoutItemResponse extends PayoutItem {
-  __metadata__: ResponseMetadata;
-}
+interface PayoutItemResponse extends PayoutItem, APIResponse {}
 
-interface PayoutItemListResponse extends Array<PayoutItem> {
-  __metadata__: ResponseMetadata;
+interface PayoutItemListResponse extends APIResponse {
+  payout_items: PayoutItem[];
+  meta: JsonMap;
 }
 
 interface PayoutItemListRequest {
@@ -44,7 +43,7 @@ export class PayoutItemService {
     requestParameters: PayoutItemListRequest
   ): Promise<PayoutItemListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/payout_items',
       method: 'get',
       urlParameters,
@@ -53,7 +52,13 @@ export class PayoutItemService {
       fetch: null,
     };
 
-    const response: PayoutItemListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: PayoutItemListResponse = {
+      payout_items: response.body['payout_items'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

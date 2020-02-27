@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   MandateImport,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -12,12 +12,11 @@ import {
   MandateImportScheme,
 } from '../types/Types';
 
-interface MandateImportResponse extends MandateImport {
-  __metadata__: ResponseMetadata;
-}
+interface MandateImportResponse extends MandateImport, APIResponse {}
 
-interface MandateImportListResponse extends Array<MandateImport> {
-  __metadata__: ResponseMetadata;
+interface MandateImportListResponse extends APIResponse {
+  mandate_imports: MandateImport[];
+  meta: JsonMap;
 }
 
 interface MandateImportCreateRequest {
@@ -38,7 +37,7 @@ export class MandateImportService {
     idempotencyKey = ''
   ): Promise<MandateImportResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/mandate_imports',
       method: 'post',
       urlParameters,
@@ -48,13 +47,18 @@ export class MandateImportService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: MandateImportResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateImportResponse = {
+      ...response.body['mandate_imports'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandate_imports/:identity',
       method: 'get',
       urlParameters,
@@ -63,13 +67,18 @@ export class MandateImportService {
       fetch: null,
     };
 
-    const response: MandateImportResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateImportResponse = {
+      ...response.body['mandate_imports'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async submit(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandate_imports/:identity/actions/submit',
       method: 'post',
       urlParameters,
@@ -78,13 +87,18 @@ export class MandateImportService {
       fetch: null,
     };
 
-    const response: MandateImportResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateImportResponse = {
+      ...response.body['mandate_imports'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async cancel(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/mandate_imports/:identity/actions/cancel',
       method: 'post',
       urlParameters,
@@ -93,7 +107,12 @@ export class MandateImportService {
       fetch: null,
     };
 
-    const response: MandateImportResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: MandateImportResponse = {
+      ...response.body['mandate_imports'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

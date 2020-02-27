@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   RedirectFlow,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   RedirectFlowScheme,
 } from '../types/Types';
 
-interface RedirectFlowResponse extends RedirectFlow {
-  __metadata__: ResponseMetadata;
-}
+interface RedirectFlowResponse extends RedirectFlow, APIResponse {}
 
-interface RedirectFlowListResponse extends Array<RedirectFlow> {
-  __metadata__: ResponseMetadata;
+interface RedirectFlowListResponse extends APIResponse {
+  redirect_flows: RedirectFlow[];
+  meta: JsonMap;
 }
 
 interface RedirectFlowCreateRequest {
@@ -73,7 +72,7 @@ export class RedirectFlowService {
     idempotencyKey = ''
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/redirect_flows',
       method: 'post',
       urlParameters,
@@ -83,13 +82,18 @@ export class RedirectFlowService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: RedirectFlowResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RedirectFlowResponse = {
+      ...response.body['redirect_flows'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/redirect_flows/:identity',
       method: 'get',
       urlParameters,
@@ -98,7 +102,12 @@ export class RedirectFlowService {
       fetch: null,
     };
 
-    const response: RedirectFlowResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RedirectFlowResponse = {
+      ...response.body['redirect_flows'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -107,7 +116,7 @@ export class RedirectFlowService {
     requestParameters: RedirectFlowCompleteRequest
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/redirect_flows/:identity/actions/complete',
       method: 'post',
       urlParameters,
@@ -116,7 +125,12 @@ export class RedirectFlowService {
       fetch: null,
     };
 
-    const response: RedirectFlowResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RedirectFlowResponse = {
+      ...response.body['redirect_flows'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

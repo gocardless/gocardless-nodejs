@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Creditor,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -13,12 +13,11 @@ import {
   CreditorUpdateRequestLinks,
 } from '../types/Types';
 
-interface CreditorResponse extends Creditor {
-  __metadata__: ResponseMetadata;
-}
+interface CreditorResponse extends Creditor, APIResponse {}
 
-interface CreditorListResponse extends Array<Creditor> {
-  __metadata__: ResponseMetadata;
+interface CreditorListResponse extends APIResponse {
+  creditors: Creditor[];
+  meta: JsonMap;
 }
 
 interface CreditorCreateRequest {
@@ -106,7 +105,7 @@ export class CreditorService {
     idempotencyKey = ''
   ): Promise<CreditorResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/creditors',
       method: 'post',
       urlParameters,
@@ -116,7 +115,12 @@ export class CreditorService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: CreditorResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorResponse = {
+      ...response.body['creditors'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -124,7 +128,7 @@ export class CreditorService {
     requestParameters: CreditorListRequest
   ): Promise<CreditorListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/creditors',
       method: 'get',
       urlParameters,
@@ -133,13 +137,19 @@ export class CreditorService {
       fetch: null,
     };
 
-    const response: CreditorListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorListResponse = {
+      creditors: response.body['creditors'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/creditors/:identity',
       method: 'get',
       urlParameters,
@@ -148,7 +158,12 @@ export class CreditorService {
       fetch: null,
     };
 
-    const response: CreditorResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorResponse = {
+      ...response.body['creditors'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -157,7 +172,7 @@ export class CreditorService {
     requestParameters: CreditorUpdateRequest
   ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/creditors/:identity',
       method: 'put',
       urlParameters,
@@ -166,7 +181,12 @@ export class CreditorService {
       fetch: null,
     };
 
-    const response: CreditorResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CreditorResponse = {
+      ...response.body['creditors'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

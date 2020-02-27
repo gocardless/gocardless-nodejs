@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Subscription,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -16,12 +16,11 @@ import {
   SubscriptionStatus,
 } from '../types/Types';
 
-interface SubscriptionResponse extends Subscription {
-  __metadata__: ResponseMetadata;
-}
+interface SubscriptionResponse extends Subscription, APIResponse {}
 
-interface SubscriptionListResponse extends Array<Subscription> {
-  __metadata__: ResponseMetadata;
+interface SubscriptionListResponse extends APIResponse {
+  subscriptions: Subscription[];
+  meta: JsonMap;
 }
 
 interface SubscriptionCreateRequest {
@@ -165,7 +164,7 @@ export class SubscriptionService {
     idempotencyKey = ''
   ): Promise<SubscriptionResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/subscriptions',
       method: 'post',
       urlParameters,
@@ -175,7 +174,12 @@ export class SubscriptionService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: SubscriptionResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionResponse = {
+      ...response.body['subscriptions'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -183,7 +187,7 @@ export class SubscriptionService {
     requestParameters: SubscriptionListRequest
   ): Promise<SubscriptionListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/subscriptions',
       method: 'get',
       urlParameters,
@@ -192,13 +196,19 @@ export class SubscriptionService {
       fetch: null,
     };
 
-    const response: SubscriptionListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionListResponse = {
+      subscriptions: response.body['subscriptions'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/subscriptions/:identity',
       method: 'get',
       urlParameters,
@@ -207,7 +217,12 @@ export class SubscriptionService {
       fetch: null,
     };
 
-    const response: SubscriptionResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionResponse = {
+      ...response.body['subscriptions'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -216,7 +231,7 @@ export class SubscriptionService {
     requestParameters: SubscriptionUpdateRequest
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/subscriptions/:identity',
       method: 'put',
       urlParameters,
@@ -225,7 +240,12 @@ export class SubscriptionService {
       fetch: null,
     };
 
-    const response: SubscriptionResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionResponse = {
+      ...response.body['subscriptions'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -234,7 +254,7 @@ export class SubscriptionService {
     requestParameters: SubscriptionCancelRequest
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/subscriptions/:identity/actions/cancel',
       method: 'post',
       urlParameters,
@@ -243,7 +263,12 @@ export class SubscriptionService {
       fetch: null,
     };
 
-    const response: SubscriptionResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionResponse = {
+      ...response.body['subscriptions'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

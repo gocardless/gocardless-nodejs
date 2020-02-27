@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Payout,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   PayoutStatus,
 } from '../types/Types';
 
-interface PayoutResponse extends Payout {
-  __metadata__: ResponseMetadata;
-}
+interface PayoutResponse extends Payout, APIResponse {}
 
-interface PayoutListResponse extends Array<Payout> {
-  __metadata__: ResponseMetadata;
+interface PayoutListResponse extends APIResponse {
+  payouts: Payout[];
+  meta: JsonMap;
 }
 
 interface PayoutListRequest {
@@ -73,7 +72,7 @@ export class PayoutService {
     requestParameters: PayoutListRequest
   ): Promise<PayoutListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/payouts',
       method: 'get',
       urlParameters,
@@ -82,13 +81,19 @@ export class PayoutService {
       fetch: null,
     };
 
-    const response: PayoutListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: PayoutListResponse = {
+      payouts: response.body['payouts'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/payouts/:identity',
       method: 'get',
       urlParameters,
@@ -97,7 +102,12 @@ export class PayoutService {
       fetch: null,
     };
 
-    const response: PayoutResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: PayoutResponse = {
+      ...response.body['payouts'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Refund,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   RefundRefundType,
 } from '../types/Types';
 
-interface RefundResponse extends Refund {
-  __metadata__: ResponseMetadata;
-}
+interface RefundResponse extends Refund, APIResponse {}
 
-interface RefundListResponse extends Array<Refund> {
-  __metadata__: ResponseMetadata;
+interface RefundListResponse extends APIResponse {
+  refunds: Refund[];
+  meta: JsonMap;
 }
 
 interface RefundCreateRequest {
@@ -105,7 +104,7 @@ export class RefundService {
     idempotencyKey = ''
   ): Promise<RefundResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/refunds',
       method: 'post',
       urlParameters,
@@ -115,7 +114,12 @@ export class RefundService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: RefundResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RefundResponse = {
+      ...response.body['refunds'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -123,7 +127,7 @@ export class RefundService {
     requestParameters: RefundListRequest
   ): Promise<RefundListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/refunds',
       method: 'get',
       urlParameters,
@@ -132,13 +136,19 @@ export class RefundService {
       fetch: null,
     };
 
-    const response: RefundListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RefundListResponse = {
+      refunds: response.body['refunds'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/refunds/:identity',
       method: 'get',
       urlParameters,
@@ -147,7 +157,12 @@ export class RefundService {
       fetch: null,
     };
 
-    const response: RefundResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RefundResponse = {
+      ...response.body['refunds'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -156,7 +171,7 @@ export class RefundService {
     requestParameters: RefundUpdateRequest
   ): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/refunds/:identity',
       method: 'put',
       urlParameters,
@@ -165,7 +180,12 @@ export class RefundService {
       fetch: null,
     };
 
-    const response: RefundResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: RefundResponse = {
+      ...response.body['refunds'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

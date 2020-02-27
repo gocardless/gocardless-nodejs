@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   Customer,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -12,12 +12,11 @@ import {
   CreatedAtFilter,
 } from '../types/Types';
 
-interface CustomerResponse extends Customer {
-  __metadata__: ResponseMetadata;
-}
+interface CustomerResponse extends Customer, APIResponse {}
 
-interface CustomerListResponse extends Array<Customer> {
-  __metadata__: ResponseMetadata;
+interface CustomerListResponse extends APIResponse {
+  customers: Customer[];
+  meta: JsonMap;
 }
 
 interface CustomerCreateRequest {
@@ -193,7 +192,7 @@ export class CustomerService {
     idempotencyKey = ''
   ): Promise<CustomerResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/customers',
       method: 'post',
       urlParameters,
@@ -203,7 +202,12 @@ export class CustomerService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: CustomerResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CustomerResponse = {
+      ...response.body['customers'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -211,7 +215,7 @@ export class CustomerService {
     requestParameters: CustomerListRequest
   ): Promise<CustomerListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/customers',
       method: 'get',
       urlParameters,
@@ -220,13 +224,19 @@ export class CustomerService {
       fetch: null,
     };
 
-    const response: CustomerListResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CustomerListResponse = {
+      customers: response.body['customers'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/customers/:identity',
       method: 'get',
       urlParameters,
@@ -235,7 +245,12 @@ export class CustomerService {
       fetch: null,
     };
 
-    const response: CustomerResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CustomerResponse = {
+      ...response.body['customers'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -244,7 +259,7 @@ export class CustomerService {
     requestParameters: CustomerUpdateRequest
   ): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/customers/:identity',
       method: 'put',
       urlParameters,
@@ -253,13 +268,18 @@ export class CustomerService {
       fetch: null,
     };
 
-    const response: CustomerResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CustomerResponse = {
+      ...response.body['customers'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async remove(identity: string): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/customers/:identity',
       method: 'delete',
       urlParameters,
@@ -268,7 +288,12 @@ export class CustomerService {
       fetch: null,
     };
 
-    const response: CustomerResponse = await this.api.request(request);
+    const response = await this.api.request(requestParams);
+    const formattedResponse: CustomerResponse = {
+      ...response.body['customers'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }

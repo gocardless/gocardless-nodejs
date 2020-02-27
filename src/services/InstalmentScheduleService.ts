@@ -3,7 +3,7 @@
 import { Api } from '../api/Api';
 import {
   InstalmentSchedule,
-  ResponseMetadata,
+  APIResponse,
   JsonMap,
   PaymentCurrency,
   CustomerCurrency,
@@ -14,12 +14,11 @@ import {
   InstalmentScheduleStatus,
 } from '../types/Types';
 
-interface InstalmentScheduleResponse extends InstalmentSchedule {
-  __metadata__: ResponseMetadata;
-}
+interface InstalmentScheduleResponse extends InstalmentSchedule, APIResponse {}
 
-interface InstalmentScheduleListResponse extends Array<InstalmentSchedule> {
-  __metadata__: ResponseMetadata;
+interface InstalmentScheduleListResponse extends APIResponse {
+  instalment_schedules: InstalmentSchedule[];
+  meta: JsonMap;
 }
 
 interface InstalmentScheduleCreateRequest {
@@ -112,7 +111,7 @@ export class InstalmentScheduleService {
     idempotencyKey = ''
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/instalment_schedules',
       method: 'post',
       urlParameters,
@@ -122,9 +121,12 @@ export class InstalmentScheduleService {
       fetch: async identity => this.find(identity),
     };
 
-    const response: InstalmentScheduleResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: InstalmentScheduleResponse = {
+      ...response.body['instalment_schedules'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
@@ -132,7 +134,7 @@ export class InstalmentScheduleService {
     requestParameters: InstalmentScheduleListRequest
   ): Promise<InstalmentScheduleListResponse> {
     const urlParameters = [];
-    const request = {
+    const requestParams = {
       path: '/instalment_schedules',
       method: 'get',
       urlParameters,
@@ -141,15 +143,19 @@ export class InstalmentScheduleService {
       fetch: null,
     };
 
-    const response: InstalmentScheduleListResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: InstalmentScheduleListResponse = {
+      instalment_schedules: response.body['instalment_schedules'],
+      meta: response.body['meta'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async find(identity: string): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/instalment_schedules/:identity',
       method: 'get',
       urlParameters,
@@ -158,15 +164,18 @@ export class InstalmentScheduleService {
       fetch: null,
     };
 
-    const response: InstalmentScheduleResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: InstalmentScheduleResponse = {
+      ...response.body['instalment_schedules'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 
   async cancel(identity: string): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
-    const request = {
+    const requestParams = {
       path: '/instalment_schedules/:identity/actions/cancel',
       method: 'post',
       urlParameters,
@@ -175,9 +184,12 @@ export class InstalmentScheduleService {
       fetch: null,
     };
 
-    const response: InstalmentScheduleResponse = await this.api.request(
-      request
-    );
+    const response = await this.api.request(requestParams);
+    const formattedResponse: InstalmentScheduleResponse = {
+      ...response.body['instalment_schedules'],
+      __response__: response.__response__,
+    };
+
     return response;
   }
 }
