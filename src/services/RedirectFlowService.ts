@@ -89,7 +89,7 @@ export class RedirectFlowService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async find(identity: string): Promise<RedirectFlowResponse> {
@@ -109,7 +109,7 @@ export class RedirectFlowService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async complete(
@@ -132,6 +132,6 @@ export class RedirectFlowService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

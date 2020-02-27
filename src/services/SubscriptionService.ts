@@ -181,7 +181,7 @@ export class SubscriptionService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -199,12 +199,26 @@ export class SubscriptionService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: SubscriptionListResponse = {
-      subscriptions: response.body['subscriptions'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: SubscriptionListRequest
+  ): AsyncGenerator<Subscription, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const subscription of list.subscriptions) {
+        yield subscription;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<SubscriptionResponse> {
@@ -224,7 +238,7 @@ export class SubscriptionService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -247,7 +261,7 @@ export class SubscriptionService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async cancel(
@@ -270,6 +284,6 @@ export class SubscriptionService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

@@ -183,7 +183,7 @@ export class PaymentService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -201,12 +201,26 @@ export class PaymentService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentListResponse = {
-      payments: response.body['payments'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: PaymentListRequest
+  ): AsyncGenerator<Payment, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const payment of list.payments) {
+        yield payment;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<PaymentResponse> {
@@ -226,7 +240,7 @@ export class PaymentService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -249,7 +263,7 @@ export class PaymentService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async cancel(
@@ -272,7 +286,7 @@ export class PaymentService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async retry(
@@ -295,6 +309,6 @@ export class PaymentService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

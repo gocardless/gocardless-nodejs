@@ -209,7 +209,7 @@ export class CustomerService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -227,12 +227,26 @@ export class CustomerService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CustomerListResponse = {
-      customers: response.body['customers'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: CustomerListRequest
+  ): AsyncGenerator<Customer, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const customer of list.customers) {
+        yield customer;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<CustomerResponse> {
@@ -252,7 +266,7 @@ export class CustomerService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -275,7 +289,7 @@ export class CustomerService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async remove(identity: string): Promise<CustomerResponse> {
@@ -295,6 +309,6 @@ export class CustomerService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

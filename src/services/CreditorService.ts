@@ -122,7 +122,7 @@ export class CreditorService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -140,12 +140,26 @@ export class CreditorService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CreditorListResponse = {
-      creditors: response.body['creditors'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: CreditorListRequest
+  ): AsyncGenerator<Creditor, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const creditor of list.creditors) {
+        yield creditor;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<CreditorResponse> {
@@ -165,7 +179,7 @@ export class CreditorService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -188,6 +202,6 @@ export class CreditorService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

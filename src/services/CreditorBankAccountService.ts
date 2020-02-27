@@ -124,7 +124,7 @@ export class CreditorBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -142,12 +142,26 @@ export class CreditorBankAccountService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CreditorBankAccountListResponse = {
-      creditor_bank_accounts: response.body['creditor_bank_accounts'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: CreditorBankAccountListRequest
+  ): AsyncGenerator<CreditorBankAccount, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const creditorbankaccount of list.creditor_bank_accounts) {
+        yield creditorbankaccount;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<CreditorBankAccountResponse> {
@@ -167,7 +181,7 @@ export class CreditorBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async disable(identity: string): Promise<CreditorBankAccountResponse> {
@@ -187,6 +201,6 @@ export class CreditorBankAccountService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

@@ -45,6 +45,6 @@ export class CustomerNotificationService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }

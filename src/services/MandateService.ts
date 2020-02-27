@@ -131,7 +131,7 @@ export class MandateService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async list(
@@ -149,12 +149,26 @@ export class MandateService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: MandateListResponse = {
-      mandates: response.body['mandates'],
-      meta: response.body['meta'],
+      ...response.body,
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: MandateListRequest
+  ): AsyncGenerator<Mandate, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const mandate of list.mandates) {
+        yield mandate;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
   }
 
   async find(identity: string): Promise<MandateResponse> {
@@ -174,7 +188,7 @@ export class MandateService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async update(
@@ -197,7 +211,7 @@ export class MandateService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async cancel(
@@ -220,7 +234,7 @@ export class MandateService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 
   async reinstate(
@@ -243,6 +257,6 @@ export class MandateService {
       __response__: response.__response__,
     };
 
-    return response;
+    return formattedResponse;
   }
 }
