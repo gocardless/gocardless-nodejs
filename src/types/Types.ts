@@ -1951,6 +1951,16 @@ export interface CreatedAtFilter {
   lessThanOrEqual?: string;
 }
 
+export interface ListMeta {
+  limit: number;
+  cursors: ListMetaCursor;
+}
+
+export interface ListMetaCursor {
+  before: string;
+  after: string;
+}
+
 /** Type for a subscription resource. */
 export interface Subscription {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,

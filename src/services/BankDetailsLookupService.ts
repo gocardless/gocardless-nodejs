@@ -5,6 +5,7 @@ import {
   BankDetailsLookup,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -15,7 +16,7 @@ interface BankDetailsLookupResponse extends BankDetailsLookup, APIResponse {}
 
 interface BankDetailsLookupListResponse extends APIResponse {
   bank_details_lookups: BankDetailsLookup[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface BankDetailsLookupCreateRequest {

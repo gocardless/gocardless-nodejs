@@ -5,6 +5,7 @@ import {
   InstalmentSchedule,
   APIResponse,
   JsonMap,
+  ListMeta,
   PaymentCurrency,
   CustomerCurrency,
   InstalmentScheduleCurrency,
@@ -18,7 +19,7 @@ interface InstalmentScheduleResponse extends InstalmentSchedule, APIResponse {}
 
 interface InstalmentScheduleListResponse extends APIResponse {
   instalment_schedules: InstalmentSchedule[];
-  meta: JsonMap;
+  meta: ListMeta;
 }
 
 interface InstalmentScheduleCreateRequest {
