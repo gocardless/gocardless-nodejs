@@ -1,27 +1,15 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  CreditorBankAccount,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  CreditorBankAccountAccountType,
-  CreditorBankAccountCreateRequestLinks,
-  CreatedAtFilter,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
 interface CreditorBankAccountResponse
-  extends CreditorBankAccount,
-    APIResponse {}
+  extends Types.CreditorBankAccount,
+    Types.APIResponse {}
 
-interface CreditorBankAccountListResponse extends APIResponse {
-  creditor_bank_accounts: CreditorBankAccount[];
-  meta: ListMeta;
+interface CreditorBankAccountListResponse extends Types.APIResponse {
+  creditor_bank_accounts: Types.CreditorBankAccount[];
+  meta: Types.ListMeta;
 }
 
 interface CreditorBankAccountCreateRequest {
@@ -37,7 +25,7 @@ interface CreditorBankAccountCreateRequest {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: CreditorBankAccountAccountType;
+  account_type?: Types.CreditorBankAccountAccountType;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -65,11 +53,11 @@ interface CreditorBankAccountCreateRequest {
   iban?: string;
 
   //
-  links: CreditorBankAccountCreateRequestLinks;
+  links: Types.CreditorBankAccountCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // Defaults to `false`. When this is set to `true`, it will cause this bank
   // account to be set as the account that GoCardless will pay out to.
@@ -84,7 +72,7 @@ interface CreditorBankAccountListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CR".
   creditor?: string;
@@ -151,7 +139,7 @@ export class CreditorBankAccountService {
 
   async *all(
     requestParameters: CreditorBankAccountListRequest
-  ): AsyncGenerator<CreditorBankAccount, void, unknown> {
+  ): AsyncGenerator<Types.CreditorBankAccount, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

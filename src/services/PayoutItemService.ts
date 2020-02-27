@@ -1,22 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  PayoutItem,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface PayoutItemResponse extends PayoutItem, APIResponse {}
+interface PayoutItemResponse extends Types.PayoutItem, Types.APIResponse {}
 
-interface PayoutItemListResponse extends APIResponse {
-  payout_items: PayoutItem[];
-  meta: ListMeta;
+interface PayoutItemListResponse extends Types.APIResponse {
+  payout_items: Types.PayoutItem[];
+  meta: Types.ListMeta;
 }
 
 interface PayoutItemListRequest {
@@ -64,7 +55,7 @@ export class PayoutItemService {
 
   async *all(
     requestParameters: PayoutItemListRequest
-  ): AsyncGenerator<PayoutItem, void, unknown> {
+  ): AsyncGenerator<Types.PayoutItem, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

@@ -1,25 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Payout,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  CreatedAtFilter,
-  PayoutPayoutType,
-  PayoutStatus,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface PayoutResponse extends Payout, APIResponse {}
+interface PayoutResponse extends Types.Payout, Types.APIResponse {}
 
-interface PayoutListResponse extends APIResponse {
-  payouts: Payout[];
-  meta: ListMeta;
+interface PayoutListResponse extends Types.APIResponse {
+  payouts: Types.Payout[];
+  meta: Types.ListMeta;
 }
 
 interface PayoutListRequest {
@@ -30,7 +18,7 @@ interface PayoutListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CR".
   creditor?: string;
@@ -41,13 +29,13 @@ interface PayoutListRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
-  currency?: PayoutCurrency;
+  currency?: Types.PayoutCurrency;
 
   // Number of records to return.
   limit?: string;
 
   // Whether a payout contains merchant revenue or partner fees.
-  payout_type?: PayoutPayoutType;
+  payout_type?: Types.PayoutPayoutType;
 
   // Reference which appears on the creditor's bank statement.
   reference?: string;
@@ -59,7 +47,7 @@ interface PayoutListRequest {
   // <li>`paid`: the payout has been sent to the banks</li>
   // <li>`bounced`: the payout bounced when sent, the payout can be retried.</li>
   // </ul>
-  status?: PayoutStatus;
+  status?: Types.PayoutStatus;
 }
 
 export class PayoutService {
@@ -93,7 +81,7 @@ export class PayoutService {
 
   async *all(
     requestParameters: PayoutListRequest
-  ): AsyncGenerator<Payout, void, unknown> {
+  ): AsyncGenerator<Types.Payout, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

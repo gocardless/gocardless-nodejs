@@ -1,27 +1,15 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  CustomerBankAccount,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  CustomerBankAccountAccountType,
-  CustomerBankAccountCreateRequestLinks,
-  CreatedAtFilter,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
 interface CustomerBankAccountResponse
-  extends CustomerBankAccount,
-    APIResponse {}
+  extends Types.CustomerBankAccount,
+    Types.APIResponse {}
 
-interface CustomerBankAccountListResponse extends APIResponse {
-  customer_bank_accounts: CustomerBankAccount[];
-  meta: ListMeta;
+interface CustomerBankAccountListResponse extends Types.APIResponse {
+  customer_bank_accounts: Types.CustomerBankAccount[];
+  meta: Types.ListMeta;
 }
 
 interface CustomerBankAccountCreateRequest {
@@ -37,7 +25,7 @@ interface CustomerBankAccountCreateRequest {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: CustomerBankAccountAccountType;
+  account_type?: Types.CustomerBankAccountAccountType;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -65,11 +53,11 @@ interface CustomerBankAccountCreateRequest {
   iban?: string;
 
   //
-  links: CustomerBankAccountCreateRequestLinks;
+  links: Types.CustomerBankAccountCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 interface CustomerBankAccountListRequest {
@@ -80,7 +68,7 @@ interface CustomerBankAccountListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CU".
   customer?: string;
@@ -95,7 +83,7 @@ interface CustomerBankAccountListRequest {
 interface CustomerBankAccountUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 export class CustomerBankAccountService {
@@ -153,7 +141,7 @@ export class CustomerBankAccountService {
 
   async *all(
     requestParameters: CustomerBankAccountListRequest
-  ): AsyncGenerator<CustomerBankAccount, void, unknown> {
+  ): AsyncGenerator<Types.CustomerBankAccount, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

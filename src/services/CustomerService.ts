@@ -1,23 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Customer,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  CreatedAtFilter,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface CustomerResponse extends Customer, APIResponse {}
+interface CustomerResponse extends Types.Customer, Types.APIResponse {}
 
-interface CustomerListResponse extends APIResponse {
-  customers: Customer[];
-  meta: ListMeta;
+interface CustomerListResponse extends Types.APIResponse {
+  customers: Types.Customer[];
+  meta: Types.ListMeta;
 }
 
 interface CustomerCreateRequest {
@@ -70,7 +60,7 @@ interface CustomerCreateRequest {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -99,12 +89,12 @@ interface CustomerListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
-  currency?: CustomerCurrency;
+  currency?: Types.CustomerCurrency;
 
   // Number of records to return.
   limit?: string;
@@ -160,7 +150,7 @@ interface CustomerUpdateRequest {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -236,7 +226,7 @@ export class CustomerService {
 
   async *all(
     requestParameters: CustomerListRequest
-  ): AsyncGenerator<Customer, void, unknown> {
+  ): AsyncGenerator<Types.Customer, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

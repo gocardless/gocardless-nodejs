@@ -1,24 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Creditor,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  CreatedAtFilter,
-  CreditorUpdateRequestLinks,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface CreditorResponse extends Creditor, APIResponse {}
+interface CreditorResponse extends Types.Creditor, Types.APIResponse {}
 
-interface CreditorListResponse extends APIResponse {
-  creditors: Creditor[];
-  meta: ListMeta;
+interface CreditorListResponse extends Types.APIResponse {
+  creditors: Types.Creditor[];
+  meta: Types.ListMeta;
 }
 
 interface CreditorCreateRequest {
@@ -58,7 +47,7 @@ interface CreditorListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
   limit?: string;
@@ -82,7 +71,7 @@ interface CreditorUpdateRequest {
   country_code?: string;
 
   //
-  links?: CreditorUpdateRequestLinks;
+  links?: Types.CreditorUpdateRequestLinks;
 
   // The creditor's name.
   name?: string;
@@ -149,7 +138,7 @@ export class CreditorService {
 
   async *all(
     requestParameters: CreditorListRequest
-  ): AsyncGenerator<Creditor, void, unknown> {
+  ): AsyncGenerator<Types.Creditor, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

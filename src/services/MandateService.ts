@@ -1,34 +1,22 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Mandate,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  MandateCreateRequestLinks,
-  CreatedAtFilter,
-  MandateStatus,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface MandateResponse extends Mandate, APIResponse {}
+interface MandateResponse extends Types.Mandate, Types.APIResponse {}
 
-interface MandateListResponse extends APIResponse {
-  mandates: Mandate[];
-  meta: ListMeta;
+interface MandateListResponse extends Types.APIResponse {
+  mandates: Types.Mandate[];
+  meta: Types.ListMeta;
 }
 
 interface MandateCreateRequest {
   //
-  links: MandateCreateRequestLinks;
+  links: Types.MandateCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // For ACH customers only. Required for ACH customers. A string containing the
   // IP address of the payer to whom the mandate belongs (i.e. as a result of
@@ -55,7 +43,7 @@ interface MandateListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // ID of a [creditor](#core-endpoints-creditors). If specified, this endpoint
   // will return all mandates for the given creditor. Cannot be used in
@@ -82,25 +70,25 @@ interface MandateListRequest {
   reference?: string;
 
   // At most four valid status values
-  status?: MandateStatus[];
+  status?: Types.MandateStatus[];
 }
 
 interface MandateUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 interface MandateCancelRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 interface MandateReinstateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 export class MandateService {
@@ -158,7 +146,7 @@ export class MandateService {
 
   async *all(
     requestParameters: MandateListRequest
-  ): AsyncGenerator<Mandate, void, unknown> {
+  ): AsyncGenerator<Types.Mandate, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

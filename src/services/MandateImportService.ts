@@ -1,29 +1,21 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  MandateImport,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  MandateImportScheme,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface MandateImportResponse extends MandateImport, APIResponse {}
+interface MandateImportResponse
+  extends Types.MandateImport,
+    Types.APIResponse {}
 
-interface MandateImportListResponse extends APIResponse {
-  mandate_imports: MandateImport[];
-  meta: ListMeta;
+interface MandateImportListResponse extends Types.APIResponse {
+  mandate_imports: Types.MandateImport[];
+  meta: Types.ListMeta;
 }
 
 interface MandateImportCreateRequest {
   // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
-  scheme: MandateImportScheme;
+  scheme: Types.MandateImportScheme;
 }
 
 export class MandateImportService {

@@ -1,22 +1,15 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  BankDetailsLookup,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface BankDetailsLookupResponse extends BankDetailsLookup, APIResponse {}
+interface BankDetailsLookupResponse
+  extends Types.BankDetailsLookup,
+    Types.APIResponse {}
 
-interface BankDetailsLookupListResponse extends APIResponse {
-  bank_details_lookups: BankDetailsLookup[];
-  meta: ListMeta;
+interface BankDetailsLookupListResponse extends Types.APIResponse {
+  bank_details_lookups: Types.BankDetailsLookup[];
+  meta: Types.ListMeta;
 }
 
 interface BankDetailsLookupCreateRequest {
