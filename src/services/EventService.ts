@@ -1,25 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Event,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  CreatedAtFilter,
-  EventInclude,
-  EventResourceType,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface EventResponse extends Event, APIResponse {}
+interface EventResponse extends Types.Event, Types.APIResponse {}
 
-interface EventListResponse extends APIResponse {
-  events: Event[];
-  meta: ListMeta;
+interface EventListResponse extends Types.APIResponse {
+  events: Types.Event[];
+  meta: Types.ListMeta;
 }
 
 interface EventListRequest {
@@ -33,7 +21,7 @@ interface EventListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Includes linked resources in the response. Must be used with the
   // `resource_type` parameter specified. The include should be one of:
@@ -46,7 +34,7 @@ interface EventListRequest {
   // <li>`instalment_schedule`</li>
   // <li>`creditor`</li>
   // </ul>
-  include?: EventInclude;
+  include?: Types.EventInclude;
 
   // Number of records to return.
   limit?: string;
@@ -84,7 +72,7 @@ interface EventListRequest {
   // <li>`creditors`</li>
   // <li>`refunds`</li>
   // </ul>
-  resource_type?: EventResourceType;
+  resource_type?: Types.EventResourceType;
 
   // ID of a [subscription](#core-endpoints-subscriptions). If specified, this
   // endpoint will return all events for the given subscription.
@@ -120,7 +108,7 @@ export class EventService {
 
   async *all(
     requestParameters: EventListRequest
-  ): AsyncGenerator<Event, void, unknown> {
+  ): AsyncGenerator<Types.Event, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

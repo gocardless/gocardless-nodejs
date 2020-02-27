@@ -1,24 +1,15 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  CustomerNotification,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
 interface CustomerNotificationResponse
-  extends CustomerNotification,
-    APIResponse {}
+  extends Types.CustomerNotification,
+    Types.APIResponse {}
 
-interface CustomerNotificationListResponse extends APIResponse {
-  customer_notifications: CustomerNotification[];
-  meta: ListMeta;
+interface CustomerNotificationListResponse extends Types.APIResponse {
+  customer_notifications: Types.CustomerNotification[];
+  meta: Types.ListMeta;
 }
 
 export class CustomerNotificationService {

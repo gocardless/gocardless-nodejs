@@ -1,40 +1,29 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  MandateImportEntry,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  MandateImportEntryAmendment,
-  MandateImportEntryBankAccount,
-  MandateImportEntryCustomer,
-  MandateImportEntryCreateRequestLinks,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface MandateImportEntryResponse extends MandateImportEntry, APIResponse {}
+interface MandateImportEntryResponse
+  extends Types.MandateImportEntry,
+    Types.APIResponse {}
 
-interface MandateImportEntryListResponse extends APIResponse {
-  mandate_import_entries: MandateImportEntry[];
-  meta: ListMeta;
+interface MandateImportEntryListResponse extends Types.APIResponse {
+  mandate_import_entries: Types.MandateImportEntry[];
+  meta: Types.ListMeta;
 }
 
 interface MandateImportEntryCreateRequest {
   //
-  amendment?: MandateImportEntryAmendment;
+  amendment?: Types.MandateImportEntryAmendment;
 
   //
-  bank_account: MandateImportEntryBankAccount;
+  bank_account: Types.MandateImportEntryBankAccount;
 
   //
-  customer: MandateImportEntryCustomer;
+  customer: Types.MandateImportEntryCustomer;
 
   //
-  links: MandateImportEntryCreateRequestLinks;
+  links: Types.MandateImportEntryCreateRequestLinks;
 
   // A unique identifier for this entry, which you can use (once the import has
   // been
@@ -112,7 +101,7 @@ export class MandateImportEntryService {
 
   async *all(
     requestParameters: MandateImportEntryListRequest
-  ): AsyncGenerator<MandateImportEntry, void, unknown> {
+  ): AsyncGenerator<Types.MandateImportEntry, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

@@ -1,25 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Refund,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  RefundCreateRequestLinks,
-  CreatedAtFilter,
-  RefundRefundType,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface RefundResponse extends Refund, APIResponse {}
+interface RefundResponse extends Types.Refund, Types.APIResponse {}
 
-interface RefundListResponse extends APIResponse {
-  refunds: Refund[];
-  meta: ListMeta;
+interface RefundListResponse extends Types.APIResponse {
+  refunds: Types.Refund[];
+  meta: Types.ListMeta;
 }
 
 interface RefundCreateRequest {
@@ -27,11 +15,11 @@ interface RefundCreateRequest {
   amount: string;
 
   //
-  links: RefundCreateRequestLinks;
+  links: Types.RefundCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // An optional reference that will appear on your customer's bank statement. The
   // character limit for this reference is dependent on the scheme.<br />
@@ -66,7 +54,7 @@ interface RefundListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
   limit?: string;
@@ -84,13 +72,13 @@ interface RefundListRequest {
   // only</li>
   //   <li>`mandate`: returns refunds created against mandates only</li>
   // </ul>
-  refund_type?: RefundRefundType;
+  refund_type?: Types.RefundRefundType;
 }
 
 interface RefundUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 export class RefundService {
@@ -148,7 +136,7 @@ export class RefundService {
 
   async *all(
     requestParameters: RefundListRequest
-  ): AsyncGenerator<Refund, void, unknown> {
+  ): AsyncGenerator<Types.Refund, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

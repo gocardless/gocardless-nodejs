@@ -1,27 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Subscription,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  SubscriptionIntervalUnit,
-  SubscriptionCreateRequestLinks,
-  SubscriptionMonth,
-  CreatedAtFilter,
-  SubscriptionStatus,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface SubscriptionResponse extends Subscription, APIResponse {}
+interface SubscriptionResponse extends Types.Subscription, Types.APIResponse {}
 
-interface SubscriptionListResponse extends APIResponse {
-  subscriptions: Subscription[];
-  meta: ListMeta;
+interface SubscriptionListResponse extends Types.APIResponse {
+  subscriptions: Types.Subscription[];
+  meta: Types.ListMeta;
 }
 
 interface SubscriptionCreateRequest {
@@ -59,20 +45,20 @@ interface SubscriptionCreateRequest {
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly` or
   // `yearly`.
-  interval_unit: SubscriptionIntervalUnit;
+  interval_unit: Types.SubscriptionIntervalUnit;
 
   //
-  links: SubscriptionCreateRequestLinks;
+  links: Types.SubscriptionCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
   // when the interval_unit is `yearly`.
   //
-  month?: SubscriptionMonth;
+  month?: Types.SubscriptionMonth;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
@@ -104,7 +90,7 @@ interface SubscriptionListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CU".
   customer?: string;
@@ -117,7 +103,7 @@ interface SubscriptionListRequest {
   mandate?: string;
 
   // At most four valid status values
-  status?: SubscriptionStatus[];
+  status?: Types.SubscriptionStatus[];
 }
 
 interface SubscriptionUpdateRequest {
@@ -132,7 +118,7 @@ interface SubscriptionUpdateRequest {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
@@ -150,7 +136,7 @@ interface SubscriptionUpdateRequest {
 interface SubscriptionCancelRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 export class SubscriptionService {
@@ -208,7 +194,7 @@ export class SubscriptionService {
 
   async *all(
     requestParameters: SubscriptionListRequest
-  ): AsyncGenerator<Subscription, void, unknown> {
+  ): AsyncGenerator<Types.Subscription, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

@@ -1,28 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  Payment,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  PaymentCreateRequestLinks,
-  PaymentChargeDate,
-  CreatedAtFilter,
-  Creditor,
-  Customer,
-  PaymentStatus,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface PaymentResponse extends Payment, APIResponse {}
+interface PaymentResponse extends Types.Payment, Types.APIResponse {}
 
-interface PaymentListResponse extends APIResponse {
-  payments: Payment[];
-  meta: ListMeta;
+interface PaymentListResponse extends Types.APIResponse {
+  payments: Types.Payment[];
+  meta: Types.ListMeta;
 }
 
 interface PaymentCreateRequest {
@@ -43,7 +28,7 @@ interface PaymentCreateRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
-  currency: PaymentCurrency;
+  currency: Types.PaymentCurrency;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
@@ -52,11 +37,11 @@ interface PaymentCreateRequest {
   description?: string;
 
   //
-  links: PaymentCreateRequestLinks;
+  links: Types.PaymentCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // An optional reference that will appear on your customer's bank statement. The
   // character limit for this reference is dependent on the scheme.<br />
@@ -85,10 +70,10 @@ interface PaymentListRequest {
   before?: string;
 
   //
-  charge_date?: PaymentChargeDate;
+  charge_date?: Types.PaymentChargeDate;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // ID of a creditor to filter payments by. If you pass this parameter, you
   // cannot also pass `customer`.
@@ -97,7 +82,7 @@ interface PaymentListRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
-  currency?: PaymentCurrency;
+  currency?: Types.PaymentCurrency;
 
   // ID of a customer to filter payments by. If you pass this parameter, you
   // cannot also pass `creditor`.
@@ -127,7 +112,7 @@ interface PaymentListRequest {
   // after being confirmed if the failure message is sent late by the banks.</li>
   // <li>`charged_back`: the payment has been charged back</li>
   // </ul>
-  status?: PaymentStatus;
+  status?: Types.PaymentStatus;
 
   // Unique identifier, beginning with "SB".
   subscription?: string;
@@ -136,7 +121,7 @@ interface PaymentListRequest {
 interface PaymentUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // On failure, automatically retry the payment using [Optimise Smart Payment
   // Retries](#optimise-smart-payment-retries). Default is `false`.
@@ -146,13 +131,13 @@ interface PaymentUpdateRequest {
 interface PaymentCancelRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 interface PaymentRetryRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 }
 
 export class PaymentService {
@@ -210,7 +195,7 @@ export class PaymentService {
 
   async *all(
     requestParameters: PaymentListRequest
-  ): AsyncGenerator<Payment, void, unknown> {
+  ): AsyncGenerator<Types.Payment, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

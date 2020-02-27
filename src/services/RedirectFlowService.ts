@@ -1,25 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  RedirectFlow,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  RedirectFlowCreateRequestLinks,
-  RedirectFlowPrefilledCustomer,
-  RedirectFlowScheme,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface RedirectFlowResponse extends RedirectFlow, APIResponse {}
+interface RedirectFlowResponse extends Types.RedirectFlow, Types.APIResponse {}
 
-interface RedirectFlowListResponse extends APIResponse {
-  redirect_flows: RedirectFlow[];
-  meta: ListMeta;
+interface RedirectFlowListResponse extends Types.APIResponse {
+  redirect_flows: Types.RedirectFlow[];
+  meta: Types.ListMeta;
 }
 
 interface RedirectFlowCreateRequest {
@@ -28,19 +16,19 @@ interface RedirectFlowCreateRequest {
   description?: string;
 
   //
-  links: RedirectFlowCreateRequestLinks;
+  links: Types.RedirectFlowCreateRequestLinks;
 
   // Information used to prefill the payment page so your customer doesn't have to
   // re-type details you already hold about them. It will be stored unvalidated
   // and the customer will be able to review and amend it before completing the
   // form.
-  prefilled_customer?: RedirectFlowPrefilledCustomer;
+  prefilled_customer?: Types.RedirectFlowPrefilledCustomer;
 
   // The Direct Debit scheme of the mandate. If specified, the payment pages will
   // only allow the set-up of a mandate for the specified scheme. It is
   // recommended that you leave this blank so the most appropriate scheme is
   // picked based on the customer's bank account.
-  scheme?: RedirectFlowScheme;
+  scheme?: Types.RedirectFlowScheme;
 
   // The customer's session ID must be provided when the redirect flow is set up
   // and again when it is completed. This allows integrators to ensure that the

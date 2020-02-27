@@ -1,25 +1,13 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  MandatePdf,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  MandatePdfAccountType,
-  MandatePdfCreateRequestLinks,
-  MandatePdfSubscriptionFrequency,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface MandatePdfResponse extends MandatePdf, APIResponse {}
+interface MandatePdfResponse extends Types.MandatePdf, Types.APIResponse {}
 
-interface MandatePdfListResponse extends APIResponse {
-  mandate_pdfs: MandatePdf[];
-  meta: ListMeta;
+interface MandatePdfListResponse extends Types.APIResponse {
+  mandate_pdfs: Types.MandatePdf[];
+  meta: Types.ListMeta;
 }
 
 interface MandatePdfCreateRequest {
@@ -35,7 +23,7 @@ interface MandatePdfCreateRequest {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: MandatePdfAccountType;
+  account_type?: Types.MandatePdfAccountType;
 
   // The first line of the customer's address.
   address_line1?: string;
@@ -77,7 +65,7 @@ interface MandatePdfCreateRequest {
   iban?: string;
 
   //
-  links?: MandatePdfCreateRequestLinks;
+  links?: Types.MandatePdfCreateRequestLinks;
 
   // Unique 6 to 18 character reference. This may be left blank at the point of
   // signing.
@@ -117,7 +105,7 @@ interface MandatePdfCreateRequest {
   // For American customers only. Frequency of the subscription being authorised
   // by the mandate. One of `weekly`, `monthly` or `yearly`. Is required if
   // `subscription_amount` has been provided.
-  subscription_frequency?: MandatePdfSubscriptionFrequency;
+  subscription_frequency?: Types.MandatePdfSubscriptionFrequency;
 
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer. Can only be

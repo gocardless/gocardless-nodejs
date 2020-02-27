@@ -1,25 +1,15 @@
 'use strict';
 
 import { Api } from '../api/Api';
-import {
-  InstalmentSchedule,
-  APIResponse,
-  JsonMap,
-  ListMeta,
-  PaymentCurrency,
-  CustomerCurrency,
-  InstalmentScheduleCurrency,
-  PayoutCurrency,
-  InstalmentScheduleCreateRequestLinks,
-  CreatedAtFilter,
-  InstalmentScheduleStatus,
-} from '../types/Types';
+import * as Types from '../types/Types';
 
-interface InstalmentScheduleResponse extends InstalmentSchedule, APIResponse {}
+interface InstalmentScheduleResponse
+  extends Types.InstalmentSchedule,
+    Types.APIResponse {}
 
-interface InstalmentScheduleListResponse extends APIResponse {
-  instalment_schedules: InstalmentSchedule[];
-  meta: ListMeta;
+interface InstalmentScheduleListResponse extends Types.APIResponse {
+  instalment_schedules: Types.InstalmentSchedule[];
+  meta: Types.ListMeta;
 }
 
 interface InstalmentScheduleCreateRequest {
@@ -31,17 +21,17 @@ interface InstalmentScheduleCreateRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
-  currency: InstalmentScheduleCurrency;
+  currency: Types.InstalmentScheduleCurrency;
 
   //
   instalments: unknown;
 
   //
-  links: InstalmentScheduleCreateRequestLinks;
+  links: Types.InstalmentScheduleCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: Types.JsonMap;
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
@@ -84,7 +74,7 @@ interface InstalmentScheduleListRequest {
   before?: string;
 
   //
-  created_at?: CreatedAtFilter;
+  created_at?: Types.CreatedAtFilter;
 
   // ID of the associated [customer](#core-endpoints-customers).
   customer?: string;
@@ -97,7 +87,7 @@ interface InstalmentScheduleListRequest {
   mandate?: string;
 
   // At most five valid status values
-  status?: InstalmentScheduleStatus[];
+  status?: Types.InstalmentScheduleStatus[];
 }
 
 export class InstalmentScheduleService {
@@ -155,7 +145,7 @@ export class InstalmentScheduleService {
 
   async *all(
     requestParameters: InstalmentScheduleListRequest
-  ): AsyncGenerator<InstalmentSchedule, void, unknown> {
+  ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
