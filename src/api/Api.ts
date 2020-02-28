@@ -166,7 +166,9 @@ export class Api {
           [payloadKey]: requestParameters,
         };
       } else {
-        return requestParameters;
+        return {
+          data: requestParameters,
+        };
       }
     }
 
