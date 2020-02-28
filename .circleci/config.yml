@@ -40,9 +40,7 @@ jobs:
           command: echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > .npmrc
       - run:
           name: Publish the library.
-          # XXX: Remove the `dry-run` flag.
-          command: npm publish $DIST_FOLDER --dry-run
-          # XXX: Remove the `dry-run` flag.
+          command: npm publish $DIST_FOLDER
     environment:
       OUT_DIR: *build_directory
       DIST_FOLDER: *dist_folder
