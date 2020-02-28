@@ -34,10 +34,7 @@
     "@types/jest": "^25.1.3",
     "jest": "^25.1.0"
   },
-  "main": "src",
-  "files": [
-    "src"
-  ],
+  "main": "src/index.js",
   "types": "types/Types.d.ts",
   "engines": {
     "node": ">=10.0"
