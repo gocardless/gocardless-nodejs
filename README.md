@@ -35,7 +35,7 @@ const constants = require('gocardless-nodejs/Constants');
 
 
 // Initialise a new client.
-const client = GoCardless('live_ACCESS_TOKEN_42', Constants.Environments.LIVE, { option_0: '0', ... });
+const client = GoCardless('live_ACCESS_TOKEN_42', Constants.Environments.Live, { option_0: '0', ... });
 ```
 
 ### The Basics
@@ -50,7 +50,8 @@ const newPayment = client.payments.create({
     charge_date: '2020-01-01',
     reference: 'This is my reference.',
     ...
-  }
+  },
+  idempotencyKey: 'my_idempotency_key'
 );
 
 // List all payments.
