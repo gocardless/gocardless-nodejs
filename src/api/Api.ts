@@ -15,22 +15,19 @@ interface APIOptions {
   raiseOnIdempotencyConflict?: boolean;
 }
 
-interface APIResponse {
-  body: any;
-  headers: any;
-  statusCode: number;
-  statusMessage?: string;
-  url: string;
+interface UrlParameter {
+  key?: string;
+  value?: string;
 }
 
 interface APIRequestParameters {
   path: string;
   method: string;
-  urlParameters?: any;
+  urlParameters?: UrlParameter[];
   requestParameters?: object;
   payloadKey?: string;
   idempotencyKey?: string;
-  fetch: any;
+  fetch: Function | null;
 }
 
 export class Api {
@@ -41,8 +38,8 @@ export class Api {
   private raiseOnIdempotencyConflict: boolean;
 
   private processVersion: string;
-  private osPlatform: any;
   private osRelease: string;
+  private osPlatform;
 
   constructor(
     token: string,
@@ -92,7 +89,7 @@ export class Api {
     const request = got(path, requestOptions);
 
     try {
-      const response: APIResponse = await request;
+      const response = await request;
       return {
         body: response.body,
         __response__: {
@@ -140,7 +137,6 @@ export class Api {
     idempotencyKey = ''
   ) {
     const headers = this.getHeaders(this._token);
-
     const searchParams =
       method === 'get'
         ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))
@@ -154,6 +150,7 @@ export class Api {
     return {
       agent: this._agent,
       prefixUrl: this._baseUrl,
+      // tslint:disable-next-line:no-any
       method: method as any,
       responseType: 'json' as 'json',
       headers,
@@ -169,7 +166,9 @@ export class Api {
           [payloadKey]: requestParameters,
         };
       } else {
-        return requestParameters;
+        return {
+          data: requestParameters,
+        };
       }
     }
 

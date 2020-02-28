@@ -1,7 +1,7 @@
 {
   "extends": "gts/tslint.json",
   "rules": {
-    "no-any": false,
+    "no-any": true,
     "only-arrow-functions": false
   },
   "linterOptions": {
