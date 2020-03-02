@@ -40,7 +40,9 @@ const client = GoCardless('live_ACCESS_TOKEN_42', Constants.Environments.Live, {
 
 ### The Basics
 
-We'll illustrate the basic library usage by demonstrating on the [`Payment` resource](https://developer.gocardless.com/api-reference/#core-endpoints-payments). Note, for a full list of available resources, visit the [`gocardless-nodejs` API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
+We'll illustrate the basic library usage by demonstrating on the [`Payment` resource](https://developer.gocardless.com/api-reference/#core-endpoints-payments).
+
+*Note*, for a full list of available resources, visit the [`gocardless` API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
 
 <!-- prettier-ignore -->
 ```js
