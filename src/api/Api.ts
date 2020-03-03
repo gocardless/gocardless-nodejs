@@ -6,6 +6,7 @@ import _ = require('lodash');
 import uuidv4 = require('uuid/v4');
 import * as url from 'url';
 import got from 'got';
+import qs from 'qs';
 
 import { Environments } from '../Constants';
 import { GoCardlessException } from '../GoCardlessException';
@@ -175,8 +176,8 @@ export class Api {
     return undefined;
   }
 
-  private mapQueryParameters(obj) {
-    return _.keys(obj).map(k => [k, obj[k]]);
+  private mapQueryParameters(parameters) {
+    return qs.stringify(parameters, { encode: false });
   }
 
   private isIdempotencyConflict(response) {

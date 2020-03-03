@@ -1945,10 +1945,10 @@ export enum FxCurrency {
 }
 
 export interface CreatedAtFilter {
-  greaterThan?: string;
-  greaterThanOrEqual?: string;
-  lessThan?: string;
-  lessThanOrEqual?: string;
+  gt?: string;
+  gte?: string;
+  lt?: string;
+  lte?: string;
 }
 
 export interface ListMeta {
