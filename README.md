@@ -4,12 +4,12 @@ GoCardless Node.js
 [![GoCardless](https://circleci.com/gh/gocardless/gocardless-nodejs.svg?style=svg)](https://github.com/gocardless/gocardless-nodejs/commits/master) [![npm version](https://badge.fury.io/js/gocardless-nodejs.svg)](https://badge.fury.io/js/gocardless-nodejs)
 
 
-A Node.js client for interacting with the GoCardless API.
+A Node.js client for the GoCardless API.
 ------------
 
 ## Documentation
 
-For the full documentation and code samples, visit the [`gocardless-nodejs` API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
+For the full documentation and code samples, visit the [`gocardless` API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
 
 
 ## Installation
