@@ -15,14 +15,14 @@ export interface BankDetailsLookup {
 }
 
 export enum BankDetailsLookupAvailableDebitScheme {
-  Ach = 'ACH',
-  Autogiro = 'AUTOGIRO',
-  Bacs = 'BACS',
-  Becs = 'BECS',
-  BecsNz = 'BECS_NZ',
-  Betalingsservice = 'BETALINGSSERVICE',
-  Pad = 'PAD',
-  SepaCore = 'SEPA_CORE',
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  SepaCore = 'sepa_core',
 }
 
 /** Type for a creditor resource. */
@@ -271,20 +271,20 @@ export enum CreditorSchemeIdentifierCurrency {
 }
 
 export enum CreditorSchemeIdentifierScheme {
-  Ach = 'ACH',
-  Autogiro = 'AUTOGIRO',
-  Bacs = 'BACS',
-  Becs = 'BECS',
-  BecsNz = 'BECS_NZ',
-  Betalingsservice = 'BETALINGSSERVICE',
-  Pad = 'PAD',
-  Sepa = 'SEPA',
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  Sepa = 'sepa',
 }
 
 export enum CreditorVerificationStatus {
-  Successful = 'SUCCESSFUL',
-  InReview = 'IN_REVIEW',
-  ActionRequired = 'ACTION_REQUIRED',
+  Successful = 'successful',
+  InReview = 'in_review',
+  ActionRequired = 'action_required',
 }
 
 /** Type for a creditorbankaccount resource. */
@@ -344,8 +344,8 @@ export interface CreditorBankAccountCreateRequestLinks {
 }
 
 export enum CreditorBankAccountAccountType {
-  Savings = 'SAVINGS',
-  Checking = 'CHECKING',
+  Savings = 'savings',
+  Checking = 'checking',
 }
 
 /** Type for a creditorbankaccountlinks resource. */
@@ -508,8 +508,8 @@ export interface CustomerBankAccountCreateRequestLinks {
 }
 
 export enum CustomerBankAccountAccountType {
-  Savings = 'SAVINGS',
-  Checking = 'CHECKING',
+  Savings = 'savings',
+  Checking = 'checking',
 }
 
 /** Type for a customerbankaccountlinks resource. */
@@ -547,7 +547,7 @@ export interface CustomerNotification {
 }
 
 export enum CustomerNotificationActionTaken {
-  Handled = 'HANDLED',
+  Handled = 'handled',
 }
 
 /** Type for a customernotificationlinks resource. */
@@ -572,13 +572,13 @@ export interface CustomerNotificationLinks {
 }
 
 export enum CustomerNotificationType {
-  PaymentCreated = 'PAYMENT_CREATED',
-  PaymentCancelled = 'PAYMENT_CANCELLED',
-  MandateCreated = 'MANDATE_CREATED',
-  SubscriptionCreated = 'SUBSCRIPTION_CREATED',
-  SubscriptionCancelled = 'SUBSCRIPTION_CANCELLED',
-  InstalmentScheduleCreated = 'INSTALMENT_SCHEDULE_CREATED',
-  InstalmentScheduleCancelled = 'INSTALMENT_SCHEDULE_CANCELLED',
+  PaymentCreated = 'payment_created',
+  PaymentCancelled = 'payment_cancelled',
+  MandateCreated = 'mandate_created',
+  SubscriptionCreated = 'subscription_created',
+  SubscriptionCancelled = 'subscription_cancelled',
+  InstalmentScheduleCreated = 'instalment_schedule_created',
+  InstalmentScheduleCancelled = 'instalment_schedule_cancelled',
 }
 
 /** Type for a event resource. */
@@ -626,13 +626,13 @@ export interface Event {
 }
 
 export enum EventInclude {
-  Payment = 'PAYMENT',
-  Mandate = 'MANDATE',
-  Payout = 'PAYOUT',
-  Refund = 'REFUND',
-  Subscription = 'SUBSCRIPTION',
-  InstalmentSchedule = 'INSTALMENT_SCHEDULE',
-  Creditor = 'CREDITOR',
+  Payment = 'payment',
+  Mandate = 'mandate',
+  Payout = 'payout',
+  Refund = 'refund',
+  Subscription = 'subscription',
+  InstalmentSchedule = 'instalment_schedule',
+  Creditor = 'creditor',
 }
 
 /** Type for a eventcustomernotification resource. */
@@ -651,13 +651,13 @@ export interface EventCustomerNotification {
 }
 
 export enum EventCustomerNotificationType {
-  PaymentCreated = 'PAYMENT_CREATED',
-  PaymentCancelled = 'PAYMENT_CANCELLED',
-  MandateCreated = 'MANDATE_CREATED',
-  SubscriptionCreated = 'SUBSCRIPTION_CREATED',
-  SubscriptionCancelled = 'SUBSCRIPTION_CANCELLED',
-  InstalmentScheduleCreated = 'INSTALMENT_SCHEDULE_CREATED',
-  InstalmentScheduleCancelled = 'INSTALMENT_SCHEDULE_CANCELLED',
+  PaymentCreated = 'payment_created',
+  PaymentCancelled = 'payment_cancelled',
+  MandateCreated = 'mandate_created',
+  SubscriptionCreated = 'subscription_created',
+  SubscriptionCancelled = 'subscription_cancelled',
+  InstalmentScheduleCreated = 'instalment_schedule_created',
+  InstalmentScheduleCancelled = 'instalment_schedule_cancelled',
 }
 
 /** Type for a eventdetails resource. */
@@ -696,22 +696,22 @@ export interface EventDetails {
 }
 
 export enum EventDetailsOrigin {
-  Bank = 'BANK',
-  Api = 'API',
-  Gocardless = 'GOCARDLESS',
-  Customer = 'CUSTOMER',
+  Bank = 'bank',
+  Api = 'api',
+  Gocardless = 'gocardless',
+  Customer = 'customer',
 }
 
 export enum EventDetailsScheme {
-  Ach = 'ACH',
-  Autogiro = 'AUTOGIRO',
-  Bacs = 'BACS',
-  Becs = 'BECS',
-  BecsNz = 'BECS_NZ',
-  Betalingsservice = 'BETALINGSSERVICE',
-  Pad = 'PAD',
-  SepaCore = 'SEPA_CORE',
-  SepaCor1 = 'SEPA_COR1',
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  SepaCore = 'sepa_core',
+  SepaCor1 = 'sepa_cor1',
 }
 
 /** Type for a eventlinks resource. */
@@ -771,13 +771,13 @@ export interface EventLinks {
 }
 
 export enum EventResourceType {
-  Payments = 'PAYMENTS',
-  Mandates = 'MANDATES',
-  Payouts = 'PAYOUTS',
-  Refunds = 'REFUNDS',
-  Subscriptions = 'SUBSCRIPTIONS',
-  InstalmentSchedules = 'INSTALMENT_SCHEDULES',
-  Creditors = 'CREDITORS',
+  Payments = 'payments',
+  Mandates = 'mandates',
+  Payouts = 'payouts',
+  Refunds = 'refunds',
+  Subscriptions = 'subscriptions',
+  InstalmentSchedules = 'instalment_schedules',
+  Creditors = 'creditors',
 }
 
 /** Type for a instalmentschedule resource. */
@@ -870,12 +870,12 @@ export interface InstalmentScheduleLinks {
 }
 
 export enum InstalmentScheduleStatus {
-  Pending = 'PENDING',
-  Active = 'ACTIVE',
-  CreationFailed = 'CREATION_FAILED',
-  Completed = 'COMPLETED',
-  Cancelled = 'CANCELLED',
-  Errored = 'ERRORED',
+  Pending = 'pending',
+  Active = 'active',
+  CreationFailed = 'creation_failed',
+  Completed = 'completed',
+  Cancelled = 'cancelled',
+  Errored = 'errored',
 }
 
 /** Type for a mandate resource. */
@@ -962,13 +962,13 @@ export interface MandateLinks {
 }
 
 export enum MandateStatus {
-  PendingCustomerApproval = 'PENDING_CUSTOMER_APPROVAL',
-  PendingSubmission = 'PENDING_SUBMISSION',
-  Submitted = 'SUBMITTED',
-  Active = 'ACTIVE',
-  Failed = 'FAILED',
-  Cancelled = 'CANCELLED',
-  Expired = 'EXPIRED',
+  PendingCustomerApproval = 'pending_customer_approval',
+  PendingSubmission = 'pending_submission',
+  Submitted = 'submitted',
+  Active = 'active',
+  Failed = 'failed',
+  Cancelled = 'cancelled',
+  Expired = 'expired',
 }
 
 /** Type for a mandateimport resource. */
@@ -1006,22 +1006,22 @@ export interface MandateImport {
 }
 
 export enum MandateImportScheme {
-  Ach = 'ACH',
-  Autogiro = 'AUTOGIRO',
-  Bacs = 'BACS',
-  Becs = 'BECS',
-  BecsNz = 'BECS_NZ',
-  Betalingsservice = 'BETALINGSSERVICE',
-  Pad = 'PAD',
-  SepaCore = 'SEPA_CORE',
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  SepaCore = 'sepa_core',
 }
 
 export enum MandateImportStatus {
-  Created = 'CREATED',
-  Submitted = 'SUBMITTED',
-  Cancelled = 'CANCELLED',
-  Processing = 'PROCESSING',
-  Processed = 'PROCESSED',
+  Created = 'created',
+  Submitted = 'submitted',
+  Cancelled = 'cancelled',
+  Processing = 'processing',
+  Processed = 'processed',
 }
 
 /** Type for a mandateimportentry resource. */
@@ -1203,8 +1203,8 @@ export interface MandatePdf {
 }
 
 export enum MandatePdfAccountType {
-  Savings = 'SAVINGS',
-  Checking = 'CHECKING',
+  Savings = 'savings',
+  Checking = 'checking',
 }
 
 /** Type for a mandatepdfcreaterequestlinks resource. */
@@ -1216,9 +1216,9 @@ export interface MandatePdfCreateRequestLinks {
 }
 
 export enum MandatePdfSubscriptionFrequency {
-  Weekly = 'WEEKLY',
-  Monthly = 'MONTHLY',
-  Yearly = 'YEARLY',
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
 }
 
 /** Type for a payment resource. */
@@ -1405,15 +1405,15 @@ export interface PaymentLinks {
 }
 
 export enum PaymentStatus {
-  PendingCustomerApproval = 'PENDING_CUSTOMER_APPROVAL',
-  PendingSubmission = 'PENDING_SUBMISSION',
-  Submitted = 'SUBMITTED',
-  Confirmed = 'CONFIRMED',
-  PaidOut = 'PAID_OUT',
-  Cancelled = 'CANCELLED',
-  CustomerApprovalDenied = 'CUSTOMER_APPROVAL_DENIED',
-  Failed = 'FAILED',
-  ChargedBack = 'CHARGED_BACK',
+  PendingCustomerApproval = 'pending_customer_approval',
+  PendingSubmission = 'pending_submission',
+  Submitted = 'submitted',
+  Confirmed = 'confirmed',
+  PaidOut = 'paid_out',
+  Cancelled = 'cancelled',
+  CustomerApprovalDenied = 'customer_approval_denied',
+  Failed = 'failed',
+  ChargedBack = 'charged_back',
 }
 
 /** Type for a payout resource. */
@@ -1541,14 +1541,14 @@ export interface PayoutLinks {
 }
 
 export enum PayoutPayoutType {
-  Merchant = 'MERCHANT',
-  Partner = 'PARTNER',
+  Merchant = 'merchant',
+  Partner = 'partner',
 }
 
 export enum PayoutStatus {
-  Pending = 'PENDING',
-  Paid = 'PAID',
-  Bounced = 'BOUNCED',
+  Pending = 'pending',
+  Paid = 'paid',
+  Bounced = 'bounced',
 }
 
 /** Type for a payoutitem resource. */
@@ -1614,15 +1614,15 @@ export interface PayoutItemLinks {
 }
 
 export enum PayoutItemType {
-  PaymentPaidOut = 'PAYMENT_PAID_OUT',
-  PaymentFailed = 'PAYMENT_FAILED',
-  PaymentChargedBack = 'PAYMENT_CHARGED_BACK',
-  PaymentRefunded = 'PAYMENT_REFUNDED',
-  Refund = 'REFUND',
-  GocardlessFee = 'GOCARDLESS_FEE',
-  AppFee = 'APP_FEE',
-  RevenueShare = 'REVENUE_SHARE',
-  SurchargeFee = 'SURCHARGE_FEE',
+  PaymentPaidOut = 'payment_paid_out',
+  PaymentFailed = 'payment_failed',
+  PaymentChargedBack = 'payment_charged_back',
+  PaymentRefunded = 'payment_refunded',
+  Refund = 'refund',
+  GocardlessFee = 'gocardless_fee',
+  AppFee = 'app_fee',
+  RevenueShare = 'revenue_share',
+  SurchargeFee = 'surcharge_fee',
 }
 
 /** Type for a redirectflow resource. */
@@ -1756,14 +1756,14 @@ export interface RedirectFlowLinks {
 }
 
 export enum RedirectFlowScheme {
-  Ach = 'ACH',
-  Autogiro = 'AUTOGIRO',
-  Bacs = 'BACS',
-  Becs = 'BECS',
-  BecsNz = 'BECS_NZ',
-  Betalingsservice = 'BETALINGSSERVICE',
-  Pad = 'PAD',
-  SepaCore = 'SEPA_CORE',
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  SepaCore = 'sepa_core',
 }
 
 /** Type for a refund resource. */
@@ -1835,8 +1835,8 @@ export interface RefundCreateRequestLinks {
 }
 
 export enum RefundRefundType {
-  Mandate = 'MANDATE',
-  Payment = 'PAYMENT',
+  Mandate = 'mandate',
+  Payment = 'payment',
 }
 
 /** Type for a refundfx resource. */
@@ -1887,13 +1887,13 @@ export interface RefundLinks {
 }
 
 export enum RefundStatus {
-  Created = 'CREATED',
-  PendingSubmission = 'PENDING_SUBMISSION',
-  Submitted = 'SUBMITTED',
-  Paid = 'PAID',
-  Cancelled = 'CANCELLED',
-  Bounced = 'BOUNCED',
-  FundsReturned = 'FUNDS_RETURNED',
+  Created = 'created',
+  PendingSubmission = 'pending_submission',
+  Submitted = 'submitted',
+  Paid = 'paid',
+  Cancelled = 'cancelled',
+  Bounced = 'bounced',
+  FundsReturned = 'funds_returned',
 }
 
 type JsonField = boolean | number | string | null;
@@ -1945,10 +1945,10 @@ export enum FxCurrency {
 }
 
 export interface CreatedAtFilter {
-  greaterThan?: string;
-  greaterThanOrEqual?: string;
-  lessThan?: string;
-  lessThanOrEqual?: string;
+  gt?: string;
+  gte?: string;
+  lt?: string;
+  lte?: string;
 }
 
 export interface ListMeta {
@@ -2065,9 +2065,9 @@ export interface SubscriptionCreateRequestLinks {
 }
 
 export enum SubscriptionIntervalUnit {
-  Weekly = 'WEEKLY',
-  Monthly = 'MONTHLY',
-  Yearly = 'YEARLY',
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
 }
 
 /** Type for a subscriptionlinks resource. */
@@ -2078,26 +2078,26 @@ export interface SubscriptionLinks {
 }
 
 export enum SubscriptionMonth {
-  January = 'JANUARY',
-  February = 'FEBRUARY',
-  March = 'MARCH',
-  April = 'APRIL',
-  May = 'MAY',
-  June = 'JUNE',
-  July = 'JULY',
-  August = 'AUGUST',
-  September = 'SEPTEMBER',
-  October = 'OCTOBER',
-  November = 'NOVEMBER',
-  December = 'DECEMBER',
+  January = 'january',
+  February = 'february',
+  March = 'march',
+  April = 'april',
+  May = 'may',
+  June = 'june',
+  July = 'july',
+  August = 'august',
+  September = 'september',
+  October = 'october',
+  November = 'november',
+  December = 'december',
 }
 
 export enum SubscriptionStatus {
-  PendingCustomerApproval = 'PENDING_CUSTOMER_APPROVAL',
-  CustomerApprovalDenied = 'CUSTOMER_APPROVAL_DENIED',
-  Active = 'ACTIVE',
-  Finished = 'FINISHED',
-  Cancelled = 'CANCELLED',
+  PendingCustomerApproval = 'pending_customer_approval',
+  CustomerApprovalDenied = 'customer_approval_denied',
+  Active = 'active',
+  Finished = 'finished',
+  Cancelled = 'cancelled',
 }
 
 /** Type for a subscriptionupcomingpayment resource. */
