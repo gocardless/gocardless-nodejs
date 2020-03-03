@@ -59,6 +59,16 @@ const newPayment = client.payments.create({
 // List all payments.
 const payments = gocardless_client.payments.list();
 
+// List the first three payments past a certain date.
+const payments = gocardless_client.payments.list(
+  {
+    limit: 3,
+    created_at: {
+      "gt": "2020-01-01T17:01:06.000Z",
+    }
+  }
+);
+
 // Get a payment.
 const payment = gocardless_client.payments.find('<MY-PAYMENT-ID>');
 
@@ -79,7 +89,7 @@ gocardless_client.payments.cancel('<MY-PAYMENT-ID>');
 
 ### The `all` method
 
-All resources with a `list` method will also have an additional `*all` method. This method acts like the regular `list` method, but instead returns an async iterator.
+All resources with a `list` method will also have an additional `*all` method. This method acts like the regular `list` method and accepts the same parameters, but instead returns an async iterator.
 
 <!-- prettier-ignore -->
 ```js
