@@ -27,6 +27,13 @@ jobs:
       OUT_DIR: *build_directory
       DIST_FOLDER: *dist_folder
 
+  test_library:
+    <<: *node_image
+    steps:
+      - checkout
+      - run: npm install --save-dev jest typescript ts-jest @types/jest
+      - run: npm test
+
   publish_to_npm:
     <<: *node_image
     steps:
@@ -50,7 +57,10 @@ workflows:
   version: 2
   deploy_library:
     jobs:
-      - transpile_library
+      - test_library
+      - transpile_library:
+          requires:
+            - test_library
       - publish_to_npm:
           requires:
             - transpile_library
