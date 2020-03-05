@@ -43,7 +43,7 @@ interface EventListRequest {
   // return all events for the given mandate.
   mandate?: string;
 
-  // ID of an event. If specified, this endpint will return all events whose
+  // ID of an event. If specified, this endpoint will return all events whose
   // parent_event is the given event ID.
   parent_event?: string;
 

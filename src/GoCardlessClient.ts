@@ -5,6 +5,7 @@ import { Api } from './api/Api';
 import { BankDetailsLookupService } from './services/BankDetailsLookupService';
 import { CreditorService } from './services/CreditorService';
 import { CreditorBankAccountService } from './services/CreditorBankAccountService';
+import { CurrencyExchangeRateService } from './services/CurrencyExchangeRateService';
 import { CustomerService } from './services/CustomerService';
 import { CustomerBankAccountService } from './services/CustomerBankAccountService';
 import { CustomerNotificationService } from './services/CustomerNotificationService';
@@ -27,6 +28,7 @@ export class GoCardlessClient {
   private _bankDetailsLookups: BankDetailsLookupService;
   private _creditors: CreditorService;
   private _creditorBankAccounts: CreditorBankAccountService;
+  private _currencyExchangeRates: CurrencyExchangeRateService;
   private _customers: CustomerService;
   private _customerBankAccounts: CustomerBankAccountService;
   private _customerNotifications: CustomerNotificationService;
@@ -49,6 +51,7 @@ export class GoCardlessClient {
     this._bankDetailsLookups = undefined;
     this._creditors = undefined;
     this._creditorBankAccounts = undefined;
+    this._currencyExchangeRates = undefined;
     this._customers = undefined;
     this._customerBankAccounts = undefined;
     this._customerNotifications = undefined;
@@ -88,6 +91,14 @@ export class GoCardlessClient {
     }
 
     return this._creditorBankAccounts;
+  }
+
+  get currencyExchangeRates(): CurrencyExchangeRateService {
+    if (!this._currencyExchangeRates) {
+      this._currencyExchangeRates = new CurrencyExchangeRateService(this._api);
+    }
+
+    return this._currencyExchangeRates;
   }
 
   get customers(): CustomerService {

@@ -79,9 +79,9 @@ export interface Creditor {
   // Boolean value indicating whether the organisation is responsible for
   // sending all customer notifications (note this is separate from the
   // functionality described
-  // [here](https://developer.gocardless.com/getting-started/api/handling-customer-notifications/).
-  // If you are a partner app, and this value is true, you should not send
-  // notifications on behalf of this organisation.
+  // [here](/getting-started/api/handling-customer-notifications/)). If you are
+  // a partner app, and this value is true, you should not send notifications on
+  // behalf of this organisation.
   merchant_responsible_for_notifications: boolean;
 
   // The creditor's name.
@@ -355,6 +355,22 @@ export interface CreditorBankAccountLinks {
   creditor: string;
 }
 
+/** Type for a currencyexchangerate resource. */
+export interface CurrencyExchangeRate {
+  // The exchange rate from the source to target currencies provided with up to
+  // 10 decimal places.
+  rate: string;
+
+  // Source currency
+  source: string;
+
+  // Target currency
+  target: string;
+
+  // Time at which the rate was retrieved from the provider.
+  time: string;
+}
+
 /** Type for a customer resource. */
 export interface Customer {
   // The first line of the customer's address.
@@ -625,15 +641,7 @@ export interface Event {
   resource_type: EventResourceType;
 }
 
-export enum EventInclude {
-  Payment = 'payment',
-  Mandate = 'mandate',
-  Payout = 'payout',
-  Refund = 'refund',
-  Subscription = 'subscription',
-  InstalmentSchedule = 'instalment_schedule',
-  Creditor = 'creditor',
-}
+export enum EventInclude {}
 
 /** Type for a eventcustomernotification resource. */
 export interface EventCustomerNotification {
@@ -805,7 +813,6 @@ export interface InstalmentSchedule {
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
   // creation.
-  //
   name: string;
 
   // If the status is `creation_failed`, this property will be populated with
@@ -831,15 +838,51 @@ export interface InstalmentSchedule {
 
   // The total amount of the instalment schedule, defined as the sum of all
   // individual
-  // payments. If the requested payment amounts do not sum up correctly, a
-  // validation
-  // error will be returned.
-  //
+  // payments, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in
+  // EUR). If the requested payment amounts do not sum up correctly, a
+  // validation error
+  // will be returned.
   total_amount: string;
 }
 
-/** Type for a instalmentschedulecreaterequestlinks resource. */
-export interface InstalmentScheduleCreateRequestLinks {
+/** Type for a instalmentschedulecreatewithdatesrequestlinks resource. */
+export interface InstalmentScheduleCreateWithDatesRequestLinks {
+  // ID of the associated [mandate](#core-endpoints-mandates) which the
+  // instalment schedule will create payments against.
+  mandate: string;
+}
+
+/** Type for a instalmentscheduleinstalments resource. */
+export interface InstalmentScheduleInstalments {
+  // List of amounts of each instalment, in the lowest denomination for the
+  // currency (e.g. pence in GBP, cents in EUR).
+  //
+  amounts: string[];
+
+  // Number of `interval_units` between charge dates. Must be greater than or
+  // equal to `1`.
+  //
+  interval: number;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit: InstalmentScheduleInstalmentsIntervalUnit;
+
+  // The date on which the first payment should be charged. Must be on or after
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
+  // blank, this will be set as the mandate's `next_possible_charge_date`.
+  start_date: string;
+}
+
+export enum InstalmentScheduleInstalmentsIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
+/** Type for a instalmentschedulecreatewithschedulerequestlinks resource. */
+export interface InstalmentScheduleCreateWithScheduleRequestLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // instalment schedule will create payments against.
   mandate: string;
@@ -1971,6 +2014,9 @@ export interface Subscription {
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee: string;
+
+  // The total number of payments that should be taken by this subscription.
+  count: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.

@@ -12,7 +12,7 @@ interface InstalmentScheduleListResponse extends Types.APIResponse {
   meta: Types.ListMeta;
 }
 
-interface InstalmentScheduleCreateRequest {
+interface InstalmentScheduleCreateWithDatesRequest {
   // The amount to be deducted from each payment as an app fee, to be paid to the
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
@@ -23,11 +23,12 @@ interface InstalmentScheduleCreateRequest {
   // supported.
   currency: Types.InstalmentScheduleCurrency;
 
-  //
-  instalments: unknown;
+  // An explicit array of instalment payments, each specifying at least an
+  // `amount` and `charge_date`.
+  instalments: Types.InstalmentScheduleInstalments[];
 
   //
-  links: Types.InstalmentScheduleCreateRequestLinks;
+  links: Types.InstalmentScheduleCreateWithDatesRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -36,7 +37,6 @@ interface InstalmentScheduleCreateRequest {
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
   // creation.
-  //
   name: string;
 
   // An optional reference that will appear on your customer's bank statement. The
@@ -59,10 +59,68 @@ interface InstalmentScheduleCreateRequest {
 
   // The total amount of the instalment schedule, defined as the sum of all
   // individual
-  // payments. If the requested payment amounts do not sum up correctly, a
-  // validation
-  // error will be returned.
+  // payments, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in
+  // EUR). If the requested payment amounts do not sum up correctly, a validation
+  // error
+  // will be returned.
+  total_amount: string;
+}
+
+interface InstalmentScheduleCreateWithScheduleRequest {
+  // The amount to be deducted from each payment as an app fee, to be paid to the
+  // partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // supported.
+  currency: Types.InstalmentScheduleCurrency;
+
+  // Frequency of the payments you want to create, together with an array of
+  // payment
+  // amounts to be collected, with a specified start date for the first payment.
   //
+  instalments: Types.InstalmentScheduleInstalments;
+
+  //
+  links: Types.InstalmentScheduleCreateWithScheduleRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
+
+  // Name of the instalment schedule, up to 100 chars. This name will also be
+  // copied to the payments of the instalment schedule if you use schedule-based
+  // creation.
+  name: string;
+
+  // An optional reference that will appear on your customer's bank statement. The
+  // character limit for this reference is dependent on the scheme.<br />
+  // <strong>ACH</strong> - 10 characters<br /> <strong>Autogiro</strong> - 11
+  // characters<br /> <strong>Bacs</strong> - 10 characters<br />
+  // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
+  // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
+  // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
+  // characters <p class='restricted-notice'><strong>Restricted</strong>: You can
+  // only specify a payment reference for Bacs payments (that is, when collecting
+  // from the UK) if you're on the <a
+  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
+  // packages</a>.</p>
+  payment_reference?: string;
+
+  // On failure, automatically retry payments using [Optimise Smart Payment
+  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  retry_if_possible?: boolean;
+
+  // The total amount of the instalment schedule, defined as the sum of all
+  // individual
+  // payments, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in
+  // EUR). If the requested payment amounts do not sum up correctly, a validation
+  // error
+  // will be returned.
   total_amount: string;
 }
 
@@ -97,9 +155,9 @@ export class InstalmentScheduleService {
     this.api = api;
   }
 
-  async create(
-    requestParameters: InstalmentScheduleCreateRequest,
-    idempotencyKey = ''
+  async create_with_dates(
+    identity: string,
+    requestParameters: InstalmentScheduleCreateWithDatesRequest
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -107,9 +165,31 @@ export class InstalmentScheduleService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: 'instalment_schedules',
-      idempotencyKey,
-      fetch: async identity => this.find(identity),
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: InstalmentScheduleResponse = {
+      ...response.body['instalment_schedules'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async create_with_schedule(
+    identity: string,
+    requestParameters: InstalmentScheduleCreateWithScheduleRequest
+  ): Promise<InstalmentScheduleResponse> {
+    const urlParameters = [];
+    const requestParams = {
+      path: '/instalment_schedules',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
     };
 
     const response = await this.api.request(requestParams);
