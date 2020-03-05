@@ -87,10 +87,9 @@ export class Api {
       payloadKey,
       idempotencyKey
     );
-    const request = got(path, requestOptions);
 
     try {
-      const response = await request;
+      const response = await got(path, requestOptions);
       return {
         body: response.body,
         __response__: {
@@ -143,8 +142,12 @@ export class Api {
         ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))
         : undefined;
 
-    if (method === 'POST' && !idempotencyKey) {
-      headers['Idempotency-Key'] = uuidv4();
+    // We want to always send POST requests with an idempotency key. If the user does not
+    // specify one, we'll generate one for them.
+    if (method.toLowerCase() === 'post') {
+      headers['Idempotency-Key'] = idempotencyKey
+        ? idempotencyKey
+        : this.generateIdempotencyKey();
     }
 
     const json = this.getRequestBody(method, requestParameters, payloadKey);
@@ -174,6 +177,10 @@ export class Api {
     }
 
     return undefined;
+  }
+
+  private generateIdempotencyKey() {
+    return uuidv4();
   }
 
   private mapQueryParameters(parameters) {

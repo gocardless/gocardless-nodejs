@@ -55,8 +55,7 @@ interface MandatePdfCreateRequest {
   country_code?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
-  // customer. Must be supplied if the customer's bank account is denominated in
-  // Danish krone (DKK). Can only be supplied for Betalingsservice mandates.
+  // customer. Should only be supplied for Betalingsservice mandates.
   danish_identity_number?: string;
 
   // International Bank Account Number. Alternatively you can provide [local
@@ -76,8 +75,7 @@ interface MandatePdfCreateRequest {
   // PDFs according to the ACH scheme rules.
   payer_ip_address?: string;
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
-  // including country code.
+  // The customer phone number. Should only be provided for BECS NZ mandates.
   phone_number?: string;
 
   // The customer's postal code.
@@ -108,7 +106,7 @@ interface MandatePdfCreateRequest {
   subscription_frequency?: Types.MandatePdfSubscriptionFrequency;
 
   // For Swedish customers only. The civic/company number (personnummer,
-  // samordningsnummer, or organisationsnummer) of the customer. Can only be
+  // samordningsnummer, or organisationsnummer) of the customer. Should only be
   // supplied for Autogiro mandates.
   swedish_identity_number?: string;
 }
