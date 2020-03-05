@@ -156,8 +156,8 @@ export class InstalmentScheduleService {
   }
 
   async create_with_dates(
-    identity: string,
-    requestParameters: InstalmentScheduleCreateWithDatesRequest
+    requestParameters: InstalmentScheduleCreateWithDatesRequest,
+    idempotencyKey = ''
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -165,8 +165,9 @@ export class InstalmentScheduleService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
-      fetch: null,
+      payloadKey: 'instalment_schedules',
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -179,8 +180,8 @@ export class InstalmentScheduleService {
   }
 
   async create_with_schedule(
-    identity: string,
-    requestParameters: InstalmentScheduleCreateWithScheduleRequest
+    requestParameters: InstalmentScheduleCreateWithScheduleRequest,
+    idempotencyKey = ''
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -188,8 +189,9 @@ export class InstalmentScheduleService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
-      fetch: null,
+      payloadKey: 'instalment_schedules',
+      idempotencyKey,
+      fetch: async identity => this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
