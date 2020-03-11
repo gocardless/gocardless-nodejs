@@ -3,7 +3,7 @@
 import os = require('os');
 import process = require('process');
 import _ = require('lodash');
-import uuidv4 = require('uuid/v4');
+import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
 import got from 'got';
 import qs from 'qs';

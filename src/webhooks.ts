@@ -23,7 +23,7 @@ function InvalidSignatureError() {
  * Validates that a webhook was genuinely sent by GoCardless, then parses each `event`
  * object into an array of `GoCardless.Event` classes.
  *
- * @body [JSON object]: The raw webhook body.
+ * @body [string]: The raw webhook body.
  * @webhookSecret [string]: The webhook endpoint secret for your webhook endpoint, as
  *   configured in your GoCardless Dashboard.
  * @signatureHeader [string]: The signature included in the webhook request, as specified
@@ -40,7 +40,7 @@ function parse(body, webhookSecret, signatureHeader) {
  * Validate the signature header. Note, we're using the `buffer-equal-constant-time`
  * library for the hash comparison, to protect against timing attacks.
  *
- * @body [JSON object]: The raw webhook body.
+ * @body [string]: The raw webhook body.
  * @webhookSecret [string]: The webhook endpoint secret for your webhook endpoint, as
  *   configured in your GoCardless Dashboard.
  * @signatureHeader [string]: The signature included in the webhook request, as specified
