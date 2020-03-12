@@ -37,7 +37,7 @@
     "ts-jest": "25.2.1"
   },
   "main": "src/index.js",
-  "types": "types/types.d.ts",
+  "types": "types/Types.d.ts",
   "engines": {
     "node": ">=10.0"
   }
