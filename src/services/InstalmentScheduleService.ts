@@ -155,7 +155,7 @@ export class InstalmentScheduleService {
     this.api = api;
   }
 
-  async create_with_dates(
+  async createWithDates(
     requestParameters: InstalmentScheduleCreateWithDatesRequest,
     idempotencyKey = ''
   ): Promise<InstalmentScheduleResponse> {
@@ -179,7 +179,7 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  async create_with_schedule(
+  async createWithSchedule(
     requestParameters: InstalmentScheduleCreateWithScheduleRequest,
     idempotencyKey = ''
   ): Promise<InstalmentScheduleResponse> {
