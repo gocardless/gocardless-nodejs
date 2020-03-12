@@ -1,6 +1,6 @@
 'use strict';
 
-import { GoCardlessClient } from './GoCardlessClient';
+import { GoCardlessClient } from './goCardlessClient';
 
 const initialiser = function(token, envrionment, options = {}) {
   return new GoCardlessClient(token, envrionment, options);
