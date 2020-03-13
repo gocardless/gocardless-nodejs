@@ -41,6 +41,7 @@ jobs:
       - attach_workspace:
           at: *build_directory
       - run: cp package.json $DIST_FOLDER
+      - run: cp README.md $DIST_FOLDER
       - run: npm install
       - run:
           name: Authenticate w/NPM.
