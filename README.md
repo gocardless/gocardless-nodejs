@@ -17,7 +17,7 @@ $ npm i gocardless-nodejs
 To initialise the client, you must provide:
 
 - An [access token](https://developer.gocardless.com/getting-started/api/making-your-first-request/#creating-an-access-token).
-- The environment that this token is for (see [here](https://github.com/gocardless/gocardless-nodejs/blob/077ed5f863dfbb277c6cfb7f95a2210b15052ea4/src/constants.ts#L3) for a list of available environments).
+- The environment that this token is for (see [here](https://github.com/gocardless/gocardless-nodejs/blob/master/src/constants.ts) for a list of available environments).
 - Any additional options (see [here](#available-client-options) for a list of supported options).
 
 <!-- prettier-ignore -->
