@@ -1,104 +1,93 @@
-GoCardless Node.js
-============================================
+# Node.js client for the GoCardless API
 
 [![GoCardless](https://circleci.com/gh/gocardless/gocardless-nodejs.svg?style=svg)](https://github.com/gocardless/gocardless-nodejs/commits/master) [![npm version](https://badge.fury.io/js/gocardless-nodejs.svg)](https://badge.fury.io/js/gocardless-nodejs)
 
-
-A Node.js client for the GoCardless API.
-------------
-
-## Documentation
-
-For the full documentation and code samples, visit the [`gocardless` API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
-
+A Node.js client for the GoCardless API. For full details of the GoCardless API, see the [API docs](https://developer.gocardless.com/).
 
 ## Installation
 
 ```bash
 $ npm i gocardless-nodejs
-``` 
+```
 
 ## Usage
 
-### Initialising a Client
+### Initialising the client
 
-To initialise a new client, you must provide:
+To initialise the client, you must provide:
 
-* Your access token.
-* The environment that this token is for (see [`here`](https://github.com/gocardless/gocardless-nodejs/blob/077ed5f863dfbb277c6cfb7f95a2210b15052ea4/src/Constants.ts#L3) for a list of available environments).
-* Any additional options (see [`here`](#available-client-options) for a list of supported options).
+- An [access token](https://developer.gocardless.com/getting-started/api/making-your-first-request/#creating-an-access-token).
+- The environment that this token is for (see [here](https://github.com/gocardless/gocardless-nodejs/blob/master/src/constants.ts) for a list of available environments).
+- Any additional options (see [here](#available-client-options) for a list of supported options).
 
 <!-- prettier-ignore -->
 ```js
-const GoCardless = require('gocardless-nodejs');
-const constants = require('gocardless-nodejs/Constants');
+const gocardless = require('gocardless-nodejs');
+const constants = require('gocardless-nodejs/constants');
 
 
-// Initialise a new client.
-const client = GoCardless('live_ACCESS_TOKEN_42', Constants.Environments.Live, { option_0: '0', ... });
+// Initialise the client.
+const client = gocardless(
+  process.env.GC_ACCESS_TOKEN,
+  Constants.Environments.Sandbox,
+  { raiseOnIdempotencyConflict: true },
+);
 ```
 
 ### The Basics
 
-We'll illustrate the basic library usage by demonstrating on the [`Payment` resource](https://developer.gocardless.com/api-reference/#core-endpoints-payments).
+We'll illustrate the basic library usage by demonstrating on the [payment resource](https://developer.gocardless.com/api-reference/#core-endpoints-payments).
 
-*Note*, for a full list of available resources, visit the [`gocardless` API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
+For a full list of available resources, visit the [GoCardless API reference](https://developer.gocardless.com/api-reference/#core-endpoints).
 
 <!-- prettier-ignore -->
 ```js
+const uuidv4 = require('uuid/v4');
+
 // Create a new payment.
-const newPayment = client.payments.create({
+const payment = client.payments.create({
     amount: '42',
     charge_date: '2020-01-01',
-    reference: 'This is my reference.',
+    reference: 'This is my reference',
     ...
   },
-  idempotencyKey: 'my_idempotency_key'
+  idempotencyKey: uuidv4(),
 );
 
 // List all payments.
-const payments = gocardless_client.payments.list();
+const payments = client.payments.list();
 
 // List the first three payments past a certain date.
-const payments = gocardless_client.payments.list(
+const payments = client.payments.list(
   {
     limit: 3,
     created_at: {
-      "gt": "2020-01-01T17:01:06.000Z",
-    }
+      gt: '2020-01-01T17:01:06.000Z',
+    },
   }
 );
 
 // Get a payment.
-const payment = gocardless_client.payments.find('<MY-PAYMENT-ID>');
+const payment = client.payments.find('PM123');
 
 // Update a payment.
-gocardless_client.payments.update(
-  '<MY-PAYMENT-ID>',
-  {
-    amount: '22',
-    ...
-  },
-  ...
-);
-    
-// Cancel a payment.
-gocardless_client.payments.cancel('<MY-PAYMENT-ID>');
-```
+client.payments.update('PM123', { amount: '22' });
 
+// Cancel a payment.
+client.payments.cancel('PM123');
+```
 
 ### The `all` method
 
-All resources with a `list` method will also have an additional `*all` method. This method acts like the regular `list` method and accepts the same parameters, but instead returns an async iterator.
+All resources with a `list` method will also have an additional `*all` method. This method acts like the regular `list` method and accepts the same parameters, but instead returns an async generator.
 
 <!-- prettier-ignore -->
 ```js
-const paymentIterator = gocardless_client.payments.all();
-for (const payment of paymentIterator) {
+for await (const payment of client.payments.all()) {
   console.log(payment.id);
 }
 ```
 
 ### Available client options
 
-`raise_on_idempotency_conflict` -- Set to `true` to raise exceptions on idempotency conflicts. Defaults to `false`.
+- `raiseOnIdempotencyConflict`: set to `true` to raise exceptions on [idempotency](https://developer.gocardless.com/api-reference/#making-requests-idempotency-keys) conflicts. Defaults to `false`.
