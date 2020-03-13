@@ -45,36 +45,31 @@ For a full list of available resources, visit the [GoCardless API reference](htt
 const uuidv4 = require('uuid/v4');
 
 // Create a new payment.
-const payment = client.payments.create({
-    amount: '42',
-    charge_date: '2020-01-01',
-    reference: 'This is my reference',
-    ...
+const payment = await client.payments.create(
+  {
+    amount: 100,
+    currency: "GBP",
+    links: { mandate: "MD123" },
   },
-  idempotencyKey: uuidv4(),
+  { idempotencyKey: uuidv4() },
 );
-
-// List all payments.
-const payments = client.payments.list();
 
 // List the first three payments past a certain date.
-const payments = client.payments.list(
-  {
-    limit: 3,
-    created_at: {
-      gt: '2020-01-01T17:01:06.000Z',
-    },
-  }
-);
+const payments = await client.payments.list({
+  limit: 3,
+  created_at: {
+    gt: '2020-01-01T17:01:06.000Z',
+  },
+});
 
 // Get a payment.
-const payment = client.payments.find('PM123');
+const payment = await client.payments.find('PM123');
 
 // Update a payment.
-client.payments.update('PM123', { amount: '22' });
+await client.payments.update('PM123', { amount: '22' });
 
 // Cancel a payment.
-client.payments.cancel('PM123');
+await client.payments.cancel('PM123');
 ```
 
 ### The `all` method
