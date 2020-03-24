@@ -133,6 +133,18 @@ interface SubscriptionUpdateRequest {
   payment_reference?: string;
 }
 
+interface SubscriptionPauseRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
+}
+
+interface SubscriptionResumeRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
+}
+
 interface SubscriptionCancelRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -238,6 +250,52 @@ export class SubscriptionService {
       urlParameters,
       requestParameters,
       payloadKey: 'subscriptions',
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionResponse = {
+      ...response.body['subscriptions'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async pause(
+    identity: string,
+    requestParameters: SubscriptionPauseRequest
+  ): Promise<SubscriptionResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/subscriptions/:identity/actions/pause',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: SubscriptionResponse = {
+      ...response.body['subscriptions'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async resume(
+    identity: string,
+    requestParameters: SubscriptionResumeRequest
+  ): Promise<SubscriptionResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/subscriptions/:identity/actions/resume',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
       fetch: null,
     };
 

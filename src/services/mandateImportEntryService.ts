@@ -28,6 +28,8 @@ interface MandateImportEntryCreateRequest {
   // A unique identifier for this entry, which you can use (once the import has
   // been
   // processed by GoCardless) to identify the records that have been created.
+  // Limited
+  // to 255 characters.
   //
   record_identifier?: string;
 }

@@ -641,7 +641,15 @@ export interface Event {
   resource_type: EventResourceType;
 }
 
-export enum EventInclude {}
+export enum EventInclude {
+  Payment = 'payment',
+  Mandate = 'mandate',
+  Payout = 'payout',
+  Refund = 'refund',
+  Subscription = 'subscription',
+  InstalmentSchedule = 'instalment_schedule',
+  Creditor = 'creditor',
+}
 
 /** Type for a eventcustomernotification resource. */
 export interface EventCustomerNotification {
@@ -779,13 +787,14 @@ export interface EventLinks {
 }
 
 export enum EventResourceType {
-  Payments = 'payments',
+  Creditors = 'creditors',
+  InstalmentSchedules = 'instalment_schedules',
   Mandates = 'mandates',
+  Payments = 'payments',
   Payouts = 'payouts',
   Refunds = 'refunds',
   Subscriptions = 'subscriptions',
-  InstalmentSchedules = 'instalment_schedules',
-  Creditors = 'creditors',
+  Organisations = 'organisations',
 }
 
 /** Type for a instalmentschedule resource. */
@@ -1080,6 +1089,8 @@ export interface MandateImportEntry {
   // A unique identifier for this entry, which you can use (once the import has
   // been
   // processed by GoCardless) to identify the records that have been created.
+  // Limited
+  // to 255 characters.
   //
   record_identifier: string;
 }
@@ -2096,6 +2107,8 @@ export interface Subscription {
   // subscription have been created</li>
   // <li>`cancelled`: the subscription has been cancelled and will no longer
   // create payments</li>
+  // <li>`paused`: the subscription has been paused and will not create
+  // payments</li>
   // </ul>
   status: SubscriptionStatus;
 
@@ -2144,6 +2157,7 @@ export enum SubscriptionStatus {
   Active = 'active',
   Finished = 'finished',
   Cancelled = 'cancelled',
+  Paused = 'paused',
 }
 
 /** Type for a subscriptionupcomingpayment resource. */
