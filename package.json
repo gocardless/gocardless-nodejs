@@ -34,7 +34,7 @@
     "@types/node": "^13.9.0",
     "@types/jest": "^25.1.4",
     "jest": "^25.1.0",
-    "ts-jest": "25.2.1"
+    "ts-jest": "25.3.1"
   },
   "main": "src/index.js",
   "types": "types/Types.d.ts",
