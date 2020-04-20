@@ -31,11 +31,14 @@ interface SubscriptionCreateRequest {
   // `-1` to indicate the last day of the month.
   day_of_month?: string;
 
-  // Date on or after which no further payments should be created. If this field
-  // is blank and `count` is not specified, the subscription will continue
-  // forever. <p class='deprecated-notice'><strong>Deprecated</strong>: This field
-  // will be removed in a future API version. Use `count` to specify a number of
-  // payments instead. </p>
+  // Date on or after which no further payments should be created.
+  //
+  // If this field is blank and `count` is not specified, the subscription will
+  // continue forever.
+  //
+  // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will be
+  // removed in a future API version. Use `count` to specify a number of payments
+  // instead.</p>
   end_date?: string;
 
   // Number of `interval_units` between customer charge dates. Must be greater
@@ -65,15 +68,17 @@ interface SubscriptionCreateRequest {
   name?: string;
 
   // An optional payment reference. This will be set as the reference on each
-  // payment created and will appear on your customer's bank statement. See the
-  // documentation for the [create payment endpoint](#payments-create-a-payment)
-  // for more details. <p class='restricted-notice'><strong>Restricted</strong>:
-  // You need your own Service User Number to specify a payment reference for Bacs
-  // payments.</p>
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  //
+  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
+  // Service User Number to specify a payment reference for Bacs payments.</p>
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. Must be on or after
@@ -125,11 +130,13 @@ interface SubscriptionUpdateRequest {
   name?: string;
 
   // An optional payment reference. This will be set as the reference on each
-  // payment created and will appear on your customer's bank statement. See the
-  // documentation for the [create payment endpoint](#payments-create-a-payment)
-  // for more details. <p class='restricted-notice'><strong>Restricted</strong>:
-  // You need your own Service User Number to specify a payment reference for Bacs
-  // payments.</p>
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  //
+  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
+  // Service User Number to specify a payment reference for Bacs payments.</p>
   payment_reference?: string;
 }
 
@@ -137,6 +144,10 @@ interface SubscriptionPauseRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
   metadata?: Types.JsonMap;
+
+  // The number of cycles to pause a subscription for. A cycle is one duration of
+  // `interval` and `interval_unit`.
+  pause_cycles?: number;
 }
 
 interface SubscriptionResumeRequest {

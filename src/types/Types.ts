@@ -9,8 +9,9 @@ export interface BankDetailsLookup {
 
   bank_name?: string;
 
-  // ISO 9362 SWIFT BIC of the bank with which the account is held. <p
-  // class="notice">Even if no BIC is returned for an account, GoCardless may
+  // ISO 9362 SWIFT BIC of the bank with which the account is held.
+  //
+  // <p class="notice">Even if no BIC is returned for an account, GoCardless may
   // still be able to collect payments from it - you should refer to the
   // `available_debit_schemes` attribute to determine reachability.</p>
 
@@ -799,10 +800,20 @@ export enum EventCustomerNotificationType {
 
 /** Type for a eventdetails resource. */
 export interface EventDetails {
+  // When we send a creditor `new_payout_currency_added` webhook, we also send
+  // the bank account id of the new account
+
+  bank_account_id: string;
+
   // What triggered the event. _Note:_ `cause` is our simplified and predictable
   // key indicating what triggered the event.
 
   cause: string;
+
+  // When we send a creditor `new_payout_currency_added` webhook, we also send
+  // the currency of the new account
+
+  currency: string;
 
   // Human readable description of the cause. _Note:_ Changes to event
   // descriptions are not considered breaking.
@@ -818,6 +829,11 @@ export interface EventDetails {
   // </ul>
 
   origin: EventDetailsOrigin;
+
+  // When we send a creditor `creditor_updated` webhook, this tells you which
+  // property on the creditor has been updated
+
+  property: string;
 
   // Set when a `bank` is the origin of the event. This is the reason code
   // received in the report from the customer's bank. See the [GoCardless Direct
@@ -1552,8 +1568,8 @@ export interface Payment {
 
   reference?: string;
 
-  // On failure, automatically retry the payment using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry the payment using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
 
   retry_if_possible: boolean;
 
@@ -1760,6 +1776,11 @@ export interface Payout {
 
   links: PayoutLinks;
 
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+
+  metadata: JsonMap;
+
   // Whether a payout contains merchant revenue or partner fees.
 
   payout_type: PayoutPayoutType;
@@ -1862,15 +1883,11 @@ export interface PayoutItem {
   // the lowest denomination for the currency (e.g. pence in GBP, cents in EUR),
   // to one decimal place.
   // <p class="notice">For accuracy, we store some of our fees to greater
-  // precision than
-  // we can actually pay out (for example, a GoCardless fee we record might come
-  // to 0.5
-  // pence, but it is not possible to send a payout via bank transfer including
-  // a half
-  // penny).<br><br>To calculate the final amount of the payout, we sum all of
-  // the items
-  // and then round to the nearest currency unit.</p>
-  //
+  // precision than we can actually pay out (for example, a GoCardless fee we
+  // record might come to 0.5 pence, but it is not possible to send a payout via
+  // bank transfer including a half penny).<br><br>To calculate the final amount
+  // of the payout, we sum all of the items and then round to the nearest
+  // currency unit.</p>
 
   amount: string;
 
@@ -1964,6 +1981,11 @@ export interface RedirectFlow {
   // Resources linked to this RedirectFlow.
 
   links: RedirectFlowLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+
+  metadata: JsonMap;
 
   // The URL of the hosted payment pages for this redirect flow. This is the URL
   // you should redirect your customer to.
@@ -2345,11 +2367,21 @@ export interface Subscription {
 
   day_of_month?: string;
 
-  // Date on or after which no further payments should be created. If this field
-  // is blank and `count` is not specified, the subscription will continue
-  // forever. <p class='deprecated-notice'><strong>Deprecated</strong>: This
-  // field will be removed in a future API version. Use `count` to specify a
-  // number of payments instead. </p>
+  // The earliest date that will be used as a `charge_date` on payments
+  // created for this subscription if it is resumed. Only present for `paused`
+  // subscriptions.
+  // This value will change over time.
+
+  earliest_charge_date_after_resume?: string;
+
+  // Date on or after which no further payments should be created.
+  //
+  // If this field is blank and `count` is not specified, the subscription will
+  // continue forever.
+  //
+  // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will
+  // be removed in a future API version. Use `count` to specify a number of
+  // payments instead.</p>
 
   end_date?: string;
 
@@ -2390,16 +2422,18 @@ export interface Subscription {
   name?: string;
 
   // An optional payment reference. This will be set as the reference on each
-  // payment created and will appear on your customer's bank statement. See the
-  // documentation for the [create payment endpoint](#payments-create-a-payment)
-  // for more details. <p class='restricted-notice'><strong>Restricted</strong>:
-  // You need your own Service User Number to specify a payment reference for
-  // Bacs payments.</p>
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  //
+  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
+  // Service User Number to specify a payment reference for Bacs payments.</p>
 
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
 
   retry_if_possible: boolean;
 

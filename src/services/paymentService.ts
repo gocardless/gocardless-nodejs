@@ -57,8 +57,8 @@ interface PaymentCreateRequest {
   // packages</a>.</p>
   reference?: string;
 
-  // On failure, automatically retry the payment using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry the payment using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
   retry_if_possible?: boolean;
 }
 
@@ -123,8 +123,8 @@ interface PaymentUpdateRequest {
   // to 50 characters and values up to 500 characters.
   metadata?: Types.JsonMap;
 
-  // On failure, automatically retry the payment using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry the payment using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
   retry_if_possible?: boolean;
 }
 

@@ -34,6 +34,10 @@ interface PayoutListRequest {
   // Number of records to return.
   limit?: string;
 
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
+
   // Whether a payout contains merchant revenue or partner fees.
   payout_type?: Types.PayoutPayoutType;
 
@@ -48,6 +52,12 @@ interface PayoutListRequest {
   // <li>`bounced`: the payout bounced when sent, the payout can be retried.</li>
   // </ul>
   status?: Types.PayoutStatus;
+}
+
+interface PayoutUpdateRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
 }
 
 export class PayoutService {
@@ -102,6 +112,29 @@ export class PayoutService {
       urlParameters,
 
       payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: PayoutResponse = {
+      ...response.body['payouts'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async update(
+    identity: string,
+    requestParameters: PayoutUpdateRequest
+  ): Promise<PayoutResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/payouts/:identity',
+      method: 'put',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'payouts',
       fetch: null,
     };
 
