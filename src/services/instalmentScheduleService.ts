@@ -53,8 +53,8 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // packages</a>.</p>
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
   retry_if_possible?: boolean;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -110,8 +110,8 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // packages</a>.</p>
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [Optimise Smart Payment
-  // Retries](#optimise-smart-payment-retries). Default is `false`.
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
   retry_if_possible?: boolean;
 
   // The total amount of the instalment schedule, defined as the sum of all

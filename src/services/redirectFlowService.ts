@@ -18,6 +18,10 @@ interface RedirectFlowCreateRequest {
   //
   links: Types.RedirectFlowCreateRequestLinks;
 
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
+
   // Information used to prefill the payment page so your customer doesn't have to
   // re-type details you already hold about them. It will be stored unvalidated
   // and the customer will be able to review and amend it before completing the
