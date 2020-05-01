@@ -70,8 +70,8 @@ interface CustomerCreateRequest {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is required.
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
+  // is required (e.g. `CA` for California).
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,
@@ -160,8 +160,8 @@ interface CustomerUpdateRequest {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is required.
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
+  // is required (e.g. `CA` for California).
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,

@@ -22,10 +22,15 @@ interface RedirectFlowCreateRequest {
   // to 50 characters and values up to 500 characters.
   metadata?: Types.JsonMap;
 
-  // Information used to prefill the payment page so your customer doesn't have to
-  // re-type details you already hold about them. It will be stored unvalidated
-  // and the customer will be able to review and amend it before completing the
-  // form.prefilled_customer?: Types.RedirectFlowPrefilledCustomer
+  // Bank account information used to prefill the payment page so your customer
+  // doesn't have to re-type details you already hold about them. It will be
+  // stored unvalidated and the customer will be able to review and amend it
+  // before completing the form.prefilled_bank_account?: Types.RedirectFlowPrefilledBankAccount
+
+  // Customer information used to prefill the payment page so your customer
+  // doesn't have to re-type details you already hold about them. It will be
+  // stored unvalidated and the customer will be able to review and amend it
+  // before completing the form.prefilled_customer?: Types.RedirectFlowPrefilledCustomer
 
   // The Direct Debit scheme of the mandate. If specified, the payment pages will
   // only allow the set-up of a mandate for the specified scheme. It is

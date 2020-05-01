@@ -440,9 +440,8 @@ export interface Customer {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is
-  // required.
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,
@@ -1218,9 +1217,8 @@ export interface MandateImportEntryCustomer {
   postal_code: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is
-  // required.
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,
@@ -1299,9 +1297,10 @@ export interface Payment {
   amount_refunded: string;
 
   // A future date on which the payment should be collected. If not specified,
-  // the payment will be collected as soon as possible. This must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`, and
-  // will be rolled-forwards by GoCardless if it is not a working day.
+  // the payment will be collected as soon as possible. If the value is before
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date` we
+  // will roll it forwards to match. If the value is not a working day it will
+  // be rolled forwards to the next available one.
   charge_date?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
@@ -1753,6 +1752,19 @@ export interface RedirectFlowCreateRequestLinks {
   creditor: string;
 }
 
+/** Type for a redirectflowprefilledbankaccount resource. */
+export interface RedirectFlowPrefilledBankAccount {
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type: RedirectFlowPrefilledBankAccountAccountType;
+}
+
+export enum RedirectFlowPrefilledBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
 /** Type for a redirectflowprefilledcustomer resource. */
 export interface RedirectFlowPrefilledCustomer {
   // The first line of the customer's address.
@@ -1767,7 +1779,8 @@ export interface RedirectFlowPrefilledCustomer {
   // The city of the customer's address.
   city?: string;
 
-  // Customer's company name.
+  // Customer's company name. Company name should only be provided if
+  // `given_name` and `family_name` are null.
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
