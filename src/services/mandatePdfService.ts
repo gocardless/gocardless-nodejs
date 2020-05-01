@@ -63,7 +63,7 @@ interface MandatePdfCreateRequest {
   // mandates.
   iban?: string;
 
-  //
+  // Resources linked to this MandatePdf.
   links?: Types.MandatePdfCreateRequestLinks;
 
   // Unique 6 to 18 character reference. This may be left blank at the point of
@@ -120,7 +120,8 @@ export class MandatePdfService {
 
   async create(
     requestParameters: MandatePdfCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<MandatePdfResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -130,6 +131,7 @@ export class MandatePdfService {
       requestParameters,
       payloadKey: 'mandate_pdfs',
       idempotencyKey,
+      customHeaders,
       fetch: undefined,
     };
 

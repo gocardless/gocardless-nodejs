@@ -14,7 +14,7 @@ interface RefundCreateRequest {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount: string;
 
-  //
+  // Resources linked to this Refund.
   links: Types.RefundCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -53,7 +53,7 @@ interface RefundListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Refund.
   created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
@@ -90,7 +90,8 @@ export class RefundService {
 
   async create(
     requestParameters: RefundCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<RefundResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -100,6 +101,7 @@ export class RefundService {
       requestParameters,
       payloadKey: 'refunds',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

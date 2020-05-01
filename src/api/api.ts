@@ -29,6 +29,7 @@ interface APIRequestParameters {
   payloadKey?: string;
   idempotencyKey?: string;
   fetch: Function | null;
+  customHeaders?: object;
 }
 
 export class Api {
@@ -75,6 +76,7 @@ export class Api {
     requestParameters = {},
     payloadKey = '',
     idempotencyKey = '',
+    customHeaders = {},
     fetch,
   }: APIRequestParameters) {
     urlParameters.forEach(urlParameter => {
@@ -85,7 +87,8 @@ export class Api {
       method,
       requestParameters,
       payloadKey,
-      idempotencyKey
+      idempotencyKey,
+      customHeaders
     );
 
     try {
@@ -119,24 +122,27 @@ export class Api {
     }
   }
 
-  private getHeaders(token) {
-    return {
+  private getHeaders(token, customHeaders = {}) {
+    const mandatoryHeaders = {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
       'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '1.1.0',
+      'GoCardless-Client-Version': '1.1.1',
       'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/1.1.0 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+      'User-Agent': `gocardless-nodejs/1.1.1 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
+
+    return { ...customHeaders, ...mandatoryHeaders };
   }
 
   private createRequestOptions(
     method = 'get',
     requestParameters = {},
     payloadKey = '',
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders = {}
   ) {
-    const headers = this.getHeaders(this._token);
+    const headers = this.getHeaders(this._token, customHeaders);
     const searchParams =
       method === 'get'
         ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))

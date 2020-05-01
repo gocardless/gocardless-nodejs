@@ -15,7 +15,7 @@ interface RedirectFlowCreateRequest {
   // the hosted payment pages.
   description?: string;
 
-  //
+  // Resources linked to this RedirectFlow.
   links: Types.RedirectFlowCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -25,8 +25,7 @@ interface RedirectFlowCreateRequest {
   // Information used to prefill the payment page so your customer doesn't have to
   // re-type details you already hold about them. It will be stored unvalidated
   // and the customer will be able to review and amend it before completing the
-  // form.
-  prefilled_customer?: Types.RedirectFlowPrefilledCustomer;
+  // form.prefilled_customer?: Types.RedirectFlowPrefilledCustomer
 
   // The Direct Debit scheme of the mandate. If specified, the payment pages will
   // only allow the set-up of a mandate for the specified scheme. It is
@@ -62,7 +61,8 @@ export class RedirectFlowService {
 
   async create(
     requestParameters: RedirectFlowCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -72,6 +72,7 @@ export class RedirectFlowService {
       requestParameters,
       payloadKey: 'redirect_flows',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

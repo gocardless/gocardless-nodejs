@@ -44,7 +44,8 @@ export class BankDetailsLookupService {
 
   async create(
     requestParameters: BankDetailsLookupCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<BankDetailsLookupResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -54,6 +55,7 @@ export class BankDetailsLookupService {
       requestParameters,
       payloadKey: 'bank_details_lookups',
       idempotencyKey,
+      customHeaders,
       fetch: undefined,
     };
 

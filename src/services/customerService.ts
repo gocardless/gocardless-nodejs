@@ -88,7 +88,7 @@ interface CustomerListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Customer.
   created_at?: Types.CreatedAtFilter;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
@@ -180,7 +180,8 @@ export class CustomerService {
 
   async create(
     requestParameters: CustomerCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<CustomerResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -190,6 +191,7 @@ export class CustomerService {
       requestParameters,
       payloadKey: 'customers',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

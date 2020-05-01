@@ -19,7 +19,7 @@ interface CurrencyExchangeRateListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this CurrencyExchangeRate.
   created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.

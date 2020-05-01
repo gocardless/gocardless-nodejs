@@ -27,8 +27,6 @@ interface CreditorCreateRequest {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
-  //
-
   // The creditor's name.
   name: string;
 
@@ -46,7 +44,7 @@ interface CreditorListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Creditor.
   created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
@@ -70,7 +68,7 @@ interface CreditorUpdateRequest {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
-  //
+  // Resources linked to this Creditor.
   links?: Types.CreditorUpdateRequestLinks;
 
   // The creditor's name.
@@ -92,7 +90,8 @@ export class CreditorService {
 
   async create(
     requestParameters: CreditorCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<CreditorResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -102,6 +101,7 @@ export class CreditorService {
       requestParameters,
       payloadKey: 'creditors',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

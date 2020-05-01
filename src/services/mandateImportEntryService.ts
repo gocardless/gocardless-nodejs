@@ -13,16 +13,13 @@ interface MandateImportEntryListResponse extends Types.APIResponse {
 }
 
 interface MandateImportEntryCreateRequest {
-  //
-  amendment?: Types.MandateImportEntryAmendment;
+  // amendment?: Types.MandateImportEntryAmendment
 
-  //
-  bank_account: Types.MandateImportEntryBankAccount;
+  // bank_account: Types.MandateImportEntryBankAccount
 
-  //
-  customer: Types.MandateImportEntryCustomer;
+  // customer: Types.MandateImportEntryCustomer
 
-  //
+  // Resources linked to this MandateImportEntry.
   links: Types.MandateImportEntryCreateRequestLinks;
 
   // A unique identifier for this entry, which you can use (once the import has
@@ -57,7 +54,8 @@ export class MandateImportEntryService {
 
   async create(
     requestParameters: MandateImportEntryCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<MandateImportEntryResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -67,6 +65,7 @@ export class MandateImportEntryService {
       requestParameters,
       payloadKey: 'mandate_import_entries',
       idempotencyKey,
+      customHeaders,
       fetch: undefined,
     };
 

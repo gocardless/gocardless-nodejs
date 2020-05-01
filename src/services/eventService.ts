@@ -20,7 +20,7 @@ interface EventListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Event.
   created_at?: Types.CreatedAtFilter;
 
   // Includes linked resources in the response. Must be used with the

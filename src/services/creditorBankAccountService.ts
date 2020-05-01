@@ -52,7 +52,7 @@ interface CreditorBankAccountCreateRequest {
   // details](#local-bank-details-sweden).
   iban?: string;
 
-  //
+  // Resources linked to this CreditorBankAccount.
   links: Types.CreditorBankAccountCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -71,7 +71,7 @@ interface CreditorBankAccountListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this CreditorBankAccount.
   created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CR".
@@ -93,7 +93,8 @@ export class CreditorBankAccountService {
 
   async create(
     requestParameters: CreditorBankAccountCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<CreditorBankAccountResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -103,6 +104,7 @@ export class CreditorBankAccountService {
       requestParameters,
       payloadKey: 'creditor_bank_accounts',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

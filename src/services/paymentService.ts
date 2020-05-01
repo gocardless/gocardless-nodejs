@@ -36,7 +36,7 @@ interface PaymentCreateRequest {
   // requirements](#appendix-compliance-requirements)).
   description?: string;
 
-  //
+  // Resources linked to this Payment.
   links: Types.PaymentCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -69,10 +69,9 @@ interface PaymentListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
-  charge_date?: Types.PaymentChargeDate;
+  // charge_date?: Types.PaymentChargeDate
 
-  //
+  // The creation date of this Payment.
   created_at?: Types.CreatedAtFilter;
 
   // ID of a creditor to filter payments by. If you pass this parameter, you
@@ -149,7 +148,8 @@ export class PaymentService {
 
   async create(
     requestParameters: PaymentCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<PaymentResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -159,6 +159,7 @@ export class PaymentService {
       requestParameters,
       payloadKey: 'payments',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 
