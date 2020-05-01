@@ -52,7 +52,7 @@ interface CustomerBankAccountCreateRequest {
   // details](#local-bank-details-sweden).
   iban?: string;
 
-  //
+  // Resources linked to this CustomerBankAccount.
   links: Types.CustomerBankAccountCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -67,7 +67,7 @@ interface CustomerBankAccountListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this CustomerBankAccount.
   created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CU".
@@ -95,7 +95,8 @@ export class CustomerBankAccountService {
 
   async create(
     requestParameters: CustomerBankAccountCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -105,6 +106,7 @@ export class CustomerBankAccountService {
       requestParameters,
       payloadKey: 'customer_bank_accounts',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

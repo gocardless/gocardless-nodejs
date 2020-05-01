@@ -27,7 +27,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // `amount` and `charge_date`.
   instalments: Types.InstalmentScheduleInstalments[];
 
-  //
+  // Resources linked to this InstalmentSchedule.
   links: Types.InstalmentScheduleCreateWithDatesRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -81,10 +81,9 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // Frequency of the payments you want to create, together with an array of
   // payment
   // amounts to be collected, with a specified start date for the first payment.
-  //
-  instalments: Types.InstalmentScheduleInstalments;
+  // instalments: Types.InstalmentScheduleInstalments
 
-  //
+  // Resources linked to this InstalmentSchedule.
   links: Types.InstalmentScheduleCreateWithScheduleRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -131,7 +130,7 @@ interface InstalmentScheduleListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this InstalmentSchedule.
   created_at?: Types.CreatedAtFilter;
 
   // ID of the associated [customer](#core-endpoints-customers).
@@ -157,7 +156,8 @@ export class InstalmentScheduleService {
 
   async createWithDates(
     requestParameters: InstalmentScheduleCreateWithDatesRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -167,6 +167,7 @@ export class InstalmentScheduleService {
       requestParameters,
       payloadKey: 'instalment_schedules',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 
@@ -181,7 +182,8 @@ export class InstalmentScheduleService {
 
   async createWithSchedule(
     requestParameters: InstalmentScheduleCreateWithScheduleRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -191,6 +193,7 @@ export class InstalmentScheduleService {
       requestParameters,
       payloadKey: 'instalment_schedules',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

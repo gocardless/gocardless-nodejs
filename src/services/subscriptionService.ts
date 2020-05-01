@@ -50,7 +50,7 @@ interface SubscriptionCreateRequest {
   // `yearly`.
   interval_unit: Types.SubscriptionIntervalUnit;
 
-  //
+  // Resources linked to this Subscription.
   links: Types.SubscriptionCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -94,7 +94,7 @@ interface SubscriptionListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Subscription.
   created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CU".
@@ -171,7 +171,8 @@ export class SubscriptionService {
 
   async create(
     requestParameters: SubscriptionCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<SubscriptionResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -181,6 +182,7 @@ export class SubscriptionService {
       requestParameters,
       payloadKey: 'subscriptions',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

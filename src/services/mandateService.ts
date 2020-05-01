@@ -11,7 +11,7 @@ interface MandateListResponse extends Types.APIResponse {
 }
 
 interface MandateCreateRequest {
-  //
+  // Resources linked to this Mandate.
   links: Types.MandateCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -42,7 +42,7 @@ interface MandateListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Mandate.
   created_at?: Types.CreatedAtFilter;
 
   // ID of a [creditor](#core-endpoints-creditors). If specified, this endpoint
@@ -100,7 +100,8 @@ export class MandateService {
 
   async create(
     requestParameters: MandateCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<MandateResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -110,6 +111,7 @@ export class MandateService {
       requestParameters,
       payloadKey: 'mandates',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

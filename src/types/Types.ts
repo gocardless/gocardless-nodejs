@@ -2,11 +2,9 @@
 export interface BankDetailsLookup {
   // Array of [schemes](#mandates_scheme) supported for this bank account. This
   // will be an empty array if the bank account is not reachable by any schemes.
-
   available_debit_schemes: BankDetailsLookupAvailableDebitScheme[];
 
   // The name of the bank with which the account is held (if available).
-
   bank_name?: string;
 
   // ISO 9362 SWIFT BIC of the bank with which the account is held.
@@ -14,7 +12,6 @@ export interface BankDetailsLookup {
   // <p class="notice">Even if no BIC is returned for an account, GoCardless may
   // still be able to collect payments from it - you should refer to the
   // `available_debit_schemes` attribute to determine reachability.</p>
-
   bic?: string;
 }
 
@@ -32,39 +29,31 @@ export enum BankDetailsLookupAvailableDebitScheme {
 /** Type for a creditor resource. */
 export interface Creditor {
   // The first line of the creditor's address.
-
   address_line1?: string;
 
   // The second line of the creditor's address.
-
   address_line2?: string;
 
   // The third line of the creditor's address.
-
   address_line3?: string;
 
   // Boolean indicating whether the creditor is permitted to create refunds
-
   can_create_refunds: boolean;
 
   // The city of the creditor's address.
-
   city?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-
   country_code?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // Boolean value indicating whether creditor has the [Custom Payment
   // Pages](https://support.gocardless.com/hc/en-gb/articles/115003734705-Custom-payment-pages)
   // functionality enabled.
-
   custom_payment_pages_enabled: boolean;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
@@ -72,11 +61,9 @@ export interface Creditor {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-
   fx_payout_currency: CreditorFxPayoutCurrency;
 
   // Unique identifier, beginning with "CR".
-
   id: string;
 
   // Resources linked to this Creditor.
@@ -84,12 +71,10 @@ export interface Creditor {
   links: CreditorLinks;
 
   // URL for the creditor's logo, which may be shown on their payment pages.
-
   logo_url?: string;
 
   // Boolean value indicating whether creditor has the [Mandate
   // Imports](#core-endpoints-mandate-imports) functionality enabled.
-
   mandate_imports_enabled: boolean;
 
   // Boolean value indicating whether the organisation is responsible for
@@ -98,19 +83,15 @@ export interface Creditor {
   // [here](/getting-started/api/handling-customer-notifications/)). If you are
   // a partner app, and this value is true, you should not send notifications on
   // behalf of this organisation.
-
   merchant_responsible_for_notifications: boolean;
 
   // The creditor's name.
-
   name: string;
 
   // The creditor's postal code.
-
   postal_code?: string;
 
   // The creditor's address region, county or department.
-
   region?: string;
 
   // An array of the scheme identifiers this creditor can create mandates
@@ -120,7 +101,6 @@ export interface Creditor {
   // contact the merchant for support purposes. They must be displayed on the
   // payment page, please see our [compliance
   // requirements](#appendix-compliance-requirements) for more details.
-
   scheme_identifiers: CreditorSchemeIdentifier[];
 
   // The creditor's verification status, indicating whether they can yet receive
@@ -140,7 +120,6 @@ export interface Creditor {
   // verify their account so they can receive payouts, and should visit the
   // verification flow.</li>
   // </ul>
-
   verification_status: CreditorVerificationStatus;
 }
 
@@ -148,42 +127,34 @@ export interface Creditor {
 export interface CreditorUpdateRequestLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in AUD.
-
   default_aud_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in CAD.
-
   default_cad_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in DKK.
-
   default_dkk_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in EUR.
-
   default_eur_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in GBP.
-
   default_gbp_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in NZD.
-
   default_nzd_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in SEK.
-
   default_sek_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in USD.
-
   default_usd_payout_account?: string;
 }
 
@@ -202,79 +173,63 @@ export enum CreditorFxPayoutCurrency {
 export interface CreditorLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in AUD.
-
   default_aud_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in CAD.
-
   default_cad_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in DKK.
-
   default_dkk_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in EUR.
-
   default_eur_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in GBP.
-
   default_gbp_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in NZD.
-
   default_nzd_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in SEK.
-
   default_sek_payout_account?: string;
 
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in USD.
-
   default_usd_payout_account?: string;
 }
 
 /** Type for a creditorschemeidentifier resource. */
 export interface CreditorSchemeIdentifier {
   // The first line of the support address.
-
   address_line1: string;
 
   // The second line of the support address.
-
   address_line2?: string;
 
   // The third line of the support address.
-
   address_line3?: string;
 
   // Whether a custom reference can be submitted for mandates using this scheme
   // identifier.
-
   can_specify_mandate_reference: boolean;
 
   // The city of the support address.
-
   city: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-
   country_code: string;
 
   // The currency of the scheme identifier.
-
   currency: CreditorSchemeIdentifierCurrency;
 
   // The support email address.
-
   email: string;
 
   // The minimum interval, in working days, between the sending of a
@@ -284,31 +239,24 @@ export interface CreditorSchemeIdentifier {
   // By default, GoCardless sends these notifications automatically. Please see
   // our [compliance requirements](#appendix-compliance-requirements) for more
   // details.
-
   minimum_advance_notice: number;
 
   // The name which appears on customers' bank statements.
-
   name: string;
 
   // The support phone number.
-
   phone_number: string;
 
   // The support postal code.
-
   postal_code: string;
 
   // The scheme-unique identifier against which payments are submitted.
-
   reference: string;
 
   // The support address region, county or department.
-
   region?: string;
 
   // The scheme which this scheme identifier applies to.
-
   scheme: CreditorSchemeIdentifierScheme;
 }
 
@@ -345,48 +293,39 @@ export interface CreditorBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
-
   account_holder_name: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-
   account_number_ending: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-
   account_type?: CreditorBankAccountAccountType;
 
   // Name of bank, taken from the bank details.
-
   bank_name: string;
 
   // [ISO 3166-1 alpha-2
   // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
-
   country_code?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-
   currency?: string;
 
   // Boolean value showing whether the bank account is enabled or disabled.
-
   enabled: boolean;
 
   // Unique identifier, beginning with "BA".
-
   id: string;
 
   // Resources linked to this CreditorBankAccount.
@@ -395,7 +334,6 @@ export interface CreditorBankAccount {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 }
 
@@ -403,7 +341,6 @@ export interface CreditorBankAccount {
 export interface CreditorBankAccountCreateRequestLinks {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
-
   creditor: string;
 }
 
@@ -416,7 +353,6 @@ export enum CreditorBankAccountAccountType {
 export interface CreditorBankAccountLinks {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
-
   creditor: string;
 }
 
@@ -424,38 +360,30 @@ export interface CreditorBankAccountLinks {
 export interface CurrencyExchangeRate {
   // The exchange rate from the source to target currencies provided with up to
   // 10 decimal places.
-
   rate: string;
 
   // Source currency
-
   source: string;
 
   // Target currency
-
   target: string;
 
   // Time at which the rate was retrieved from the provider.
-
   time: string;
 }
 
 /** Type for a customer resource. */
 export interface Customer {
   // The first line of the customer's address.
-
   address_line1?: string;
 
   // The second line of the customer's address.
-
   address_line2?: string;
 
   // The third line of the customer's address.
-
   address_line3?: string;
 
   // The city of the customer's address.
-
   city?: string;
 
   // Customer's company name. Required unless a `given_name` and `family_name`
@@ -463,40 +391,32 @@ export interface Customer {
   // will mean that any mandate created from this customer will be considered to
   // be a "Business PAD" (otherwise, any mandate will be considered to be a
   // "Personal PAD").
-
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-
   country_code?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
   // customer. Must be supplied if the customer's bank account is denominated in
   // Danish krone (DKK).
-
   danish_identity_number?: string;
 
   // Customer's email address. Required in most cases, as this allows GoCardless
   // to send notifications to this customer.
-
   email?: string;
 
   // Customer's surname. Required unless a `company_name` is provided.
-
   family_name?: string;
 
   // Customer's first name. Required unless a `company_name` is provided.
-
   given_name?: string;
 
   // Unique identifier, beginning with "CU".
-
   id: string;
 
   // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
@@ -506,35 +426,28 @@ export interface Customer {
   // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
   // If this is not provided, the language will be chosen based on the
   // `country_code` (if supplied) or default to "en".
-
   language?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
-
   phone_number?: string;
 
   // The customer's postal code.
-
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is
-  // required.
-
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer. Must be
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
-
   swedish_identity_number?: string;
 }
 
@@ -554,48 +467,39 @@ export interface CustomerBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
-
   account_holder_name: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-
   account_number_ending: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-
   account_type?: CustomerBankAccountAccountType;
 
   // Name of bank, taken from the bank details.
-
   bank_name: string;
 
   // [ISO 3166-1 alpha-2
   // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
-
   country_code?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-
   currency?: string;
 
   // Boolean value showing whether the bank account is enabled or disabled.
-
   enabled: boolean;
 
   // Unique identifier, beginning with "BA".
-
   id: string;
 
   // Resources linked to this CustomerBankAccount.
@@ -604,7 +508,6 @@ export interface CustomerBankAccount {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 }
 
@@ -612,13 +515,11 @@ export interface CustomerBankAccount {
 export interface CustomerBankAccountCreateRequestLinks {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
   // account.
-
   customer: string;
 
   // ID of a [customer bank account
   // token](#javascript-flow-customer-bank-account-tokens) to use in place of
   // bank account parameters.
-
   customer_bank_account_token: string;
 }
 
@@ -631,7 +532,6 @@ export enum CustomerBankAccountAccountType {
 export interface CustomerBankAccountLinks {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
   // account.
-
   customer: string;
 }
 
@@ -641,21 +541,17 @@ export interface CustomerNotification {
   // `handled`,
   // which means the integrator sent the notification themselves.
   //
-
   action_taken: CustomerNotificationActionTaken;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // action was taken.
-
   action_taken_at?: string;
 
   // A string identifying the integrator who was able to handle this
   // notification.
-
   action_taken_by?: string;
 
   // The id of the notification.
-
   id: string;
 
   // Resources linked to this CustomerNotification.
@@ -663,7 +559,6 @@ export interface CustomerNotification {
   links: CustomerNotificationLinks;
 
   // The type of notification the customer shall receive.
-
   type: CustomerNotificationType;
 }
 
@@ -674,27 +569,21 @@ export enum CustomerNotificationActionTaken {
 /** Type for a customernotificationlinks resource. */
 export interface CustomerNotificationLinks {
   // The customer who should be contacted with this notification.
-
   customer: string;
 
   // The event that triggered the notification to be scheduled.
-
   event: string;
 
   // The identifier of the related mandate.
-
   mandate: string;
 
   // The identifier of the related payment.
-
   payment: string;
 
   // The identifier of the related refund.
-
   refund: string;
 
   // The identifier of the related subscription.
-
   subscription: string;
 }
 
@@ -711,12 +600,10 @@ export enum CustomerNotificationType {
 /** Type for a event resource. */
 export interface Event {
   // What has happened to the resource.
-
   action: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // Present only in webhooks when an integrator is authorised to send their own
@@ -724,15 +611,12 @@ export interface Event {
   // [here](/getting-started/api/handling-customer-notifications/)
   // for further information.
   //
-
   customer_notifications?: EventCustomerNotification[];
 
   //
-
   details: EventDetails;
 
   // Unique identifier, beginning with "EV".
-
   id: string;
 
   // Resources linked to this Event.
@@ -742,7 +626,6 @@ export interface Event {
   // If the `details[origin]` is `api`, this will contain any metadata you
   // specified when triggering this event. In other cases it will be an empty
   // object.
-
   metadata: JsonMap;
 
   // The resource type for this event. One of:
@@ -755,7 +638,6 @@ export interface Event {
   // <li>`instalment_schedules`</li>
   // <li>`creditors`</li>
   // </ul>
-
   resource_type: EventResourceType;
 }
 
@@ -772,19 +654,15 @@ export enum EventInclude {
 /** Type for a eventcustomernotification resource. */
 export interface EventCustomerNotification {
   // Time after which GoCardless will send the notification by email.
-
   deadline: string;
 
   // The id of the notification.
-
   id: string;
 
   // Whether or not the notification must be sent.
-
   mandatory: boolean;
 
   // The type of notification the customer shall receive.
-
   type: EventCustomerNotificationType;
 }
 
@@ -802,22 +680,18 @@ export enum EventCustomerNotificationType {
 export interface EventDetails {
   // When we send a creditor `new_payout_currency_added` webhook, we also send
   // the bank account id of the new account
-
   bank_account_id: string;
 
   // What triggered the event. _Note:_ `cause` is our simplified and predictable
   // key indicating what triggered the event.
-
   cause: string;
 
   // When we send a creditor `new_payout_currency_added` webhook, we also send
   // the currency of the new account
-
   currency: string;
 
   // Human readable description of the cause. _Note:_ Changes to event
   // descriptions are not considered breaking.
-
   description: string;
 
   // Who initiated the event. One of:
@@ -827,12 +701,10 @@ export interface EventDetails {
   // <li>`api`: this event was triggered by an API endpoint</li>
   // <li>`customer`: this event was triggered by a Customer</li>
   // </ul>
-
   origin: EventDetailsOrigin;
 
   // When we send a creditor `creditor_updated` webhook, this tells you which
   // property on the creditor has been updated
-
   property: string;
 
   // Set when a `bank` is the origin of the event. This is the reason code
@@ -841,16 +713,13 @@ export interface EventDetails {
   // information on the meanings of different reason codes. _Note:_
   // `reason_code` is payment scheme-specific and can be inconsistent between
   // banks.
-
   reason_code: string;
 
   // A Direct Debit scheme. Set when a bank is the origin of the event.
-
   scheme: EventDetailsScheme;
 
   // Whether the payment will be retried automatically. Set on a payment failed
   // event.
-
   will_attempt_retry: boolean;
 }
 
@@ -877,67 +746,55 @@ export enum EventDetailsScheme {
 export interface EventLinks {
   // If `resource_type` is `creditor`, this is the ID of the
   // [creditor](#core-endpoints-creditors) which has been updated.
-
   creditor: string;
 
   // If `resource_type` is `instalment_schedule`, this is the ID of the
   // [instalment schedule](#core-endpoints-instalment-schedules) which has been
   // updated.
-
   instalment_schedule: string;
 
   // If `resource_type` is `mandates`, this is the ID of the
   // [mandate](#core-endpoints-mandates) which has been updated.
-
   mandate: string;
 
   // This is only included for mandate transfer events, when it is the ID of the
   // [customer bank account](#core-endpoints-customer-bank-accounts) which the
   // mandate is being transferred to.
-
   new_customer_bank_account: string;
 
   // This is only included for mandate replaced events, when it is the ID of the
   // new [mandate](#core-endpoints-mandates) that replaces the existing mandate.
-
   new_mandate: string;
 
   // If the event is included in a [webhook](#webhooks-overview) to an [OAuth
   // app](#appendix-oauth), this is the ID of the account to which it belongs.
-
   organisation: string;
 
   // If this event was caused by another, this is the ID of the cause. For
   // example, if a mandate is cancelled it automatically cancels all pending
   // payments associated with it; in this case, the payment cancellation events
   // would have the ID of the mandate cancellation event in this field.
-
   parent_event: string;
 
   // If `resource_type` is `payments`, this is the ID of the
   // [payment](#core-endpoints-payments) which has been updated.
-
   payment: string;
 
   // If `resource_type` is `payouts`, this is the ID of the
   // [payout](#core-endpoints-payouts) which has been updated.
-
   payout: string;
 
   // This is only included for mandate transfer events, when it is the ID of the
   // [customer bank account](#core-endpoints-customer-bank-accounts) which the
   // mandate is being transferred from.
-
   previous_customer_bank_account: string;
 
   // If `resource_type` is `refunds`, this is the ID of the
   // [refund](#core-endpoints-refunds) which has been updated.
-
   refund: string;
 
   // If `resource_type` is `subscription`, this is the ID of the
   // [subscription](#core-endpoints-subscriptions) which has been updated.
-
   subscription: string;
 }
 
@@ -956,17 +813,14 @@ export enum EventResourceType {
 export interface InstalmentSchedule {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-
   currency: InstalmentScheduleCurrency;
 
   // Unique identifier, beginning with "IS".
-
   id: string;
 
   // Resources linked to this InstalmentSchedule.
@@ -975,13 +829,11 @@ export interface InstalmentSchedule {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
   // creation.
-
   name: string;
 
   // If the status is `creation_failed`, this property will be populated with
@@ -990,7 +842,6 @@ export interface InstalmentSchedule {
   // that
   // failed.
   //
-
   payment_errors: JsonMap;
 
   // One of:
@@ -1004,7 +855,6 @@ export interface InstalmentSchedule {
   // <li>`cancelled`: the schedule has been cancelled</li>
   // <li>`errored`: one or more payments have failed</li>
   // </ul>
-
   status: InstalmentScheduleStatus;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -1014,7 +864,6 @@ export interface InstalmentSchedule {
   // EUR). If the requested payment amounts do not sum up correctly, a
   // validation error
   // will be returned.
-
   total_amount: string;
 }
 
@@ -1022,7 +871,6 @@ export interface InstalmentSchedule {
 export interface InstalmentScheduleCreateWithDatesRequestLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // instalment schedule will create payments against.
-
   mandate: string;
 }
 
@@ -1031,24 +879,20 @@ export interface InstalmentScheduleInstalments {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. pence in GBP, cents in EUR).
   //
-
   amounts: string[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
   //
-
   interval: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-
   interval_unit: InstalmentScheduleInstalmentsIntervalUnit;
 
   // The date on which the first payment should be charged. Must be on or after
   // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
   // blank, this will be set as the mandate's `next_possible_charge_date`.
-
   start_date?: string;
 }
 
@@ -1062,7 +906,6 @@ export enum InstalmentScheduleInstalmentsIntervalUnit {
 export interface InstalmentScheduleCreateWithScheduleRequestLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // instalment schedule will create payments against.
-
   mandate: string;
 }
 
@@ -1080,16 +923,13 @@ export enum InstalmentScheduleCurrency {
 /** Type for a instalmentschedulelinks resource. */
 export interface InstalmentScheduleLinks {
   // ID of the associated [customer](#core-endpoints-customers).
-
   customer: string;
 
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // instalment schedule will create payments against.
-
   mandate: string;
 
   // Array of IDs of the associated [payments](#core-endpoints-payments)
-
   payments: string[];
 }
 
@@ -1106,12 +946,10 @@ export enum InstalmentScheduleStatus {
 export interface Mandate {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
-
   id: string;
 
   // Resources linked to this Mandate.
@@ -1120,30 +958,25 @@ export interface Mandate {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // The earliest date that can be used as a `charge_date` on any newly created
   // payment for this mandate. This value will change over time.
-
   next_possible_charge_date?: string;
 
   // Boolean value showing whether payments and subscriptions under this mandate
   // require approval via an automated email before being processed.
-
   payments_require_approval: boolean;
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a
   // unique reference satisfying the different scheme requirements if this field
   // is left blank.
-
   reference?: string;
 
   // <a name="mandates_scheme"></a>Direct Debit scheme to which this mandate and
   // associated payments are submitted. Can be supplied or automatically
   // detected from the customer's bank account.
-
   scheme?: string;
 
   // One of:
@@ -1160,7 +993,6 @@ export interface Mandate {
   // <li>`cancelled`: the mandate has been cancelled</li>
   // <li>`expired`: the mandate has expired due to dormancy</li>
   // </ul>
-
   status: MandateStatus;
 }
 
@@ -1168,34 +1000,28 @@ export interface Mandate {
 export interface MandateCreateRequestLinks {
   // ID of the associated [creditor](#core-endpoints-creditors). Only required
   // if your account manages multiple creditors.
-
   creditor: string;
 
   // ID of the associated [customer bank
   // account](#core-endpoints-customer-bank-accounts) which the mandate is
   // created and submits payments against.
-
   customer_bank_account: string;
 }
 
 /** Type for a mandatelinks resource. */
 export interface MandateLinks {
   // ID of the associated [creditor](#core-endpoints-creditors).
-
   creditor: string;
 
   // ID of the associated [customer](#core-endpoints-customers)
-
   customer: string;
 
   // ID of the associated [customer bank
   // account](#core-endpoints-customer-bank-accounts) which the mandate is
   // created and submits payments against.
-
   customer_bank_account: string;
 
   // ID of the new mandate if this mandate has been replaced.
-
   new_mandate: string;
 }
 
@@ -1213,17 +1039,14 @@ export enum MandateStatus {
 export interface MandateImport {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // Unique identifier, beginning with "IM".
-
   id: string;
 
   // The scheme of the mandates to be imported.<br>All mandates in a single
   // mandate
   // import must be for the same scheme.
-
   scheme: MandateImportScheme;
 
   // The status of the mandate import.
@@ -1243,7 +1066,6 @@ export interface MandateImport {
   // <li>When the mandates have all been imported successfully, the status will
   // report as `processed`.</li>
   // </ul>
-
   status: MandateImportStatus;
 }
 
@@ -1270,7 +1092,6 @@ export enum MandateImportStatus {
 export interface MandateImportEntry {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // Resources linked to this MandateImportEntry.
@@ -1283,7 +1104,6 @@ export interface MandateImportEntry {
   // Limited
   // to 255 characters.
   //
-
   record_identifier?: string;
 }
 
@@ -1292,19 +1112,16 @@ export interface MandateImportEntryAmendment {
   // The creditor identifier of the direct debit originator. Required if mandate
   // import scheme is `sepa`.
   //
-
   original_creditor_id: string;
 
   // Data about the original mandate to be moved or modified.
   //
-
   original_creditor_name: string;
 
   // The unique SEPA reference for the mandate being amended. Required if
   // mandate
   // import scheme is `sepa`.
   //
-
   original_mandate_reference: string;
 }
 
@@ -1313,36 +1130,30 @@ export interface MandateImportEntryBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
-
   account_holder_name: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
   // more information. Alternatively you can provide an `iban`.
-
   account_number?: string;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
-
   bank_code?: string;
 
   // Branch code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
-
   branch_code?: string;
 
   // [ISO 3166-1 alpha-2
   // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
-
   country_code?: string;
 
   // International Bank Account Number. Alternatively you can provide [local
   // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
   // bank accounts denominated in SEK - you must supply [local
   // details](#local-bank-details-sweden).
-
   iban?: string;
 }
 
@@ -1351,19 +1162,15 @@ export interface MandateImportEntryCustomer {
   // The first line of the customer's address. Required if mandate import scheme
   // is `bacs`.
   //
-
   address_line1: string;
 
   // The second line of the customer's address.
-
   address_line2?: string;
 
   // The third line of the customer's address.
-
   address_line3?: string;
 
   // The city of the customer's address.
-
   city?: string;
 
   // Customer's company name. Required unless a `given_name` and `family_name`
@@ -1371,31 +1178,25 @@ export interface MandateImportEntryCustomer {
   // will mean that any mandate created from this customer will be considered to
   // be a "Business PAD" (otherwise, any mandate will be considered to be a
   // "Personal PAD").
-
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-
   country_code?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
   // customer. Must be supplied if the customer's bank account is denominated in
   // Danish krone (DKK).
-
   danish_identity_number?: string;
 
   // Customer's email address. Required in most cases, as this allows GoCardless
   // to send notifications to this customer.
-
   email?: string;
 
   // Customer's surname. Required unless a `company_name` is provided.
-
   family_name?: string;
 
   // Customer's first name. Required unless a `company_name` is provided.
-
   given_name?: string;
 
   // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
@@ -1405,38 +1206,31 @@ export interface MandateImportEntryCustomer {
   // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
   // If this is not provided, the language will be chosen based on the
   // `country_code` (if supplied) or default to "en".
-
   language?: string;
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
-
   phone_number?: string;
 
   // The customer's postal code. Required if mandate import scheme is `bacs`.
   //
-
   postal_code: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is
-  // required.
-
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer. Must be
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
-
   swedish_identity_number?: string;
 }
 
 /** Type for a mandateimportentrycreaterequestlinks resource. */
 export interface MandateImportEntryCreateRequestLinks {
   // Unique identifier, beginning with "IM".
-
   mandate_import: string;
 }
 
@@ -1444,24 +1238,20 @@ export interface MandateImportEntryCreateRequestLinks {
 export interface MandateImportEntryLinks {
   // The ID of the customer which was created when the mandate import was
   // processed.
-
   customer: string;
 
   // The ID of the customer bank account which was created when the mandate
   // import
   // was processed.
-
   customer_bank_account: string;
 
   // The ID of the mandate which was created when the mandate import was
   // processed.
-
   mandate: string;
 
   // The ID of the mandate import. This is returned when you
   // [create a Mandate Import](#mandate-imports-create-a-new-mandate-import).
   //
-
   mandate_import: string;
 }
 
@@ -1469,13 +1259,11 @@ export interface MandateImportEntryLinks {
 export interface MandatePdf {
   // The date and time at which the `url` will expire (10 minutes after the
   // original request).
-
   expires_at: string;
 
   // The URL at which this mandate PDF can be viewed until it expires at the
   // date and time specified by `expires_at`. You should not store this URL or
   // rely on its structure remaining the same.
-
   url: string;
 }
 
@@ -1489,7 +1277,6 @@ export interface MandatePdfCreateRequestLinks {
   // ID of an existing [mandate](#core-endpoints-mandates) to build the PDF
   // from. The customer's bank details will be censored in the generated PDF. No
   // other parameters may be provided alongside this.
-
   mandate: string;
 }
 
@@ -1503,45 +1290,38 @@ export enum MandatePdfSubscriptionFrequency {
 export interface Payment {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-
   amount: string;
 
   // Amount [refunded](#core-endpoints-refunds), in the lowest denomination for
   // the currency (e.g. pence in GBP, cents in EUR).
-
   amount_refunded: string;
 
   // A future date on which the payment should be collected. If not specified,
-  // the payment will be collected as soon as possible. This must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`, and
-  // will be rolled-forwards by GoCardless if it is not a working day.
-
+  // the payment will be collected as soon as possible. If the value is before
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date` we
+  // will roll it forwards to match. If the value is not a working day it will
+  // be rolled forwards to the next available one.
   charge_date?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-
   currency: PaymentCurrency;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
   // does not send its own notifications (see [compliance
   // requirements](#appendix-compliance-requirements)).
-
   description?: string;
 
   //
-
   fx: PaymentFx;
 
   // Unique identifier, beginning with "PM".
-
   id: string;
 
   // Resources linked to this Payment.
@@ -1550,7 +1330,6 @@ export interface Payment {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // An optional reference that will appear on your customer's bank statement.
@@ -1565,12 +1344,10 @@ export interface Payment {
   // collecting from the UK) if you're on the <a
   // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
   // packages</a>.</p>
-
   reference?: string;
 
   // On failure, automatically retry the payment using [intelligent
   // retries](#success-intelligent-retries). Default is `false`.
-
   retry_if_possible: boolean;
 
   // One of:
@@ -1591,7 +1368,6 @@ export interface Payment {
   // banks.</li>
   // <li>`charged_back`: the payment has been charged back</li>
   // </ul>
-
   status: PaymentStatus;
 }
 
@@ -1599,7 +1375,6 @@ export interface Payment {
 export interface PaymentCreateRequestLinks {
   // ID of the [mandate](#core-endpoints-mandates) against which this payment
   // should be collected.
-
   mandate: string;
 }
 
@@ -1607,22 +1382,18 @@ export interface PaymentCreateRequestLinks {
 export interface PaymentChargeDate {
   // Limit to records where the payment was or will be collected from the
   // customer's bank account after the specified date.
-
   gt: string;
 
   // Limit to records where the payment was or will be collected from the
   // customer's bank account on or after the specified date.
-
   gte: string;
 
   // Limit to records where the payment was or will be collected from the
   // customer's bank account before the specified date.
-
   lt: string;
 
   // Limit to records where the payment was or will be collected from the
   // customer's bank account on or before the specified date.
-
   lte: string;
 }
 
@@ -1644,17 +1415,14 @@ export interface PaymentFx {
   // This will vary based on the prevailing market rate until the moment that it
   // is paid out.
   // Present only before a resource is paid out. Has up to 10 decimal places.
-
   estimated_exchange_rate?: string;
 
   // Rate used in the foreign exchange of the `amount` into the `fx_currency`.
   // Present only after a resource is paid out. Has up to 10 decimal places.
-
   exchange_rate?: string;
 
   // Amount that was paid out in the `fx_currency` after foreign exchange.
   // Present only after the resource has been paid out.
-
   fx_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
@@ -1662,7 +1430,6 @@ export interface PaymentFx {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-
   fx_currency: PaymentFxFxCurrency;
 }
 
@@ -1681,30 +1448,25 @@ export enum PaymentFxFxCurrency {
 export interface PaymentLinks {
   // ID of [creditor](#core-endpoints-creditors) to which the collected payment
   // will be sent.
-
   creditor: string;
 
   // ID of [instalment_schedule](#core-endpoints-instalment-schedules) from
   // which this payment was created.<br/>**Note**: this property will only be
   // present if this payment is part of an instalment schedule.
-
   instalment_schedule: string;
 
   // ID of the [mandate](#core-endpoints-mandates) against which this payment
   // should be collected.
-
   mandate: string;
 
   // ID of [payout](#core-endpoints-payouts) which contains the funds from this
   // payment.<br/>**Note**: this property will not be present until the payment
   // has been successfully collected.
-
   payout: string;
 
   // ID of [subscription](#core-endpoints-subscriptions) from which this payment
   // was created.<br/>**Note**: this property will only be present if this
   // payment is part of a subscription.
-
   subscription: string;
 }
 
@@ -1723,7 +1485,6 @@ export enum PaymentStatus {
 /** Type for a payout resource. */
 export interface Payout {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-
   amount: string;
 
   // Date the payout is due to arrive in the creditor's bank account.
@@ -1735,18 +1496,15 @@ export interface Payout {
   //   <li>`null`: the payout hasn't been paid yet</li>
   // </ul>
   //
-
   arrival_date?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-
   currency: PayoutCurrency;
 
   // Fees that have already been deducted from the payout amount in minor unit
@@ -1761,15 +1519,12 @@ export interface Payout {
   //
   // If the merchant is invoiced for fees separately from the payout, then
   // `deducted_fees` will be 0.
-
   deducted_fees: string;
 
   //
-
   fx: PayoutFx;
 
   // Unique identifier, beginning with "PO".
-
   id: string;
 
   // Resources linked to this Payout.
@@ -1778,15 +1533,12 @@ export interface Payout {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // Whether a payout contains merchant revenue or partner fees.
-
   payout_type: PayoutPayoutType;
 
   // Reference which appears on the creditor's bank statement.
-
   reference: string;
 
   // One of:
@@ -1797,7 +1549,6 @@ export interface Payout {
   // <li>`bounced`: the payout bounced when sent, the payout can be
   // retried.</li>
   // </ul>
-
   status: PayoutStatus;
 }
 
@@ -1819,17 +1570,14 @@ export interface PayoutFx {
   // This will vary based on the prevailing market rate until the moment that it
   // is paid out.
   // Present only before a resource is paid out. Has up to 10 decimal places.
-
   estimated_exchange_rate?: string;
 
   // Rate used in the foreign exchange of the `amount` into the `fx_currency`.
   // Present only after a resource is paid out. Has up to 10 decimal places.
-
   exchange_rate?: string;
 
   // Amount that was paid out in the `fx_currency` after foreign exchange.
   // Present only after the resource has been paid out.
-
   fx_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
@@ -1837,7 +1585,6 @@ export interface PayoutFx {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-
   fx_currency: PayoutFxFxCurrency;
 }
 
@@ -1856,12 +1603,10 @@ export enum PayoutFxFxCurrency {
 export interface PayoutLinks {
   // ID of [creditor](#core-endpoints-creditors) who will receive this payout,
   // i.e. the owner of the `creditor_bank_account`.
-
   creditor: string;
 
   // ID of [bank account](#core-endpoints-creditor-bank-accounts) which this
   // will be sent to.
-
   creditor_bank_account: string;
 }
 
@@ -1888,7 +1633,6 @@ export interface PayoutItem {
   // bank transfer including a half penny).<br><br>To calculate the final amount
   // of the payout, we sum all of the items and then round to the nearest
   // currency unit.</p>
-
   amount: string;
 
   // Resources linked to this PayoutItem.
@@ -1922,7 +1666,6 @@ export interface PayoutItem {
   // bank or customer cancelled the chargeback.</li>
   // </ul>
   //
-
   type: PayoutItemType;
 }
 
@@ -1930,11 +1673,9 @@ export interface PayoutItem {
 export interface PayoutItemLinks {
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
-
   mandate: string;
 
   // Unique identifier, beginning with "PM".
-
   payment: string;
 }
 
@@ -1961,21 +1702,17 @@ export interface RedirectFlow {
   // for 15 minutes from when you complete the redirect flow. The structure of
   // this URL may change at any time, so you should read it directly from the
   // API response.
-
   confirmation_url: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // A description of the item the customer is paying for. This will be shown on
   // the hosted payment pages.
-
   description: string;
 
   // Unique identifier, beginning with "RE".
-
   id: string;
 
   // Resources linked to this RedirectFlow.
@@ -1984,31 +1721,26 @@ export interface RedirectFlow {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // The URL of the hosted payment pages for this redirect flow. This is the URL
   // you should redirect your customer to.
-
   redirect_url: string;
 
   // The Direct Debit scheme of the mandate. If specified, the payment pages
   // will only allow the set-up of a mandate for the specified scheme. It is
   // recommended that you leave this blank so the most appropriate scheme is
   // picked based on the customer's bank account.
-
   scheme: RedirectFlowScheme;
 
   // The customer's session ID must be provided when the redirect flow is set up
   // and again when it is completed. This allows integrators to ensure that the
   // user who was originally sent to the GoCardless payment pages is the one who
   // has completed them.
-
   session_token: string;
 
   // The URL to redirect to upon successful mandate setup. You must use a URL
   // beginning `https` in the live environment.
-
   success_redirect_url: string;
 }
 
@@ -2017,73 +1749,71 @@ export interface RedirectFlowCreateRequestLinks {
   // The [creditor](#core-endpoints-creditors) for whom the mandate will be
   // created. The `name` of the creditor will be displayed on the payment page.
   // Required if your account manages multiple creditors.
-
   creditor: string;
+}
+
+/** Type for a redirectflowprefilledbankaccount resource. */
+export interface RedirectFlowPrefilledBankAccount {
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type: RedirectFlowPrefilledBankAccountAccountType;
+}
+
+export enum RedirectFlowPrefilledBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
 }
 
 /** Type for a redirectflowprefilledcustomer resource. */
 export interface RedirectFlowPrefilledCustomer {
   // The first line of the customer's address.
-
   address_line1?: string;
 
   // The second line of the customer's address.
-
   address_line2?: string;
 
   // The third line of the customer's address.
-
   address_line3?: string;
 
   // The city of the customer's address.
-
   city?: string;
 
-  // Customer's company name.
-
+  // Customer's company name. Company name should only be provided if
+  // `given_name` and `family_name` are null.
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-
   country_code?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
   // customer.
-
   danish_identity_number?: string;
 
   // Customer's email address.
-
   email?: string;
 
   // Customer's surname.
-
   family_name?: string;
 
   // Customer's first name.
-
   given_name?: string;
 
   // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
-
   language?: string;
 
   // For New Zealand customers only.
-
   phone_number?: string;
 
   // The customer's postal code.
-
   postal_code?: string;
 
   // The customer's address region, county or department.
-
   region?: string;
 
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer.
-
   swedish_identity_number?: string;
 }
 
@@ -2091,25 +1821,21 @@ export interface RedirectFlowPrefilledCustomer {
 export interface RedirectFlowLinks {
   // The [creditor](#core-endpoints-creditors) for whom the mandate will be
   // created. The `name` of the creditor will be displayed on the payment page.
-
   creditor: string;
 
   // ID of [customer](#core-endpoints-customers) created by this redirect
   // flow.<br/>**Note**: this property will not be present until the redirect
   // flow has been successfully completed.
-
   customer: string;
 
   // ID of [customer bank account](#core-endpoints-customer-bank-accounts)
   // created by this redirect flow.<br/>**Note**: this property will not be
   // present until the redirect flow has been successfully completed.
-
   customer_bank_account: string;
 
   // ID of [mandate](#core-endpoints-mandates) created by this redirect
   // flow.<br/>**Note**: this property will not be present until the redirect
   // flow has been successfully completed.
-
   mandate: string;
 }
 
@@ -2127,26 +1853,21 @@ export enum RedirectFlowScheme {
 /** Type for a refund resource. */
 export interface Refund {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-
   amount: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. This is set to the currency of the refund's
   // [payment](#core-endpoints-payments).
-
   currency: string;
 
   //
-
   fx: RefundFx;
 
   // Unique identifier, beginning with "RF".
-
   id: string;
 
   // Resources linked to this Refund.
@@ -2155,7 +1876,6 @@ export interface Refund {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // An optional reference that will appear on your customer's bank statement.
@@ -2170,7 +1890,6 @@ export interface Refund {
   // collecting from the UK) if you're on the <a
   // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
   // packages</a>.</p>
-
   reference?: string;
 
   // One of:
@@ -2185,7 +1904,6 @@ export interface Refund {
   // <li>`bounced`: the refund has failed to be paid</li>
   // <li>`funds_returned`: the refund has had its funds returned</li>
   // </ul>
-
   status: RefundStatus;
 }
 
@@ -2193,12 +1911,10 @@ export interface Refund {
 export interface RefundCreateRequestLinks {
   // <em>private beta</em> ID of the [mandate](#core-endpoints-mandates) against
   // which the refund is being made.
-
   mandate: string;
 
   // ID of the [payment](#core-endpoints-payments) against which the refund is
   // being made.
-
   payment: string;
 }
 
@@ -2214,17 +1930,14 @@ export interface RefundFx {
   // This will vary based on the prevailing market rate until the moment that it
   // is paid out.
   // Present only before a resource is paid out. Has up to 10 decimal places.
-
   estimated_exchange_rate?: string;
 
   // Rate used in the foreign exchange of the `amount` into the `fx_currency`.
   // Present only after a resource is paid out. Has up to 10 decimal places.
-
   exchange_rate?: string;
 
   // Amount that was paid out in the `fx_currency` after foreign exchange.
   // Present only after the resource has been paid out.
-
   fx_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
@@ -2232,7 +1945,6 @@ export interface RefundFx {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-
   fx_currency: RefundFxFxCurrency;
 }
 
@@ -2251,12 +1963,10 @@ export enum RefundFxFxCurrency {
 export interface RefundLinks {
   // ID of the [mandate](#core-endpoints-mandates) against which the refund is
   // being made.
-
   mandate: string;
 
   // ID of the [payment](#core-endpoints-payments) against which the refund is
   // being made.
-
   payment: string;
 }
 
@@ -2339,39 +2049,32 @@ export interface ListMetaCursor {
 export interface Subscription {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-
   amount: string;
 
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-
   app_fee?: string;
 
   // The total number of payments that should be taken by this subscription.
-
   count?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
-
   created_at: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code. Currently
   // `GBP`, `EUR`, `SEK`, `DKK`, `AUD`, `NZD` and `CAD` are supported.
-
   currency: string;
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
   // `-1` to indicate the last day of the month.
-
   day_of_month?: string;
 
   // The earliest date that will be used as a `charge_date` on payments
   // created for this subscription if it is resumed. Only present for `paused`
   // subscriptions.
   // This value will change over time.
-
   earliest_charge_date_after_resume?: string;
 
   // Date on or after which no further payments should be created.
@@ -2382,22 +2085,18 @@ export interface Subscription {
   // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will
   // be removed in a future API version. Use `count` to specify a number of
   // payments instead.</p>
-
   end_date?: string;
 
   // Unique identifier, beginning with "SB".
-
   id: string;
 
   // Number of `interval_units` between customer charge dates. Must be greater
   // than or equal to `1`. Must result in at least one charge date per year.
   // Defaults to `1`.
-
   interval: string;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-
   interval_unit: SubscriptionIntervalUnit;
 
   // Resources linked to this Subscription.
@@ -2406,19 +2105,16 @@ export interface Subscription {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-
   metadata: JsonMap;
 
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
   // when the interval_unit is `yearly`.
   //
-
   month: SubscriptionMonth;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
-
   name?: string;
 
   // An optional payment reference. This will be set as the reference on each
@@ -2429,18 +2125,15 @@ export interface Subscription {
   //
   // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
   // Service User Number to specify a payment reference for Bacs payments.</p>
-
   payment_reference?: string;
 
   // On failure, automatically retry payments using [intelligent
   // retries](#success-intelligent-retries). Default is `false`.
-
   retry_if_possible: boolean;
 
   // The date on which the first payment should be charged. Must be on or after
   // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
   // blank, this will be set as the mandate's `next_possible_charge_date`.
-
   start_date?: string;
 
   // One of:
@@ -2458,11 +2151,9 @@ export interface Subscription {
   // <li>`paused`: the subscription has been paused and will not create
   // payments</li>
   // </ul>
-
   status: SubscriptionStatus;
 
   // Up to 10 upcoming payments with their amounts and charge dates.
-
   upcoming_payments: SubscriptionUpcomingPayment[];
 }
 
@@ -2470,7 +2161,6 @@ export interface Subscription {
 export interface SubscriptionCreateRequestLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // subscription will create payments against.
-
   mandate: string;
 }
 
@@ -2484,7 +2174,6 @@ export enum SubscriptionIntervalUnit {
 export interface SubscriptionLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // subscription will create payments against.
-
   mandate: string;
 }
 
@@ -2516,10 +2205,8 @@ export enum SubscriptionStatus {
 export interface SubscriptionUpcomingPayment {
   // The amount of this payment, in minor unit (e.g. pence in GBP, cents in
   // EUR).
-
   amount: string;
 
   // The date on which this payment will be charged.
-
   charge_date: string;
 }

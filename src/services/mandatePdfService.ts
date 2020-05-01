@@ -63,7 +63,7 @@ interface MandatePdfCreateRequest {
   // mandates.
   iban?: string;
 
-  //
+  // Resources linked to this MandatePdf.
   links?: Types.MandatePdfCreateRequestLinks;
 
   // Unique 6 to 18 character reference. This may be left blank at the point of
@@ -82,8 +82,8 @@ interface MandatePdfCreateRequest {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter state code ([ISO
-  // 3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) e.g CA) is required.
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
+  // is required (e.g. `CA` for California).
   region?: string;
 
   // Direct Debit scheme. Can be supplied or automatically detected from the bank
@@ -120,7 +120,8 @@ export class MandatePdfService {
 
   async create(
     requestParameters: MandatePdfCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<MandatePdfResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -130,6 +131,7 @@ export class MandatePdfService {
       requestParameters,
       payloadKey: 'mandate_pdfs',
       idempotencyKey,
+      customHeaders,
       fetch: undefined,
     };
 

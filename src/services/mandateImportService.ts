@@ -27,7 +27,8 @@ export class MandateImportService {
 
   async create(
     requestParameters: MandateImportCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<MandateImportResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -37,6 +38,7 @@ export class MandateImportService {
       requestParameters,
       payloadKey: 'mandate_imports',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

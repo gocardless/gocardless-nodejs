@@ -20,9 +20,10 @@ interface PaymentCreateRequest {
   app_fee?: string;
 
   // A future date on which the payment should be collected. If not specified, the
-  // payment will be collected as soon as possible. This must be on or after the
-  // [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`, and will
-  // be rolled-forwards by GoCardless if it is not a working day.
+  // payment will be collected as soon as possible. If the value is before the
+  // [mandate](#core-endpoints-mandates)'s `next_possible_charge_date` we will
+  // roll it forwards to match. If the value is not a working day it will be
+  // rolled forwards to the next available one.
   charge_date?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
@@ -36,7 +37,7 @@ interface PaymentCreateRequest {
   // requirements](#appendix-compliance-requirements)).
   description?: string;
 
-  //
+  // Resources linked to this Payment.
   links: Types.PaymentCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
@@ -69,10 +70,9 @@ interface PaymentListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
-  charge_date?: Types.PaymentChargeDate;
+  // charge_date?: Types.PaymentChargeDate
 
-  //
+  // The creation date of this Payment.
   created_at?: Types.CreatedAtFilter;
 
   // ID of a creditor to filter payments by. If you pass this parameter, you
@@ -135,6 +135,13 @@ interface PaymentCancelRequest {
 }
 
 interface PaymentRetryRequest {
+  // A future date on which the payment should be collected. If not specified, the
+  // payment will be collected as soon as possible. If the value is before the
+  // [mandate](#core-endpoints-mandates)'s `next_possible_charge_date` we will
+  // roll it forwards to match. If the value is not a working day it will be
+  // rolled forwards to the next available one.
+  charge_date?: string;
+
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
   metadata?: Types.JsonMap;
@@ -149,7 +156,8 @@ export class PaymentService {
 
   async create(
     requestParameters: PaymentCreateRequest,
-    idempotencyKey = ''
+    idempotencyKey = '',
+    customHeaders: Types.JsonMap = {}
   ): Promise<PaymentResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -159,6 +167,7 @@ export class PaymentService {
       requestParameters,
       payloadKey: 'payments',
       idempotencyKey,
+      customHeaders,
       fetch: async identity => this.find(identity),
     };
 

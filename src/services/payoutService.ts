@@ -17,7 +17,7 @@ interface PayoutListRequest {
   // Cursor pointing to the end of the desired set.
   before?: string;
 
-  //
+  // The creation date of this Payout.
   created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CR".
