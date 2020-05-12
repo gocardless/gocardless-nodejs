@@ -105,6 +105,10 @@ export class Api {
     } catch (error) {
       const { response } = error;
 
+      if (!response) {
+        throw error;
+      }
+
       if (
         this.isIdempotencyConflict(response) &&
         !this.raiseOnIdempotencyConflict
@@ -127,9 +131,9 @@ export class Api {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
       'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '1.1.1',
+      'GoCardless-Client-Version': '1.1.2',
       'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/1.1.1 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+      'User-Agent': `gocardless-nodejs/1.1.2 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
 
     return { ...customHeaders, ...mandatoryHeaders };
