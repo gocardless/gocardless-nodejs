@@ -302,7 +302,7 @@ export interface CreditorBankAccount {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: CreditorBankAccountAccountType;
+  account_type: CreditorBankAccountAccountType;
 
   // Name of bank, taken from the bank details.
   bank_name: string;
@@ -476,7 +476,7 @@ export interface CustomerBankAccount {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: CustomerBankAccountAccountType;
+  account_type: CustomerBankAccountAccountType;
 
   // Name of bank, taken from the bank details.
   bank_name: string;
@@ -693,6 +693,16 @@ export interface EventDetails {
   // Human readable description of the cause. _Note:_ Changes to event
   // descriptions are not considered breaking.
   description: string;
+
+  // When will_attempt_retry is set to false, this field will contain
+  // the reason the payment was not retried. This can be one of:
+  // <ul>
+  // <li>`failure_filter_applied`: The payment won't be intelligently retried as
+  //   there is a high likelihood of failure on retry.</li>
+  // <li>`other`: The payment won't be intelligently retried due to any other
+  //   reason.</li>
+  // </ul>
+  not_retried_reason: string;
 
   // Who initiated the event. One of:
   // <ul>
@@ -1754,8 +1764,8 @@ export interface RedirectFlowCreateRequestLinks {
 
 /** Type for a redirectflowprefilledbankaccount resource. */
 export interface RedirectFlowPrefilledBankAccount {
-  // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
+  // Bank account type for USD-denominated bank accounts. Must not be provided
+  // for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
   account_type: RedirectFlowPrefilledBankAccountAccountType;
 }
