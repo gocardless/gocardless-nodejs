@@ -147,6 +147,12 @@ interface InstalmentScheduleListRequest {
   status?: Types.InstalmentScheduleStatus[];
 }
 
+interface InstalmentScheduleUpdateRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+  metadata?: Types.JsonMap;
+}
+
 export class InstalmentScheduleService {
   private api: Api;
 
@@ -251,6 +257,29 @@ export class InstalmentScheduleService {
       urlParameters,
 
       payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: InstalmentScheduleResponse = {
+      ...response.body['instalment_schedules'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async update(
+    identity: string,
+    requestParameters: InstalmentScheduleUpdateRequest
+  ): Promise<InstalmentScheduleResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/instalment_schedules/:identity',
+      method: 'put',
+      urlParameters,
+      requestParameters,
+      payloadKey: 'instalment_schedules',
       fetch: null,
     };
 
