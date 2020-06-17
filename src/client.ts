@@ -21,6 +21,7 @@ import { PayoutItemService } from './services/payoutItemService';
 import { RedirectFlowService } from './services/redirectFlowService';
 import { RefundService } from './services/refundService';
 import { SubscriptionService } from './services/subscriptionService';
+import { TaxRateService } from './services/taxRateService';
 
 export class GoCardlessClient {
   private _api: Api;
@@ -44,6 +45,7 @@ export class GoCardlessClient {
   private _redirectFlows: RedirectFlowService;
   private _refunds: RefundService;
   private _subscriptions: SubscriptionService;
+  private _taxRates: TaxRateService;
 
   constructor(token: string, environment = Environments.Live, options = {}) {
     this._api = new Api(token, environment, options);
@@ -67,6 +69,7 @@ export class GoCardlessClient {
     this._redirectFlows = undefined;
     this._refunds = undefined;
     this._subscriptions = undefined;
+    this._taxRates = undefined;
   }
 
   get bankDetailsLookups(): BankDetailsLookupService {
@@ -219,5 +222,13 @@ export class GoCardlessClient {
     }
 
     return this._subscriptions;
+  }
+
+  get taxRates(): TaxRateService {
+    if (!this._taxRates) {
+      this._taxRates = new TaxRateService(this._api);
+    }
+
+    return this._taxRates;
   }
 }

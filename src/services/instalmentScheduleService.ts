@@ -46,11 +46,12 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
   // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
-  // characters <p class='restricted-notice'><strong>Restricted</strong>: You can
-  // only specify a payment reference for Bacs payments (that is, when collecting
-  // from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p>
+  // characters<br /> Note that this reference must be unique (for each merchant)
+  // for the BECS scheme as it is a scheme requirement. <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK) if
+  // you're on the <a href='https://gocardless.com/pricing'>GoCardless Plus, Pro
+  // or Enterprise packages</a>.</p>
   payment_reference?: string;
 
   // On failure, automatically retry payments using [intelligent
@@ -102,11 +103,12 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
   // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
-  // characters <p class='restricted-notice'><strong>Restricted</strong>: You can
-  // only specify a payment reference for Bacs payments (that is, when collecting
-  // from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p>
+  // characters<br /> Note that this reference must be unique (for each merchant)
+  // for the BECS scheme as it is a scheme requirement. <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK) if
+  // you're on the <a href='https://gocardless.com/pricing'>GoCardless Plus, Pro
+  // or Enterprise packages</a>.</p>
   payment_reference?: string;
 
   // On failure, automatically retry payments using [intelligent

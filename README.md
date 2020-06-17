@@ -29,7 +29,7 @@ const constants = require('gocardless-nodejs/constants');
 // Initialise the client.
 const client = gocardless(
   process.env.GC_ACCESS_TOKEN,
-  Constants.Environments.Sandbox,
+  constants.Environments.Sandbox,
   { raiseOnIdempotencyConflict: true },
 );
 ```
