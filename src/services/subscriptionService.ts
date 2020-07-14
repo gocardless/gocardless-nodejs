@@ -138,6 +138,10 @@ interface SubscriptionUpdateRequest {
   // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
   // Service User Number to specify a payment reference for Bacs payments.</p>
   payment_reference?: string;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`.
+  retry_if_possible?: boolean;
 }
 
 interface SubscriptionPauseRequest {

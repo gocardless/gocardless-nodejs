@@ -1349,11 +1349,12 @@ export interface Payment {
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
   // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
-  // characters <p class='restricted-notice'><strong>Restricted</strong>: You
-  // can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p>
+  // characters<br /> Note that this reference must be unique (for each
+  // merchant) for the BECS scheme as it is a scheme requirement. <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
+  // a payment reference for Bacs payments (that is, when collecting from the
+  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
+  // Plus, Pro or Enterprise packages</a>.</p>
   reference?: string;
 
   // On failure, automatically retry the payment using [intelligent
@@ -1518,7 +1519,7 @@ export interface Payout {
   currency: PayoutCurrency;
 
   // Fees that have already been deducted from the payout amount in minor unit
-  // (e.g. pence in GBP, cents in EUR).
+  // (e.g. pence in GBP, cents in EUR), inclusive of tax if applicable.
   //
   // For each `late_failure_settled` or `chargeback_settled` action, we refund
   // the transaction fees in a payout. This means that a payout can have a
@@ -1560,6 +1561,12 @@ export interface Payout {
   // retried.</li>
   // </ul>
   status: PayoutStatus;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which tax is paid out to the tax authorities of your tax
+  // jurisdiction. Currently “EUR”, “GBP”, for French or British merchants, this
+  // will be `null` if tax is not applicable <em>beta</em>
+  tax_currency?: string;
 }
 
 export enum PayoutCurrency {
@@ -1649,8 +1656,15 @@ export interface PayoutItem {
 
   links: PayoutItemLinks;
 
-  // The type of the credit (positive) or debit (negative) item in the payout.
-  // One of:
+  // An array of tax items <em>beta</em>
+  //
+  // Note: VAT applies to transaction and surcharge fees for merchants operating
+  // in the <a href="https://gocardless.com/legal/vat-faqs">UK</a> and <a
+  // href="https://gocardless.com/fr-fr/legal/faq-tva">France</a>.
+  taxes: PayoutItemTaxis[];
+
+  // The type of the credit (positive) or debit (negative) item in the payout
+  // (inclusive of VAT if applicable). One of:
   // <ul>
   // <li>`payment_paid_out` (credit)</li>
   // <li>`payment_failed` (debit): The payment failed to be processed.</li>
@@ -1663,7 +1677,7 @@ export interface PayoutItem {
   // customer, and the funds have been returned to you.</li>
   // <li>`gocardless_fee` (credit/debit): The fees that GoCardless charged for a
   // payment. In the case of a payment failure or chargeback, these will appear
-  // as credits.</li>
+  // as credits. Will include taxes if applicable for merchants.</li>
   // <li>`app_fee` (credit/debit): The optional fees that a partner may have
   // taken for a payment. In the case of a payment failure or chargeback, these
   // will appear as credits.</li>
@@ -1673,7 +1687,8 @@ export interface PayoutItem {
   // or chargeback, these will appear as credits.</li>
   // <li>`surcharge_fee` (credit/debit): GoCardless deducted a surcharge fee as
   // the payment failed or was charged back, or refunded a surcharge fee as the
-  // bank or customer cancelled the chargeback.</li>
+  // bank or customer cancelled the chargeback. Will include taxes if applicable
+  // for merchants.</li>
   // </ul>
   //
   type: PayoutItemType;
@@ -1687,6 +1702,59 @@ export interface PayoutItemLinks {
 
   // Unique identifier, beginning with "PM".
   payment: string;
+}
+
+/** Type for a payoutitemtaxis resource. */
+export interface PayoutItemTaxis {
+  // The amount of tax applied to a fee in fractional currency; the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR), to one
+  // decimal place.
+  amount: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency: PayoutItemTaxisCurrency;
+
+  // The amount of tax to be paid out to the tax authorities in fractional
+  // currency; the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR), to one decimal place.
+  //
+  // When `currency` and `destination_currency` don't match this will be `null`
+  // until the `exchange_rate` has been finalised.
+  destination_amount?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which tax is paid out to the tax authorities of your tax
+  // jurisdiction. Currently “EUR” for French merchants and “GBP” for British
+  // merchants.
+  destination_currency: string;
+
+  // The exchange rate for the tax from the currency into the destination
+  // currency.
+  //
+  // Present only if the currency and the destination currency don't match and
+  // the exchange rate has been finalised.
+  //
+  // You can listen for the payout's [`tax_exchange_rates_confirmed`
+  // webhook](https://developer.gocardless.com/api-reference/#event-actions-payout)
+  // to know when the exchange rate has been finalised for all fees in the
+  // payout.
+  exchange_rate?: string;
+
+  // The unique identifier created by the jurisdiction, tax type and version
+  tax_rate_id: string;
+}
+
+export enum PayoutItemTaxisCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
 }
 
 export enum PayoutItemType {
@@ -1895,11 +1963,12 @@ export interface Refund {
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
   // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
-  // characters <p class='restricted-notice'><strong>Restricted</strong>: You
-  // can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p>
+  // characters<br /> Note that this reference must be unique (for each
+  // merchant) for the BECS scheme as it is a scheme requirement. <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
+  // a payment reference for Bacs payments (that is, when collecting from the
+  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
+  // Plus, Pro or Enterprise packages</a>.</p>
   reference?: string;
 
   // One of:
@@ -2219,4 +2288,26 @@ export interface SubscriptionUpcomingPayment {
 
   // The date on which this payment will be charged.
   charge_date: string;
+}
+
+/** Type for a taxrate resource. */
+export interface TaxRate {
+  // Date at which GoCardless stopped applying the tax rate for the
+  // jurisdiction.
+  end_date?: string;
+
+  // The unique identifier created by the jurisdiction, tax type and version
+  id: string;
+
+  // The jurisdiction this tax rate applies to
+  jurisdiction: string;
+
+  // The percentage of tax that is applied onto of GoCardless fees
+  percentage: string;
+
+  // Date at which GoCardless started applying the tax rate in the jurisdiction.
+  start_date: string;
+
+  // The type of tax applied by this rate
+  type: string;
 }
