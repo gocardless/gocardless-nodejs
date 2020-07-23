@@ -12,6 +12,7 @@ interface RefundListResponse extends Types.APIResponse {
 
 interface RefundCreateRequest {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+
   amount: string;
 
   // Resources linked to this Refund.
@@ -19,6 +20,7 @@ interface RefundCreateRequest {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 
   // An optional reference that will appear on your customer's bank statement. The
@@ -34,6 +36,7 @@ interface RefundCreateRequest {
   // payment reference for Bacs payments (that is, when collecting from the UK) if
   // you're on the <a href='https://gocardless.com/pricing'>GoCardless Plus, Pro
   // or Enterprise packages</a>.</p>
+
   reference?: string;
 
   // Total expected refunded amount in minor unit (e.g. pence/cents/öre). If there
@@ -44,27 +47,33 @@ interface RefundCreateRequest {
   //
   // Must be supplied if `links[payment]` is present.
   //
+
   total_amount_confirmation?: string;
 }
 
 interface RefundListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this Refund.
   created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
+
   limit?: string;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
+
   mandate?: string;
 
   // Unique identifier, beginning with "PM".
+
   payment?: string;
 
   // Whether a refund was issued against a mandate or a payment. One of:
@@ -73,12 +82,14 @@ interface RefundListRequest {
   // only</li>
   //   <li>`mandate`: returns refunds created against mandates only</li>
   // </ul>
+
   refund_type?: Types.RefundRefundType;
 }
 
 interface RefundUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 }
 

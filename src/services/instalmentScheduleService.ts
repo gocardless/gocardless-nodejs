@@ -16,15 +16,18 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // The amount to be deducted from each payment as an app fee, to be paid to the
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
+
   app_fee?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
+
   currency: Types.InstalmentScheduleCurrency;
 
   // An explicit array of instalment payments, each specifying at least an
   // `amount` and `charge_date`.
+
   instalments: Types.InstalmentScheduleInstalments[];
 
   // Resources linked to this InstalmentSchedule.
@@ -32,11 +35,13 @@ interface InstalmentScheduleCreateWithDatesRequest {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
   // creation.
+
   name: string;
 
   // An optional reference that will appear on your customer's bank statement. The
@@ -52,10 +57,12 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // payment reference for Bacs payments (that is, when collecting from the UK) if
   // you're on the <a href='https://gocardless.com/pricing'>GoCardless Plus, Pro
   // or Enterprise packages</a>.</p>
+
   payment_reference?: string;
 
   // On failure, automatically retry payments using [intelligent
   // retries](#success-intelligent-retries). Default is `false`.
+
   retry_if_possible?: boolean;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -65,6 +72,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // EUR). If the requested payment amounts do not sum up correctly, a validation
   // error
   // will be returned.
+
   total_amount: string;
 }
 
@@ -72,28 +80,33 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // The amount to be deducted from each payment as an app fee, to be paid to the
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
+
   app_fee?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
+
   currency: Types.InstalmentScheduleCurrency;
 
   // Frequency of the payments you want to create, together with an array of
   // payment
   // amounts to be collected, with a specified start date for the first payment.
-  // instalments: Types.InstalmentScheduleInstalments
+  //
+  instalments: Types.InstalmentScheduleInstalments;
 
   // Resources linked to this InstalmentSchedule.
   links: Types.InstalmentScheduleCreateWithScheduleRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
   // creation.
+
   name: string;
 
   // An optional reference that will appear on your customer's bank statement. The
@@ -109,10 +122,12 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // payment reference for Bacs payments (that is, when collecting from the UK) if
   // you're on the <a href='https://gocardless.com/pricing'>GoCardless Plus, Pro
   // or Enterprise packages</a>.</p>
+
   payment_reference?: string;
 
   // On failure, automatically retry payments using [intelligent
   // retries](#success-intelligent-retries). Default is `false`.
+
   retry_if_possible?: boolean;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -122,36 +137,44 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // EUR). If the requested payment amounts do not sum up correctly, a validation
   // error
   // will be returned.
+
   total_amount: string;
 }
 
 interface InstalmentScheduleListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this InstalmentSchedule.
   created_at?: Types.CreatedAtFilter;
 
   // ID of the associated [customer](#core-endpoints-customers).
+
   customer?: string;
 
   // Number of records to return.
+
   limit?: string;
 
   // ID of the associated [mandate](#core-endpoints-mandates) which the instalment
   // schedule will create payments against.
+
   mandate?: string;
 
   // At most five valid status values
+
   status?: Types.InstalmentScheduleStatus[];
 }
 
 interface InstalmentScheduleUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 }
 
