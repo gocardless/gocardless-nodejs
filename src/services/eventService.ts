@@ -12,12 +12,15 @@ interface EventListResponse extends Types.APIResponse {
 
 interface EventListRequest {
   // Limit to events with a given `action`.
+
   action?: string;
 
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this Event.
@@ -34,29 +37,36 @@ interface EventListRequest {
   // <li>`instalment_schedule`</li>
   // <li>`creditor`</li>
   // </ul>
+
   include?: Types.EventInclude;
 
   // Number of records to return.
+
   limit?: string;
 
   // ID of a [mandate](#core-endpoints-mandates). If specified, this endpoint will
   // return all events for the given mandate.
+
   mandate?: string;
 
   // ID of an event. If specified, this endpoint will return all events whose
   // parent_event is the given event ID.
+
   parent_event?: string;
 
   // ID of a [payment](#core-endpoints-payments). If specified, this endpoint will
   // return all events for the given payment.
+
   payment?: string;
 
   // ID of a [payout](#core-endpoints-payouts). If specified, this endpoint will
   // return all events for the given payout.
+
   payout?: string;
 
   // ID of a [refund](#core-endpoints-refunds). If specified, this endpoint will
   // return all events for the given refund.
+
   refund?: string;
 
   // Type of resource that you'd like to get all events for. Cannot be used
@@ -72,10 +82,12 @@ interface EventListRequest {
   // <li>`creditors`</li>
   // <li>`refunds`</li>
   // </ul>
+
   resource_type?: Types.EventResourceType;
 
   // ID of a [subscription](#core-endpoints-subscriptions). If specified, this
   // endpoint will return all events for the given subscription.
+
   subscription?: string;
 }
 

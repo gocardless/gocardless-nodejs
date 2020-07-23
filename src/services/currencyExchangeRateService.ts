@@ -14,21 +14,26 @@ interface CurrencyExchangeRateListResponse extends Types.APIResponse {
 
 interface CurrencyExchangeRateListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this CurrencyExchangeRate.
   created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
+
   limit?: string;
 
   // Source currency
+
   source?: string;
 
   // Target currency
+
   target?: string;
 }
 

@@ -12,36 +12,45 @@ interface PayoutListResponse extends Types.APIResponse {
 
 interface PayoutListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this Payout.
   created_at?: Types.CreatedAtFilter;
 
   // Unique identifier, beginning with "CR".
+
   creditor?: string;
 
   // Unique identifier, beginning with "BA".
+
   creditor_bank_account?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
+
   currency?: Types.PayoutCurrency;
 
   // Number of records to return.
+
   limit?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 
   // Whether a payout contains merchant revenue or partner fees.
+
   payout_type?: Types.PayoutPayoutType;
 
   // Reference which appears on the creditor's bank statement.
+
   reference?: string;
 
   // One of:
@@ -51,12 +60,14 @@ interface PayoutListRequest {
   // <li>`paid`: the payout has been sent to the banks</li>
   // <li>`bounced`: the payout bounced when sent, the payout can be retried.</li>
   // </ul>
+
   status?: Types.PayoutStatus;
 }
 
 interface PayoutUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 }
 

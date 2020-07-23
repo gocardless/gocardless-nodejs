@@ -12,72 +12,91 @@ interface CreditorListResponse extends Types.APIResponse {
 
 interface CreditorCreateRequest {
   // The first line of the creditor's address.
+
   address_line1?: string;
 
   // The second line of the creditor's address.
+
   address_line2?: string;
 
   // The third line of the creditor's address.
+
   address_line3?: string;
 
   // The city of the creditor's address.
+
   city?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+
   country_code?: string;
 
   // The creditor's name.
+
   name: string;
 
   // The creditor's postal code.
+
   postal_code?: string;
 
   // The creditor's address region, county or department.
+
   region?: string;
 }
 
 interface CreditorListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this Creditor.
   created_at?: Types.CreatedAtFilter;
 
   // Number of records to return.
+
   limit?: string;
 }
 
 interface CreditorUpdateRequest {
   // The first line of the creditor's address.
+
   address_line1?: string;
 
   // The second line of the creditor's address.
+
   address_line2?: string;
 
   // The third line of the creditor's address.
+
   address_line3?: string;
 
   // The city of the creditor's address.
+
   city?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+
   country_code?: string;
 
   // Resources linked to this Creditor.
   links?: Types.CreditorUpdateRequestLinks;
 
   // The creditor's name.
+
   name?: string;
 
   // The creditor's postal code.
+
   postal_code?: string;
 
   // The creditor's address region, county or department.
+
   region?: string;
 }
 

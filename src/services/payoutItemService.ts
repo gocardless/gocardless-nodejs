@@ -12,15 +12,19 @@ interface PayoutItemListResponse extends Types.APIResponse {
 
 interface PayoutItemListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // Number of records to return.
+
   limit?: string;
 
   // Unique identifier, beginning with "PO".
+
   payout: string;
 }
 

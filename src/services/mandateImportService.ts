@@ -15,6 +15,7 @@ interface MandateImportListResponse extends Types.APIResponse {
 interface MandateImportCreateRequest {
   // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+
   scheme: Types.MandateImportScheme;
 }
 

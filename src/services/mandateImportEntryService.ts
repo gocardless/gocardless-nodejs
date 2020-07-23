@@ -13,11 +13,14 @@ interface MandateImportEntryListResponse extends Types.APIResponse {
 }
 
 interface MandateImportEntryCreateRequest {
-  // amendment?: Types.MandateImportEntryAmendment
+  //
+  amendment?: Types.MandateImportEntryAmendment;
 
-  // bank_account: Types.MandateImportEntryBankAccount
+  //
+  bank_account: Types.MandateImportEntryBankAccount;
 
-  // customer: Types.MandateImportEntryCustomer
+  //
+  customer: Types.MandateImportEntryCustomer;
 
   // Resources linked to this MandateImportEntry.
   links: Types.MandateImportEntryCreateRequestLinks;
@@ -28,20 +31,25 @@ interface MandateImportEntryCreateRequest {
   // Limited
   // to 255 characters.
   //
+
   record_identifier?: string;
 }
 
 interface MandateImportEntryListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // Number of records to return.
+
   limit?: string;
 
   // Unique identifier, beginning with "IM".
+
   mandate_import: string;
 }
 

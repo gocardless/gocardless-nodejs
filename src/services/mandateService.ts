@@ -16,30 +16,36 @@ interface MandateCreateRequest {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 
   // For ACH customers only. Required for ACH customers. A string containing the
   // IP address of the payer to whom the mandate belongs (i.e. as a result of
   // their completion of a mandate setup flow in their browser).
+
   payer_ip_address?: string;
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a
   // unique reference satisfying the different scheme requirements if this field
   // is left blank.
+
   reference?: string;
 
   // <a name="mandates_scheme"></a>Direct Debit scheme to which this mandate and
   // associated payments are submitted. Can be supplied or automatically detected
   // from the customer's bank account.
+
   scheme?: string;
 }
 
 interface MandateListRequest {
   // Cursor pointing to the start of the desired set.
+
   after?: string;
 
   // Cursor pointing to the end of the desired set.
+
   before?: string;
 
   // The creation date of this Mandate.
@@ -48,46 +54,55 @@ interface MandateListRequest {
   // ID of a [creditor](#core-endpoints-creditors). If specified, this endpoint
   // will return all mandates for the given creditor. Cannot be used in
   // conjunction with `customer` or `customer_bank_account`
+
   creditor?: string;
 
   // ID of a [customer](#core-endpoints-customers). If specified, this endpoint
   // will return all mandates for the given customer. Cannot be used in
   // conjunction with `customer_bank_account` or `creditor`
+
   customer?: string;
 
   // ID of a [customer bank account](#core-endpoints-customer-bank-accounts). If
   // specified, this endpoint will return all mandates for the given bank account.
   // Cannot be used in conjunction with `customer` or `creditor`
+
   customer_bank_account?: string;
 
   // Number of records to return.
+
   limit?: string;
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a
   // unique reference satisfying the different scheme requirements if this field
   // is left blank.
+
   reference?: string;
 
   // At most four valid status values
+
   status?: Types.MandateStatus[];
 }
 
 interface MandateUpdateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 }
 
 interface MandateCancelRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 }
 
 interface MandateReinstateRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
+
   metadata?: Types.JsonMap;
 }
 
