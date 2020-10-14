@@ -17,7 +17,7 @@ interface RedirectFlowCreateRequest {
   description?: string;
 
   // Resources linked to this RedirectFlow.
-  links: Types.RedirectFlowCreateRequestLinks;
+  links?: Types.RedirectFlowCreateRequestLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.

@@ -467,6 +467,8 @@ export interface CustomerBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
+  // This field is required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -632,6 +634,7 @@ export interface Event {
   // <ul>
   // <li>`payments`</li>
   // <li>`mandates`</li>
+  // <li>`payer_authorisations`</li>
   // <li>`payouts`</li>
   // <li>`refunds`</li>
   // <li>`subscriptions`</li>
@@ -649,6 +652,7 @@ export enum EventInclude {
   Subscription = 'subscription',
   InstalmentSchedule = 'instalment_schedule',
   Creditor = 'creditor',
+  PayerAuthorisation = 'payer_authorisation',
 }
 
 /** Type for a eventcustomernotification resource. */
@@ -758,6 +762,12 @@ export interface EventLinks {
   // [creditor](#core-endpoints-creditors) which has been updated.
   creditor: string;
 
+  // ID of a [customer](#core-endpoints-customers).
+  customer: string;
+
+  // ID of a [customer bank account](#core-endpoints-customer-bank-accounts).
+  customer_bank_account: string;
+
   // If `resource_type` is `instalment_schedule`, this is the ID of the
   // [instalment schedule](#core-endpoints-instalment-schedules) which has been
   // updated.
@@ -786,6 +796,9 @@ export interface EventLinks {
   // would have the ID of the mandate cancellation event in this field.
   parent_event: string;
 
+  // ID of a Payer Authorisation.
+  payer_authorisation: string;
+
   // If `resource_type` is `payments`, this is the ID of the
   // [payment](#core-endpoints-payments) which has been updated.
   payment: string;
@@ -812,6 +825,7 @@ export enum EventResourceType {
   Creditors = 'creditors',
   InstalmentSchedules = 'instalment_schedules',
   Mandates = 'mandates',
+  PayerAuthorisations = 'payer_authorisations',
   Payments = 'payments',
   Payouts = 'payouts',
   Refunds = 'refunds',
@@ -1140,6 +1154,8 @@ export interface MandateImportEntryBankAccount {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
+  // This field is required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
@@ -1170,7 +1186,7 @@ export interface MandateImportEntryBankAccount {
 /** Type for a mandateimportentrycustomer resource. */
 export interface MandateImportEntryCustomer {
   // The first line of the customer's address. Required if mandate import scheme
-  // is `bacs`.
+  // is either `bacs` or `sepa`.
   //
   address_line1: string;
 
@@ -1222,7 +1238,8 @@ export interface MandateImportEntryCustomer {
   // including country code.
   phone_number?: string;
 
-  // The customer's postal code. Required if mandate import scheme is `bacs`.
+  // The customer's postal code. Required if mandate import scheme is either
+  // `bacs` or `sepa`.
   //
   postal_code: string;
 
@@ -1308,9 +1325,9 @@ export interface Payment {
 
   // A future date on which the payment should be collected. If not specified,
   // the payment will be collected as soon as possible. If the value is before
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date` we
-  // will roll it forwards to match. If the value is not a working day it will
-  // be rolled forwards to the next available one.
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`
+  // creation will fail. If the value is not a working day it will be rolled
+  // forwards to the next available one.
   charge_date?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
@@ -1702,6 +1719,9 @@ export interface PayoutItemLinks {
 
   // Unique identifier, beginning with "PM".
   payment: string;
+
+  // Unique identifier, beginning with "RF".
+  refund: string;
 }
 
 /** Type for a payoutitemtaxis resource. */
@@ -2142,8 +2162,9 @@ export interface Subscription {
   // resource was created.
   created_at: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code. Currently
-  // `GBP`, `EUR`, `SEK`, `DKK`, `AUD`, `NZD` and `CAD` are supported.
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
   currency: string;
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or

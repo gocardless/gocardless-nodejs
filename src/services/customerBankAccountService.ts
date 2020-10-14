@@ -15,9 +15,11 @@ interface CustomerBankAccountListResponse extends Types.APIResponse {
 interface CustomerBankAccountCreateRequest {
   // Name of the account holder, as known by the bank. Usually this is the same as
   // the name stored with the linked [creditor](#core-endpoints-creditors). This
-  // field will be transliterated, upcased and truncated to 18 characters.
+  // field will be transliterated, upcased and truncated to 18 characters. This
+  // field is required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
 
-  account_holder_name: string;
+  account_holder_name?: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
   // more information. Alternatively you can provide an `iban`.
