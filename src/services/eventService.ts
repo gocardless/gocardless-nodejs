@@ -31,6 +31,7 @@ interface EventListRequest {
   // <ul>
   // <li>`payment`</li>
   // <li>`mandate`</li>
+  // <li>`payer_authorisation`</li>
   // <li>`payout`</li>
   // <li>`refund`</li>
   // <li>`subscription`</li>
@@ -54,6 +55,10 @@ interface EventListRequest {
 
   parent_event?: string;
 
+  // ID of a Payer Authorisation.
+
+  payer_authorisation?: string;
+
   // ID of a [payment](#core-endpoints-payments). If specified, this endpoint will
   // return all events for the given payment.
 
@@ -70,12 +75,13 @@ interface EventListRequest {
   refund?: string;
 
   // Type of resource that you'd like to get all events for. Cannot be used
-  // together with the `payment`, `mandate`, `subscription`,
-  // `instalment_schedule`, `creditor`, `refund` or `payout` parameter. The type
-  // can be one of:
+  // together with the `payment`,    `payer_authorisation`, `mandate`,
+  // `subscription`, `instalment_schedule`, `creditor`, `refund` or `payout`
+  // parameter. The type can be one of:
   // <ul>
   // <li>`payments`</li>
   // <li>`mandates`</li>
+  // <li>`payer_authorisations`</li>
   // <li>`payouts`</li>
   // <li>`subscriptions`</li>
   // <li>`instalment_schedules`</li>
