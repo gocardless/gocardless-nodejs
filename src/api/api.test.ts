@@ -204,7 +204,7 @@ describe(".request", () => {
           path: "/resource",
           method: "get",
           urlParameters: [],
-          requestParameters: { key: "value", foo: "bar" },
+          requestParameters: { key: "value", foo: ["bar", "baz"] },
           payloadKey: null,
           fetch: null,
         }
@@ -215,7 +215,7 @@ describe(".request", () => {
         // correctly into the request search parameters.
         const searchParams = (got as any).mock.calls[0][1].searchParams;
 
-        expect(searchParams.toString()).toEqual("key=value&foo=bar")
+        expect(searchParams.toString()).toEqual("key=value&foo=bar%2Cbaz")
       });
 
       test("with nested request parameters", async () => {

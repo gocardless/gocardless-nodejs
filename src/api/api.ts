@@ -131,9 +131,9 @@ export class Api {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
       'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '1.4.0',
+      'GoCardless-Client-Version': '1.4.1',
       'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/1.4.0 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+      'User-Agent': `gocardless-nodejs/1.4.1 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
 
     return { ...customHeaders, ...mandatoryHeaders };
@@ -149,7 +149,7 @@ export class Api {
     const headers = this.getHeaders(this._token, customHeaders);
     const searchParams =
       method === 'get'
-        ? new url.URLSearchParams(this.mapQueryParameters(requestParameters))
+        ? new url.URLSearchParams(this.formatQueryParameters(requestParameters))
         : undefined;
 
     // We want to always send POST requests with an idempotency key. If the user does not
@@ -193,8 +193,12 @@ export class Api {
     return uuidv4();
   }
 
-  private mapQueryParameters(parameters) {
-    return qs.stringify(parameters, { encode: false });
+  private formatQueryParameters(parameters) {
+    return qs.stringify(parameters, {
+      encode: false,
+      indices: false,
+      arrayFormat: 'comma',
+    });
   }
 
   private isIdempotencyConflict(response) {
