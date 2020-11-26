@@ -55,7 +55,7 @@ interface EventListRequest {
 
   parent_event?: string;
 
-  // ID of a [payer authorisation](#core-endpoints-payer-authorisations).
+  // ID of a Payer Authorisation.
 
   payer_authorisation?: string;
 

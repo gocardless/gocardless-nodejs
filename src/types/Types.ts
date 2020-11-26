@@ -67,6 +67,7 @@ export interface Creditor {
   id: string;
 
   // Resources linked to this Creditor.
+
   links: CreditorLinks;
 
   // URL for the creditor's logo, which may be shown on their payment pages.
@@ -328,6 +329,7 @@ export interface CreditorBankAccount {
   id: string;
 
   // Resources linked to this CreditorBankAccount.
+
   links: CreditorBankAccountLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -503,6 +505,7 @@ export interface CustomerBankAccount {
   id: string;
 
   // Resources linked to this CustomerBankAccount.
+
   links: CustomerBankAccountLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -554,6 +557,7 @@ export interface CustomerNotification {
   id: string;
 
   // Resources linked to this CustomerNotification.
+
   links: CustomerNotificationLinks;
 
   // The type of notification the customer shall receive.
@@ -618,6 +622,7 @@ export interface Event {
   id: string;
 
   // Resources linked to this Event.
+
   links: EventLinks;
 
   // If the `details[origin]` is `api`, this will contain any metadata you
@@ -791,7 +796,7 @@ export interface EventLinks {
   // would have the ID of the mandate cancellation event in this field.
   parent_event: string;
 
-  // ID of a [payer authorisation](#core-endpoints-payer-authorisations).
+  // ID of a Payer Authorisation.
   payer_authorisation: string;
 
   // If `resource_type` is `payments`, this is the ID of the
@@ -843,6 +848,7 @@ export interface InstalmentSchedule {
   id: string;
 
   // Resources linked to this InstalmentSchedule.
+
   links: InstalmentScheduleLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -971,6 +977,7 @@ export interface Mandate {
   id: string;
 
   // Resources linked to this Mandate.
+
   links: MandateLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1112,6 +1119,7 @@ export interface MandateImportEntry {
   created_at: string;
 
   // Resources linked to this MandateImportEntry.
+
   links: MandateImportEntryLinks;
 
   // A unique identifier for this entry, which you can use (once the import has
@@ -1344,6 +1352,7 @@ export interface Payment {
   id: string;
 
   // Resources linked to this Payment.
+
   links: PaymentLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1547,6 +1556,7 @@ export interface Payout {
   id: string;
 
   // Resources linked to this Payout.
+
   links: PayoutLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1660,6 +1670,7 @@ export interface PayoutItem {
   amount: string;
 
   // Resources linked to this PayoutItem.
+
   links: PayoutItemLinks;
 
   // An array of tax items <em>beta</em>
@@ -1803,6 +1814,7 @@ export interface RedirectFlow {
   id: string;
 
   // Resources linked to this RedirectFlow.
+
   links: RedirectFlowLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1957,6 +1969,7 @@ export interface Refund {
   id: string;
 
   // Resources linked to this Refund.
+
   links: RefundLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -2187,6 +2200,7 @@ export interface Subscription {
   interval_unit: SubscriptionIntervalUnit;
 
   // Resources linked to this Subscription.
+
   links: SubscriptionLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
