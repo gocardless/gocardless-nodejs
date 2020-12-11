@@ -19,6 +19,11 @@ interface PayoutItemListRequest {
 
   before?: string;
 
+  // Boolean value indicating whether the API should return tax data for the
+  // cutover period of April to August 2020. Defaults to false.
+
+  include_2020_tax_cutover?: Types.PayoutItemInclude2020TaxCutover;
+
   // Number of records to return.
 
   limit?: string;
