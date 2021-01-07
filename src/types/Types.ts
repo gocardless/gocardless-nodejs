@@ -67,7 +67,6 @@ export interface Creditor {
   id: string;
 
   // Resources linked to this Creditor.
-
   links: CreditorLinks;
 
   // URL for the creditor's logo, which may be shown on their payment pages.
@@ -329,7 +328,6 @@ export interface CreditorBankAccount {
   id: string;
 
   // Resources linked to this CreditorBankAccount.
-
   links: CreditorBankAccountLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -505,7 +503,6 @@ export interface CustomerBankAccount {
   id: string;
 
   // Resources linked to this CustomerBankAccount.
-
   links: CustomerBankAccountLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -557,7 +554,6 @@ export interface CustomerNotification {
   id: string;
 
   // Resources linked to this CustomerNotification.
-
   links: CustomerNotificationLinks;
 
   // The type of notification the customer shall receive.
@@ -622,7 +618,6 @@ export interface Event {
   id: string;
 
   // Resources linked to this Event.
-
   links: EventLinks;
 
   // If the `details[origin]` is `api`, this will contain any metadata you
@@ -796,7 +791,7 @@ export interface EventLinks {
   // would have the ID of the mandate cancellation event in this field.
   parent_event: string;
 
-  // ID of a Payer Authorisation.
+  // ID of a [payer authorisation](#core-endpoints-payer-authorisations).
   payer_authorisation: string;
 
   // If `resource_type` is `payments`, this is the ID of the
@@ -848,7 +843,6 @@ export interface InstalmentSchedule {
   id: string;
 
   // Resources linked to this InstalmentSchedule.
-
   links: InstalmentScheduleLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -977,7 +971,6 @@ export interface Mandate {
   id: string;
 
   // Resources linked to this Mandate.
-
   links: MandateLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1119,7 +1112,6 @@ export interface MandateImportEntry {
   created_at: string;
 
   // Resources linked to this MandateImportEntry.
-
   links: MandateImportEntryLinks;
 
   // A unique identifier for this entry, which you can use (once the import has
@@ -1313,6 +1305,234 @@ export enum MandatePdfSubscriptionFrequency {
   Yearly = 'yearly',
 }
 
+/** Type for a payerauthorisation resource. */
+export interface PayerAuthorisation {
+  // All details required for the creation of a
+  // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
+  bank_account: PayerAuthorisationBankAccount;
+
+  // [Timestamp](#api-usage-time-zones--dates), recording when this Payer
+  // Authorisation was created.
+  created_at?: string;
+
+  // All details required for the creation of a
+  // [Customer](#core-endpoints-customers).
+  customer: PayerAuthorisationCustomer;
+
+  // Unique identifier, beginning with "PA".
+  id: string;
+
+  // An array of fields which are missing and is required to set up the mandate.
+  incomplete_fields: PayerAuthorisationIncompleteField[];
+
+  // Resources linked to this PayerAuthorisation.
+  links: PayerAuthorisationLinks;
+
+  // All details required for the creation of a
+  // [Mandate](#core-endpoints-mandates).
+  mandate: PayerAuthorisationMandate;
+
+  // One of:
+  // - `created`: The PayerAuthorisation has been created, and not been
+  // confirmed yet
+  // - `submitted`: The payer information has been submitted
+  // - `confirmed`: PayerAuthorisation is confirmed and resources are ready to
+  // be created
+  // - `completed`: The PayerAuthorisation has been completed and customer,
+  // bank_account and mandate has been created
+  // - `failed`: The PayerAuthorisation has failed and customer, bank_account
+  // and mandate is not created
+  status: PayerAuthorisationStatus;
+}
+
+/** Type for a payerauthorisationbankaccount resource. */
+export interface PayerAuthorisationBankAccount {
+  // Name of the account holder, as known by the bank. Usually this is the same
+  // as the name stored with the linked [creditor](#core-endpoints-creditors).
+  // This field will be transliterated, upcased and truncated to 18 characters.
+  // This field is required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
+  account_holder_name: string;
+
+  // Bank account number - see [local details](#appendix-local-bank-details) for
+  // more information. Alternatively you can provide an `iban`.
+  account_number?: string;
+
+  // Account number suffix (only for bank accounts denominated in NZD) - see
+  // [local details](#local-bank-details-new-zealand) for more information.
+  account_number_suffix?: string;
+
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type: PayerAuthorisationBankAccountAccountType;
+
+  // Bank code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  bank_code?: string;
+
+  // Branch code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  branch_code?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // Defaults to the country code of the `iban` if supplied, otherwise is
+  // required.
+  country_code?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string;
+
+  // International Bank Account Number. Alternatively you can provide [local
+  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
+  // bank accounts denominated in SEK - you must supply [local
+  // details](#local-bank-details-sweden).
+  iban?: string;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+}
+
+export enum PayerAuthorisationBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+/** Type for a payerauthorisationcustomer resource. */
+export interface PayerAuthorisationCustomer {
+  // The first line of the customer's address.
+  address_line1?: string;
+
+  // The second line of the customer's address.
+  address_line2?: string;
+
+  // The third line of the customer's address.
+  address_line3?: string;
+
+  // The city of the customer's address.
+  city?: string;
+
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string;
+
+  // An [IETF Language Tag](https://tools.ietf.org/html/rfc5646), used for both
+  // language
+  // and regional variations of our product.
+  //
+  locale?: string;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
+  // The customer's postal code.
+  postal_code?: string;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string;
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string;
+}
+
+/** Type for a payerauthorisationincompletefield resource. */
+export interface PayerAuthorisationIncompleteField {
+  // The root resource.
+  field: string;
+
+  // A localised error message
+  message: string;
+
+  // The path to the field e.g. "/payer_authorisations/customer/city"
+  request_pointer: string;
+}
+
+/** Type for a payerauthorisationlinks resource. */
+export interface PayerAuthorisationLinks {
+  // Unique identifier, beginning with "BA".
+  bank_account: string;
+
+  // Unique identifier, beginning with "CU".
+  customer: string;
+
+  // Unique identifier, beginning with "MD". Note that this prefix may not apply
+  // to mandates created before 2016.
+  mandate: string;
+}
+
+/** Type for a payerauthorisationmandate resource. */
+export interface PayerAuthorisationMandate {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
+  // For ACH customers only. Required for ACH customers. A string containing the
+  // IP address of the payer to whom the mandate belongs (i.e. as a result of
+  // their completion of a mandate setup flow in their browser).
+  payer_ip_address?: string;
+
+  // Unique reference. Different schemes have different length and [character
+  // set](#appendix-character-sets) requirements. GoCardless will generate a
+  // unique reference satisfying the different scheme requirements if this field
+  // is left blank.
+  reference?: string;
+
+  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  scheme: PayerAuthorisationMandateScheme;
+}
+
+export enum PayerAuthorisationMandateScheme {
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  SepaCore = 'sepa_core',
+}
+
+export enum PayerAuthorisationStatus {
+  Created = 'created',
+  Submitted = 'submitted',
+  Confirmed = 'confirmed',
+  Completed = 'completed',
+  Failed = 'failed',
+}
+
 /** Type for a payment resource. */
 export interface Payment {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
@@ -1352,7 +1572,6 @@ export interface Payment {
   id: string;
 
   // Resources linked to this Payment.
-
   links: PaymentLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1556,7 +1775,6 @@ export interface Payout {
   id: string;
 
   // Resources linked to this Payout.
-
   links: PayoutLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1670,7 +1888,6 @@ export interface PayoutItem {
   amount: string;
 
   // Resources linked to this PayoutItem.
-
   links: PayoutItemLinks;
 
   // An array of tax items <em>beta</em>
@@ -1709,6 +1926,11 @@ export interface PayoutItem {
   // </ul>
   //
   type: PayoutItemType;
+}
+
+export enum PayoutItemInclude2020TaxCutover {
+  True = 'true',
+  False = 'false',
 }
 
 /** Type for a payoutitemlinks resource. */
@@ -1814,7 +2036,6 @@ export interface RedirectFlow {
   id: string;
 
   // Resources linked to this RedirectFlow.
-
   links: RedirectFlowLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1969,7 +2190,6 @@ export interface Refund {
   id: string;
 
   // Resources linked to this Refund.
-
   links: RefundLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -2200,7 +2420,6 @@ export interface Subscription {
   interval_unit: SubscriptionIntervalUnit;
 
   // Resources linked to this Subscription.
-
   links: SubscriptionLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names

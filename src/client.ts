@@ -15,6 +15,7 @@ import { MandateService } from './services/mandateService';
 import { MandateImportService } from './services/mandateImportService';
 import { MandateImportEntryService } from './services/mandateImportEntryService';
 import { MandatePdfService } from './services/mandatePdfService';
+import { PayerAuthorisationService } from './services/payerAuthorisationService';
 import { PaymentService } from './services/paymentService';
 import { PayoutService } from './services/payoutService';
 import { PayoutItemService } from './services/payoutItemService';
@@ -39,6 +40,7 @@ export class GoCardlessClient {
   private _mandateImports: MandateImportService;
   private _mandateImportEntries: MandateImportEntryService;
   private _mandatePdfs: MandatePdfService;
+  private _payerAuthorisations: PayerAuthorisationService;
   private _payments: PaymentService;
   private _payouts: PayoutService;
   private _payoutItems: PayoutItemService;
@@ -63,6 +65,7 @@ export class GoCardlessClient {
     this._mandateImports = undefined;
     this._mandateImportEntries = undefined;
     this._mandatePdfs = undefined;
+    this._payerAuthorisations = undefined;
     this._payments = undefined;
     this._payouts = undefined;
     this._payoutItems = undefined;
@@ -174,6 +177,14 @@ export class GoCardlessClient {
     }
 
     return this._mandatePdfs;
+  }
+
+  get payerAuthorisations(): PayerAuthorisationService {
+    if (!this._payerAuthorisations) {
+      this._payerAuthorisations = new PayerAuthorisationService(this._api);
+    }
+
+    return this._payerAuthorisations;
   }
 
   get payments(): PaymentService {
