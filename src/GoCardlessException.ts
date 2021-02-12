@@ -7,6 +7,7 @@ export class GoCardlessException {
   private type: string;
   private requestId: string;
   private code: string;
+  private response: object;
 
   constructor(response) {
     const {
@@ -21,6 +22,7 @@ export class GoCardlessException {
       code,
     } = error;
 
+    this.response = response;
     this.message = message;
     this.errors = errors;
     this.documentationUrl = documentationUrl;
