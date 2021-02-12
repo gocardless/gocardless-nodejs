@@ -131,9 +131,9 @@ export class Api {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
       'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '1.4.2',
+      'GoCardless-Client-Version': '1.4.3',
       'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/1.4.2 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+      'User-Agent': `gocardless-nodejs/1.4.3 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
 
     return { ...customHeaders, ...mandatoryHeaders };
