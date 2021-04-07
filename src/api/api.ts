@@ -8,7 +8,7 @@ import * as url from 'url';
 import got from 'got';
 import qs from 'qs';
 
-import { Environments } from '../constants';
+import { Environments, CLIENT_VERSION, API_VERSION } from '../constants';
 import { GoCardlessException } from '../GoCardlessException';
 
 interface APIOptions {
@@ -130,10 +130,10 @@ export class Api {
     const mandatoryHeaders = {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
-      'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '1.4.3',
+      'GoCardless-Version': '${API_VERSION}',
+      'GoCardless-Client-Version': `${CLIENT_VERSION}`,
       'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/1.4.3 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+      'User-Agent': `gocardless-nodejs/${CLIENT_VERSION} node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
 
     return { ...customHeaders, ...mandatoryHeaders };
