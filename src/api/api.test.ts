@@ -1,328 +1,511 @@
-import got from 'got';
+import nock from 'nock';
 
-import { Api } from "./api";
-import { Environments } from "../constants";
-
-jest.mock("got", () => {
-  return jest.fn().mockReturnValue({
-    body: {},
-    headers: {},
-    statusCode: '200',
-    statusMessage: "",
-    url: ""
-  });
-});
-
+import { Api } from './api';
+import { Environments } from '../constants';
+import * as GoCardlessErrors from '../errors';
 
 describe(".request", () => {
-  let token = "<TOKEN>";
+  const token = "<TOKEN>";
+
+  beforeAll(() => {
+    nock.disableNetConnect();
+  })
 
   afterEach(() => {
-    jest.clearAllMocks();
+    nock.cleanAll();
   })
 
   describe("API environments", () => {
     test("when in Sandbox environment", async () => {
-      const sandboxApi = new Api(token, Environments.Sandbox, {});
+      const check = nock("https://api-sandbox.gocardless.com").get("/").reply(200, {});
 
-      const params = {
-        path: '/resource',
-        method: 'get',
-        urlParameters: [],
-        requestParameters: {},
-        payloadKey: null,
-        fetch: null,
-      }
-      const response = await sandboxApi.request(params);
+      const api = new Api(token, Environments.Sandbox, {});
+      const params = { path: "/", method: "get", fetch: null }
 
-      const calls = (got as any).mock.calls
+      await api.request(params);
 
-      expect(calls[0][1].prefixUrl).toEqual("https://api-sandbox.gocardless.com")
+      expect(check.isDone()).toEqual(true);
     });
 
     test("when in Live environment", async () => {
-      const liveApi = new Api(token, Environments.Live, {});
+      const check = nock("https://api.gocardless.com").get("/").reply(200, {});
 
-      const requestParams = {
-        path: '/resource',
-        method: 'get',
-        urlParameters: [],
-        requestParameters: {},
-        payloadKey: null,
-        fetch: null,
-      }
-      const response = await liveApi.request(requestParams);
+      const api = new Api(token, Environments.Live, {});
 
-      const calls = (got as any).mock.calls
+      const params = { path: "/", method: "get", fetch: null }
 
-      expect(calls[0][1].prefixUrl).toEqual("https://api.gocardless.com")
+      await api.request(params);
+
+      expect(check.isDone()).toEqual(true);
     });
   });
 
   describe("testing API requests", () => {
-    let api;
-    let environment = Environments.Sandbox;
-    beforeEach(() => {
-      api = new Api(token, environment, {});
-    });
+    const environment = Environments.Live;
 
-    describe("making a POST request", () => {
-      test("with an idempotency key", async () => {
-        const idempotencyKey = "<UNIQUE_IDEMPOTENCY_KEY>";
-        const requestParameters = { key: "value", foo: { bar: "baz", wibble: "wobble" }}
-        const params = {
-          path: "/resource",
-          method: "post",
-          urlParameters: [],
-          requestParameters,
-          payloadKey: null,
-          idempotencyKey,
-          fetch: null,
-        }
+    describe("API errors", () => {
+      describe("MalformedResponseError", () => {
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+          get("/").
+            reply(
+              200,
+              "oh no, we've responded 200 but without valid JSON,{",
+              { 'x-request-id': 'SOME_REQUEST_ID' }
+          );
 
-        const response = await api.request(params);
+          const params = { path: "/", method: "get", fetch: null }
+          const api = new Api(token, environment, {});
 
-        const headers = (got as any).mock.calls[0][1].headers
-        expect(headers["Idempotency-Key"]).toEqual(idempotencyKey);
-
-        const requestBody = (got as any).mock.calls[0][1].json;
-        expect(requestBody).toEqual({ data: requestParameters })
-      });
-
-      describe("idempotency conflict", () => {
-        let idempotencyKey: string;
-        beforeEach(() => {
-          api.isIdempotencyConflict = jest.fn().mockReturnValue(true);
-
-          idempotencyKey = "<UNIQUE_IDEMPOTENCY_KEY>";
-          const errorBody: any = {
-            response: {
-              body: {
-                error: {
-                  errors: [{ links: { conflicting_resource_id: idempotencyKey }}]
-                }
-              }
-            }
-          };
-
-          (got as any).mockImplementationOnce(() => { throw errorBody })
-        });
-
-        test("with an idempotency key and `raise_on_idempotency_conflict` toggled on", async () => {
-          api.raiseOnIdempotencyConflict = true;
-
-          const idempotencyCallback = jest.fn();
-          const requestParameters = { key: "value", foo: { bar: "baz", wibble: "wobble" }}
-          const params = {
-            path: "/resource",
-            method: "post",
-            urlParameters: [],
-            requestParameters,
-            payloadKey: null,
-            idempotencyKey,
-            fetch: idempotencyCallback,
-          }
-
-          let error;
+          let e;
           try {
             await api.request(params);
-          } catch (exc) {
-            error = exc
+          } catch (err) {
+            e = err;
           }
+          expect(e).toBeInstanceOf(GoCardlessErrors.MalformedResponseError);
+          expect(e.requestId).toEqual('SOME_REQUEST_ID');
 
-          // Ensure that we're throwing the correct error.
-          expect(error).toBeTruthy();
-          expect(error.constructor.name).toEqual('GoCardlessException');
-          expect(error.errors[0].links.conflicting_resource_id).toEqual(idempotencyKey)
+          expect(check.isDone()).toEqual(true);
+        });
+      });
 
-          // We want to ensure that the correct idempotency key was used in the first request.
-          const headers = (got as any).mock.calls[0][1].headers
-          expect(headers["Idempotency-Key"]).toEqual(idempotencyKey);
+      describe("IdempotentCreationConflictError", () => {
+        it("raises when raiseOnIdempotencyConflict", async () => {
+          const check = nock("https://api.gocardless.com").
+              post("/").
+              replyWithFile(
+                409,
+                __dirname + "/../fixtures/idempotency_conflict.json",
+                { 'Content-Type': 'application/json' }
+              );
 
-          // We want to ensure that the callback function was not thrown.
-          expect(idempotencyCallback).not.toHaveBeenCalled();
+          const params = { path: "/", method: "post", fetch: null }
+          const api = new Api(token, environment, { raiseOnIdempotencyConflict: true });
 
-          // Ensure the correct request body is still being sent.
-          const requestBody = (got as any).mock.calls[0][1].json;
-          expect(requestBody).toEqual({ data: requestParameters })
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.IdempotentCreationConflictError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+          expect(e.conflictingResourceId).toEqual('PM1234');
+
+          expect(check.isDone()).toEqual(true);
         });
 
-        test("with an idempotency key and `raise_on_idempotency_conflict` toggled off", async() => {
-          api.raiseOnIdempotencyConflict = false;
+        it("fetchs when not raiseOnIdempotencyConflict", async () => {
+          const check = nock("https://api.gocardless.com").
+              post("/").
+              replyWithFile(
+                409,
+                __dirname + "/../fixtures/idempotency_conflict.json",
+                { 'Content-Type': 'application/json' }
+              )
 
-          const idempotencyCallback = jest.fn();
-          const requestParameters = { key: "value", foo: { bar: "baz", wibble: "wobble" }}
+          const mockFetch = jest.fn();
+          const params = { path: "/", method: "post", fetch: mockFetch }
+          const api = new Api(token, environment, { raiseOnIdempotencyConflict: false });
+
+          await api.request(params);
+
+          expect(mockFetch).toHaveBeenCalledWith("PM1234");
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("ValidationFailedError", () =>{
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            post("/").
+            replyWithFile(
+              422,
+              __dirname + "/../fixtures/validation_failed.json",
+              { 'Content-Type': 'application/json' }
+          );
+
+          const params = { path: "/", method: "post", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.ValidationFailedError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+          expect(e.toString()).
+            toEqual("Validation failed (amount is greater than the permitted scheme maximum)")
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("InvalidApiUsageError", () =>{
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            post("/").
+            replyWithFile(
+              422,
+              __dirname + "/../fixtures/invalid_api_usage.json",
+              { 'Content-Type': 'application/json' }
+          );
+
+          const params = { path: "/", method: "post", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.InvalidApiUsageError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("InvalidStateError", () =>{
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            post("/").
+            replyWithFile(
+              422,
+              __dirname + "/../fixtures/invalid_state.json",
+              { 'Content-Type': 'application/json' }
+            );
+
+          const params = { path: "/", method: "post", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.InvalidStateError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("GoCardlessInternalError", () =>{
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/").
+            replyWithFile(
+              500,
+              __dirname + "/../fixtures/gocardless_internal_error.json",
+              { 'Content-Type': 'application/json' }
+            ).persist();
+
+          const params = { path: "/", method: "get", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.GoCardlessInternalError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("AuthenticationError", () =>{
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/").
+            replyWithFile(
+              401,
+              __dirname + "/../fixtures/unauthorized.json",
+              { 'Content-Type': 'application/json' }
+          );
+
+          const params = { path: "/", method: "get", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.AuthenticationError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("PermissionsError", () => {
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/").
+            replyWithFile(
+              403,
+              __dirname + "/../fixtures/insufficent_permissions.json",
+              { 'Content-Type': 'application/json' }
+          );
+
+          const params = { path: "/", method: "get", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.PermissionsError);
+          expect(e.requestId).toEqual('HARDCODED_REQUEST_ID');
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
+      describe("RateLimitError", () => {
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/").
+            replyWithFile(
+              429,
+              __dirname + "/../fixtures/rate_limit_exceeded.json",
+              { 'Content-Type': 'application/json' }
+            ).persist();
+
+          const params = { path: "/", method: "get", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+          expect(e).toBeInstanceOf(GoCardlessErrors.RateLimitError);
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+    });
+
+    describe("Successful requests", () => {
+      let api;
+
+      beforeEach(() => {
+        api = new Api(token, environment, {});
+      });
+
+      describe("making a POST request", () => {
+        test("provided with an idempotency key", async () => {
+          const idempotencyKey = "<USER_PROVIDED_IDEMPOTENCY_KEY>";
+          const requestParameters = { key: "value" }
+
+          const check = nock("https://api.gocardless.com", {
+            reqheaders: {
+              'Idempotency-Key': idempotencyKey,
+            },
+          }).
+            post("/", { data: requestParameters }).
+            reply(200, {});
+
           const params = {
-            path: "/resource",
+            path: "/",
             method: "post",
-            urlParameters: [],
             requestParameters,
-            payloadKey: null,
             idempotencyKey,
-            fetch: idempotencyCallback,
+            fetch: null,
           }
 
-          const response = await api.request(params);
+          await api.request(params);
 
-          const headers = (got as any).mock.calls[0][1].headers
-          expect(headers["Idempotency-Key"]).toEqual(idempotencyKey);
+          expect(check.isDone()).toEqual(true);
+        });
 
-          expect(idempotencyCallback).toHaveBeenCalledWith(idempotencyKey)
+        test("without a provided idempotency key", async () => {
+          const requestParameters = { key: "value" }
+          const check = nock("https://api.gocardless.com", {
+            reqheaders: {
+              'Idempotency-Key': key => key.length == 36,
+            },
+          }).
+            post("/", { data: requestParameters }).
+            reply(200, {});
 
-          const requestBody = (got as any).mock.calls[0][1].json;
-          expect(requestBody).toEqual({ data: requestParameters })
+          const params = {
+            path: "/",
+            method: "post",
+            requestParameters,
+            fetch: null,
+          }
+
+          await api.request(params);
+
+          expect(check.isDone()).toEqual(true);
+        });
+
+        test("provided with a payloadKey", async () => {
+          const requestParameters = { key: "value" }
+          const check = nock("https://api.gocardless.com").
+            post("/", { some_payload_key: requestParameters }).
+            reply(200, {});
+
+          const params = {
+            path: "/",
+            method: "post",
+            requestParameters,
+            payloadKey: "some_payload_key",
+            fetch: null,
+          }
+
+          await api.request(params);
+
+          expect(check.isDone()).toEqual(true);
         });
       });
 
-      test("without an idempotency key", async () => {
-        // If no idempotency key is specified, we generate our own using the `uuid` module.
-        api.generateIdempotencyKey = jest.fn().mockReturnValue("<GENERATED_IDEMPOTENCY_KEY>");
+      describe("making a LIST request", () => {
+        test("with request parameters", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/?key=value&foo=bar%2Cbaz").
+            reply(200, {});
 
-        const requestParameters = { key: "value", foo: { bar: "baz", wibble: "wobble" }}
-        const params = {
-          path: "/resource",
-          method: "post",
-          urlParameters: [],
-          requestParameters,
-          payloadKey: null,
-          fetch: null,
-        }
+          const params = {
+            path: "/",
+            method: "get",
+            requestParameters: { key: "value", foo: ["bar", "baz"] },
+            fetch: null
+          }
 
-        const response = await api.request(params);
+          await api.request(params);
 
-        const headers = (got as any).mock.calls[0][1].headers
-        expect(headers["Idempotency-Key"]).toEqual("<GENERATED_IDEMPOTENCY_KEY>");
+          expect(check.isDone()).toEqual(true);
+        });
 
-        const requestBody = (got as any).mock.calls[0][1].json;
-        expect(requestBody).toEqual({ data: requestParameters })
-      });
-    });
+        test("with nested request parameters", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/?key=value&foo%5Bbar%5D=baz&foo%5Bwibble%5D=wobble").
+            reply(200, {});
 
-    describe("making a LIST request", () => {
-      test("with request parameters", async () => {
-        const params = {
-          path: "/resource",
-          method: "get",
-          urlParameters: [],
-          requestParameters: { key: "value", foo: ["bar", "baz"] },
-          payloadKey: null,
-          fetch: null,
-        }
+          const params = {
+            path: "/",
+            method: "get",
+            requestParameters: { key: "value", foo: { bar: "baz", wibble: "wobble" } },
+            fetch: null
+          }
 
-        const response = await api.request(params);
+          await api.request(params);
 
-        // Ensure that we're parsing the given request parameters, and formatting them
-        // correctly into the request search parameters.
-        const searchParams = (got as any).mock.calls[0][1].searchParams;
+          expect(check.isDone()).toEqual(true);
+        });
 
-        expect(searchParams.toString()).toEqual("key=value&foo=bar%2Cbaz")
-      });
+        test("without request parameters", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/").
+            reply(200, {});
 
-      test("with nested request parameters", async () => {
-        const params = {
-          path: "/resource",
-          method: "get",
-          urlParameters: [],
-          requestParameters: { key: "value", foo: { bar: "baz", wibble: "wobble" } },
-          payloadKey: null,
-          fetch: null,
-        }
+          const params = { path: "/", method: "get", fetch: null }
 
-        const response = await api.request(params);
+          await api.request(params);
 
-        // Ensure that nested search parameters are formatted properly, in the following
-        // format: `parent_key[nested_key]=nested_value`.
-        const searchParams = (got as any).mock.calls[0][1].searchParams;
-
-        expect(
-          searchParams.toString()
-        ).toEqual("key=value&foo%5Bbar%5D=baz&foo%5Bwibble%5D=wobble")
+          expect(check.isDone()).toEqual(true);
+        });
       });
 
-      test("without request parameters", async () => {
-        const params = {
-          path: "/resource",
-          method: "get",
-          urlParameters: [],
-          requestParameters: {},
-          payloadKey: null,
-          fetch: null,
-        }
+      describe("making a GET request", () => {
+        test("with URL parameters", async () => {
+          const check = nock("https://api.gocardless.com").
+            get("/resource/ID123").
+            reply(200, {});
 
-        const response = await api.request(params);
+          const urlParameters = [{ key: "identity", value: "ID123" }];
+          const params = {
+            path: "/resource/:identity",
+            method: "get",
+            urlParameters,
+            fetch: null,
+          }
 
-        const searchParams = (got as any).mock.calls[0][1].searchParams;
+          await api.request(params);
 
-        expect(searchParams.toString()).toEqual("")
+          expect(check.isDone()).toEqual(true);
+        });
+
+        it("populates all required headers", async () => {
+          const check = nock("https://api.gocardless.com", {
+            reqheaders: {
+              'accept': 'application/json',
+              'authorization': /Bearer/,
+              'gocardless-version': /\d{4}-\d{2}-\d{1,2}/,
+              'gocardless-client-version': /\d+\.\d+\.\d+/,
+              'gocardless-client-library': 'gocardless-nodejs',
+              'user-agent': s => !!s,
+            }
+          }).
+            get("/").
+            reply(200, {});
+
+          const params = { path: "/", method: "get", fetch: null }
+
+          await api.request(params);
+
+          expect(check.isDone()).toEqual(true);
+        });
       });
-    });
 
-    describe("making a GET request", () => {
-      test("with valid URL parameters", async () => {
-        const urlParameters = [{ key: "identity", value: "<RESOURCE_ID>" }];
-        const params = {
-          path: "/resource/:identity",
-          method: "get",
-          urlParameters,
-          requestParameters: {},
-          payloadKey: null,
-          fetch: null,
-        }
+      describe("making a PUT request", () => {
+        test("with URL parameters and request body", async () => {
+          const requestParameters = { key: "value" }
 
-        const response = await api.request(params);
+          const check = nock("https://api.gocardless.com").
+            put("/resource/ID123", { data: requestParameters }).
+            reply(200, {});
 
-        // Ensure that we're parsing the URL parameter object and formatting the request
-        // path correctly.
-        const searchPath = (got as any).mock.calls[0][0];
+          const urlParameters = [{ key: "identity", value: "ID123" }];
+          const params = {
+            path: "/resource/:identity",
+            method: "put",
+            urlParameters,
+            requestParameters,
+            fetch: null,
+          }
 
-        expect(searchPath).toEqual("/resource/<RESOURCE_ID>")
+          await api.request(params);
+
+          expect(check.isDone()).toEqual(true);
+        });
       });
-    });
 
-    describe("making a PUT request", () => {
-      test("with valid URL parameters, search paramter, and request body", async () => {
-        const urlParameters = [{ key: "identity", value: "<RESOURCE_ID>" }];
-        const requestParameters = { key: "value", foo: { bar: "baz", wibble: "wobble" }}
-        const params = {
-          path: "/resource/:identity",
-          method: "put",
-          urlParameters,
-          requestParameters,
-          payloadKey: null,
-          fetch: null,
-        }
+      describe("making a DELETE request", () => {
+        test("with valid URL parameters", async () => {
+          const check = nock("https://api.gocardless.com").
+            delete("/resource/ID123").
+            reply(200, {});
 
-        const response = await api.request(params);
+          const urlParameters = [{ key: "identity", value: "ID123" }];
+          const params = {
+            path: "/resource/:identity",
+            method: "delete",
+            urlParameters,
+            fetch: null,
+          }
 
-        const searchPath = (got as any).mock.calls[0][0];
-        expect(searchPath).toEqual("/resource/<RESOURCE_ID>")
+          await api.request(params);
 
-        const searchParams = (got as any).mock.calls[0][1].searchParams;
-        expect(searchParams).toEqual(undefined)
-
-        const requestBody = (got as any).mock.calls[0][1].json;
-        expect(requestBody).toEqual({ data: requestParameters })
-      });
-    });
-
-    describe("making a DELETE request", () => {
-      test("with valid URL parameters", async () => {
-        const urlParameters = [{ key: "identity", value: "<RESOURCE_ID>" }];
-        const params = {
-          path: "/resource/:identity",
-          method: "delete",
-          urlParameters,
-          payloadKey: null,
-          fetch: null,
-        }
-
-        const response = await api.request(params);
-
-        const searchPath = (got as any).mock.calls[0][0];
-        expect(searchPath).toEqual("/resource/<RESOURCE_ID>")
-
-        const searchParams = (got as any).mock.calls[0][1].searchParams;
-        expect(searchParams).toEqual(undefined)
+          expect(check.isDone()).toEqual(true);
+        });
       });
     });
   })
