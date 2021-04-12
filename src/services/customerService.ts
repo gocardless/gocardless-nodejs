@@ -207,6 +207,8 @@ interface CustomerUpdateRequest {
   swedish_identity_number?: string;
 }
 
+interface CustomerRemoveRequest {}
+
 export class CustomerService {
   private api: Api;
 

@@ -62,6 +62,8 @@ interface CreditorListRequest {
   limit?: string;
 }
 
+interface CreditorGetRequest {}
+
 interface CreditorUpdateRequest {
   // The first line of the creditor's address.
 

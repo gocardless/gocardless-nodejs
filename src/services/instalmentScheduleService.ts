@@ -178,6 +178,8 @@ interface InstalmentScheduleUpdateRequest {
   metadata?: Types.JsonMap;
 }
 
+interface InstalmentScheduleCancelRequest {}
+
 export class InstalmentScheduleService {
   private api: Api;
 

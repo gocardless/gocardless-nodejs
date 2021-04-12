@@ -12,6 +12,8 @@ interface CustomerNotificationListResponse extends Types.APIResponse {
   meta: Types.ListMeta;
 }
 
+interface CustomerNotificationHandleRequest {}
+
 export class CustomerNotificationService {
   private api: Api;
 
