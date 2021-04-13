@@ -44,9 +44,8 @@ interface RefundCreateRequest {
   // other partial refunds against this payment, this value should be the sum of
   // the
   // existing refunds plus the amount of the refund being created.
-  //
+  // <br />
   // Must be supplied if `links[payment]` is present.
-  //
 
   total_amount_confirmation?: string;
 }

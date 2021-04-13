@@ -2,7 +2,10 @@
 
 import { Environments } from './constants';
 import { Api } from './api/api';
+import { BankAuthorisationService } from './services/bankAuthorisationService';
 import { BankDetailsLookupService } from './services/bankDetailsLookupService';
+import { BillingRequestService } from './services/billingRequestService';
+import { BillingRequestFlowService } from './services/billingRequestFlowService';
 import { CreditorService } from './services/creditorService';
 import { CreditorBankAccountService } from './services/creditorBankAccountService';
 import { CurrencyExchangeRateService } from './services/currencyExchangeRateService';
@@ -11,6 +14,7 @@ import { CustomerBankAccountService } from './services/customerBankAccountServic
 import { CustomerNotificationService } from './services/customerNotificationService';
 import { EventService } from './services/eventService';
 import { InstalmentScheduleService } from './services/instalmentScheduleService';
+import { InstitutionService } from './services/institutionService';
 import { MandateService } from './services/mandateService';
 import { MandateImportService } from './services/mandateImportService';
 import { MandateImportEntryService } from './services/mandateImportEntryService';
@@ -21,13 +25,18 @@ import { PayoutService } from './services/payoutService';
 import { PayoutItemService } from './services/payoutItemService';
 import { RedirectFlowService } from './services/redirectFlowService';
 import { RefundService } from './services/refundService';
+import { ScenarioSimulatorService } from './services/scenarioSimulatorService';
 import { SubscriptionService } from './services/subscriptionService';
 import { TaxRateService } from './services/taxRateService';
+import { WebhookService } from './services/webhookService';
 
 export class GoCardlessClient {
   private _api: Api;
 
+  private _bankAuthorisations: BankAuthorisationService;
   private _bankDetailsLookups: BankDetailsLookupService;
+  private _billingRequests: BillingRequestService;
+  private _billingRequestFlows: BillingRequestFlowService;
   private _creditors: CreditorService;
   private _creditorBankAccounts: CreditorBankAccountService;
   private _currencyExchangeRates: CurrencyExchangeRateService;
@@ -36,6 +45,7 @@ export class GoCardlessClient {
   private _customerNotifications: CustomerNotificationService;
   private _events: EventService;
   private _instalmentSchedules: InstalmentScheduleService;
+  private _institutions: InstitutionService;
   private _mandates: MandateService;
   private _mandateImports: MandateImportService;
   private _mandateImportEntries: MandateImportEntryService;
@@ -46,13 +56,18 @@ export class GoCardlessClient {
   private _payoutItems: PayoutItemService;
   private _redirectFlows: RedirectFlowService;
   private _refunds: RefundService;
+  private _scenarioSimulators: ScenarioSimulatorService;
   private _subscriptions: SubscriptionService;
   private _taxRates: TaxRateService;
+  private _webhooks: WebhookService;
 
   constructor(token: string, environment = Environments.Live, options = {}) {
     this._api = new Api(token, environment, options);
 
+    this._bankAuthorisations = undefined;
     this._bankDetailsLookups = undefined;
+    this._billingRequests = undefined;
+    this._billingRequestFlows = undefined;
     this._creditors = undefined;
     this._creditorBankAccounts = undefined;
     this._currencyExchangeRates = undefined;
@@ -61,6 +76,7 @@ export class GoCardlessClient {
     this._customerNotifications = undefined;
     this._events = undefined;
     this._instalmentSchedules = undefined;
+    this._institutions = undefined;
     this._mandates = undefined;
     this._mandateImports = undefined;
     this._mandateImportEntries = undefined;
@@ -71,8 +87,18 @@ export class GoCardlessClient {
     this._payoutItems = undefined;
     this._redirectFlows = undefined;
     this._refunds = undefined;
+    this._scenarioSimulators = undefined;
     this._subscriptions = undefined;
     this._taxRates = undefined;
+    this._webhooks = undefined;
+  }
+
+  get bankAuthorisations(): BankAuthorisationService {
+    if (!this._bankAuthorisations) {
+      this._bankAuthorisations = new BankAuthorisationService(this._api);
+    }
+
+    return this._bankAuthorisations;
   }
 
   get bankDetailsLookups(): BankDetailsLookupService {
@@ -81,6 +107,22 @@ export class GoCardlessClient {
     }
 
     return this._bankDetailsLookups;
+  }
+
+  get billingRequests(): BillingRequestService {
+    if (!this._billingRequests) {
+      this._billingRequests = new BillingRequestService(this._api);
+    }
+
+    return this._billingRequests;
+  }
+
+  get billingRequestFlows(): BillingRequestFlowService {
+    if (!this._billingRequestFlows) {
+      this._billingRequestFlows = new BillingRequestFlowService(this._api);
+    }
+
+    return this._billingRequestFlows;
   }
 
   get creditors(): CreditorService {
@@ -145,6 +187,14 @@ export class GoCardlessClient {
     }
 
     return this._instalmentSchedules;
+  }
+
+  get institutions(): InstitutionService {
+    if (!this._institutions) {
+      this._institutions = new InstitutionService(this._api);
+    }
+
+    return this._institutions;
   }
 
   get mandates(): MandateService {
@@ -227,6 +277,14 @@ export class GoCardlessClient {
     return this._refunds;
   }
 
+  get scenarioSimulators(): ScenarioSimulatorService {
+    if (!this._scenarioSimulators) {
+      this._scenarioSimulators = new ScenarioSimulatorService(this._api);
+    }
+
+    return this._scenarioSimulators;
+  }
+
   get subscriptions(): SubscriptionService {
     if (!this._subscriptions) {
       this._subscriptions = new SubscriptionService(this._api);
@@ -241,5 +299,13 @@ export class GoCardlessClient {
     }
 
     return this._taxRates;
+  }
+
+  get webhooks(): WebhookService {
+    if (!this._webhooks) {
+      this._webhooks = new WebhookService(this._api);
+    }
+
+    return this._webhooks;
   }
 }

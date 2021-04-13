@@ -118,6 +118,14 @@ interface CustomerListRequest {
   // Number of records to return.
 
   limit?: string;
+
+  // The direction to sort in.
+
+  sort_direction?: Types.CustomerSortDirection;
+
+  // Field by which to sort records.
+
+  sort_field?: Types.CustomerSortField;
 }
 
 interface CustomerUpdateRequest {
