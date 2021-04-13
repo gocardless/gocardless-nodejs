@@ -123,6 +123,7 @@ export class EventService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: EventListRequest
   ): AsyncGenerator<Types.Event, void, unknown> {

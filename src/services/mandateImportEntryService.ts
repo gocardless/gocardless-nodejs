@@ -107,6 +107,7 @@ export class MandateImportEntryService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: MandateImportEntryListRequest
   ): AsyncGenerator<Types.MandateImportEntry, void, unknown> {

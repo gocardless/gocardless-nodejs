@@ -153,6 +153,7 @@ export class CreditorBankAccountService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: CreditorBankAccountListRequest
   ): AsyncGenerator<Types.CreditorBankAccount, void, unknown> {

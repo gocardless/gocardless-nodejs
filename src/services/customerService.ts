@@ -215,8 +215,6 @@ interface CustomerUpdateRequest {
   swedish_identity_number?: string;
 }
 
-interface CustomerRemoveRequest {}
-
 export class CustomerService {
   private api: Api;
 
@@ -271,6 +269,7 @@ export class CustomerService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: CustomerListRequest
   ): AsyncGenerator<Types.Customer, void, unknown> {

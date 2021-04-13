@@ -19,12 +19,6 @@ interface MandateImportCreateRequest {
   scheme: Types.MandateImportScheme;
 }
 
-interface MandateImportGetRequest {}
-
-interface MandateImportSubmitRequest {}
-
-interface MandateImportCancelRequest {}
-
 export class MandateImportService {
   private api: Api;
 

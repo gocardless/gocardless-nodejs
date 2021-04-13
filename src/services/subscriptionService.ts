@@ -260,6 +260,7 @@ export class SubscriptionService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: SubscriptionListRequest
   ): AsyncGenerator<Types.Subscription, void, unknown> {

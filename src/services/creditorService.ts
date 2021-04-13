@@ -62,8 +62,6 @@ interface CreditorListRequest {
   limit?: string;
 }
 
-interface CreditorGetRequest {}
-
 interface CreditorUpdateRequest {
   // The first line of the creditor's address.
 
@@ -156,6 +154,7 @@ export class CreditorService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: CreditorListRequest
   ): AsyncGenerator<Types.Creditor, void, unknown> {

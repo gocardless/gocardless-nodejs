@@ -178,8 +178,6 @@ interface InstalmentScheduleUpdateRequest {
   metadata?: Types.JsonMap;
 }
 
-interface InstalmentScheduleCancelRequest {}
-
 export class InstalmentScheduleService {
   private api: Api;
 
@@ -260,6 +258,7 @@ export class InstalmentScheduleService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: InstalmentScheduleListRequest
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {

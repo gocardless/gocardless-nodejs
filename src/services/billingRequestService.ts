@@ -182,6 +182,7 @@ export class BillingRequestService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: BillingRequestListRequest
   ): AsyncGenerator<Types.BillingRequest, void, unknown> {

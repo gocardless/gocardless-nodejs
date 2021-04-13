@@ -61,6 +61,7 @@ export class PayoutItemService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: PayoutItemListRequest
   ): AsyncGenerator<Types.PayoutItem, void, unknown> {

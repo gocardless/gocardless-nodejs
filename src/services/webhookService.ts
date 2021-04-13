@@ -63,6 +63,7 @@ export class WebhookService {
 
     return formattedResponse;
   }
+
   async *all(
     requestParameters: WebhookListRequest
   ): AsyncGenerator<Types.Webhook, void, unknown> {
