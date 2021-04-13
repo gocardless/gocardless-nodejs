@@ -112,6 +112,14 @@ interface PaymentListRequest {
 
   mandate?: string;
 
+  // The direction to sort in.
+
+  sort_direction?: Types.PaymentSortDirection;
+
+  // Field by which to sort records.
+
+  sort_field?: Types.PaymentSortField;
+
   // One of:
   // <ul>
   // <li>`pending_customer_approval`: we're waiting for the customer to approve

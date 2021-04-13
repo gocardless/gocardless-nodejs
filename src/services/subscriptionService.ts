@@ -38,10 +38,10 @@ interface SubscriptionCreateRequest {
   day_of_month?: string;
 
   // Date on or after which no further payments should be created.
-  //
+  // <br />
   // If this field is blank and `count` is not specified, the subscription will
   // continue forever.
-  //
+  // <br />
   // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will be
   // removed in a future API version. Use `count` to specify a number of payments
   // instead.</p>
@@ -127,7 +127,16 @@ interface SubscriptionListRequest {
 
   mandate?: string;
 
-  // At most four valid status values
+  // Upto 5 of:
+  // <ul>
+  // <li>`pending_customer_approval`</li>
+  // <li>`customer_approval_denied`</li>
+  // <li>`active`</li>
+  // <li>`finished`</li>
+  // <li>`cancelled`</li>
+  // <li>`paused`</li>
+  // </ul>
+  // Omit entirely to include subscriptions in all states.
 
   status?: Types.SubscriptionStatus[];
 }

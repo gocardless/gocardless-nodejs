@@ -8,8 +8,8 @@ import * as url from 'url';
 import got from 'got';
 import qs from 'qs';
 
-import { Environments } from '../constants';
-import { GoCardlessException } from '../GoCardlessException';
+import { Environments, CLIENT_VERSION, API_VERSION } from '../constants';
+import * as GoCardlessErrors from '../errors';
 
 interface APIOptions {
   proxy?: object;
@@ -83,6 +83,12 @@ export class Api {
       path = path.replace(`:${urlParameter.key}`, urlParameter.value);
     });
 
+    // `got` adds a slash to the end of `prefix_url` so we don't want one at the
+    // start of the path
+    if (path[0] === '/') {
+      path = path.slice(1);
+    }
+
     const requestOptions = this.createRequestOptions(
       method,
       requestParameters,
@@ -93,6 +99,7 @@ export class Api {
 
     try {
       const response = await got(path, requestOptions);
+
       return {
         body: response.body,
         __response__: {
@@ -102,27 +109,28 @@ export class Api {
           url: response.url,
         },
       };
-    } catch (error) {
-      const { response } = error;
-
-      if (!response) {
-        throw error;
+    } catch (e) {
+      if (e instanceof got.ParseError) {
+        throw new GoCardlessErrors.MalformedResponseError(
+          'Malformed JSON received from GoCardless API',
+          e.response
+        );
       }
 
-      if (
-        this.isIdempotencyConflict(response) &&
-        !this.raiseOnIdempotencyConflict
-      ) {
-        const resourceId =
-          response.body.error.errors[0].links.conflicting_resource_id;
-        return fetch(resourceId);
+      if (e instanceof got.HTTPError) {
+        const err = GoCardlessErrors.ApiError.buildFromResponse(e.response);
+
+        if (
+          err instanceof GoCardlessErrors.IdempotentCreationConflictError &&
+          !this.raiseOnIdempotencyConflict
+        ) {
+          return fetch(err.conflictingResourceId);
+        }
+
+        throw err;
       }
 
-      if (response) {
-        throw new GoCardlessException(response);
-      }
-
-      throw error;
+      throw e;
     }
   }
 
@@ -130,10 +138,10 @@ export class Api {
     const mandatoryHeaders = {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
-      'GoCardless-Version': '2015-07-06',
-      'GoCardless-Client-Version': '1.4.3',
+      'GoCardless-Version': `${API_VERSION}`,
+      'GoCardless-Client-Version': `${CLIENT_VERSION}`,
       'GoCardless-Client-Library': 'gocardless-nodejs',
-      'User-Agent': `gocardless-nodejs/1.4.3 node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
+      'User-Agent': `gocardless-nodejs/${CLIENT_VERSION} node/${this.processVersion} ${this.osPlatform}/${this.osRelease}`,
     };
 
     return { ...customHeaders, ...mandatoryHeaders };
@@ -199,16 +207,5 @@ export class Api {
       indices: false,
       arrayFormat: 'comma',
     });
-  }
-
-  private isIdempotencyConflict(response) {
-    return (
-      response.statusCode === 409 &&
-      response.body &&
-      response.body.error &&
-      response.body.error.errors &&
-      response.body.error.errors[0] &&
-      response.body.error.errors[0].reason === 'idempotent_creation_conflict'
-    );
   }
 }

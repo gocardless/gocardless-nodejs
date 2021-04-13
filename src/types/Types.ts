@@ -1,3 +1,69 @@
+/** Type for a bankauthorisation resource. */
+export interface BankAuthorisation {
+  // Type of authorisation, can be either 'mandate' or 'payment'.
+  authorisation_type: BankAuthorisationAuthorisationType;
+
+  // Timestamp when the flow was created
+  created_at: string;
+
+  // Timestamp when the url will expire. Each authorisation url currently lasts
+  // for 15 minutes, but this can vary by bank.
+  expires_at: string;
+
+  // Unique identifier, beginning with "BAU".
+  id: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when the
+  // authorisation URL has been visited.
+  last_visited_at?: string;
+
+  // Resources linked to this BankAuthorisation.
+  links: BankAuthorisationLinks;
+
+  // URL that the payer can be redirected to after authorising the payment.
+  redirect_uri: string;
+
+  // Short URL that redirects via GoCardless to the original URL, more suitable
+  // for encoding in a QR code
+  short_url: string;
+
+  // URL for an oauth flow that will allow the user to authorise the payment
+  url: string;
+}
+
+/** Type for a bankauthorisationcreaterequestlinks resource. */
+export interface BankAuthorisationCreateRequestLinks {
+  // ID of the [billing request](#billing-requests-billing-requests) against
+  // which this authorisation was created.
+  billing_request: string;
+
+  // ID of the [institution](#billing-requests-institutions) against which this
+  // authorisation was created.
+  institution: string;
+
+  // ID of the payment request against which this authorisation was created.
+  payment_request: string;
+}
+
+export enum BankAuthorisationAuthorisationType {
+  Mandate = 'mandate',
+  Payment = 'payment',
+}
+
+/** Type for a bankauthorisationlinks resource. */
+export interface BankAuthorisationLinks {
+  // ID of the [billing request](#billing-requests-billing-requests) against
+  // which this authorisation was created.
+  billing_request: string;
+
+  // ID of the [institution](#billing-requests-institutions) against which this
+  // authorisation was created.
+  institution: string;
+
+  // ID of the payment request against which this authorisation was created.
+  payment_request: string;
+}
+
 /** Type for a bankdetailslookup resource. */
 export interface BankDetailsLookup {
   // Array of [schemes](#mandates_scheme) supported for this bank account. This
@@ -24,6 +90,483 @@ export enum BankDetailsLookupAvailableDebitScheme {
   Betalingsservice = 'betalingsservice',
   Pad = 'pad',
   SepaCore = 'sepa_core',
+}
+
+/** Type for a billingrequest resource. */
+export interface BillingRequest {
+  // List of actions that can be performed before this billing request can be
+  // fulfilled.
+  actions: BillingRequestAction[];
+
+  // Should the billing request be fulfilled as soon as it's ready
+  auto_fulfil: boolean;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at: string;
+
+  // Unique identifier, beginning with "PY".
+  id: string;
+
+  // Resources linked to this BillingRequest.
+  links: BillingRequestLinks;
+
+  // Request for a mandate
+  mandate_request: BillingRequestMandateRequest;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
+  // Request for a one-off strongly authorised payment
+  payment_request: BillingRequestPaymentRequest;
+
+  //
+  resources: BillingRequestResources;
+
+  // One of:
+  // <ul>
+  // <li>`pending`: the billing_request is pending and can be used</li>
+  // <li>`ready_to_fulfil`: the billing_request is ready to fulfil</li>
+  // <li>`fulfilled`: the billing_request has been fulfilled and a payment
+  // created</li>
+  // <li>`cancelled`: the billing_request has been cancelled and cannot be
+  // used</li>
+  // </ul>
+  status: BillingRequestStatus;
+}
+
+/** Type for a billingrequestcreaterequestlinks resource. */
+export interface BillingRequestCreateRequestLinks {
+  // ID of the [customer](#core-endpoints-customers) against which this request
+  // should be made.
+  customer: string;
+
+  // (Optional) ID of the
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
+  // which this request should be made.
+  //
+  customer_bank_account: string;
+}
+
+/** Type for a billingrequestmandaterequest resource. */
+export interface BillingRequestMandateRequest {
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently only "GBP" is supported as we only have one scheme that is
+  // per_payment_authorised.
+  currency: string;
+
+  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  scheme?: string;
+}
+
+/** Type for a billingrequestpaymentrequest resource. */
+export interface BillingRequestPaymentRequest {
+  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  amount: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently only "GBP" is supported as we only have one scheme that is
+  // per_payment_authorised.
+  currency: string;
+
+  // A human-readable description of the payment. This will be displayed to the
+  // payer when authorising the billing request.
+  //
+  description?: string;
+}
+
+/** Type for a billingrequestcustomer resource. */
+export interface BillingRequestCustomer {
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string;
+
+  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for notification emails sent by GoCardless if your
+  // organisation does not send its own (see [compliance
+  // requirements](#appendix-compliance-requirements)). Currently only "en",
+  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
+  // If this is not provided, the language will be chosen based on the
+  // `country_code` (if supplied) or default to "en".
+  language?: string;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
+  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // including country code.
+  phone_number?: string;
+}
+
+/** Type for a billingrequestcustomerbillingdetail resource. */
+export interface BillingRequestCustomerBillingDetail {
+  // The first line of the customer's address.
+  address_line1?: string;
+
+  // The second line of the customer's address.
+  address_line2?: string;
+
+  // The third line of the customer's address.
+  address_line3?: string;
+
+  // The city of the customer's address.
+  city?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string;
+
+  // The customer's postal code.
+  postal_code?: string;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string;
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string;
+}
+
+export enum BillingRequestAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+export enum BillingRequestNotificationType {
+  Email = 'email',
+}
+
+/** Type for a billingrequestaction resource. */
+export interface BillingRequestAction {
+  // Which other action types this action can complete.
+  completes_actions: string[];
+
+  // Informs you whether the action is required to fulfil the billing request or
+  // not.
+  required: boolean;
+
+  // Requires completing these actions before this action can be completed.
+  requires_actions: string[];
+
+  // Unique identifier for the action.
+  type: BillingRequestActionType;
+}
+
+export enum BillingRequestActionType {
+  ChooseCurrency = 'choose_currency',
+  CollectCustomerDetails = 'collect_customer_details',
+  CollectBankAccountDetails = 'collect_bank_account_details',
+  PaymentBankAuthorisation = 'payment_bank_authorisation',
+  MandateBankAuthorisation = 'mandate_bank_authorisation',
+}
+
+/** Type for a billingrequestlinks resource. */
+export interface BillingRequestLinks {
+  // ID of the [customer](#core-endpoints-customers) that will be used for this
+  // request
+  customer: string;
+
+  // (Optional) ID of the
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts) that will
+  // be used for this request
+  customer_bank_account: string;
+
+  // ID of the customer billing detail that will be used for this request
+  customer_billing_detail: string;
+
+  // (Optional) ID of the [mandate bank
+  // authorisation](#billing-requests-bank-authorisations) that was used to
+  // verify this request.
+  mandate_bank_authorisation: string;
+
+  // (Optional) ID of the [payment bank
+  // authorisation](#billing-requests-bank-authorisations) that was used to
+  // verify this request.
+  payment_bank_authorisation: string;
+}
+
+/** Type for a billingrequestmandaterequest resource. */
+export interface BillingRequestMandateRequest {
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently only "GBP" is supported as we only have one scheme that is
+  // per_payment_authorised.
+  currency: string;
+
+  // Resources linked to this BillingRequestMandateRequest.
+  links: BillingRequestMandateRequestLinks;
+
+  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  scheme?: string;
+}
+
+/** Type for a billingrequestmandaterequestlinks resource. */
+export interface BillingRequestMandateRequestLinks {
+  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
+  // from this mandate request. this mandate request.
+  //
+  mandate: string;
+}
+
+/** Type for a billingrequestpaymentrequest resource. */
+export interface BillingRequestPaymentRequest {
+  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  amount: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently only "GBP" is supported as we only have one scheme that is
+  // per_payment_authorised.
+  currency: string;
+
+  // A human-readable description of the payment. This will be displayed to the
+  // payer when authorising the billing request.
+  //
+  description?: string;
+
+  // Resources linked to this BillingRequestPaymentRequest.
+  links: BillingRequestPaymentRequestLinks;
+
+  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  scheme?: string;
+}
+
+/** Type for a billingrequestpaymentrequestlinks resource. */
+export interface BillingRequestPaymentRequestLinks {
+  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
+  // from this payment request.
+  payment: string;
+}
+
+/** Type for a billingrequestresources resource. */
+export interface BillingRequestResources {
+  // Embedded customer
+  customer: BillingRequestResourcesCustomer;
+
+  // Embedded customer bank account, only if a bank account is linked
+  customer_bank_account?: BillingRequestResourcesCustomerBankAccount;
+
+  // Embedded customer billing detail
+  customer_billing_detail: BillingRequestResourcesCustomerBillingDetail;
+}
+
+/** Type for a billingrequestresourcescustomer resource. */
+export interface BillingRequestResourcesCustomer {
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at: string;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string;
+
+  // Unique identifier, beginning with "CU".
+  id: string;
+
+  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for notification emails sent by GoCardless if your
+  // organisation does not send its own (see [compliance
+  // requirements](#appendix-compliance-requirements)). Currently only "en",
+  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
+  // If this is not provided, the language will be chosen based on the
+  // `country_code` (if supplied) or default to "en".
+  language?: string;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
+  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // including country code.
+  phone_number?: string;
+}
+
+/** Type for a billingrequestresourcescustomerbankaccount resource. */
+export interface BillingRequestResourcesCustomerBankAccount {
+  // Name of the account holder, as known by the bank. Usually this is the same
+  // as the name stored with the linked [creditor](#core-endpoints-creditors).
+  // This field will be transliterated, upcased and truncated to 18 characters.
+  // This field is required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
+  account_holder_name: string;
+
+  // The last few digits of the account number. Currently 4 digits for NZD bank
+  // accounts and 2 digits for other currencies.
+  account_number_ending: string;
+
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type: BillingRequestResourcesCustomerBankAccountAccountType;
+
+  // Name of bank, taken from the bank details.
+  bank_name: string;
+
+  // [ISO 3166-1 alpha-2
+  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // Defaults to the country code of the `iban` if supplied, otherwise is
+  // required.
+  country_code?: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string;
+
+  // Boolean value showing whether the bank account is enabled or disabled.
+  enabled: boolean;
+
+  // Unique identifier, beginning with "BA".
+  id: string;
+
+  // Resources linked to this BillingRequestResourcesCustomerBankAccount.
+  links: BillingRequestResourcesCustomerBankAccountLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+}
+
+export enum BillingRequestResourcesCustomerBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+/** Type for a billingrequestresourcescustomerbankaccountlinks resource. */
+export interface BillingRequestResourcesCustomerBankAccountLinks {
+  // ID of the [customer](#core-endpoints-customers) that owns this bank
+  // account.
+  customer: string;
+}
+
+/** Type for a billingrequestresourcescustomerbillingdetail resource. */
+export interface BillingRequestResourcesCustomerBillingDetail {
+  // The first line of the customer's address.
+  address_line1?: string;
+
+  // The second line of the customer's address.
+  address_line2?: string;
+
+  // The third line of the customer's address.
+  address_line3?: string;
+
+  // The city of the customer's address.
+  city?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at: string;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string;
+
+  // Unique identifier, beginning with "CU".
+  id: string;
+
+  // The customer's postal code.
+  postal_code?: string;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string;
+
+  // The schemes associated with this customer billing detail
+  schemes: string[];
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string;
+}
+
+export enum BillingRequestStatus {
+  Pending = 'pending',
+  ReadyToFulfil = 'ready_to_fulfil',
+  Fulfilled = 'fulfilled',
+  Cancelled = 'cancelled',
+}
+
+/** Type for a billingrequestflow resource. */
+export interface BillingRequestFlow {
+  // URL for a GC-controlled flow which will allow the payer to fulfil the
+  // billing request
+  authorisation_url: string;
+
+  // Timestamp when the flow was created
+  created_at: string;
+
+  // Timestamp when the flow will expire. Each flow currently lasts for 7 days.
+  expires_at: string;
+
+  // Resources linked to this BillingRequestFlow.
+  links: BillingRequestFlowLinks;
+
+  // URL that the payer can be redirected to after completing the request flow.
+  redirect_uri: string;
+}
+
+/** Type for a billingrequestflowcreaterequestlinks resource. */
+export interface BillingRequestFlowCreateRequestLinks {
+  // ID of the [billing request](#billing-requests-billing-requests) against
+  // which this flow was created.
+  billing_request: string;
+}
+
+/** Type for a billingrequestflowlinks resource. */
+export interface BillingRequestFlowLinks {
+  // ID of the [billing request](#billing-requests-billing-requests) against
+  // which this flow was created.
+  billing_request: string;
 }
 
 /** Type for a creditor resource. */
@@ -277,6 +820,7 @@ export enum CreditorSchemeIdentifierScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
   Pad = 'pad',
   Sepa = 'sepa',
 }
@@ -458,6 +1002,17 @@ export enum CustomerCurrency {
   NZD = 'NZD',
   SEK = 'SEK',
   USD = 'USD',
+}
+
+export enum CustomerSortDirection {
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
+export enum CustomerSortField {
+  Name = 'name',
+  CompanyName = 'company_name',
+  CreatedAt = 'created_at',
 }
 
 /** Type for a customerbankaccount resource. */
@@ -960,6 +1515,21 @@ export enum InstalmentScheduleStatus {
   Errored = 'errored',
 }
 
+/** Type for a institution resource. */
+export interface Institution {
+  // A URL pointing to the icon for this institution
+  icon_url: string;
+
+  // The unique identifier for this institution
+  id: string;
+
+  // A URL pointing to the logo for this institution
+  logo_url: string;
+
+  // A human readable name for this institution
+  name: string;
+}
+
 /** Type for a mandate resource. */
 export interface Mandate {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
@@ -1009,6 +1579,8 @@ export interface Mandate {
   // <li>`failed`: the mandate could not be created</li>
   // <li>`cancelled`: the mandate has been cancelled</li>
   // <li>`expired`: the mandate has expired due to dormancy</li>
+  // <li>`consumed`: the mandate has been consumed and cannot be reused (note
+  // that this only applies to schemes that are per-payment authorised)</li>
   // </ul>
   status: MandateStatus;
 }
@@ -1050,6 +1622,7 @@ export enum MandateStatus {
   Failed = 'failed',
   Cancelled = 'cancelled',
   Expired = 'expired',
+  Consumed = 'consumed',
 }
 
 /** Type for a mandateimport resource. */
@@ -1333,15 +1906,17 @@ export interface PayerAuthorisation {
   mandate: PayerAuthorisationMandate;
 
   // One of:
-  // - `created`: The PayerAuthorisation has been created, and not been
-  // confirmed yet
-  // - `submitted`: The payer information has been submitted
-  // - `confirmed`: PayerAuthorisation is confirmed and resources are ready to
-  // be created
-  // - `completed`: The PayerAuthorisation has been completed and customer,
-  // bank_account and mandate has been created
-  // - `failed`: The PayerAuthorisation has failed and customer, bank_account
-  // and mandate is not created
+  // <ul>
+  // <li>`created`: The PayerAuthorisation has been created, and not been
+  // confirmed yet</li>
+  // <li>`submitted`: The payer information has been submitted</li>
+  // <li>`confirmed`: PayerAuthorisation is confirmed and resources are ready to
+  // be created</li>
+  // <li>`completed`: The PayerAuthorisation has been completed and customer,
+  // bank_account and mandate has been created</li>
+  // <li>`failed`: The PayerAuthorisation has failed and customer, bank_account
+  // and mandate is not created</li>
+  // </ul>
   status: PayerAuthorisationStatus;
 }
 
@@ -1357,6 +1932,10 @@ export interface PayerAuthorisationBankAccount {
   // Bank account number - see [local details](#appendix-local-bank-details) for
   // more information. Alternatively you can provide an `iban`.
   account_number?: string;
+
+  // The last few digits of the account number. Currently 4 digits for NZD bank
+  // accounts and 2 digits for other currencies.
+  account_number_ending: string;
 
   // Account number suffix (only for bank accounts denominated in NZD) - see
   // [local details](#local-bank-details-new-zealand) for more information.
@@ -1644,6 +2223,16 @@ export interface PaymentChargeDate {
   lte: string;
 }
 
+export enum PaymentSortDirection {
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
+export enum PaymentSortField {
+  ChargeDate = 'charge_date',
+  Amount = 'amount',
+}
+
 export enum PaymentCurrency {
   AUD = 'AUD',
   CAD = 'CAD',
@@ -1707,13 +2296,13 @@ export interface PaymentLinks {
   mandate: string;
 
   // ID of [payout](#core-endpoints-payouts) which contains the funds from this
-  // payment.<br/>**Note**: this property will not be present until the payment
+  // payment.<br/>_Note_: this property will not be present until the payment
   // has been successfully collected.
   payout: string;
 
   // ID of [subscription](#core-endpoints-subscriptions) from which this payment
-  // was created.<br/>**Note**: this property will only be present if this
-  // payment is part of a subscription.
+  // was created.<br/>_Note_: this property will only be present if this payment
+  // is part of a subscription.
   subscription: string;
 }
 
@@ -1789,9 +2378,10 @@ export interface Payout {
 
   // One of:
   // <ul>
-  // <li>`pending`: the payout has been created, but not yet sent to the
-  // banks</li>
-  // <li>`paid`: the payout has been sent to the banks</li>
+  // <li>`pending`: the payout has been created, but not yet sent to your bank
+  // or it is in the process of being exchanged through our FX provider.</li>
+  // <li>`paid`: the payout has been sent to the your bank. FX payouts will
+  // become `paid` after we emit the `fx_rate_confirmed` webhook.</li>
   // <li>`bounced`: the payout bounced when sent, the payout can be
   // retried.</li>
   // </ul>
@@ -1892,9 +2482,9 @@ export interface PayoutItem {
 
   // An array of tax items <em>beta</em>
   //
-  // Note: VAT applies to transaction and surcharge fees for merchants operating
-  // in the <a href="https://gocardless.com/legal/vat-faqs">UK</a> and <a
-  // href="https://gocardless.com/fr-fr/legal/faq-tva">France</a>.
+  // _Note_: VAT applies to transaction and surcharge fees for merchants
+  // operating in the <a href="https://gocardless.com/legal/vat-faqs">UK</a> and
+  // <a href="https://gocardless.com/fr-fr/legal/faq-tva">France</a>.
   taxes: PayoutItemTaxis[];
 
   // The type of the credit (positive) or debit (negative) item in the payout
@@ -1905,8 +2495,8 @@ export interface PayoutItem {
   // <li>`payment_charged_back` (debit): The payment has been charged back.</li>
   // <li>`payment_refunded` (debit): The payment has been refunded to the
   // customer.</li>
-  // <li>`refund` (debit): <em>private beta</em> A refund sent to a customer,
-  // not linked to a payment.</li>
+  // <li>`refund` (debit): A refund sent to a customer, not linked to a
+  // payment.</li>
   // <li>`refund_funds_returned` (credit): The refund could not be sent to the
   // customer, and the funds have been returned to you.</li>
   // <li>`gocardless_fee` (credit/debit): The fees that GoCardless charged for a
@@ -2228,8 +2818,11 @@ export interface Refund {
 
 /** Type for a refundcreaterequestlinks resource. */
 export interface RefundCreateRequestLinks {
-  // <em>private beta</em> ID of the [mandate](#core-endpoints-mandates) against
-  // which the refund is being made.
+  //  ID of the [mandate](#core-endpoints-mandates) against which the refund is
+  // being made. <br /> <p
+  // class="restricted-notice"><strong>Restricted</strong>: You must request
+  // access to Mandate Refunds by contacting <a
+  // href="mailto:support@gocardless.com">our support team</a>.</p>
   mandate: string;
 
   // ID of the [payment](#core-endpoints-payments) against which the refund is
@@ -2297,6 +2890,129 @@ export enum RefundStatus {
   Cancelled = 'cancelled',
   Bounced = 'bounced',
   FundsReturned = 'funds_returned',
+}
+
+/** Type for a scenariosimulator resource. */
+export interface ScenarioSimulator {
+  // The unique identifier of the simulator, used to initiate simulations. One
+  // of:
+  // <ul>
+  // <li>`creditor_verification_status_action_required`: Sets a creditor's
+  // `verification status` to `action required`, meaning that the creditor must
+  // provide further information to GoCardless in order to verify their account
+  // to receive payouts.</li>
+  // <li>`creditor_verification_status_in_review`: Sets a creditor's
+  // `verification status` to `in review`, meaning that the creditor has
+  // provided all of the information requested by GoCardless to verify their
+  // account, and is now awaiting review.</li>
+  // <li>`creditor_verification_status_successful`: Sets a creditor's
+  // `verification status` to `successful`, meaning that the creditor is fully
+  // verified and can receive payouts.</li>
+  // <li>`payment_paid_out`: Transitions a payment through to `paid_out`, having
+  // been collected successfully and paid out to you. It must start in the
+  // `pending_submission` state, and its mandate must be in the `activated`
+  // state (unless it is a payment for ACH, BECS, BECS_NZ or SEPA, in which
+  // cases the mandate may be `pending_submission`, since their mandates are
+  // submitted with their first payment).</li>
+  // <li>`payment_failed`: Transitions a payment through to `failed`. It must
+  // start in the `pending_submission` state, and its mandate must be in the
+  // `activated` state (unless it is a payment for ACH, BECS, BECS_NZ or SEPA,
+  // in which cases the mandate may be `pending_submission`, since their
+  // mandates are submitted with their first payment).</li>
+  // <li>`payment_charged_back`: Behaves the same as the `payout_paid_out`
+  // simulator, except that the payment is transitioned to `charged_back` after
+  // it is paid out, having been charged back by the customer.</li>
+  // <li>`payment_chargeback_settled`: Behaves the same as the
+  // `payment_charged_back` simulator, except that the charged back payment is
+  // additionally included as a debit item in a payout, thereby settling the
+  // charged back payment.</li>
+  // <li>`payment_late_failure`: Transitions a payment through to
+  // `late_failure`, having been apparently collected successfully beforehand.
+  // It must start in the `pending_submission` state, and its mandate must be in
+  // the `activated` state (unless it is a payment for ACH, BECS, BECS_NZ or
+  // SEPA, in which cases the mandate may be `pending_submission`, since their
+  // mandates are submitted with their first payment). Not compatible with
+  // Autogiro mandates.</li>
+  // <li>`payment_late_failure_settled`: Behaves the same as the
+  // `payment_late_failure` simulator, except that the late failure is
+  // additionally included as a debit item in a payout, thereby settling the
+  // late failure.</li>
+  // <li>`payment_submitted`: Transitions a payment to `submitted`, without
+  // proceeding any further. It must start in the `pending_submission`
+  // state.</li>
+  // <li>`mandate_activated`: Transitions a mandate through to `activated`,
+  // having been submitted to the banks and set up successfully. It must start
+  // in the `pending_submission` state. Not compatible with ACH, BECS, BECS_NZ
+  // and SEPA mandates, which are submitted and activated with their first
+  // payment.</li>
+  // <li>`mandate_customer_approval_granted`: Transitions a mandate through to
+  // `pending_submission`, as if the customer approved the mandate creation. It
+  // must start in the `pending_customer_approval` state. Compatible only with
+  // Bacs and SEPA mandates, which support customer signatures on the mandate.
+  // All payments associated with the mandate will be transitioned to
+  // `pending_submission`. All subscriptions associated with the mandate will
+  // become `active`.</li>
+  // <li>`mandate_customer_approval_skipped`: Transitions a mandate through to
+  // `pending_submission`, as if the customer skipped the mandate approval
+  // during the mandate creation process. It must start in the
+  // `pending_customer_approval` state. Compatible only with Bacs and SEPA
+  // mandates, which support customer signatures on the mandate. All payments
+  // associated with the mandate will be transitioned to `pending_submission`.
+  // All subscriptions associated with the mandate will become `active`.</li>
+  // <li>`mandate_failed`: Transitions a mandate through to `failed`, having
+  // been submitted to the banks but found to be invalid (for example due to
+  // invalid bank details). It must start in the `pending_submission` or
+  // `submitted` states. Not compatible with ACH, BECS, BECS_NZ and SEPA
+  // mandates, which are submitted with their first payment.</li>
+  // <li>`mandate_expired`: Transitions a mandate through to `expired`, having
+  // been submitted to the banks, set up successfully and then expired because
+  // no collection attempts were made against it for longer than the scheme's
+  // dormancy period (13 months for Bacs, 3 years for SEPA, 15 months for ACH,
+  // Betalingsservice, and BECS). It must start in the `pending_submission`
+  // state. Not compatible with Autogiro, BECS NZ, and PAD mandates, which do
+  // not expire.</li>
+  // <li>`mandate_transferred`: Transitions a mandate through to `transferred`,
+  // having been submitted to the banks, set up successfully and then moved to a
+  // new bank account due to the customer using the UK's Current Account
+  // Switching Service (CASS). It must start in the `pending_submission` state.
+  // Only compatible with Bacs mandates.</li>
+  // <li>`mandate_transferred_with_resubmission`: Transitions a mandate through
+  // `transferred` and resubmits it to the banks, can be caused be the UK's
+  // Current Account Switching Service (CASS) or when a customer contacts
+  // GoCardless to change their bank details. It must start in the
+  // `pending_submission` state. Only compatible with Bacs, SEPA and Autogiro
+  // mandates.</li>
+  // <li>`refund_paid`: Transitions a refund to `paid`. It must start in either
+  // the `pending_submission` or `submitted` state.</li>
+  // <li>`refund_bounced`: Transitions a refund to `bounced`. It must start in
+  // either the `pending_submission`, `submitted`, or `paid` state.</li>
+  // <li>`payout_bounced`: Transitions a payout to `bounced`. It must start in
+  // the `paid` state.</li>
+  // <li>`payout_create`: Creates a payout containing payments in `confirmed`,
+  // `failed` & `charged_back` states; refunds in `submitted` & `bounced`; and
+  // all related fees. Can only be used with a positive total payout balance and
+  // when some eligible items exist.</li>
+  // </ul>
+  id: string;
+}
+
+export enum ScenarioSimulatorCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
+
+/** Type for a scenariosimulatorrunrequestlinks resource. */
+export interface ScenarioSimulatorRunRequestLinks {
+  // ID of the resource to run the simulation against.
+  // Must be same type of resource as the simulator that is being run.
+  // eg. Payment ID for `payment_failed`, Mandate ID for `mandate_activated` etc
+  resource: string;
 }
 
 type JsonField = boolean | number | string | null;
@@ -2398,10 +3114,10 @@ export interface Subscription {
   earliest_charge_date_after_resume?: string;
 
   // Date on or after which no further payments should be created.
-  //
+  // <br />
   // If this field is blank and `count` is not specified, the subscription will
   // continue forever.
-  //
+  // <br />
   // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will
   // be removed in a future API version. Use `count` to specify a number of
   // payments instead.</p>
@@ -2550,4 +3266,47 @@ export interface TaxRate {
 
   // The type of tax applied by this rate
   type: string;
+}
+
+/** Type for a webhook resource. */
+export interface Webhook {
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at: string;
+
+  // Unique identifier, beginning with "WB".
+  id: string;
+
+  // Boolean value showing whether this was a demo webhook for testing
+  is_test: boolean;
+
+  // The body of the request sent to the webhook URL
+  request_body: string;
+
+  // The request headers sent with the webhook
+  request_headers: JsonMap;
+
+  // The body of the response from the webhook URL
+  response_body: string;
+
+  // Boolean value indicating the webhook response body was truncated
+  response_body_truncated: boolean;
+
+  // The response code from the webhook request
+  response_code: number;
+
+  // The headers sent with the response from the webhook URL
+  response_headers: JsonMap;
+
+  // Boolean indicating the content of response headers was truncated
+  response_headers_content_truncated: boolean;
+
+  // Boolean indicating the number of response headers was truncated
+  response_headers_count_truncated: boolean;
+
+  // Boolean indicating whether the request was successful or failed
+  successful: boolean;
+
+  // URL the webhook was POST-ed to
+  url: string;
 }

@@ -80,6 +80,10 @@ interface MandateListRequest {
 
   reference?: string;
 
+  // Scheme you'd like to retrieve mandates for
+
+  scheme?: string[];
+
   // At most four valid status values
 
   status?: Types.MandateStatus[];

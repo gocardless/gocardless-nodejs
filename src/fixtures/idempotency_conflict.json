@@ -1,0 +1,18 @@
+{
+  "error": {
+    "message": "A resource has already been created with this idempotency key",
+    "errors": [
+      {
+        "reason": "idempotent_creation_conflict",
+        "message": "A resource has already been created with this idempotency key",
+        "links": {
+          "conflicting_resource_id": "PM1234"
+        }
+      }
+    ],
+    "documentation_url": "https://developer.gocardless.com/api-reference#idempotent_creation_conflict",
+    "type": "invalid_state",
+    "request_id": "HARDCODED_REQUEST_ID",
+    "code": 409
+  }
+}
