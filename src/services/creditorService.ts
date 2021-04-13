@@ -156,7 +156,6 @@ export class CreditorService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: CreditorListRequest
   ): AsyncGenerator<Types.Creditor, void, unknown> {

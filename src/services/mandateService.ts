@@ -160,7 +160,6 @@ export class MandateService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: MandateListRequest
   ): AsyncGenerator<Types.Mandate, void, unknown> {

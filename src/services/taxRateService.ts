@@ -52,7 +52,6 @@ export class TaxRateService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: TaxRateListRequest
   ): AsyncGenerator<Types.TaxRate, void, unknown> {

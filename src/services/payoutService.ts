@@ -99,7 +99,6 @@ export class PayoutService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: PayoutListRequest
   ): AsyncGenerator<Types.Payout, void, unknown> {

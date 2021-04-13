@@ -225,7 +225,6 @@ export class PaymentService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: PaymentListRequest
   ): AsyncGenerator<Types.Payment, void, unknown> {

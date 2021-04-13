@@ -260,7 +260,6 @@ export class InstalmentScheduleService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: InstalmentScheduleListRequest
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {

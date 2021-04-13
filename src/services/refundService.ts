@@ -147,7 +147,6 @@ export class RefundService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: RefundListRequest
   ): AsyncGenerator<Types.Refund, void, unknown> {

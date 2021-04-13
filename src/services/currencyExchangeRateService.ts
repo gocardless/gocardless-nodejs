@@ -65,7 +65,6 @@ export class CurrencyExchangeRateService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: CurrencyExchangeRateListRequest
   ): AsyncGenerator<Types.CurrencyExchangeRate, void, unknown> {

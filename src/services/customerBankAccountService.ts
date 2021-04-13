@@ -157,7 +157,6 @@ export class CustomerBankAccountService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: CustomerBankAccountListRequest
   ): AsyncGenerator<Types.CustomerBankAccount, void, unknown> {

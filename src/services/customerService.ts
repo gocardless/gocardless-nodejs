@@ -263,7 +263,6 @@ export class CustomerService {
 
     return formattedResponse;
   }
-
   async *all(
     requestParameters: CustomerListRequest
   ): AsyncGenerator<Types.Customer, void, unknown> {
