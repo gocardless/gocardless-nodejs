@@ -205,7 +205,7 @@ export class PaymentService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentResponse = {
-      ...response.body['payments'],
+      ...(response.body?.['payments'] ?? response),
       __response__: response.__response__,
     };
 

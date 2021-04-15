@@ -66,7 +66,7 @@ export class BankDetailsLookupService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: BankDetailsLookupResponse = {
-      ...response.body['bank_details_lookups'],
+      ...(response.body?.['bank_details_lookups'] ?? response),
       __response__: response.__response__,
     };
 

@@ -232,7 +232,7 @@ export class SubscriptionService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: SubscriptionResponse = {
-      ...response.body['subscriptions'],
+      ...(response.body?.['subscriptions'] ?? response),
       __response__: response.__response__,
     };
 

@@ -241,7 +241,7 @@ export class CustomerService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CustomerResponse = {
-      ...response.body['customers'],
+      ...(response.body?.['customers'] ?? response),
       __response__: response.__response__,
     };
 

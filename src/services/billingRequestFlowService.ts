@@ -52,7 +52,7 @@ export class BillingRequestFlowService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: BillingRequestFlowResponse = {
-      ...response.body['billing_request_flows'],
+      ...(response.body?.['billing_request_flows'] ?? response),
       __response__: response.__response__,
     };
 

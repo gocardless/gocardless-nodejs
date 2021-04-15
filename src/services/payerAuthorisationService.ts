@@ -86,7 +86,7 @@ export class PayerAuthorisationService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PayerAuthorisationResponse = {
-      ...response.body['payer_authorisations'],
+      ...(response.body?.['payer_authorisations'] ?? response),
       __response__: response.__response__,
     };
 

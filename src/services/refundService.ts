@@ -118,7 +118,7 @@ export class RefundService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: RefundResponse = {
-      ...response.body['refunds'],
+      ...(response.body?.['refunds'] ?? response),
       __response__: response.__response__,
     };
 
