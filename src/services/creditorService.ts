@@ -126,7 +126,7 @@ export class CreditorService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CreditorResponse = {
-      ...response.body['creditors'],
+      ...(response.body?.['creditors'] ?? response),
       __response__: response.__response__,
     };
 

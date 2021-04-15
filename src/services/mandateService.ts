@@ -136,7 +136,7 @@ export class MandateService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: MandateResponse = {
-      ...response.body['mandates'],
+      ...(response.body?.['mandates'] ?? response),
       __response__: response.__response__,
     };
 

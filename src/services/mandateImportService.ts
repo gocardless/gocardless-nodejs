@@ -45,7 +45,7 @@ export class MandateImportService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: MandateImportResponse = {
-      ...response.body['mandate_imports'],
+      ...(response.body?.['mandate_imports'] ?? response),
       __response__: response.__response__,
     };
 

@@ -71,7 +71,7 @@ export class BankAuthorisationService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: BankAuthorisationResponse = {
-      ...response.body['bank_authorisations'],
+      ...(response.body?.['bank_authorisations'] ?? response),
       __response__: response.__response__,
     };
 

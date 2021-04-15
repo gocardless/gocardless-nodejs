@@ -129,7 +129,7 @@ export class CustomerBankAccountService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: CustomerBankAccountResponse = {
-      ...response.body['customer_bank_accounts'],
+      ...(response.body?.['customer_bank_accounts'] ?? response),
       __response__: response.__response__,
     };
 

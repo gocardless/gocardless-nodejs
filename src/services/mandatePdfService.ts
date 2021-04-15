@@ -160,7 +160,7 @@ export class MandatePdfService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: MandatePdfResponse = {
-      ...response.body['mandate_pdfs'],
+      ...(response.body?.['mandate_pdfs'] ?? response),
       __response__: response.__response__,
     };
 

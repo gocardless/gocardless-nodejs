@@ -204,7 +204,7 @@ export class InstalmentScheduleService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: InstalmentScheduleResponse = {
-      ...response.body['instalment_schedules'],
+      ...(response.body?.['instalment_schedules'] ?? response),
       __response__: response.__response__,
     };
 
@@ -230,7 +230,7 @@ export class InstalmentScheduleService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: InstalmentScheduleResponse = {
-      ...response.body['instalment_schedules'],
+      ...(response.body?.['instalment_schedules'] ?? response),
       __response__: response.__response__,
     };
 

@@ -91,7 +91,7 @@ export class RedirectFlowService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: RedirectFlowResponse = {
-      ...response.body['redirect_flows'],
+      ...(response.body?.['redirect_flows'] ?? response),
       __response__: response.__response__,
     };
 
