@@ -13,13 +13,22 @@ interface BillingRequestFlowListResponse extends Types.APIResponse {
 }
 
 interface BillingRequestFlowCreateRequest {
+  // Fulfil the Billing Request on completion of the flow (true by default)
+
+  auto_fulfil?: boolean;
+
   // Resources linked to this BillingRequestFlow.
   links: Types.BillingRequestFlowCreateRequestLinks;
 
-  // If true, the payer will not be able to edit their existing details (e.g.
-  // customer and bank account) within the billing request flow.
+  // If true, the payer will not be able to change their bank account within the
+  // flow
 
-  lock_existing_details?: boolean;
+  lock_bank_account?: boolean;
+
+  // If true, the payer will not be able to edit their customer details within the
+  // flow
+
+  lock_customer_details?: boolean;
 
   // URL that the payer can be redirected to after completing the request flow.
 
@@ -53,6 +62,26 @@ export class BillingRequestFlowService {
     const response = await this.api.request(requestParams);
     const formattedResponse: BillingRequestFlowResponse = {
       ...(response.body?.['billing_request_flows'] ?? response),
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async initialise(identity: string): Promise<BillingRequestFlowResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_request_flows/:identity/actions/initialise',
+      method: 'post',
+      urlParameters,
+
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestFlowResponse = {
+      ...response.body['billing_request_flows'],
       __response__: response.__response__,
     };
 

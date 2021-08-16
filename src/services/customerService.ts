@@ -120,10 +120,21 @@ interface CustomerListRequest {
   limit?: string;
 
   // The direction to sort in.
+  // One of:
+  // <ul>
+  // <li>`asc`</li>
+  // <li>`desc`</li>
+  // </ul>
 
   sort_direction?: Types.CustomerSortDirection;
 
   // Field by which to sort records.
+  // One of:
+  // <ul>
+  // <li>`name`</li>
+  // <li>`company_name`</li>
+  // <li>`created_at`</li>
+  // </ul>
 
   sort_field?: Types.CustomerSortField;
 }
