@@ -23,6 +23,11 @@ interface EventListRequest {
 
   before?: string;
 
+  // ID of a [billing request](#billing-requests-billing-requests). If specified,
+  // this endpoint will return all events for the given billing request.
+
+  billing_request?: string;
+
   // The creation date of this Event.
   created_at?: Types.CreatedAtFilter;
 
@@ -37,6 +42,7 @@ interface EventListRequest {
   // <li>`subscription`</li>
   // <li>`instalment_schedule`</li>
   // <li>`creditor`</li>
+  // <li>`billing_request`<\li>
   // </ul>
 
   include?: Types.EventInclude;
@@ -79,14 +85,15 @@ interface EventListRequest {
   // `subscription`, `instalment_schedule`, `creditor`, `refund` or `payout`
   // parameter. The type can be one of:
   // <ul>
-  // <li>`payments`</li>
+  // <li>`billing_requests`</li>
+  // <li>`creditors`</li>
+  // <li>`instalment_schedules`</li>
   // <li>`mandates`</li>
   // <li>`payer_authorisations`</li>
+  // <li>`payments`</li>
   // <li>`payouts`</li>
-  // <li>`subscriptions`</li>
-  // <li>`instalment_schedules`</li>
-  // <li>`creditors`</li>
   // <li>`refunds`</li>
+  // <li>`subscriptions`</li>
   // </ul>
 
   resource_type?: Types.EventResourceType;

@@ -47,10 +47,6 @@ interface BillingRequestListRequest {
 }
 
 interface BillingRequestCreateRequest {
-  // Should the billing request be fulfilled as soon as it's ready
-
-  auto_fulfil?: boolean;
-
   // Resources linked to this BillingRequest.
   links?: Types.BillingRequestCreateRequestLinks;
 
@@ -74,7 +70,7 @@ interface BillingRequestCollectCustomerDetailsRequest {
   customer_billing_detail?: Types.BillingRequestCustomerBillingDetail;
 }
 
-interface BillingRequestCollectBankAccountDetailsRequest {
+interface BillingRequestCollectBankAccountRequest {
   // Name of the account holder, as known by the bank. Usually this is the same as
   // the name stored with the linked [creditor](#core-endpoints-creditors). This
   // field will be transliterated, upcased and truncated to 18 characters. This
@@ -87,6 +83,11 @@ interface BillingRequestCollectBankAccountDetailsRequest {
   // more information. Alternatively you can provide an `iban`.
 
   account_number?: string;
+
+  // Account number suffix (only for bank accounts denominated in NZD) - see
+  // [local details](#local-bank-details-new-zealand) for more information.
+
+  account_number_suffix?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
@@ -131,6 +132,13 @@ interface BillingRequestCollectBankAccountDetailsRequest {
 }
 
 interface BillingRequestFulfilRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+
+  metadata?: Types.JsonMap;
+}
+
+interface BillingRequestConfirmPayerDetailsRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
 
@@ -267,13 +275,13 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async collect_bank_account_details(
+  async collect_bank_account(
     identity: string,
-    requestParameters: BillingRequestCollectBankAccountDetailsRequest
+    requestParameters: BillingRequestCollectBankAccountRequest
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
-      path: '/billing_requests/:identity/actions/collect_bank_account_details',
+      path: '/billing_requests/:identity/actions/collect_bank_account',
       method: 'post',
       urlParameters,
       requestParameters,
@@ -297,6 +305,29 @@ export class BillingRequestService {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/actions/fulfil',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async confirm_payer_details(
+    identity: string,
+    requestParameters: BillingRequestConfirmPayerDetailsRequest
+  ): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity/actions/confirm_payer_details',
       method: 'post',
       urlParameters,
       requestParameters,

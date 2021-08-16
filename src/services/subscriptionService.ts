@@ -84,7 +84,7 @@ interface SubscriptionCreateRequest {
   // created and will appear on your customer's bank statement. See the
   // documentation for
   // the [create payment endpoint](#payments-create-a-payment) for more details.
-  //
+  // <br />
   // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
   // Service User Number to specify a payment reference for Bacs payments.</p>
 
@@ -97,7 +97,9 @@ interface SubscriptionCreateRequest {
 
   // The date on which the first payment should be charged. Must be on or after
   // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
-  // blank, this will be set as the mandate's `next_possible_charge_date`.
+  // left blank and `month` or `day_of_month` are provided, this will be set to
+  // the date of the first payment. If created without `month` or `day_of_month`
+  // this will be set as the mandate's `next_possible_charge_date`
 
   start_date?: string;
 }
@@ -168,7 +170,7 @@ interface SubscriptionUpdateRequest {
   // created and will appear on your customer's bank statement. See the
   // documentation for
   // the [create payment endpoint](#payments-create-a-payment) for more details.
-  //
+  // <br />
   // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
   // Service User Number to specify a payment reference for Bacs payments.</p>
 

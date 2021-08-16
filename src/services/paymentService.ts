@@ -113,10 +113,20 @@ interface PaymentListRequest {
   mandate?: string;
 
   // The direction to sort in.
+  // One of:
+  // <ul>
+  // <li>`asc`</li>
+  // <li>`desc`</li>
+  // </ul>
 
   sort_direction?: Types.PaymentSortDirection;
 
   // Field by which to sort records.
+  // One of:
+  // <ul>
+  // <li>`charge_date`</li>
+  // <li>`amount`</li>
+  // </ul>
 
   sort_field?: Types.PaymentSortField;
 
