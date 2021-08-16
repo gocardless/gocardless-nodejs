@@ -39,7 +39,7 @@
     "nock": "^13.0.11",
     "typescript": "^4.2.4"
   },
-  "main": "src/index.js",
+  "main": "index.js",
   "types": "types/Types.d.ts",
   "engines": {
     "node": ">=10.0"
