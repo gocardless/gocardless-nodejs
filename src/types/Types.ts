@@ -40,9 +40,6 @@ export interface BankAuthorisationCreateRequestLinks {
   // ID of the [institution](#billing-requests-institutions) against which this
   // authorisation was created.
   institution: string;
-
-  // ID of the payment request against which this authorisation was created.
-  payment_request: string;
 }
 
 export enum BankAuthorisationAuthorisationType {
@@ -59,9 +56,6 @@ export interface BankAuthorisationLinks {
   // ID of the [institution](#billing-requests-institutions) against which this
   // authorisation was created.
   institution: string;
-
-  // ID of the payment request against which this authorisation was created.
-  payment_request: string;
 }
 
 /** Type for a bankdetailslookup resource. */
@@ -1318,6 +1312,7 @@ export interface CustomerNotification {
   // <li>`payment_created`</li>
   // <li>`payment_cancelled`</li>
   // <li>`mandate_created`</li>
+  // <li>`mandate_blocked`</li>
   // <li>`subscription_created`</li>
   // <li>`subscription_cancelled`</li>
   // <li>`instalment_schedule_created`</li>
@@ -1355,6 +1350,7 @@ export enum CustomerNotificationType {
   PaymentCreated = 'payment_created',
   PaymentCancelled = 'payment_cancelled',
   MandateCreated = 'mandate_created',
+  MandateBlocked = 'mandate_blocked',
   SubscriptionCreated = 'subscription_created',
   SubscriptionCancelled = 'subscription_cancelled',
   InstalmentScheduleCreated = 'instalment_schedule_created',
@@ -1436,6 +1432,7 @@ export interface EventCustomerNotification {
   // <li>`payment_created`</li>
   // <li>`payment_cancelled`</li>
   // <li>`mandate_created`</li>
+  // <li>`mandate_blocked`</li>
   // <li>`subscription_created`</li>
   // <li>`subscription_cancelled`</li>
   // <li>`instalment_schedule_created`</li>
@@ -1448,6 +1445,7 @@ export enum EventCustomerNotificationType {
   PaymentCreated = 'payment_created',
   PaymentCancelled = 'payment_cancelled',
   MandateCreated = 'mandate_created',
+  MandateBlocked = 'mandate_blocked',
   SubscriptionCreated = 'subscription_created',
   SubscriptionCancelled = 'subscription_cancelled',
   InstalmentScheduleCreated = 'instalment_schedule_created',
