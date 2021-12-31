@@ -42,7 +42,7 @@ interface EventListRequest {
   // <li>`subscription`</li>
   // <li>`instalment_schedule`</li>
   // <li>`creditor`</li>
-  // <li>`billing_request`<\li>
+  // <li>`billing_request`</li>
   // </ul>
 
   include?: Types.EventInclude;
