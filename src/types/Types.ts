@@ -147,12 +147,11 @@ export interface BillingRequestCreateRequestLinks {
 /** Type for a billingrequestmandaterequest resource. */
 export interface BillingRequestMandateRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
+  // code.
   currency: string;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
   scheme?: string;
 }
 
@@ -161,9 +160,13 @@ export interface BillingRequestPaymentRequest {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount: string;
 
+  // The amount to be deducted from the payment as an app fee, to be paid to the
+  // partner integration which created the billing request, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string;
+
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
+  // code.
   currency: string;
 
   // A human-readable description of the payment. This will be displayed to the
@@ -365,15 +368,14 @@ export interface BillingRequestLinks {
 /** Type for a billingrequestmandaterequest resource. */
 export interface BillingRequestMandateRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
+  // code.
   currency: string;
 
   // Resources linked to this BillingRequestMandateRequest.
   links: BillingRequestMandateRequestLinks;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
   scheme?: string;
 
   // Verification preference for the mandate. One of:
@@ -418,8 +420,7 @@ export interface BillingRequestPaymentRequest {
   app_fee?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
+  // code.
   currency: string;
 
   // A human-readable description of the payment. This will be displayed to the
@@ -430,8 +431,8 @@ export interface BillingRequestPaymentRequest {
   // Resources linked to this BillingRequestPaymentRequest.
   links: BillingRequestPaymentRequestLinks;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
   scheme?: string;
 }
 
@@ -626,11 +627,16 @@ export interface BillingRequestFlow {
   // billing request
   authorisation_url: string;
 
-  // Fulfil the Billing Request on completion of the flow (true by default)
+  // (Experimental feature) Fulfil the Billing Request on completion of the flow
+  // (true by default). Disabling the auto_fulfil is not allowed currently.
   auto_fulfil: boolean;
 
   // Timestamp when the flow was created
   created_at: string;
+
+  // URL that the payer can be taken to if there isn't a way to progress ahead
+  // in flow.
+  exit_uri?: string;
 
   // Timestamp when the flow will expire. Each flow currently lasts for 7 days.
   expires_at: string;
@@ -642,11 +648,13 @@ export interface BillingRequestFlow {
   links: BillingRequestFlowLinks;
 
   // If true, the payer will not be able to change their bank account within the
-  // flow
+  // flow. If the bank_account details are collected as part of
+  // bank_authorisation then GC will set this value to true mid flow
   lock_bank_account: boolean;
 
   // If true, the payer will not be able to edit their customer details within
-  // the flow
+  // the flow. If the customer details are collected as part of
+  // bank_authorisation then GC will set this value to true mid flow
   lock_customer_details: boolean;
 
   // URL that the payer can be redirected to after completing the request flow.
@@ -684,8 +692,7 @@ export interface BillingRequestTemplate {
   id: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
+  // code.
   mandate_request_currency: string;
 
   // Key-value store of custom data that will be applied to the mandate created
@@ -693,8 +700,8 @@ export interface BillingRequestTemplate {
   // up to 50 characters and values up to 500 characters.
   mandate_request_metadata?: JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
   mandate_request_scheme?: string;
 
   // Verification preference for the mandate. One of:
@@ -724,8 +731,7 @@ export interface BillingRequestTemplate {
   payment_request_amount: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
+  // code.
   payment_request_currency: string;
 
   // A human-readable description of the payment. This will be displayed to the
@@ -738,8 +744,8 @@ export interface BillingRequestTemplate {
   // up to 50 characters and values up to 500 characters.
   payment_request_metadata?: JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
   payment_request_scheme?: string;
 
   // URL that the payer can be redirected to after completing the request flow.
@@ -762,6 +768,74 @@ export enum BillingRequestTemplateMandateRequestVerify {
   Recommended = 'recommended',
   WhenAvailable = 'when_available',
   Always = 'always',
+}
+
+/** Type for a block resource. */
+export interface Block {
+  // Shows if the block is active or disabled. Only active blocks will be used
+  // when deciding
+  // if a mandate should be blocked.
+  active?: boolean;
+
+  // Type of entity we will seek to match against when blocking the mandate.
+  // This
+  // can currently be one of 'email', 'email_domain', or 'bank_account'.
+  block_type: BlockBlockType;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at: string;
+
+  // Unique identifier, beginning with "BLC".
+  id: string;
+
+  // This field is required if the reason_type is other. It should be a
+  // description of
+  // the reason for why you wish to block this payer and why it does not align
+  // with the
+  // given reason_types. This is intended to help us improve our knowledge of
+  // types of
+  // fraud.
+  reason_description?: string;
+
+  // The reason you wish to block this payer, can currently be one of
+  // 'identity_fraud',
+  // 'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by
+  // one of the
+  // above then 'other' can be selected but you must provide a reason
+  // description.
+  reason_type: BlockReasonType;
+
+  // This field is a reference to the value you wish to block. This may be the
+  // raw value
+  // (in the case of emails or email domains) or the ID of the resource (in the
+  // case of
+  // bank accounts). This means in order to block a specific bank account it
+  // must already
+  // have been created as a resource.
+  resource_reference: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was updated.
+  updated_at: string;
+}
+
+export enum BlockReferenceType {
+  Customer = 'customer',
+  Mandate = 'mandate',
+}
+
+export enum BlockBlockType {
+  Email = 'email',
+  EmailDomain = 'email_domain',
+  BankAccount = 'bank_account',
+}
+
+export enum BlockReasonType {
+  IdentityFraud = 'identity_fraud',
+  NoIntentToPay = 'no_intent_to_pay',
+  UnfairChargeback = 'unfair_chargeback',
+  Other = 'other',
 }
 
 /** Type for a creditor resource. */
@@ -1018,6 +1092,8 @@ export enum CreditorSchemeIdentifierScheme {
   FasterPayments = 'faster_payments',
   Pad = 'pad',
   Sepa = 'sepa',
+  SepaCreditTransfer = 'sepa_credit_transfer',
+  SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
 }
 
 export enum CreditorVerificationStatus {
@@ -1486,6 +1562,7 @@ export interface EventDetails {
   // <li>`gocardless`: this event was performed by GoCardless automatically</li>
   // <li>`api`: this event was triggered by an API endpoint</li>
   // <li>`customer`: this event was triggered by a Customer</li>
+  // <li>`payer`: this event was triggered by a Payer</li>
   // </ul>
   origin: EventDetailsOrigin;
 
@@ -1514,6 +1591,7 @@ export enum EventDetailsOrigin {
   Api = 'api',
   Gocardless = 'gocardless',
   Customer = 'customer',
+  Payer = 'payer',
 }
 
 export enum EventDetailsScheme {
@@ -1530,6 +1608,15 @@ export enum EventDetailsScheme {
 
 /** Type for a eventlinks resource. */
 export interface EventLinks {
+  // ID of a [bank authorisation](#billing-requests-bank-authorisations).
+  bank_authorisation: string;
+
+  // ID of a [billing request](#billing-requests-billing-requests).
+  billing_request: string;
+
+  // ID of a [billing request flow](#billing-requests-billing-request-flows).
+  billing_request_flow: string;
+
   // If `resource_type` is `creditor`, this is the ID of the
   // [creditor](#core-endpoints-creditors) which has been updated.
   creditor: string;
@@ -1548,6 +1635,10 @@ export interface EventLinks {
   // If `resource_type` is `mandates`, this is the ID of the
   // [mandate](#core-endpoints-mandates) which has been updated.
   mandate: string;
+
+  // If `resource_type` is `billing_requests`, this is the ID of the
+  // [mandate](#core-endpoints-mandates) which has been created.
+  mandate_request_mandate: string;
 
   // This is only included for mandate transfer events, when it is the ID of the
   // [customer bank account](#core-endpoints-customer-bank-accounts) which the
@@ -1574,6 +1665,11 @@ export interface EventLinks {
   // If `resource_type` is `payments`, this is the ID of the
   // [payment](#core-endpoints-payments) which has been updated.
   payment: string;
+
+  // If `resource_type` is `billing_requests`, this is the ID of the
+  // [payment](#core-endpoints-payments) which has been created for Instant Bank
+  // Payment.
+  payment_request_payment: string;
 
   // If `resource_type` is `payouts`, this is the ID of the
   // [payout](#core-endpoints-payouts) which has been updated.
@@ -1742,6 +1838,11 @@ export enum InstalmentScheduleStatus {
 
 /** Type for a institution resource. */
 export interface Institution {
+  // [ISO
+  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // alpha-2 code. The country code of the institution.
+  country_code: string;
+
   // A URL pointing to the icon for this institution
   icon_url: string;
 
@@ -2851,6 +2952,9 @@ export interface RedirectFlow {
 
   // Resources linked to this RedirectFlow.
   links: RedirectFlowLinks;
+
+  // Mandate reference generated by GoCardless or submitted by an integrator.
+  mandate_reference: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.

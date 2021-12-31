@@ -13,20 +13,28 @@ interface BillingRequestFlowListResponse extends Types.APIResponse {
 }
 
 interface BillingRequestFlowCreateRequest {
-  // Fulfil the Billing Request on completion of the flow (true by default)
+  // (Experimental feature) Fulfil the Billing Request on completion of the flow
+  // (true by default). Disabling the auto_fulfil is not allowed currently.
 
   auto_fulfil?: boolean;
+
+  // URL that the payer can be taken to if there isn't a way to progress ahead in
+  // flow.
+
+  exit_uri?: string;
 
   // Resources linked to this BillingRequestFlow.
   links: Types.BillingRequestFlowCreateRequestLinks;
 
   // If true, the payer will not be able to change their bank account within the
-  // flow
+  // flow. If the bank_account details are collected as part of bank_authorisation
+  // then GC will set this value to true mid flow
 
   lock_bank_account?: boolean;
 
   // If true, the payer will not be able to edit their customer details within the
-  // flow
+  // flow. If the customer details are collected as part of bank_authorisation
+  // then GC will set this value to true mid flow
 
   lock_customer_details?: boolean;
 

@@ -31,8 +31,6 @@ interface BillingRequestTemplateCreateRequest {
   links?: Types.BillingRequestTemplateCreateRequestLinks;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
 
   mandate_request_currency?: string;
 
@@ -42,8 +40,8 @@ interface BillingRequestTemplateCreateRequest {
 
   mandate_request_metadata?: Types.JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
 
   mandate_request_scheme?: string;
 
@@ -78,8 +76,6 @@ interface BillingRequestTemplateCreateRequest {
   payment_request_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
 
   payment_request_currency?: string;
 
@@ -95,8 +91,8 @@ interface BillingRequestTemplateCreateRequest {
 
   payment_request_metadata?: Types.JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
 
   payment_request_scheme?: string;
 
@@ -107,8 +103,6 @@ interface BillingRequestTemplateCreateRequest {
 
 interface BillingRequestTemplateUpdateRequest {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
 
   mandate_request_currency?: string;
 
@@ -118,8 +112,8 @@ interface BillingRequestTemplateUpdateRequest {
 
   mandate_request_metadata?: Types.JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
 
   mandate_request_scheme?: string;
 
@@ -154,8 +148,6 @@ interface BillingRequestTemplateUpdateRequest {
   payment_request_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently only "GBP" is supported as we only have one scheme that is
-  // per_payment_authorised.
 
   payment_request_currency?: string;
 
@@ -171,8 +163,8 @@ interface BillingRequestTemplateUpdateRequest {
 
   payment_request_metadata?: Types.JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
+  // "betalingsservice", "pad" and "sepa_core" are supported.
 
   payment_request_scheme?: string;
 

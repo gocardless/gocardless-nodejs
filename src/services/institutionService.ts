@@ -10,7 +10,13 @@ interface InstitutionListResponse extends Types.APIResponse {
   meta: Types.ListMeta;
 }
 
-interface InstitutionListRequest {}
+interface InstitutionListRequest {
+  // [ISO
+  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // alpha-2 code. The country code of the institution.
+
+  country_code?: string;
+}
 
 export class InstitutionService {
   private api: Api;

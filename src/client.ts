@@ -7,6 +7,7 @@ import { BankDetailsLookupService } from './services/bankDetailsLookupService';
 import { BillingRequestService } from './services/billingRequestService';
 import { BillingRequestFlowService } from './services/billingRequestFlowService';
 import { BillingRequestTemplateService } from './services/billingRequestTemplateService';
+import { BlockService } from './services/blockService';
 import { CreditorService } from './services/creditorService';
 import { CreditorBankAccountService } from './services/creditorBankAccountService';
 import { CurrencyExchangeRateService } from './services/currencyExchangeRateService';
@@ -39,6 +40,7 @@ export class GoCardlessClient {
   private _billingRequests: BillingRequestService;
   private _billingRequestFlows: BillingRequestFlowService;
   private _billingRequestTemplates: BillingRequestTemplateService;
+  private _blocks: BlockService;
   private _creditors: CreditorService;
   private _creditorBankAccounts: CreditorBankAccountService;
   private _currencyExchangeRates: CurrencyExchangeRateService;
@@ -71,6 +73,7 @@ export class GoCardlessClient {
     this._billingRequests = undefined;
     this._billingRequestFlows = undefined;
     this._billingRequestTemplates = undefined;
+    this._blocks = undefined;
     this._creditors = undefined;
     this._creditorBankAccounts = undefined;
     this._currencyExchangeRates = undefined;
@@ -136,6 +139,14 @@ export class GoCardlessClient {
     }
 
     return this._billingRequestTemplates;
+  }
+
+  get blocks(): BlockService {
+    if (!this._blocks) {
+      this._blocks = new BlockService(this._api);
+    }
+
+    return this._blocks;
   }
 
   get creditors(): CreditorService {
