@@ -57,7 +57,7 @@ function verifySignature(body, webhookSecret, signatureHeader) {
   }
 }
 
-module.exports = {
+export {
   parse,
   InvalidSignatureError,
 };
