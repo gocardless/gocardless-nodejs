@@ -2441,7 +2441,7 @@ export enum PayerAuthorisationStatus {
 export interface Payment {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-  amount: string;
+  amount: number;
 
   // Amount [refunded](#core-endpoints-refunds), in the lowest denomination for
   // the currency (e.g. pence in GBP, cents in EUR).

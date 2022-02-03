@@ -14,7 +14,7 @@ interface PaymentCreateRequest {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP, cents
   // in EUR).
 
-  amount: string;
+  amount: number;
 
   // The amount to be deducted from the payment as the OAuth app's fee, in the
   // lowest denomination for the currency (e.g. pence in GBP, cents in EUR).
