@@ -131,7 +131,7 @@ export interface BillingRequest {
 export interface BillingRequestCreateRequestLinks {
   // ID of the associated [creditor](#core-endpoints-creditors). Only required
   // if your account manages multiple creditors.
-  creditor: string;
+  creditor?: string;
 
   // ID of the [customer](#core-endpoints-customers) against which this request
   // should be made.
@@ -141,7 +141,7 @@ export interface BillingRequestCreateRequestLinks {
   // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
   // which this request should be made.
   //
-  customer_bank_account: string;
+  customer_bank_account?: string;
 }
 
 /** Type for a billingrequestmandaterequest resource. */
@@ -153,26 +153,9 @@ export interface BillingRequestMandateRequest {
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
   // "betalingsservice", "pad" and "sepa_core" are supported.
   scheme?: string;
-}
 
-/** Type for a billingrequestpaymentrequest resource. */
-export interface BillingRequestPaymentRequest {
-  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount: string;
-
-  // The amount to be deducted from the payment as an app fee, to be paid to the
-  // partner integration which created the billing request, in the lowest
-  // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string;
-
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency: string;
-
-  // A human-readable description of the payment. This will be displayed to the
-  // payer when authorising the billing request.
-  //
-  description?: string;
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up to 50 characters and values up to 500 characters.
+  metadata: { [key: string]: string }
 }
 
 /** Type for a billingrequestcustomer resource. */
@@ -365,35 +348,6 @@ export interface BillingRequestLinks {
   payment_request_payment: string;
 }
 
-/** Type for a billingrequestmandaterequest resource. */
-export interface BillingRequestMandateRequest {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency: string;
-
-  // Resources linked to this BillingRequestMandateRequest.
-  links: BillingRequestMandateRequestLinks;
-
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
-  scheme?: string;
-
-  // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to minimum, use the GoCardless risk engine
-  // to decide an appropriate level of verification</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
-  //
-  // If not provided, the `recommended` level is chosen.
-  verify: BillingRequestMandateRequestVerify;
-}
-
 /** Type for a billingrequestmandaterequestlinks resource. */
 export interface BillingRequestMandateRequestLinks {
   // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
@@ -429,11 +383,14 @@ export interface BillingRequestPaymentRequest {
   description?: string;
 
   // Resources linked to this BillingRequestPaymentRequest.
-  links: BillingRequestPaymentRequestLinks;
+  links?: BillingRequestPaymentRequestLinks;
 
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
   // "betalingsservice", "pad" and "sepa_core" are supported.
   scheme?: string;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up to 50 characters and values up to 500 characters.
+  metadata?: { [key: string]: string }
 }
 
 /** Type for a billingrequestpaymentrequestlinks resource. */
