@@ -58,5 +58,6 @@ function InvalidSignatureError() {
 
 export {
   parse,
-  verifySignature
+  verifySignature,
+  InvalidSignatureError
 }
