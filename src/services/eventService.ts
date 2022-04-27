@@ -47,6 +47,12 @@ interface EventListRequest {
 
   include?: Types.EventInclude;
 
+  // ID of an [instalment schedule](#core-endpoints-instalment-schedules). If
+  // specified, this endpoint will return all events for the given instalment
+  // schedule.
+
+  instalment_schedule?: string;
+
   // Number of records to return.
 
   limit?: string;

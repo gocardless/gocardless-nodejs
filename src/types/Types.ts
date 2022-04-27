@@ -96,6 +96,11 @@ export interface BillingRequest {
   // resource was created.
   created_at: string;
 
+  // (Optional) If true, this billing request can fallback from instant payment
+  // to direct debit. Should not be set if GoCardless payment intelligence
+  // feature is used.
+  fallback_enabled: boolean;
+
   // Unique identifier, beginning with "BRQ".
   id: string;
 
@@ -117,11 +122,11 @@ export interface BillingRequest {
 
   // One of:
   // <ul>
-  // <li>`pending`: the billing_request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing_request is ready to fulfil</li>
-  // <li>`fulfilled`: the billing_request has been fulfilled and a payment
+  // <li>`pending`: the billing request is pending and can be used</li>
+  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  // <li>`fulfilled`: the billing request has been fulfilled and a payment
   // created</li>
-  // <li>`cancelled`: the billing_request has been cancelled and cannot be
+  // <li>`cancelled`: the billing request has been cancelled and cannot be
   // used</li>
   // </ul>
   status: BillingRequestStatus;
@@ -142,37 +147,6 @@ export interface BillingRequestCreateRequestLinks {
   // which this request should be made.
   //
   customer_bank_account: string;
-}
-
-/** Type for a billingrequestmandaterequest resource. */
-export interface BillingRequestMandateRequest {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency: string;
-
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
-  scheme?: string;
-}
-
-/** Type for a billingrequestpaymentrequest resource. */
-export interface BillingRequestPaymentRequest {
-  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount: string;
-
-  // The amount to be deducted from the payment as an app fee, to be paid to the
-  // partner integration which created the billing request, in the lowest
-  // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string;
-
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency: string;
-
-  // A human-readable description of the payment. This will be displayed to the
-  // payer when authorising the billing request.
-  //
-  description?: string;
 }
 
 /** Type for a billingrequestcustomer resource. */
@@ -302,6 +276,8 @@ export interface BillingRequestActionBankAuthorisation {
 export enum BillingRequestActionBankAuthorisationAdapter {
   OpenBankingGatewayPis = 'open_banking_gateway_pis',
   PlaidAis = 'plaid_ais',
+  OpenBankingGatewayAis = 'open_banking_gateway_ais',
+  BankidAis = 'bankid_ais',
 }
 
 export enum BillingRequestActionBankAuthorisationAuthorisationType {
@@ -326,6 +302,7 @@ export enum BillingRequestActionType {
   CollectBankAccount = 'collect_bank_account',
   BankAuthorisation = 'bank_authorisation',
   ConfirmPayerDetails = 'confirm_payer_details',
+  SelectInstitution = 'select_institution',
 }
 
 /** Type for a billingrequestlinks resource. */
@@ -374,6 +351,10 @@ export interface BillingRequestMandateRequest {
   // Resources linked to this BillingRequestMandateRequest.
   links: BillingRequestMandateRequestLinks;
 
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
   // "betalingsservice", "pad" and "sepa_core" are supported.
   scheme?: string;
@@ -382,15 +363,27 @@ export interface BillingRequestMandateRequest {
   // <ul>
   //   <li>`minimum`: only verify if absolutely required, such as when part of
   // scheme rules</li>
-  //   <li>`recommended`: in addition to minimum, use the GoCardless risk engine
-  // to decide an appropriate level of verification</li>
+  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified</li>
   //   <li>`when_available`: if verification mechanisms are available, use
   // them</li>
   //   <li>`always`: as `when_available`, but fail to create the Billing Request
   // if a mechanism isn't available</li>
   // </ul>
   //
-  // If not provided, the `recommended` level is chosen.
+  // By default, all Billing Requests use the `recommended` verification
+  // preference. It uses GoCardless payment intelligence solution to determine
+  // if a payer is fraudulent or not. The verification mechanism is based on the
+  // response and the payer may be asked to verify themselves. If the feature is
+  // not available, `recommended` behaves like `minimum`.
+  //
+  // If you never wish to take advantage of our reduced risk products and
+  // Verified Mandates as they are released in new schemes, please use the
+  // `minimum` verification preference.
+  //
+  // See [Billing Requests: Creating Verified
+  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // for more information.
   verify: BillingRequestMandateRequestVerify;
 }
 
@@ -420,7 +413,8 @@ export interface BillingRequestPaymentRequest {
   app_fee?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
+  // for `EUR` with your customers in Germany only.
   currency: string;
 
   // A human-readable description of the payment. This will be displayed to the
@@ -431,8 +425,16 @@ export interface BillingRequestPaymentRequest {
   // Resources linked to this BillingRequestPaymentRequest.
   links: BillingRequestPaymentRequestLinks;
 
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata: JsonMap;
+
+  // (Optional) A scheme used for Open Banking payments. Currently
+  // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
+  // and `sepa_instant_credit_transfer` are supported in Germany (EUR). In
+  // Germany, `sepa_credit_transfer` is used as the default. Please be aware
+  // that `sepa_instant_credit_transfer` may incur an additional fee for your
+  // customer.
   scheme?: string;
 }
 
@@ -660,8 +662,16 @@ export interface BillingRequestFlow {
   // URL that the payer can be redirected to after completing the request flow.
   redirect_uri?: string;
 
-  // Session token populated when responding to the initalise action
+  // Session token populated when responding to the initialise action
   session_token?: string;
+
+  // If true, the payer will be able to see redirect action buttons on Thank You
+  // page. These action buttons will provide a way to connect back to the
+  // billing request flow app if opened within a mobile app. For successful
+  // flow, the button will take the payer back the billing request flow where
+  // they will see the success screen. For failure, button will take the payer
+  // to url being provided against exit_uri field.
+  show_redirect_buttons: boolean;
 }
 
 /** Type for a billingrequestflowcreaterequestlinks resource. */
@@ -708,15 +718,27 @@ export interface BillingRequestTemplate {
   // <ul>
   //   <li>`minimum`: only verify if absolutely required, such as when part of
   // scheme rules</li>
-  //   <li>`recommended`: in addition to minimum, use the GoCardless risk engine
-  // to decide an appropriate level of verification</li>
+  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified</li>
   //   <li>`when_available`: if verification mechanisms are available, use
   // them</li>
   //   <li>`always`: as `when_available`, but fail to create the Billing Request
   // if a mechanism isn't available</li>
   // </ul>
   //
-  // If not provided, the `recommended` level is chosen.
+  // By default, all Billing Requests use the `recommended` verification
+  // preference. It uses GoCardless payment intelligence solution to determine
+  // if a payer is fraudulent or not. The verification mechanism is based on the
+  // response and the payer may be asked to verify themselves. If the feature is
+  // not available, `recommended` behaves like `minimum`.
+  //
+  // If you never wish to take advantage of our reduced risk products and
+  // Verified Mandates as they are released in new schemes, please use the
+  // `minimum` verification preference.
+  //
+  // See [Billing Requests: Creating Verified
+  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // for more information.
   mandate_request_verify: BillingRequestTemplateMandateRequestVerify;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -731,7 +753,8 @@ export interface BillingRequestTemplate {
   payment_request_amount: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
+  // for `EUR` with your customers in Germany only.
   payment_request_currency: string;
 
   // A human-readable description of the payment. This will be displayed to the
@@ -744,8 +767,12 @@ export interface BillingRequestTemplate {
   // up to 50 characters and values up to 500 characters.
   payment_request_metadata?: JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // (Optional) A scheme used for Open Banking payments. Currently
+  // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
+  // and `sepa_instant_credit_transfer` are supported in Germany (EUR). In
+  // Germany, `sepa_credit_transfer` is used as the default. Please be aware
+  // that `sepa_instant_credit_transfer` may incur an additional fee for your
+  // customer.
   payment_request_scheme?: string;
 
   // URL that the payer can be redirected to after completing the request flow.
@@ -2488,13 +2515,14 @@ export interface Payment {
   // characters<br /> <strong>Bacs</strong> - 10 characters<br />
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
-  // characters<br /> Note that this reference must be unique (for each
-  // merchant) for the BECS scheme as it is a scheme requirement. <p
-  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
-  // a payment reference for Bacs payments (that is, when collecting from the
-  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
-  // Plus, Pro or Enterprise packages</a>.</p>
+  // <strong>PAD</strong> - scheme doesn't offer references<br />
+  // <strong>SEPA</strong> - 140 characters<br /> Note that this reference must
+  // be unique (for each merchant) for the BECS scheme as it is a scheme
+  // requirement. <p class='restricted-notice'><strong>Restricted</strong>: You
+  // can only specify a payment reference for Bacs payments (that is, when
+  // collecting from the UK) if you're on the <a
+  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
+  // packages</a>.</p>
   reference?: string;
 
   // On failure, automatically retry the payment using [intelligent
@@ -3056,6 +3084,12 @@ export interface RedirectFlowPrefilledCustomer {
 
 /** Type for a redirectflowlinks resource. */
 export interface RedirectFlowLinks {
+  // ID of [billing request](#billing-requests-billing-requests) that a redirect
+  // flow can create.<br />**Note**: The redirect flow will only create a
+  // billing request in the event the redirect flow is eligible to send the
+  // payer down this new and improved flow
+  billing_request: string;
+
   // The [creditor](#core-endpoints-creditors) for whom the mandate will be
   // created. The `name` of the creditor will be displayed on the payment page.
   creditor: string;
@@ -3120,13 +3154,14 @@ export interface Refund {
   // characters<br /> <strong>Bacs</strong> - 10 characters<br />
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>PAD</strong> - 12 characters<br /> <strong>SEPA</strong> - 140
-  // characters<br /> Note that this reference must be unique (for each
-  // merchant) for the BECS scheme as it is a scheme requirement. <p
-  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
-  // a payment reference for Bacs payments (that is, when collecting from the
-  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
-  // Plus, Pro or Enterprise packages</a>.</p>
+  // <strong>PAD</strong> - scheme doesn't offer references<br />
+  // <strong>SEPA</strong> - 140 characters<br /> Note that this reference must
+  // be unique (for each merchant) for the BECS scheme as it is a scheme
+  // requirement. <p class='restricted-notice'><strong>Restricted</strong>: You
+  // can only specify a payment reference for Bacs payments (that is, when
+  // collecting from the UK) if you're on the <a
+  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
+  // packages</a>.</p>
   reference?: string;
 
   // One of:
