@@ -35,11 +35,11 @@ interface BillingRequestListRequest {
 
   // One of:
   // <ul>
-  // <li>`pending`: the billing_request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing_request is ready to fulfil</li>
-  // <li>`fulfilled`: the billing_request has been fulfilled and a payment
+  // <li>`pending`: the billing request is pending and can be used</li>
+  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  // <li>`fulfilled`: the billing request has been fulfilled and a payment
   // created</li>
-  // <li>`cancelled`: the billing_request has been cancelled and cannot be
+  // <li>`cancelled`: the billing request has been cancelled and cannot be
   // used</li>
   // </ul>
 
@@ -47,6 +47,12 @@ interface BillingRequestListRequest {
 }
 
 interface BillingRequestCreateRequest {
+  // (Optional) If true, this billing request can fallback from instant payment to
+  // direct debit. Should not be set if GoCardless payment intelligence feature is
+  // used.
+
+  fallback_enabled?: boolean;
+
   // Resources linked to this BillingRequest.
   links?: Types.BillingRequestCreateRequestLinks;
 
@@ -377,6 +383,26 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async fallback(identity: string): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity/actions/fallback',
+      method: 'post',
+      urlParameters,
+
       payloadKey: null,
       fetch: null,
     };

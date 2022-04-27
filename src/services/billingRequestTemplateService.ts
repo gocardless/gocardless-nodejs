@@ -49,15 +49,27 @@ interface BillingRequestTemplateCreateRequest {
   // <ul>
   //   <li>`minimum`: only verify if absolutely required, such as when part of
   // scheme rules</li>
-  //   <li>`recommended`: in addition to minimum, use the GoCardless risk engine
-  // to decide an appropriate level of verification</li>
+  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified</li>
   //   <li>`when_available`: if verification mechanisms are available, use
   // them</li>
   //   <li>`always`: as `when_available`, but fail to create the Billing Request
   // if a mechanism isn't available</li>
   // </ul>
   //
-  // If not provided, the `recommended` level is chosen.
+  // By default, all Billing Requests use the `recommended` verification
+  // preference. It uses GoCardless payment intelligence solution to determine if
+  // a payer is fraudulent or not. The verification mechanism is based on the
+  // response and the payer may be asked to verify themselves. If the feature is
+  // not available, `recommended` behaves like `minimum`.
+  //
+  // If you never wish to take advantage of our reduced risk products and Verified
+  // Mandates as they are released in new schemes, please use the `minimum`
+  // verification preference.
+  //
+  // See [Billing Requests: Creating Verified
+  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // for more information.
 
   mandate_request_verify?: Types.BillingRequestTemplateMandateRequestVerify;
 
@@ -76,6 +88,8 @@ interface BillingRequestTemplateCreateRequest {
   payment_request_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
+  // with your customers in Germany only.
 
   payment_request_currency?: string;
 
@@ -91,8 +105,11 @@ interface BillingRequestTemplateCreateRequest {
 
   payment_request_metadata?: Types.JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // (Optional) A scheme used for Open Banking payments. Currently
+  // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer` and
+  // `sepa_instant_credit_transfer` are supported in Germany (EUR). In Germany,
+  // `sepa_credit_transfer` is used as the default. Please be aware that
+  // `sepa_instant_credit_transfer` may incur an additional fee for your customer.
 
   payment_request_scheme?: string;
 
@@ -121,15 +138,27 @@ interface BillingRequestTemplateUpdateRequest {
   // <ul>
   //   <li>`minimum`: only verify if absolutely required, such as when part of
   // scheme rules</li>
-  //   <li>`recommended`: in addition to minimum, use the GoCardless risk engine
-  // to decide an appropriate level of verification</li>
+  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified</li>
   //   <li>`when_available`: if verification mechanisms are available, use
   // them</li>
   //   <li>`always`: as `when_available`, but fail to create the Billing Request
   // if a mechanism isn't available</li>
   // </ul>
   //
-  // If not provided, the `recommended` level is chosen.
+  // By default, all Billing Requests use the `recommended` verification
+  // preference. It uses GoCardless payment intelligence solution to determine if
+  // a payer is fraudulent or not. The verification mechanism is based on the
+  // response and the payer may be asked to verify themselves. If the feature is
+  // not available, `recommended` behaves like `minimum`.
+  //
+  // If you never wish to take advantage of our reduced risk products and Verified
+  // Mandates as they are released in new schemes, please use the `minimum`
+  // verification preference.
+  //
+  // See [Billing Requests: Creating Verified
+  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // for more information.
 
   mandate_request_verify?: Types.BillingRequestTemplateMandateRequestVerify;
 
@@ -148,6 +177,8 @@ interface BillingRequestTemplateUpdateRequest {
   payment_request_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
+  // with your customers in Germany only.
 
   payment_request_currency?: string;
 
@@ -163,8 +194,11 @@ interface BillingRequestTemplateUpdateRequest {
 
   payment_request_metadata?: Types.JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // (Optional) A scheme used for Open Banking payments. Currently
+  // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer` and
+  // `sepa_instant_credit_transfer` are supported in Germany (EUR). In Germany,
+  // `sepa_credit_transfer` is used as the default. Please be aware that
+  // `sepa_instant_credit_transfer` may incur an additional fee for your customer.
 
   payment_request_scheme?: string;
 

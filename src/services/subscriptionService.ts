@@ -189,7 +189,7 @@ interface SubscriptionPauseRequest {
   metadata?: Types.JsonMap;
 
   // The number of cycles to pause a subscription for. A cycle is one duration of
-  // `interval` and `interval_unit`.
+  // `interval` and `interval_unit`. This should be a non zero positive value.
 
   pause_cycles?: number;
 }
