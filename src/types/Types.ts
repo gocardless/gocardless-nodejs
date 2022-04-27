@@ -144,37 +144,6 @@ export interface BillingRequestCreateRequestLinks {
   customer_bank_account: string;
 }
 
-/** Type for a billingrequestmandaterequest resource. */
-export interface BillingRequestMandateRequest {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency: string;
-
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
-  scheme?: string;
-}
-
-/** Type for a billingrequestpaymentrequest resource. */
-export interface BillingRequestPaymentRequest {
-  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount: string;
-
-  // The amount to be deducted from the payment as an app fee, to be paid to the
-  // partner integration which created the billing request, in the lowest
-  // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string;
-
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency: string;
-
-  // A human-readable description of the payment. This will be displayed to the
-  // payer when authorising the billing request.
-  //
-  description?: string;
-}
-
 /** Type for a billingrequestcustomer resource. */
 export interface BillingRequestCustomer {
   // Customer's company name. Required unless a `given_name` and `family_name`
