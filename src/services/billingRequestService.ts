@@ -258,7 +258,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async collect_customer_details(
+  async collectCustomerDetails(
     identity: string,
     requestParameters: BillingRequestCollectCustomerDetailsRequest
   ): Promise<BillingRequestResponse> {
@@ -281,7 +281,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async collect_bank_account(
+  async collectBankAccount(
     identity: string,
     requestParameters: BillingRequestCollectBankAccountRequest
   ): Promise<BillingRequestResponse> {
@@ -327,7 +327,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async confirm_payer_details(
+  async confirmPayerDetails(
     identity: string,
     requestParameters: BillingRequestConfirmPayerDetailsRequest
   ): Promise<BillingRequestResponse> {
