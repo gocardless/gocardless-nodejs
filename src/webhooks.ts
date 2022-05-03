@@ -10,8 +10,8 @@
  * JSON object into an `GoCardless.Event` class.
  */
 
-const cryptoJS = require('crypto-js');
-const safeCompare = require('buffer-equal-constant-time');
+import cryptoJS from 'crypto-js';
+import safeCompare from 'buffer-equal-constant-time';
 
 function InvalidSignatureError() {
   this.message =
@@ -29,7 +29,7 @@ function InvalidSignatureError() {
  * @signatureHeader [string]: The signature included in the webhook request, as specified
  *   by the `Webhook-Signature` header.
  */
-function parse(body, webhookSecret, signatureHeader) {
+function parse(body: string, webhookSecret: string, signatureHeader: string) {
   verifySignature(body, webhookSecret, signatureHeader);
 
   const eventsData = JSON.parse(body)['events'];
@@ -46,7 +46,11 @@ function parse(body, webhookSecret, signatureHeader) {
  * @signatureHeader [string]: The signature included in the webhook request, as specified
  *   by the `Webhook-Signature` header.
  */
-function verifySignature(body, webhookSecret, signatureHeader) {
+function verifySignature(
+  body: string,
+  webhookSecret: string,
+  signatureHeader: string
+) {
   const rawDigest = cryptoJS.HmacSHA256(body, webhookSecret);
 
   const bufferDigest = Buffer.from(rawDigest.toString(cryptoJS.enc.Hex));
@@ -57,7 +61,4 @@ function verifySignature(body, webhookSecret, signatureHeader) {
   }
 }
 
-module.exports = {
-  parse,
-  InvalidSignatureError,
-};
+export { parse, InvalidSignatureError };
