@@ -97,8 +97,12 @@ export interface BillingRequest {
   created_at?: string;
 
   // (Optional) If true, this billing request can fallback from instant payment
-  // to direct debit. Should not be set if GoCardless payment intelligence
-  // feature is used.
+  // to direct debit.
+  // Should not be set if GoCardless payment intelligence feature is used.
+  //
+  // See [Billing Requests: Retain customers with
+  // Fallbacks](https://developer.gocardless.com/getting-started/billing-requests/retain-customers-with-fallbacks/)
+  // for more information.
   fallback_enabled?: boolean;
 
   // Unique identifier, beginning with "BRQ".
@@ -124,6 +128,8 @@ export interface BillingRequest {
   // <ul>
   // <li>`pending`: the billing request is pending and can be used</li>
   // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  // <li>`fulfilling`: the billing request is currently undergoing
+  // fulfilment</li>
   // <li>`fulfilled`: the billing request has been fulfilled and a payment
   // created</li>
   // <li>`cancelled`: the billing request has been cancelled and cannot be
@@ -209,6 +215,11 @@ export interface BillingRequestCustomerBillingDetail {
   // Danish krone (DKK).
   danish_identity_number?: string | null;
 
+  // For ACH customers only. Required for ACH customers. A string containing the
+  // IP address of the payer to whom the mandate belongs (i.e. as a result of
+  // their completion of a mandate setup flow in their browser).
+  ip_address?: string | null;
+
   // The customer's postal code.
   postal_code?: string | null;
 
@@ -235,6 +246,9 @@ export enum BillingRequestNotificationType {
 
 /** Type for a billingrequestaction resource. */
 export interface BillingRequestAction {
+  // List of currencies the current mandate supports
+  available_currencies?: string[];
+
   // Describes the behaviour of bank authorisations, for the bank_authorisation
   // action
   bank_authorisation?: BillingRequestActionBankAuthorisation;
@@ -259,6 +273,13 @@ export interface BillingRequestAction {
   type?: BillingRequestActionType;
 }
 
+/** Type for a billingrequestactionavailablecurrencies resource. */
+export interface BillingRequestActionAvailableCurrencies {
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
+  currency?: string;
+}
+
 /** Type for a billingrequestactionbankauthorisation resource. */
 export interface BillingRequestActionBankAuthorisation {
   // Which authorisation adapter will be used to power these authorisations
@@ -278,6 +299,7 @@ export enum BillingRequestActionBankAuthorisationAdapter {
   PlaidAis = 'plaid_ais',
   OpenBankingGatewayAis = 'open_banking_gateway_ais',
   BankidAis = 'bankid_ais',
+  BankPayRecurring = 'bank_pay_recurring',
 }
 
 export enum BillingRequestActionBankAuthorisationAuthorisationType {
@@ -333,6 +355,9 @@ export interface BillingRequestLinks {
   // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
   // from this mandate request. this mandate request.
   mandate_request_mandate?: string;
+
+  // ID of the associated organisation.
+  organisation?: string;
 
   // (Optional) ID of the associated payment request
   payment_request?: string;
@@ -619,6 +644,7 @@ export interface BillingRequestResourcesCustomerBillingDetail {
 export enum BillingRequestStatus {
   Pending = 'pending',
   ReadyToFulfil = 'ready_to_fulfil',
+  Fulfilling = 'fulfilling',
   Fulfilled = 'fulfilled',
   Cancelled = 'cancelled',
 }
@@ -653,6 +679,12 @@ export interface BillingRequestFlow {
   // flow. If the bank_account details are collected as part of
   // bank_authorisation then GC will set this value to true mid flow
   lock_bank_account?: boolean;
+
+  // If true, the payer will not be able to change their currency/scheme
+  // manually within the flow. Note that this only applies to the mandate only
+  // flows - currency/scheme can never be changed when there is a specified
+  // subscription or payment.
+  lock_currency?: boolean;
 
   // If true, the payer will not be able to edit their customer details within
   // the flow. If the customer details are collected as part of
@@ -1121,6 +1153,7 @@ export enum CreditorSchemeIdentifierScheme {
   Sepa = 'sepa',
   SepaCreditTransfer = 'sepa_credit_transfer',
   SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
+  PayTo = 'pay_to',
 }
 
 export enum CreditorVerificationStatus {
@@ -1865,6 +1898,11 @@ export enum InstalmentScheduleStatus {
 
 /** Type for a institution resource. */
 export interface Institution {
+  // Flag to show if the institution supports redirection to its authorisation
+  // flow or if a provider's one is being used. The bank authorisation screen on
+  // the UI is visible based on this property.
+  bank_redirect?: boolean;
+
   // [ISO
   // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution.
@@ -3362,11 +3400,10 @@ export interface ScenarioSimulator {
   // refund must start in `pending_submission`.</li>
   // <li>`payout_bounced`: Transitions a payout to `bounced`. It must start in
   // the `paid` state.</li>
-  // <li>`billing_request_fulfilled`: Authorises the billing request, fulfils
-  // it, and moves the associated payment to `failed`. The billing request must
-  // be in the `pending` state, with all actions completed except for
-  // `bank_authorisation`. Only billing requests with a `payment_request` are
-  // supported.</li>
+  // <li>`billing_request_fulfilled`: Authorises the billing request, and then
+  // fulfils it. The billing request must be in the `pending` state, with all
+  // actions completed except for `bank_authorisation`. Only billing requests
+  // with a `payment_request` are supported.</li>
   // <li>`billing_request_fulfilled_and_payment_failed`: Authorises the billing
   // request, fulfils it, and moves the associated payment to `failed`. The
   // billing request must be in the `pending` state, with all actions completed

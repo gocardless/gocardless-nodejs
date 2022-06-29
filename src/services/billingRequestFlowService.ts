@@ -32,6 +32,13 @@ interface BillingRequestFlowCreateRequest {
 
   lock_bank_account?: boolean;
 
+  // If true, the payer will not be able to change their currency/scheme manually
+  // within the flow. Note that this only applies to the mandate only flows -
+  // currency/scheme can never be changed when there is a specified subscription
+  // or payment.
+
+  lock_currency?: boolean;
+
   // If true, the payer will not be able to edit their customer details within the
   // flow. If the customer details are collected as part of bank_authorisation
   // then GC will set this value to true mid flow

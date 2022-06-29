@@ -37,6 +37,7 @@ interface BillingRequestListRequest {
   // <ul>
   // <li>`pending`: the billing request is pending and can be used</li>
   // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  // <li>`fulfilling`: the billing request is currently undergoing fulfilment</li>
   // <li>`fulfilled`: the billing request has been fulfilled and a payment
   // created</li>
   // <li>`cancelled`: the billing request has been cancelled and cannot be
@@ -48,8 +49,12 @@ interface BillingRequestListRequest {
 
 interface BillingRequestCreateRequest {
   // (Optional) If true, this billing request can fallback from instant payment to
-  // direct debit. Should not be set if GoCardless payment intelligence feature is
-  // used.
+  // direct debit.
+  // Should not be set if GoCardless payment intelligence feature is used.
+  //
+  // See [Billing Requests: Retain customers with
+  // Fallbacks](https://developer.gocardless.com/getting-started/billing-requests/retain-customers-with-fallbacks/)
+  // for more information.
 
   fallback_enabled?: boolean;
 
@@ -138,6 +143,19 @@ interface BillingRequestCollectBankAccountRequest {
 }
 
 interface BillingRequestFulfilRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+
+  metadata?: Types.JsonMap;
+}
+
+interface BillingRequestChooseCurrencyRequest {
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // supported.
+
+  currency?: string;
+
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
 
@@ -311,6 +329,29 @@ export class BillingRequestService {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/actions/fulfil',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async chooseCurrency(
+    identity: string,
+    requestParameters: BillingRequestChooseCurrencyRequest
+  ): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity/actions/choose_currency',
       method: 'post',
       urlParameters,
       requestParameters,
