@@ -45,6 +45,18 @@ interface BillingRequestFlowCreateRequest {
 
   lock_customer_details?: boolean;
 
+  // Bank account information used to prefill the payment page so your customer
+  // doesn't have to re-type details you already hold about them. It will be
+  // stored unvalidated and the customer will be able to review and amend it
+  // before completing the form.
+  prefilled_bank_account?: Types.BillingRequestFlowPrefilledBankAccount;
+
+  // Customer information used to prefill the payment page so your customer
+  // doesn't have to re-type details you already hold about them. It will be
+  // stored unvalidated and the customer will be able to review and amend it
+  // before completing the form.
+  prefilled_customer?: Types.BillingRequestFlowPrefilledCustomer;
+
   // URL that the payer can be redirected to after completing the request flow.
 
   redirect_uri?: string;

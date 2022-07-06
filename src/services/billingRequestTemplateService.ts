@@ -41,7 +41,7 @@ interface BillingRequestTemplateCreateRequest {
   mandate_request_metadata?: Types.JsonMap;
 
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // "betalingsservice", "pad", "pay_to" and "sepa_core" are supported.
 
   mandate_request_scheme?: string;
 
@@ -130,7 +130,7 @@ interface BillingRequestTemplateUpdateRequest {
   mandate_request_metadata?: Types.JsonMap;
 
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // "betalingsservice", "pad", "pay_to" and "sepa_core" are supported.
 
   mandate_request_scheme?: string;
 
