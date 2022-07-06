@@ -23,7 +23,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "got": "^10.2.2",
+    "got": "^11.8.5",
     "lodash": "^4.17.15",
     "uuid": "^7.0.2",
     "crypto-js": "3.2.1",
