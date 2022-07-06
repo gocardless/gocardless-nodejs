@@ -84,6 +84,7 @@ export enum BankDetailsLookupAvailableDebitScheme {
   Betalingsservice = 'betalingsservice',
   Pad = 'pad',
   SepaCore = 'sepa_core',
+  PayTo = 'pay_to',
 }
 
 /** Type for a billingrequest resource. */
@@ -381,7 +382,7 @@ export interface BillingRequestMandateRequest {
   metadata?: JsonMap;
 
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // "betalingsservice", "pad", "pay_to" and "sepa_core" are supported.
   scheme?: string | null;
 
   // Verification preference for the mandate. One of:
@@ -691,6 +692,18 @@ export interface BillingRequestFlow {
   // bank_authorisation then GC will set this value to true mid flow
   lock_customer_details?: boolean;
 
+  // Bank account information used to prefill the payment page so your customer
+  // doesn't have to re-type details you already hold about them. It will be
+  // stored unvalidated and the customer will be able to review and amend it
+  // before completing the form.
+  prefilled_bank_account?: BillingRequestFlowPrefilledBankAccount | null;
+
+  // Customer information used to prefill the payment page so your customer
+  // doesn't have to re-type details you already hold about them. It will be
+  // stored unvalidated and the customer will be able to review and amend it
+  // before completing the form.
+  prefilled_customer?: BillingRequestFlowPrefilledCustomer | null;
+
   // URL that the payer can be redirected to after completing the request flow.
   redirect_uri?: string | null;
 
@@ -720,6 +733,71 @@ export interface BillingRequestFlowLinks {
   billing_request: string;
 }
 
+/** Type for a billingrequestflowprefilledbankaccount resource. */
+export interface BillingRequestFlowPrefilledBankAccount {
+  // Bank account type for USD-denominated bank accounts. Must not be provided
+  // for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type?: BillingRequestFlowPrefilledBankAccountAccountType;
+}
+
+export enum BillingRequestFlowPrefilledBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+/** Type for a billingrequestflowprefilledcustomer resource. */
+export interface BillingRequestFlowPrefilledCustomer {
+  // The first line of the customer's address.
+  address_line1?: string | null;
+
+  // The second line of the customer's address.
+  address_line2?: string | null;
+
+  // The third line of the customer's address.
+  address_line3?: string | null;
+
+  // The city of the customer's address.
+  city?: string | null;
+
+  // Customer's company name. Company name should only be provided if
+  // `given_name` and `family_name` are null.
+  company_name?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string | null;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer.
+  danish_identity_number?: string | null;
+
+  // Customer's email address.
+  email?: string | null;
+
+  // Customer's surname.
+  family_name?: string | null;
+
+  // Customer's first name.
+  given_name?: string | null;
+
+  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  language?: string | null;
+
+  // For New Zealand customers only.
+  phone_number?: string | null;
+
+  // The customer's postal code.
+  postal_code?: string | null;
+
+  // The customer's address region, county or department.
+  region?: string | null;
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer.
+  swedish_identity_number?: string | null;
+}
+
 /** Type for a billingrequesttemplate resource. */
 export interface BillingRequestTemplate {
   // Permanent URL that customers can visit to allow them to complete a flow
@@ -743,7 +821,7 @@ export interface BillingRequestTemplate {
   mandate_request_metadata?: JsonMap | null;
 
   // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad" and "sepa_core" are supported.
+  // "betalingsservice", "pad", "pay_to" and "sepa_core" are supported.
   mandate_request_scheme?: string | null;
 
   // Verification preference for the mandate. One of:
@@ -1664,6 +1742,7 @@ export enum EventDetailsScheme {
   Pad = 'pad',
   SepaCore = 'sepa_core',
   SepaCor1 = 'sepa_cor1',
+  PayTo = 'pay_to',
 }
 
 /** Type for a eventlinks resource. */
@@ -1967,6 +2046,7 @@ export interface Mandate {
   // has not been processed yet</li>
   // <li>`active`: the mandate has been successfully set up by the customer's
   // bank</li>
+  // <li>`suspended_by_payer`: the mandate has been suspended by payer</li>
   // <li>`failed`: the mandate could not be created</li>
   // <li>`cancelled`: the mandate has been cancelled</li>
   // <li>`expired`: the mandate has expired due to dormancy</li>
@@ -2017,6 +2097,7 @@ export enum MandateStatus {
   Expired = 'expired',
   Consumed = 'consumed',
   Blocked = 'blocked',
+  SuspendedByPayer = 'suspended_by_payer',
 }
 
 /** Type for a mandateimport resource. */
@@ -2058,6 +2139,7 @@ export enum MandateImportScheme {
   Betalingsservice = 'betalingsservice',
   Pad = 'pad',
   SepaCore = 'sepa_core',
+  PayTo = 'pay_to',
 }
 
 export enum MandateImportStatus {
@@ -2492,6 +2574,7 @@ export enum PayerAuthorisationMandateScheme {
   Betalingsservice = 'betalingsservice',
   Pad = 'pad',
   SepaCore = 'sepa_core',
+  PayTo = 'pay_to',
 }
 
 export enum PayerAuthorisationStatus {
@@ -2554,13 +2637,13 @@ export interface Payment {
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
   // <strong>PAD</strong> - scheme doesn't offer references<br />
-  // <strong>SEPA</strong> - 140 characters<br /> Note that this reference must
-  // be unique (for each merchant) for the BECS scheme as it is a scheme
-  // requirement. <p class='restricted-notice'><strong>Restricted</strong>: You
-  // can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p>
+  // <strong>PayTo</strong> - 18 characters<br /> <strong>SEPA</strong> - 140
+  // characters<br /> Note that this reference must be unique (for each
+  // merchant) for the BECS scheme as it is a scheme requirement. <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
+  // a payment reference for Bacs payments (that is, when collecting from the
+  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
+  // Plus, Pro or Enterprise packages</a>.</p>
   reference?: string | null;
 
   // On failure, automatically retry the payment using [intelligent
@@ -3157,6 +3240,7 @@ export enum RedirectFlowScheme {
   Betalingsservice = 'betalingsservice',
   Pad = 'pad',
   SepaCore = 'sepa_core',
+  PayTo = 'pay_to',
 }
 
 /** Type for a refund resource. */
@@ -3193,13 +3277,13 @@ export interface Refund {
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
   // <strong>PAD</strong> - scheme doesn't offer references<br />
-  // <strong>SEPA</strong> - 140 characters<br /> Note that this reference must
-  // be unique (for each merchant) for the BECS scheme as it is a scheme
-  // requirement. <p class='restricted-notice'><strong>Restricted</strong>: You
-  // can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p>
+  // <strong>PayTo</strong> - 18 characters<br /> <strong>SEPA</strong> - 140
+  // characters<br /> Note that this reference must be unique (for each
+  // merchant) for the BECS scheme as it is a scheme requirement. <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
+  // a payment reference for Bacs payments (that is, when collecting from the
+  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
+  // Plus, Pro or Enterprise packages</a>.</p>
   reference?: string | null;
 
   // One of:
