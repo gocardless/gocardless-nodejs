@@ -23,12 +23,21 @@ interface BillingRequestFlowCreateRequest {
 
   exit_uri?: string;
 
+  // Sets the default language of the Billing Request Flow and the customer. [ISO
+  // 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+
+  language?: string;
+
   // Resources linked to this BillingRequestFlow.
   links: Types.BillingRequestFlowCreateRequestLinks;
 
   // If true, the payer will not be able to change their bank account within the
   // flow. If the bank_account details are collected as part of bank_authorisation
-  // then GC will set this value to true mid flow
+  // then GC will set this value to true mid flow.
+  //
+  // You can only lock bank account if these have already been completed as a part
+  // of the billing request.
+  //
 
   lock_bank_account?: boolean;
 
@@ -41,7 +50,11 @@ interface BillingRequestFlowCreateRequest {
 
   // If true, the payer will not be able to edit their customer details within the
   // flow. If the customer details are collected as part of bank_authorisation
-  // then GC will set this value to true mid flow
+  // then GC will set this value to true mid flow.
+  //
+  // You can only lock customer details if these have already been completed as a
+  // part of the billing request.
+  //
 
   lock_customer_details?: boolean;
 

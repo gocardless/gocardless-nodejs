@@ -82,9 +82,10 @@ export enum BankDetailsLookupAvailableDebitScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
   Pad = 'pad',
-  SepaCore = 'sepa_core',
   PayTo = 'pay_to',
+  SepaCore = 'sepa_core',
 }
 
 /** Type for a billingrequest resource. */
@@ -321,6 +322,7 @@ export enum BillingRequestActionStatus {
 
 export enum BillingRequestActionType {
   ChooseCurrency = 'choose_currency',
+  CollectAmount = 'collect_amount',
   CollectCustomerDetails = 'collect_customer_details',
   CollectBankAccount = 'collect_bank_account',
   BankAuthorisation = 'bank_authorisation',
@@ -370,9 +372,18 @@ export interface BillingRequestLinks {
 
 /** Type for a billingrequestmandaterequest resource. */
 export interface BillingRequestMandateRequest {
+  // Constraints that will apply to the mandate_request. (Optional) Specifically
+  // for PayTo and VRP.
+  constraints?: BillingRequestMandateRequestConstraints | null;
+
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
+
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
+  //
+  description?: string | null;
 
   // Resources linked to this BillingRequestMandateRequest.
   links?: BillingRequestMandateRequestLinks;
@@ -381,8 +392,11 @@ export interface BillingRequestMandateRequest {
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad", "pay_to" and "sepa_core" are supported.
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported. Optional for mandate only requests - if left
+  // blank, the payer will be able to select the currency/scheme to pay with
+  // from a list of your available schemes.
   scheme?: string | null;
 
   // Verification preference for the mandate. One of:
@@ -411,6 +425,72 @@ export interface BillingRequestMandateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
   verify?: BillingRequestMandateRequestVerify;
+}
+
+/** Type for a billingrequestmandaterequestconstraints resource. */
+export interface BillingRequestMandateRequestConstraints {
+  // The latest date at which payments can be taken, must occur after start_date
+  // if present
+  //
+  // This is an optional field and if it is not supplied the agreement will be
+  // considered open and
+  // will not have an end date. Keep in mind the end date must take into account
+  // how long it will
+  // take the user to set up this agreement via the BillingRequest.
+  //
+  end_date?: string;
+
+  // The maximum amount that can be charged for a single payment
+  max_amount_per_payment?: number;
+
+  // List of periodic limits and constraints which apply to them
+  periodic_limits?: BillingRequestMandateRequestConstraintsPeriodicLimit[];
+
+  // The date from which payments can be taken.
+  //
+  // This is an optional field and if it is not supplied the start date will be
+  // set to the day
+  // authorisation happens.
+  //
+  start_date?: string;
+}
+
+/** Type for a billingrequestmandaterequestconstraintsperiodiclimit resource. */
+export interface BillingRequestMandateRequestConstraintsPeriodicLimit {
+  // The alignment of the period.
+  //
+  // `calendar` - this will finish on the end of the current period. For example
+  // this will expire on the Monday for the current week or the January for the
+  // next year.
+  //
+  // `creation_date` - this will finish on the next instance of the current
+  // period. For example Monthly it will expire on the same day of the next
+  // month, or yearly the same day of the next year.
+  //
+  alignment?: BillingRequestMandateRequestConstraintsPeriodicLimitAlignment;
+
+  // The maximum number of payments that can be collected in this periodic limit
+  max_payments?: number;
+
+  // The maximum total amount that can be charged for all payments in this
+  // periodic limit
+  max_total_amount?: number;
+
+  // The repeating period for this mandate
+  period?: BillingRequestMandateRequestConstraintsPeriodicLimitPeriod;
+}
+
+export enum BillingRequestMandateRequestConstraintsPeriodicLimitAlignment {
+  Calendar = 'calendar',
+  CreationDate = 'creation_date',
+}
+
+export enum BillingRequestMandateRequestConstraintsPeriodicLimitPeriod {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
+  Flexible = 'flexible',
 }
 
 /** Type for a billingrequestmandaterequestlinks resource. */
@@ -443,8 +523,8 @@ export interface BillingRequestPaymentRequest {
   // for `EUR` with your customers in Germany only.
   currency?: string;
 
-  // A human-readable description of the payment. This will be displayed to the
-  // payer when authorising the billing request.
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
   //
   description?: string | null;
 
@@ -673,12 +753,20 @@ export interface BillingRequestFlow {
   // Unique identifier, beginning with "BRF".
   id?: string;
 
+  // Sets the default language of the Billing Request Flow and the customer.
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  language?: string | null;
+
   // Resources linked to this BillingRequestFlow.
   links?: BillingRequestFlowLinks;
 
   // If true, the payer will not be able to change their bank account within the
   // flow. If the bank_account details are collected as part of
-  // bank_authorisation then GC will set this value to true mid flow
+  // bank_authorisation then GC will set this value to true mid flow.
+  //
+  // You can only lock bank account if these have already been completed as a
+  // part of the billing request.
+  //
   lock_bank_account?: boolean;
 
   // If true, the payer will not be able to change their currency/scheme
@@ -689,7 +777,11 @@ export interface BillingRequestFlow {
 
   // If true, the payer will not be able to edit their customer details within
   // the flow. If the customer details are collected as part of
-  // bank_authorisation then GC will set this value to true mid flow
+  // bank_authorisation then GC will set this value to true mid flow.
+  //
+  // You can only lock customer details if these have already been completed as
+  // a part of the billing request.
+  //
   lock_customer_details?: boolean;
 
   // Bank account information used to prefill the payment page so your customer
@@ -781,12 +873,6 @@ export interface BillingRequestFlowPrefilledCustomer {
   // Customer's first name.
   given_name?: string | null;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
-  language?: string | null;
-
-  // For New Zealand customers only.
-  phone_number?: string | null;
-
   // The customer's postal code.
   postal_code?: string | null;
 
@@ -815,13 +901,21 @@ export interface BillingRequestTemplate {
   // code.
   mandate_request_currency?: string;
 
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
+  //
+  mandate_request_description?: string | null;
+
   // Key-value store of custom data that will be applied to the mandate created
   // when this request is fulfilled. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   mandate_request_metadata?: JsonMap | null;
 
-  // A Direct Debit scheme. Currently "ach", "bacs", "becs", "becs_nz",
-  // "betalingsservice", "pad", "pay_to" and "sepa_core" are supported.
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported. Optional for mandate only requests - if left
+  // blank, the payer will be able to select the currency/scheme to pay with
+  // from a list of your available schemes.
   mandate_request_scheme?: string | null;
 
   // Verification preference for the mandate. One of:
@@ -867,8 +961,8 @@ export interface BillingRequestTemplate {
   // for `EUR` with your customers in Germany only.
   payment_request_currency?: string;
 
-  // A human-readable description of the payment. This will be displayed to the
-  // payer when authorising the billing request.
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
   //
   payment_request_description?: string | null;
 
@@ -916,7 +1010,8 @@ export interface Block {
 
   // Type of entity we will seek to match against when blocking the mandate.
   // This
-  // can currently be one of 'email', 'email_domain', or 'bank_account'.
+  // can currently be one of 'email', 'email_domain', 'bank_account', or
+  // 'bank_name'.
   block_type?: BlockBlockType;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
@@ -947,9 +1042,11 @@ export interface Block {
   // raw value
   // (in the case of emails or email domains) or the ID of the resource (in the
   // case of
-  // bank accounts). This means in order to block a specific bank account it
-  // must already
-  // have been created as a resource.
+  // bank accounts and bank names). This means in order to block a specific bank
+  // account
+  // (even if you wish to block generically by name) it must already have been
+  // created as
+  // a resource.
   resource_reference?: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
@@ -966,6 +1063,7 @@ export enum BlockBlockType {
   Email = 'email',
   EmailDomain = 'email_domain',
   BankAccount = 'bank_account',
+  BankName = 'bank_name',
 }
 
 export enum BlockReasonType {
@@ -977,6 +1075,9 @@ export enum BlockReasonType {
 
 /** Type for a creditor resource. */
 export interface Creditor {
+  // Boolean value indicating whether the creditor is activated in the product.
+  activated?: boolean;
+
   // The first line of the creditor's address.
   address_line1?: string | null;
 
@@ -1000,8 +1101,12 @@ export interface Creditor {
   // resource was created.
   created_at?: string;
 
+  // The type of business of the creditor. Currently, `individual`, `company`,
+  // `charity`, `partnership`, and `trust` are supported.
+  creditor_type?: CreditorCreditorType;
+
   // Boolean value indicating whether creditor has the [Custom Payment
-  // Pages](https://support.gocardless.com/hc/en-gb/articles/115003734705-Custom-payment-pages)
+  // Pages](https://hub.gocardless.com/s/article/Custom-payment-pages)
   // functionality enabled.
   custom_payment_pages_enabled?: boolean;
 
@@ -1104,6 +1209,14 @@ export interface CreditorUpdateRequestLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
+}
+
+export enum CreditorCreditorType {
+  Company = 'company',
+  Individual = 'individual',
+  Charity = 'charity',
+  Partnership = 'partnership',
+  Trust = 'trust',
 }
 
 export enum CreditorFxPayoutCurrency {
@@ -1228,10 +1341,10 @@ export enum CreditorSchemeIdentifierScheme {
   Betalingsservice = 'betalingsservice',
   FasterPayments = 'faster_payments',
   Pad = 'pad',
+  PayTo = 'pay_to',
   Sepa = 'sepa',
   SepaCreditTransfer = 'sepa_credit_transfer',
   SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
-  PayTo = 'pay_to',
 }
 
 export enum CreditorVerificationStatus {
@@ -1640,30 +1753,9 @@ export interface EventCustomerNotification {
   // Whether or not the notification must be sent.
   mandatory?: boolean;
 
-  // The type of notification the customer shall receive.
-  // One of:
-  // <ul>
-  // <li>`payment_created`</li>
-  // <li>`payment_cancelled`</li>
-  // <li>`mandate_created`</li>
-  // <li>`mandate_blocked`</li>
-  // <li>`subscription_created`</li>
-  // <li>`subscription_cancelled`</li>
-  // <li>`instalment_schedule_created`</li>
-  // <li>`instalment_schedule_cancelled`</li>
-  // </ul>
-  type?: EventCustomerNotificationType;
-}
-
-export enum EventCustomerNotificationType {
-  PaymentCreated = 'payment_created',
-  PaymentCancelled = 'payment_cancelled',
-  MandateCreated = 'mandate_created',
-  MandateBlocked = 'mandate_blocked',
-  SubscriptionCreated = 'subscription_created',
-  SubscriptionCancelled = 'subscription_cancelled',
-  InstalmentScheduleCreated = 'instalment_schedule_created',
-  InstalmentScheduleCancelled = 'instalment_schedule_cancelled',
+  // See [here](#core-endpoints-customer-notifications) for a complete list of
+  // customer notification types.
+  type?: string;
 }
 
 /** Type for a eventdetails resource. */
@@ -1716,7 +1808,7 @@ export interface EventDetails {
   // banks.
   reason_code?: string;
 
-  // A Direct Debit scheme. Set when a bank is the origin of the event.
+  // A bank payment scheme. Set when a bank is the origin of the event.
   scheme?: EventDetailsScheme;
 
   // Whether the payment will be retried automatically. Set on a payment failed
@@ -1739,10 +1831,11 @@ export enum EventDetailsScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
   Pad = 'pad',
+  PayTo = 'pay_to',
   SepaCore = 'sepa_core',
   SepaCor1 = 'sepa_cor1',
-  PayTo = 'pay_to',
 }
 
 /** Type for a eventlinks resource. */
@@ -2002,6 +2095,9 @@ export interface Institution {
 
 /** Type for a mandate resource. */
 export interface Mandate {
+  // (Optional) Payto and VRP Scheme specific information
+  consent_parameters?: MandateConsentParameters | null;
+
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
@@ -2031,7 +2127,7 @@ export interface Mandate {
   // is left blank.
   reference?: string | null;
 
-  // <a name="mandates_scheme"></a>Direct Debit scheme to which this mandate and
+  // <a name="mandates_scheme"></a>Bank payment scheme to which this mandate and
   // associated payments are submitted. Can be supplied or automatically
   // detected from the customer's bank account.
   scheme?: string | null;
@@ -2068,6 +2164,43 @@ export interface MandateCreateRequestLinks {
   // account](#core-endpoints-customer-bank-accounts) which the mandate is
   // created and submits payments against.
   customer_bank_account: string;
+}
+
+/** Type for a mandateconsentparameters resource. */
+export interface MandateConsentParameters {
+  // The latest date at which payments can be taken, must occur after start_date
+  // if present
+  end_date?: string;
+
+  // The maximum amount that can be charged for a single payment
+  max_amount_per_payment?: number;
+
+  // Frequency configuration
+  periods?: MandateConsentParametersPeriod[];
+
+  // The date from which payments can be taken
+  start_date?: string;
+}
+
+/** Type for a mandateconsentparametersperiod resource. */
+export interface MandateConsentParametersPeriod {
+  // The maximum total amount that can be charged for all payments in this
+  // period
+  max_amount_per_period?: number;
+
+  // The maximum number of payments that can be collected in this period
+  max_payments_per_period?: number;
+
+  // The repeating period for this mandate
+  period?: MandateConsentParametersPeriodPeriod;
+}
+
+export enum MandateConsentParametersPeriodPeriod {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
+  Flexible = 'flexible',
 }
 
 /** Type for a mandatelinks resource. */
@@ -2137,9 +2270,10 @@ export enum MandateImportScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
   Pad = 'pad',
-  SepaCore = 'sepa_core',
   PayTo = 'pay_to',
+  SepaCore = 'sepa_core',
 }
 
 export enum MandateImportStatus {
@@ -2560,8 +2694,9 @@ export interface PayerAuthorisationMandate {
   // is left blank.
   reference?: string | null;
 
-  // A Direct Debit scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "pad" and "sepa_core" are supported.
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported.
   scheme?: PayerAuthorisationMandateScheme;
 }
 
@@ -2572,9 +2707,10 @@ export enum PayerAuthorisationMandateScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
   Pad = 'pad',
-  SepaCore = 'sepa_core',
   PayTo = 'pay_to',
+  SepaCore = 'sepa_core',
 }
 
 export enum PayerAuthorisationStatus {
@@ -2636,14 +2772,17 @@ export interface Payment {
   // characters<br /> <strong>Bacs</strong> - 10 characters<br />
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>PAD</strong> - scheme doesn't offer references<br />
-  // <strong>PayTo</strong> - 18 characters<br /> <strong>SEPA</strong> - 140
-  // characters<br /> Note that this reference must be unique (for each
-  // merchant) for the BECS scheme as it is a scheme requirement. <p
+  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong>
+  // - scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
+  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that
+  // this reference must be unique (for each merchant) for the BECS scheme as it
+  // is a scheme requirement. <p
   // class='restricted-notice'><strong>Restricted</strong>: You can only specify
   // a payment reference for Bacs payments (that is, when collecting from the
   // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
-  // Plus, Pro or Enterprise packages</a>.</p>
+  // Plus, Pro or Enterprise packages</a>.</p> <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can not specify
+  // a payment reference for Faster Payments.</p>
   reference?: string | null;
 
   // On failure, automatically retry the payment using [intelligent
@@ -2841,7 +2980,8 @@ export interface Payout {
   links?: PayoutLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
-  // up to 50 characters and values up to 500 characters.
+  // up to 50 characters and values up to 500 characters. _Note:_ This should
+  // not be used for storing PII data.
   metadata?: JsonMap;
 
   // Whether a payout contains merchant revenue or partner fees.
@@ -2957,8 +3097,7 @@ export interface PayoutItem {
   // An array of tax items <em>beta</em>
   //
   // _Note_: VAT applies to transaction and surcharge fees for merchants
-  // operating in the <a href="https://gocardless.com/legal/vat-faqs">UK</a> and
-  // <a href="https://gocardless.com/fr-fr/legal/faq-tva">France</a>.
+  // operating in the UK and France.
   taxes?: PayoutItemTaxis[];
 
   // The type of the credit (positive) or debit (negative) item in the payout
@@ -3000,13 +3139,15 @@ export enum PayoutItemInclude2020TaxCutover {
 /** Type for a payoutitemlinks resource. */
 export interface PayoutItemLinks {
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
-  // to mandates created before 2016.
+  // to mandates created before 2016. Present only for the items of type
+  // `payment_refunded`, `refund` and `refund_funds_returned`.
   mandate?: string;
 
   // Unique identifier, beginning with "PM".
   payment?: string;
 
-  // Unique identifier, beginning with "RF".
+  // Unique identifier, beginning with "RF". Present only for the items of type
+  // `payment_refunded`, `refund` and `refund_funds_returned`.
   refund?: string;
 }
 
@@ -3106,7 +3247,8 @@ export interface RedirectFlow {
   mandate_reference?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
-  // up to 50 characters and values up to 500 characters.
+  // up to 50 characters and values up to 500 characters. _Note:_ This should
+  // not be used for storing PII data.
   metadata?: JsonMap;
 
   // The URL of the hosted payment pages for this redirect flow. This is the URL
@@ -3238,9 +3380,10 @@ export enum RedirectFlowScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
   Pad = 'pad',
-  SepaCore = 'sepa_core',
   PayTo = 'pay_to',
+  SepaCore = 'sepa_core',
 }
 
 /** Type for a refund resource. */
@@ -3276,14 +3419,17 @@ export interface Refund {
   // characters<br /> <strong>Bacs</strong> - 10 characters<br />
   // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
   // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>PAD</strong> - scheme doesn't offer references<br />
-  // <strong>PayTo</strong> - 18 characters<br /> <strong>SEPA</strong> - 140
-  // characters<br /> Note that this reference must be unique (for each
-  // merchant) for the BECS scheme as it is a scheme requirement. <p
+  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong>
+  // - scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
+  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that
+  // this reference must be unique (for each merchant) for the BECS scheme as it
+  // is a scheme requirement. <p
   // class='restricted-notice'><strong>Restricted</strong>: You can only specify
   // a payment reference for Bacs payments (that is, when collecting from the
   // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
-  // Plus, Pro or Enterprise packages</a>.</p>
+  // Plus, Pro or Enterprise packages</a>.</p> <p
+  // class='restricted-notice'><strong>Restricted</strong>: You can not specify
+  // a payment reference for Faster Payments.</p>
   reference?: string | null;
 
   // One of:
@@ -3472,6 +3618,10 @@ export interface ScenarioSimulator {
   // GoCardless to change their bank details. It must start in the
   // `pending_submission` state. Only compatible with Bacs, SEPA and Autogiro
   // mandates.</li>
+  // <li>`mandate_suspended_by_payer`: Transitions a mandate to
+  // `suspended_by_payer`, as if payer has suspended the mandate after it has
+  // been setup successfully. It must start in the `activated` state. Only
+  // compatible with PAY_TO mandates.</li>
   // <li>`refund_paid`: Transitions a refund to `paid`. It must start in either
   // the `pending_submission` or `submitted` state.</li>
   // <li>`refund_settled`: Transitions a refund to `paid`, if it's not already,
