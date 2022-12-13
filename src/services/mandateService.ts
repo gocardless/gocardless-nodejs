@@ -32,7 +32,7 @@ interface MandateCreateRequest {
 
   reference?: string;
 
-  // <a name="mandates_scheme"></a>Direct Debit scheme to which this mandate and
+  // <a name="mandates_scheme"></a>Bank payment scheme to which this mandate and
   // associated payments are submitted. Can be supplied or automatically detected
   // from the customer's bank account.
 
@@ -72,6 +72,10 @@ interface MandateListRequest {
   // Number of records to return.
 
   limit?: string;
+
+  // Mandate type
+
+  mandate_type?: string;
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a

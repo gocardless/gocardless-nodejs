@@ -32,6 +32,11 @@ interface CreditorCreateRequest {
 
   country_code?: string;
 
+  // The type of business of the creditor. Currently, `individual`, `company`,
+  // `charity`, `partnership`, and `trust` are supported.
+
+  creditor_type?: Types.CreditorCreditorType;
+
   // The creditor's name.
 
   name: string;
