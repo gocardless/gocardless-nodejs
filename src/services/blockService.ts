@@ -266,7 +266,7 @@ export class BlockService {
   ): Promise<BlockListResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/block_by_ref',
+      path: '/blocks/block_by_ref',
       method: 'post',
       urlParameters,
       requestParameters,

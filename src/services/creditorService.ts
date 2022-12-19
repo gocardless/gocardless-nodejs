@@ -30,12 +30,12 @@ interface CreditorCreateRequest {
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
-  country_code?: string;
+  country_code: string;
 
   // The type of business of the creditor. Currently, `individual`, `company`,
   // `charity`, `partnership`, and `trust` are supported.
 
-  creditor_type?: Types.CreditorCreditorType;
+  creditor_type: Types.CreditorCreditorType;
 
   // The creditor's name.
 
