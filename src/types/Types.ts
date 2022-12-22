@@ -372,6 +372,19 @@ export interface BillingRequestLinks {
 
 /** Type for a billingrequestmandaterequest resource. */
 export interface BillingRequestMandateRequest {
+  // This field is ACH specific, sometimes referred to as [SEC
+  // code](https://www.moderntreasury.com/learn/sec-codes).
+  //
+  // This is the way that the payer gives authorisation to the merchant.
+  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // code: WEB)
+  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // code: TEL)
+  //   paper: Authorisation is provided in writing and signed, or similarly
+  // authenticated (maps to SEC code: PPD)
+  //
+  authorisation_source?: BillingRequestMandateRequestAuthorisationSource;
+
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // for PayTo and VRP.
   constraints?: BillingRequestMandateRequestConstraints | null;
@@ -425,6 +438,12 @@ export interface BillingRequestMandateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
   verify?: BillingRequestMandateRequestVerify;
+}
+
+export enum BillingRequestMandateRequestAuthorisationSource {
+  Web = 'web',
+  Telephone = 'telephone',
+  Paper = 'paper',
 }
 
 /** Type for a billingrequestmandaterequestconstraints resource. */
@@ -2095,6 +2114,19 @@ export interface Institution {
 
 /** Type for a mandate resource. */
 export interface Mandate {
+  // This field is ACH specific, sometimes referred to as [SEC
+  // code](https://www.moderntreasury.com/learn/sec-codes).
+  //
+  // This is the way that the payer gives authorisation to the merchant.
+  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // code: WEB)
+  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // code: TEL)
+  //   paper: Authorisation is provided in writing and signed, or similarly
+  // authenticated (maps to SEC code: PPD)
+  //
+  authorisation_source?: MandateAuthorisationSource;
+
   // (Optional) Payto and VRP Scheme specific information
   consent_parameters?: MandateConsentParameters | null;
 
@@ -2164,6 +2196,12 @@ export interface MandateCreateRequestLinks {
   // account](#core-endpoints-customer-bank-accounts) which the mandate is
   // created and submits payments against.
   customer_bank_account: string;
+}
+
+export enum MandateAuthorisationSource {
+  Web = 'web',
+  Telephone = 'telephone',
+  Paper = 'paper',
 }
 
 /** Type for a mandateconsentparameters resource. */
