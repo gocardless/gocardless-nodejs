@@ -1,0 +1,50 @@
+name: gocardless/gocardless-nodejs/deploy_library
+on:
+  push:
+    branches:
+    - master
+jobs:
+  test_library:
+    runs-on: ubuntu-latest
+    container:
+      image: node:10
+    steps:
+    - uses: actions/checkout@v3.3.0
+    - run: npm install --save-dev jest typescript ts-jest @types/jest
+    - run: npm test
+  transpile_library:
+    runs-on: ubuntu-latest
+    container:
+      image: node:10
+    needs:
+    - test_library
+    steps:
+    - uses: actions/checkout@v3.3.0
+    - run: npm install
+    - run: npm install -g typescript
+    - run: tsc -p .
+    - uses: actions/upload-artifact@v3.1.1
+      with:
+        path: "dist"
+  publish_to_npm:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    container:
+      image: node:10
+    needs:
+    - transpile_library
+    env:
+      DIST_FOLDER: "/dist/artifact"
+    steps:
+    - uses: actions/checkout@v3.3.0
+    - uses: actions/download-artifact@v3.0.1
+      with:
+        path: "/dist"
+    - run: ls -all /dist/artifact
+    - run: cp package.json $DIST_FOLDER
+    - run: cp README.md $DIST_FOLDER
+    - run: npm install
+    - name: Authenticate w/NPM.
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > .npmrc
+    - name: Publish the library.
+      run: npm publish $DIST_FOLDER
