@@ -40,7 +40,6 @@ jobs:
     - uses: actions/download-artifact@v3.0.1
       with:
         path: "/dist"
-    - run: ls -all /dist/artifact
     - run: cp package.json $DIST_FOLDER
     - run: cp README.md $DIST_FOLDER
     - run: npm install
