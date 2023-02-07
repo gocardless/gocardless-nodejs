@@ -220,6 +220,10 @@ export interface BillingRequestCustomerBillingDetail {
   // For ACH customers only. Required for ACH customers. A string containing the
   // IP address of the payer to whom the mandate belongs (i.e. as a result of
   // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
   ip_address?: string | null;
 
   // The customer's postal code.
@@ -721,6 +725,10 @@ export interface BillingRequestResourcesCustomerBillingDetail {
   // For ACH customers only. Required for ACH customers. A string containing the
   // IP address of the payer to whom the mandate belongs (i.e. as a result of
   // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
   ip_address?: string | null;
 
   // The customer's postal code.
@@ -1157,7 +1165,7 @@ export interface Creditor {
   // behalf of this organisation.
   merchant_responsible_for_notifications?: boolean;
 
-  // The creditor's name.
+  // The creditor's trading name.
   name?: string;
 
   // The creditor's postal code.
@@ -1230,6 +1238,12 @@ export interface CreditorUpdateRequestLinks {
   default_usd_payout_account?: string | null;
 }
 
+/** Type for a creditorapplyschemeidentifierrequestlinks resource. */
+export interface CreditorApplySchemeIdentifierRequestLinks {
+  // Unique identifier, usually beginning with "SU".
+  scheme_identifier: string;
+}
+
 export enum CreditorCreditorType {
   Company = 'company',
   Individual = 'individual',
@@ -1286,31 +1300,38 @@ export interface CreditorLinks {
 
 /** Type for a creditorschemeidentifier resource. */
 export interface CreditorSchemeIdentifier {
-  // The first line of the support address.
+  // The first line of the scheme identifier's support address.
   address_line1?: string;
 
-  // The second line of the support address.
+  // The second line of the scheme identifier's support address.
   address_line2?: string | null;
 
-  // The third line of the support address.
+  // The third line of the scheme identifier's support address.
   address_line3?: string | null;
 
   // Whether a custom reference can be submitted for mandates using this scheme
   // identifier.
   can_specify_mandate_reference?: boolean;
 
-  // The city of the support address.
+  // The city of the scheme identifier's support address.
   city?: string;
 
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at?: string;
+
   // The currency of the scheme identifier.
   currency?: CreditorSchemeIdentifierCurrency;
 
-  // The support email address.
+  // Scheme identifier's support email address.
   email?: string;
+
+  // Unique identifier, usually beginning with "SU".
+  id?: string;
 
   // The minimum interval, in working days, between the sending of a
   // pre-notification to the customer, and the charge date of a payment using
@@ -1321,23 +1342,28 @@ export interface CreditorSchemeIdentifier {
   // details.
   minimum_advance_notice?: number;
 
-  // The name which appears on customers' bank statements.
+  // The name which appears on customers' bank statements. This should usually
+  // be the merchant's trading name.
   name?: string;
 
-  // The support phone number.
+  // Scheme identifier's support phone number.
   phone_number?: string;
 
-  // The support postal code.
+  // The scheme identifier's support postal code.
   postal_code?: string;
 
   // The scheme-unique identifier against which payments are submitted.
   reference?: string;
 
-  // The support address region, county or department.
+  // The scheme identifier's support address region, county or department.
   region?: string | null;
 
   // The scheme which this scheme identifier applies to.
   scheme?: CreditorSchemeIdentifierScheme;
+
+  // The status of the scheme identifier. Only `active` scheme identifiers will
+  // be applied to a creditor and used against payments.
+  status?: CreditorSchemeIdentifierStatus;
 }
 
 export enum CreditorSchemeIdentifierCurrency {
@@ -1364,6 +1390,11 @@ export enum CreditorSchemeIdentifierScheme {
   Sepa = 'sepa',
   SepaCreditTransfer = 'sepa_credit_transfer',
   SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
+}
+
+export enum CreditorSchemeIdentifierStatus {
+  Pending = 'pending',
+  Active = 'active',
 }
 
 export enum CreditorVerificationStatus {
@@ -2010,6 +2041,25 @@ export interface InstalmentSchedule {
   total_amount?: string;
 }
 
+/** Type for a instalmentscheduleinstalment resource. */
+export interface InstalmentScheduleInstalment {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount: string;
+
+  // A future date on which the payment should be collected. If the date
+  // is before the next_possible_charge_date on the
+  // [mandate](#core-endpoints-mandates), it will be automatically rolled
+  // forwards to that date.
+  charge_date: string | null;
+
+  // A human-readable description of the payment. This will be included in the
+  // notification email GoCardless sends to your customer if your organisation
+  // does not send its own notifications (see [compliance
+  // requirements](#appendix-compliance-requirements)).
+  description?: string | null;
+}
+
 /** Type for a instalmentschedulecreatewithdatesrequestlinks resource. */
 export interface InstalmentScheduleCreateWithDatesRequestLinks {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
@@ -2184,6 +2234,10 @@ export interface Mandate {
   // created</li>
   // </ul>
   status?: MandateStatus;
+
+  // [Timestamp](#api-usage-time-zones--dates) recording when this mandate was
+  // verified.
+  verified_at?: string | null;
 }
 
 /** Type for a mandatecreaterequestlinks resource. */
@@ -2724,6 +2778,10 @@ export interface PayerAuthorisationMandate {
   // For ACH customers only. Required for ACH customers. A string containing the
   // IP address of the payer to whom the mandate belongs (i.e. as a result of
   // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
   payer_ip_address?: string | null;
 
   // Unique reference. Different schemes have different length and [character
@@ -3698,6 +3756,105 @@ export interface ScenarioSimulatorRunRequestLinks {
   resource: string;
 }
 
+/** Type for a schemeidentifier resource. */
+export interface SchemeIdentifier {
+  // The first line of the scheme identifier's support address.
+  address_line1?: string;
+
+  // The second line of the scheme identifier's support address.
+  address_line2?: string | null;
+
+  // The third line of the scheme identifier's support address.
+  address_line3?: string | null;
+
+  // Whether a custom reference can be submitted for mandates using this scheme
+  // identifier.
+  can_specify_mandate_reference?: boolean;
+
+  // The city of the scheme identifier's support address.
+  city?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at?: string;
+
+  // The currency of the scheme identifier.
+  currency?: SchemeIdentifierCurrency;
+
+  // Scheme identifier's support email address.
+  email?: string;
+
+  // Unique identifier, usually beginning with "SU".
+  id?: string;
+
+  // The minimum interval, in working days, between the sending of a
+  // pre-notification to the customer, and the charge date of a payment using
+  // this scheme identifier.
+  //
+  // By default, GoCardless sends these notifications automatically. Please see
+  // our [compliance requirements](#appendix-compliance-requirements) for more
+  // details.
+  minimum_advance_notice?: number;
+
+  // The name which appears on customers' bank statements. This should usually
+  // be the merchant's trading name.
+  name?: string;
+
+  // Scheme identifier's support phone number.
+  phone_number?: string;
+
+  // The scheme identifier's support postal code.
+  postal_code?: string;
+
+  // The scheme-unique identifier against which payments are submitted.
+  reference?: string;
+
+  // The scheme identifier's support address region, county or department.
+  region?: string | null;
+
+  // The scheme which this scheme identifier applies to.
+  scheme?: SchemeIdentifierScheme;
+
+  // The status of the scheme identifier. Only `active` scheme identifiers will
+  // be applied to a creditor and used against payments.
+  status?: SchemeIdentifierStatus;
+}
+
+export enum SchemeIdentifierCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
+
+export enum SchemeIdentifierScheme {
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  FasterPayments = 'faster_payments',
+  Pad = 'pad',
+  PayTo = 'pay_to',
+  Sepa = 'sepa',
+  SepaCreditTransfer = 'sepa_credit_transfer',
+  SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
+}
+
+export enum SchemeIdentifierStatus {
+  Pending = 'pending',
+  Active = 'active',
+}
+
 type JsonField = boolean | number | string | null;
 
 export interface JsonMap {
@@ -3951,6 +4108,73 @@ export interface TaxRate {
 
   // The type of tax applied by this rate
   type?: string;
+}
+
+/** Type for a verificationdetail resource. */
+export interface VerificationDetail {
+  // The first line of the company's address.
+  address_line1?: string;
+
+  // The second line of the company's address.
+  address_line2?: string | null;
+
+  // The third line of the company's address.
+  address_line3?: string | null;
+
+  // The city of the company's address.
+  city?: string;
+
+  // The company's registration number.
+  company_number?: string;
+
+  // A summary describing what the company does.
+  description?: string;
+
+  // The company's directors.
+  directors?: VerificationDetailDirector[];
+
+  // Resources linked to this VerificationDetail.
+  links?: VerificationDetailLinks;
+
+  // The company's postal code.
+  postal_code?: string;
+}
+
+/** Type for a verificationdetailcreaterequestlinks resource. */
+export interface VerificationDetailCreateRequestLinks {
+  // ID of the associated [creditor](#core-endpoints-creditors).
+  creditor: string;
+}
+
+/** Type for a verificationdetaildirector resource. */
+export interface VerificationDetailDirector {
+  // The city of the person's address.
+  city: string;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code: string;
+
+  // The person's date of birth.
+  date_of_birth: string;
+
+  // The person's family name.
+  family_name: string;
+
+  // The person's given name.
+  given_name: string;
+
+  // The person's postal code.
+  postal_code: string;
+
+  // The street of the person's address.
+  street: string;
+}
+
+/** Type for a verificationdetaillinks resource. */
+export interface VerificationDetailLinks {
+  // ID of the [creditor](#core-endpoints-creditors)
+  creditor?: string;
 }
 
 /** Type for a webhook resource. */

@@ -28,7 +28,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // An explicit array of instalment payments, each specifying at least an
   // `amount` and `charge_date`.
 
-  instalments: Types.InstalmentScheduleInstalments[];
+  instalments: Types.InstalmentScheduleInstalment[];
 
   // Resources linked to this InstalmentSchedule.
   links: Types.InstalmentScheduleCreateWithDatesRequestLinks;
