@@ -28,8 +28,10 @@ import { PayoutItemService } from './services/payoutItemService';
 import { RedirectFlowService } from './services/redirectFlowService';
 import { RefundService } from './services/refundService';
 import { ScenarioSimulatorService } from './services/scenarioSimulatorService';
+import { SchemeIdentifierService } from './services/schemeIdentifierService';
 import { SubscriptionService } from './services/subscriptionService';
 import { TaxRateService } from './services/taxRateService';
+import { VerificationDetailService } from './services/verificationDetailService';
 import { WebhookService } from './services/webhookService';
 
 export class GoCardlessClient {
@@ -61,8 +63,10 @@ export class GoCardlessClient {
   private _redirectFlows: RedirectFlowService;
   private _refunds: RefundService;
   private _scenarioSimulators: ScenarioSimulatorService;
+  private _schemeIdentifiers: SchemeIdentifierService;
   private _subscriptions: SubscriptionService;
   private _taxRates: TaxRateService;
+  private _verificationDetails: VerificationDetailService;
   private _webhooks: WebhookService;
 
   constructor(token: string, environment = Environments.Live, options = {}) {
@@ -94,8 +98,10 @@ export class GoCardlessClient {
     this._redirectFlows = undefined;
     this._refunds = undefined;
     this._scenarioSimulators = undefined;
+    this._schemeIdentifiers = undefined;
     this._subscriptions = undefined;
     this._taxRates = undefined;
+    this._verificationDetails = undefined;
     this._webhooks = undefined;
   }
 
@@ -309,6 +315,14 @@ export class GoCardlessClient {
     return this._scenarioSimulators;
   }
 
+  get schemeIdentifiers(): SchemeIdentifierService {
+    if (!this._schemeIdentifiers) {
+      this._schemeIdentifiers = new SchemeIdentifierService(this._api);
+    }
+
+    return this._schemeIdentifiers;
+  }
+
   get subscriptions(): SubscriptionService {
     if (!this._subscriptions) {
       this._subscriptions = new SubscriptionService(this._api);
@@ -323,6 +337,14 @@ export class GoCardlessClient {
     }
 
     return this._taxRates;
+  }
+
+  get verificationDetails(): VerificationDetailService {
+    if (!this._verificationDetails) {
+      this._verificationDetails = new VerificationDetailService(this._api);
+    }
+
+    return this._verificationDetails;
   }
 
   get webhooks(): WebhookService {
