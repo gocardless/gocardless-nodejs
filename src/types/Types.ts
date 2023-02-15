@@ -25,6 +25,23 @@ export interface BankAuthorisation {
   links?: BankAuthorisationLinks;
 
   // URL that the payer can be redirected to after authorising the payment.
+  //
+  // On completion of bank authorisation, the query parameter of either
+  // `outcome=success` or `outcome=failure` will be
+  // appended to the `redirect_uri` to indicate the result of the bank
+  // authorisation. If the bank authorisation is
+  // expired, the query parameter `outcome=timeout` will be appended to the
+  // `redirect_uri`, in which case you should
+  // prompt the user to try the bank authorisation step again.
+  //
+  // The `redirect_uri` you provide should handle the `outcome` query parameter
+  // for displaying the result of the
+  // bank authorisation as outlined above.
+  //
+  // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
+  // query parameter `id=BRF123`.
+  //
+  // Defaults to `https://pay.gocardless.com/billing/static/thankyou`.
   redirect_uri?: string;
 
   // URL for an oauth flow that will allow the user to authorise the payment
@@ -122,6 +139,11 @@ export interface BillingRequest {
 
   // Request for a one-off strongly authorised payment
   payment_request?: BillingRequestPaymentRequest;
+
+  // Specifies the high-level purpose of a mandate and/or payment using a set of
+  // pre-defined categories. Required for the PayTo scheme, optional for all
+  // others.
+  purpose_code?: BillingRequestPurposeCode;
 
   //
   resources?: BillingRequestResources;
@@ -572,6 +594,21 @@ export interface BillingRequestPaymentRequestLinks {
   // (Optional) ID of the [payment](#core-endpoints-payments) that was created
   // from this payment request.
   payment?: string;
+}
+
+export enum BillingRequestPurposeCode {
+  Mortgage = 'mortgage',
+  Utility = 'utility',
+  Loan = 'loan',
+  DependantSupport = 'dependant_support',
+  Gambling = 'gambling',
+  Retail = 'retail',
+  Salary = 'salary',
+  Personal = 'personal',
+  Government = 'government',
+  Pension = 'pension',
+  Tax = 'tax',
+  Other = 'other',
 }
 
 /** Type for a billingrequestresources resource. */
@@ -3476,9 +3513,7 @@ export enum RedirectFlowScheme {
   Becs = 'becs',
   BecsNz = 'becs_nz',
   Betalingsservice = 'betalingsservice',
-  FasterPayments = 'faster_payments',
   Pad = 'pad',
-  PayTo = 'pay_to',
   SepaCore = 'sepa_core',
 }
 
@@ -4135,6 +4170,9 @@ export interface VerificationDetail {
 
   // Resources linked to this VerificationDetail.
   links?: VerificationDetailLinks;
+
+  // The company's legal name.
+  name?: string;
 
   // The company's postal code.
   postal_code?: string;

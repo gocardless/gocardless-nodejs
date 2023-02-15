@@ -12,41 +12,6 @@ interface BillingRequestListResponse extends Types.APIResponse {
   meta: Types.ListMeta;
 }
 
-interface BillingRequestListRequest {
-  // Cursor pointing to the start of the desired set.
-
-  after?: string;
-
-  // Cursor pointing to the end of the desired set.
-
-  before?: string;
-
-  // The creation date of this BillingRequest.
-  created_at?: Types.CreatedAtFilter;
-
-  // ID of a [customer](#core-endpoints-customers). If specified, this endpoint
-  // will return all requests for the given customer.
-
-  customer?: string;
-
-  // Number of records to return.
-
-  limit?: string;
-
-  // One of:
-  // <ul>
-  // <li>`pending`: the billing request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
-  // <li>`fulfilling`: the billing request is currently undergoing fulfilment</li>
-  // <li>`fulfilled`: the billing request has been fulfilled and a payment
-  // created</li>
-  // <li>`cancelled`: the billing request has been cancelled and cannot be
-  // used</li>
-  // </ul>
-
-  status?: Types.BillingRequestStatus;
-}
-
 interface BillingRequestCreateRequest {
   // (Optional) If true, this billing request can fallback from instant payment to
   // direct debit.
@@ -71,6 +36,12 @@ interface BillingRequestCreateRequest {
 
   //
   payment_request?: Types.BillingRequestPaymentRequest;
+
+  // Specifies the high-level purpose of a mandate and/or payment using a set of
+  // pre-defined categories. Required for the PayTo scheme, optional for all
+  // others.
+
+  purpose_code?: Types.BillingRequestPurposeCode;
 }
 
 interface BillingRequestCollectCustomerDetailsRequest {
@@ -142,11 +113,70 @@ interface BillingRequestCollectBankAccountRequest {
   metadata?: Types.JsonMap;
 }
 
+interface BillingRequestConfirmPayerDetailsRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+
+  metadata?: Types.JsonMap;
+}
+
 interface BillingRequestFulfilRequest {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
+}
+
+interface BillingRequestCancelRequest {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
+  // to 50 characters and values up to 500 characters.
+
+  metadata?: Types.JsonMap;
+}
+
+interface BillingRequestListRequest {
+  // Cursor pointing to the start of the desired set.
+
+  after?: string;
+
+  // Cursor pointing to the end of the desired set.
+
+  before?: string;
+
+  // The creation date of this BillingRequest.
+  created_at?: Types.CreatedAtFilter;
+
+  // ID of a [customer](#core-endpoints-customers). If specified, this endpoint
+  // will return all requests for the given customer.
+
+  customer?: string;
+
+  // Number of records to return.
+
+  limit?: string;
+
+  // One of:
+  // <ul>
+  // <li>`pending`: the billing request is pending and can be used</li>
+  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  // <li>`fulfilling`: the billing request is currently undergoing fulfilment</li>
+  // <li>`fulfilled`: the billing request has been fulfilled and a payment
+  // created</li>
+  // <li>`cancelled`: the billing request has been cancelled and cannot be
+  // used</li>
+  // </ul>
+
+  status?: Types.BillingRequestStatus;
+}
+
+interface BillingRequestNotifyRequest {
+  // Currently, can only be `email`.
+
+  notification_type: Types.BillingRequestNotificationType;
+
+  // URL that the payer can be redirected to after authorising the payment.
+
+  redirect_uri?: string;
 }
 
 interface BillingRequestChooseCurrencyRequest {
@@ -162,72 +192,11 @@ interface BillingRequestChooseCurrencyRequest {
   metadata?: Types.JsonMap;
 }
 
-interface BillingRequestConfirmPayerDetailsRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
-
-  metadata?: Types.JsonMap;
-}
-
-interface BillingRequestCancelRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
-
-  metadata?: Types.JsonMap;
-}
-
-interface BillingRequestNotifyRequest {
-  // Currently, can only be `email`.
-
-  notification_type: Types.BillingRequestNotificationType;
-
-  // URL that the payer can be redirected to after authorising the payment.
-
-  redirect_uri?: string;
-}
-
 export class BillingRequestService {
   private api: Api;
 
   constructor(api) {
     this.api = api;
-  }
-
-  async list(
-    requestParameters: BillingRequestListRequest
-  ): Promise<BillingRequestListResponse> {
-    const urlParameters = [];
-    const requestParams = {
-      path: '/billing_requests',
-      method: 'get',
-      urlParameters,
-      requestParameters,
-      payloadKey: null,
-      fetch: null,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: BillingRequestListResponse = {
-      ...response.body,
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
-  async *all(
-    requestParameters: BillingRequestListRequest
-  ): AsyncGenerator<Types.BillingRequest, void, unknown> {
-    let cursor = undefined;
-    do {
-      const list = await this.list({ ...requestParameters, after: cursor });
-
-      for (const billingrequest of list.billing_requests) {
-        yield billingrequest;
-      }
-
-      cursor = list.meta.cursors.after;
-    } while (cursor);
   }
 
   async create(
@@ -250,26 +219,6 @@ export class BillingRequestService {
     const response = await this.api.request(requestParams);
     const formattedResponse: BillingRequestResponse = {
       ...(response.body?.['billing_requests'] ?? response),
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
-  async find(identity: string): Promise<BillingRequestResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
-    const requestParams = {
-      path: '/billing_requests/:identity',
-      method: 'get',
-      urlParameters,
-
-      payloadKey: null,
-      fetch: null,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: BillingRequestResponse = {
-      ...response.body['billing_requests'],
       __response__: response.__response__,
     };
 
@@ -322,52 +271,6 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async fulfil(
-    identity: string,
-    requestParameters: BillingRequestFulfilRequest
-  ): Promise<BillingRequestResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
-    const requestParams = {
-      path: '/billing_requests/:identity/actions/fulfil',
-      method: 'post',
-      urlParameters,
-      requestParameters,
-      payloadKey: null,
-      fetch: null,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: BillingRequestResponse = {
-      ...response.body['billing_requests'],
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
-  async chooseCurrency(
-    identity: string,
-    requestParameters: BillingRequestChooseCurrencyRequest
-  ): Promise<BillingRequestResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
-    const requestParams = {
-      path: '/billing_requests/:identity/actions/choose_currency',
-      method: 'post',
-      urlParameters,
-      requestParameters,
-      payloadKey: null,
-      fetch: null,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: BillingRequestResponse = {
-      ...response.body['billing_requests'],
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
   async confirmPayerDetails(
     identity: string,
     requestParameters: BillingRequestConfirmPayerDetailsRequest
@@ -375,6 +278,29 @@ export class BillingRequestService {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/actions/confirm_payer_details',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async fulfil(
+    identity: string,
+    requestParameters: BillingRequestFulfilRequest
+  ): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity/actions/fulfil',
       method: 'post',
       urlParameters,
       requestParameters,
@@ -401,6 +327,63 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async list(
+    requestParameters: BillingRequestListRequest
+  ): Promise<BillingRequestListResponse> {
+    const urlParameters = [];
+    const requestParams = {
+      path: '/billing_requests',
+      method: 'get',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestListResponse = {
+      ...response.body,
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async *all(
+    requestParameters: BillingRequestListRequest
+  ): AsyncGenerator<Types.BillingRequest, void, unknown> {
+    let cursor = undefined;
+    do {
+      const list = await this.list({ ...requestParameters, after: cursor });
+
+      for (const billingrequest of list.billing_requests) {
+        yield billingrequest;
+      }
+
+      cursor = list.meta.cursors.after;
+    } while (cursor);
+  }
+
+  async find(identity: string): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity',
+      method: 'get',
+      urlParameters,
+
       payloadKey: null,
       fetch: null,
     };
@@ -444,6 +427,29 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
 
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async chooseCurrency(
+    identity: string,
+    requestParameters: BillingRequestChooseCurrencyRequest
+  ): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity/actions/choose_currency',
+      method: 'post',
+      urlParameters,
+      requestParameters,
       payloadKey: null,
       fetch: null,
     };
