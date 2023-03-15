@@ -82,6 +82,12 @@ interface BillingRequestFlowCreateRequest {
   // provided against exit_uri field.
 
   show_redirect_buttons?: boolean;
+
+  // If true, the payer will be able to see redirect action buttons on Success
+  // page. These action buttons will provide a way to redirect payer to the given
+  // redirect_uri.
+
+  show_success_redirect_button?: boolean;
 }
 
 export class BillingRequestFlowService {

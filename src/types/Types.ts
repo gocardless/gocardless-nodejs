@@ -53,10 +53,6 @@ export interface BankAuthorisationCreateRequestLinks {
   // ID of the [billing request](#billing-requests-billing-requests) against
   // which this authorisation was created.
   billing_request?: string;
-
-  // ID of the [institution](#billing-requests-institutions) against which this
-  // authorisation was created.
-  institution?: string;
 }
 
 export enum BankAuthorisationAuthorisationType {
@@ -142,7 +138,9 @@ export interface BillingRequest {
 
   // Specifies the high-level purpose of a mandate and/or payment using a set of
   // pre-defined categories. Required for the PayTo scheme, optional for all
-  // others.
+  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
+  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
+  // and `other` are supported.
   purpose_code?: BillingRequestPurposeCode;
 
   //
@@ -339,6 +337,18 @@ export enum BillingRequestActionBankAuthorisationAuthorisationType {
 export interface BillingRequestActionCollectCustomerDetails {
   // Default customer country code, as determined by scheme and payer location
   default_country_code?: string;
+
+  //
+  incomplete_fields?: BillingRequestActionCollectCustomerDetailsIncompleteFields;
+}
+
+/** Type for a billingrequestactioncollectcustomerdetailsincompletefields resource. */
+export interface BillingRequestActionCollectCustomerDetailsIncompleteFields {
+  //
+  customer?: string[];
+
+  //
+  customer_billing_detail?: string[];
 }
 
 export enum BillingRequestActionStatus {
@@ -481,7 +491,7 @@ export interface BillingRequestMandateRequestConstraints {
   // considered open and
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
-  // take the user to set up this agreement via the BillingRequest.
+  // take the user to set up this agreement via the Billing Request.
   //
   end_date?: string;
 
@@ -873,6 +883,11 @@ export interface BillingRequestFlow {
   // they will see the success screen. For failure, button will take the payer
   // to url being provided against exit_uri field.
   show_redirect_buttons?: boolean;
+
+  // If true, the payer will be able to see redirect action buttons on Success
+  // page. These action buttons will provide a way to redirect payer to the
+  // given redirect_uri.
+  show_success_redirect_button?: boolean;
 }
 
 /** Type for a billingrequestflowcreaterequestlinks resource. */
@@ -1812,21 +1827,23 @@ export interface Event {
   // <li>`payments`</li>
   // <li>`payouts`</li>
   // <li>`refunds`</li>
+  // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
   // </ul>
   resource_type?: EventResourceType;
 }
 
 export enum EventInclude {
-  Payment = 'payment',
+  BillingRequest = 'billing_request',
+  Creditor = 'creditor',
+  InstalmentSchedule = 'instalment_schedule',
   Mandate = 'mandate',
+  PayerAuthorisation = 'payer_authorisation',
+  Payment = 'payment',
   Payout = 'payout',
   Refund = 'refund',
+  SchemeIdentifier = 'scheme_identifier',
   Subscription = 'subscription',
-  InstalmentSchedule = 'instalment_schedule',
-  Creditor = 'creditor',
-  PayerAuthorisation = 'payer_authorisation',
-  BillingRequest = 'billing_request',
 }
 
 /** Type for a eventcustomernotification resource. */
@@ -2003,6 +2020,11 @@ export interface EventLinks {
   // [refund](#core-endpoints-refunds) which has been updated.
   refund?: string;
 
+  // If `resource_type` is `scheme_identifiers`, this is the ID of the
+  // [scheme_identifier](#core-endpoints-scheme-identifiers) which has been
+  // updated.
+  scheme_identifier?: string;
+
   // If `resource_type` is `subscription`, this is the ID of the
   // [subscription](#core-endpoints-subscriptions) which has been updated.
   subscription?: string;
@@ -2018,6 +2040,7 @@ export enum EventResourceType {
   Payments = 'payments',
   Payouts = 'payouts',
   Refunds = 'refunds',
+  SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
 }
 
@@ -2198,6 +2221,9 @@ export interface Institution {
   // A human readable name for this institution
   name?: string;
 }
+
+/** Type for a institutionid resource. */
+export interface InstitutionId {}
 
 /** Type for a mandate resource. */
 export interface Mandate {
@@ -2919,7 +2945,10 @@ export interface Payment {
   reference?: string | null;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`.
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
   retry_if_possible?: boolean;
 
   // One of:
@@ -4038,7 +4067,10 @@ export interface Subscription {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`.
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. Must be on or after
