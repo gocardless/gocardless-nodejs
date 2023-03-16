@@ -31,18 +31,24 @@ interface EventListRequest {
   // The creation date of this Event.
   created_at?: Types.CreatedAtFilter;
 
+  // ID of an [creditor](#core-endpoints-creditors). If specified, this endpoint
+  // will return all events for the given creditor.
+
+  creditor?: string;
+
   // Includes linked resources in the response. Must be used with the
   // `resource_type` parameter specified. The include should be one of:
   // <ul>
-  // <li>`payment`</li>
+  // <li>`billing_request`</li>
+  // <li>`creditor`</li>
+  // <li>`instalment_schedule`</li>
   // <li>`mandate`</li>
   // <li>`payer_authorisation`</li>
+  // <li>`payment`</li>
   // <li>`payout`</li>
   // <li>`refund`</li>
+  // <li>`scheme_identifier`</li>
   // <li>`subscription`</li>
-  // <li>`instalment_schedule`</li>
-  // <li>`creditor`</li>
-  // <li>`billing_request`</li>
   // </ul>
 
   include?: Types.EventInclude;
@@ -86,10 +92,11 @@ interface EventListRequest {
 
   refund?: string;
 
-  // Type of resource that you'd like to get all events for. Cannot be used
-  // together with the `payment`,    `payer_authorisation`, `mandate`,
-  // `subscription`, `instalment_schedule`, `creditor`, `refund` or `payout`
-  // parameter. The type can be one of:
+  // Type of resource that you'd like to get all events for.
+  // Cannot be used together with the `billing_request`, `creditor`,
+  // `instalment_schedule`, `mandate`, `payer_authorisation`, `payment`, `payout`,
+  // `refund`, `scheme_identifier` or `subscription` parameters.
+  // The type can be one of:
   // <ul>
   // <li>`billing_requests`</li>
   // <li>`creditors`</li>
@@ -99,10 +106,17 @@ interface EventListRequest {
   // <li>`payments`</li>
   // <li>`payouts`</li>
   // <li>`refunds`</li>
+  // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
   // </ul>
 
   resource_type?: Types.EventResourceType;
+
+  // ID of a [scheme identifier](#core-endpoints-scheme-identifiers). If
+  // specified, this endpoint will return all events for the given scheme
+  // identifier.
+
+  scheme_identifier?: string;
 
   // ID of a [subscription](#core-endpoints-subscriptions). If specified, this
   // endpoint will return all events for the given subscription.

@@ -39,7 +39,9 @@ interface BillingRequestCreateRequest {
 
   // Specifies the high-level purpose of a mandate and/or payment using a set of
   // pre-defined categories. Required for the PayTo scheme, optional for all
-  // others.
+  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
+  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
+  // and `other` are supported.
 
   purpose_code?: Types.BillingRequestPurposeCode;
 }
@@ -190,6 +192,18 @@ interface BillingRequestChooseCurrencyRequest {
   // to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
+}
+
+interface BillingRequestSelectInstitutionRequest {
+  // [ISO
+  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // alpha-2 code. The country code of the institution.
+
+  country_code: string;
+
+  // The unique identifier for this institution
+
+  institution: string;
 }
 
 export class BillingRequestService {
@@ -447,6 +461,29 @@ export class BillingRequestService {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/actions/choose_currency',
+      method: 'post',
+      urlParameters,
+      requestParameters,
+      payloadKey: null,
+      fetch: null,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: BillingRequestResponse = {
+      ...response.body['billing_requests'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
+  async selectInstitution(
+    identity: string,
+    requestParameters: BillingRequestSelectInstitutionRequest
+  ): Promise<BillingRequestResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/billing_requests/:identity/actions/select_institution',
       method: 'post',
       urlParameters,
       requestParameters,
