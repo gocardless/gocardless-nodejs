@@ -196,13 +196,14 @@ export interface BillingRequestCustomer {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
   // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided, the language will be chosen based on the
-  // `country_code` (if supplied) or default to "en".
+  // If this is not provided and a customer was linked during billing request
+  // creation, the linked customer language will be used. Otherwise, the
+  // language is default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -884,9 +885,11 @@ export interface BillingRequestFlow {
   // to url being provided against exit_uri field.
   show_redirect_buttons?: boolean;
 
-  // If true, the payer will be able to see redirect action buttons on Success
-  // page. These action buttons will provide a way to redirect payer to the
-  // given redirect_uri.
+  // If true, the payer will be able to see a redirect action button on the
+  // Success page. This action button will provide a way to redirect the payer
+  // to the given redirect_uri. This functionality is helpful when merchants do
+  // not want payers to be automatically redirected or on Android devices, where
+  // automatic redirections are not possible.
   show_success_redirect_button?: boolean;
 }
 
@@ -1154,9 +1157,6 @@ export enum BlockReasonType {
 
 /** Type for a creditor resource. */
 export interface Creditor {
-  // Boolean value indicating whether the creditor is activated in the product.
-  activated?: boolean;
-
   // The first line of the creditor's address.
   address_line1?: string | null;
 
