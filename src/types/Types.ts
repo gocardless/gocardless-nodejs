@@ -315,10 +315,6 @@ export interface BillingRequestActionBankAuthorisation {
 
   // What type of bank authorisations are supported on this billing request
   authorisation_type?: BillingRequestActionBankAuthorisationAuthorisationType;
-
-  // Whether an institution is a required field when creating this bank
-  // authorisation
-  requires_institution?: boolean;
 }
 
 export enum BillingRequestActionBankAuthorisationAdapter {
