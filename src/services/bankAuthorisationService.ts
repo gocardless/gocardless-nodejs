@@ -13,10 +13,6 @@ interface BankAuthorisationListResponse extends Types.APIResponse {
 }
 
 interface BankAuthorisationCreateRequest {
-  // Type of authorisation, can be either 'mandate' or 'payment'.
-
-  authorisation_type?: Types.BankAuthorisationAuthorisationType;
-
   // Resources linked to this BankAuthorisation.
   links: Types.BankAuthorisationCreateRequestLinks;
 

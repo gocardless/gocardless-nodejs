@@ -19,6 +19,12 @@ interface InstitutionListRequest {
 }
 
 interface InstitutionListForBillingRequestRequest {
+  // [ISO
+  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // alpha-2 code. The country code of the institution.
+
+  country_code: string;
+
   // ID(s) of the institution(s) to retrieve. More than one ID can be specified
   // using a comma-separated string.
 
