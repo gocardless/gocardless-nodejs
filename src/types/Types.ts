@@ -3984,7 +3984,7 @@ export interface ListMetaCursor {
 export interface Subscription {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
