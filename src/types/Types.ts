@@ -4005,7 +4005,7 @@ export interface Subscription {
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
   // `-1` to indicate the last day of the month.
-  day_of_month?: string | null;
+  day_of_month?: number | null;
 
   // The earliest date that will be used as a `charge_date` on payments
   // created for this subscription if it is resumed. Only present for `paused`
