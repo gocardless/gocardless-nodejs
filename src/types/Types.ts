@@ -24,6 +24,11 @@ export interface BankAuthorisation {
   // Resources linked to this BankAuthorisation.
   links?: BankAuthorisationLinks;
 
+  // URL to a QR code PNG image of the bank authorisation url.
+  // This QR code can be used as an alternative to providing the `url` to the
+  // payer to allow them to authorise with their mobile devices.
+  qr_code_url?: string | null;
+
   // URL that the payer can be redirected to after authorising the payment.
   //
   // On completion of bank authorisation, the query parameter of either
@@ -116,7 +121,7 @@ export interface BillingRequest {
   // Should not be set if GoCardless payment intelligence feature is used.
   //
   // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/getting-started/billing-requests/retain-customers-with-fallbacks/)
+  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
   // for more information.
   fallback_enabled?: boolean;
 
@@ -286,6 +291,19 @@ export interface BillingRequestAction {
   // Which other action types this action can complete.
   completes_actions?: string[];
 
+  // Describes whether we inferred the institution from the provided bank
+  // account details. One of:
+  // - `not_needed`: we won't attempt to infer the institution as it is not
+  // needed. Either because it was manually selected or the billing request does
+  // not support this feature
+  // - `pending`: we are waiting on the bank details in order to infer the
+  // institution
+  // - `failed`: we weren't able to infer the institution
+  // - `success`: we inferred the institution and added it to the resources of a
+  // Billing Request
+  //
+  institution_guess_status?: BillingRequestActionInstitutionGuessStatus;
+
   // Informs you whether the action is required to fulfil the billing request or
   // not.
   required?: boolean;
@@ -346,6 +364,13 @@ export interface BillingRequestActionCollectCustomerDetailsIncompleteFields {
 
   //
   customer_billing_detail?: string[];
+}
+
+export enum BillingRequestActionInstitutionGuessStatus {
+  NotNeeded = 'not_needed',
+  Pending = 'pending',
+  Failed = 'failed',
+  Success = 'success',
 }
 
 export enum BillingRequestActionStatus {
@@ -492,7 +517,8 @@ export interface BillingRequestMandateRequestConstraints {
   //
   end_date?: string;
 
-  // The maximum amount that can be charged for a single payment
+  // The maximum amount that can be charged for a single payment. Required for
+  // VRP.
   max_amount_per_payment?: number;
 
   // List of periodic limits and constraints which apply to them
@@ -521,11 +547,14 @@ export interface BillingRequestMandateRequestConstraintsPeriodicLimit {
   //
   alignment?: BillingRequestMandateRequestConstraintsPeriodicLimitAlignment;
 
-  // The maximum number of payments that can be collected in this periodic limit
+  // (Optional) The maximum number of payments that can be collected in this
+  // periodic limit.
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
-  // periodic limit
+  // periodic limit.
+  // Required for VRP.
+  //
   max_total_amount?: number;
 
   // The repeating period for this mandate
@@ -1162,7 +1191,17 @@ export interface Creditor {
   // The third line of the creditor's address.
   address_line3?: string | null;
 
-  // Boolean indicating whether the creditor is permitted to create refunds
+  // Prefix for the bank reference of payouts sent to this creditor. For
+  // instance, if
+  // the creditor's `bank_reference_prefix` was `ACME`, the bank reference of a
+  // payout
+  // sent to that creditor could be `ACME-8G7Q8`.
+  //
+  // This prefix is also used for refunds in EUR and GBP.
+  //
+  bank_reference_prefix?: string;
+
+  // Boolean indicating whether the creditor is permitted to create refunds.
   can_create_refunds?: boolean;
 
   // The city of the creditor's address.
@@ -1284,12 +1323,6 @@ export interface CreditorUpdateRequestLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
-}
-
-/** Type for a creditorapplyschemeidentifierrequestlinks resource. */
-export interface CreditorApplySchemeIdentifierRequestLinks {
-  // Unique identifier, usually beginning with "SU".
-  scheme_identifier: string;
 }
 
 export enum CreditorCreditorType {
@@ -1808,10 +1841,21 @@ export interface Event {
   // Resources linked to this Event.
   links?: EventLinks;
 
-  // If the `details[origin]` is `api`, this will contain any metadata you
-  // specified when triggering this event. In other cases it will be an empty
-  // object.
+  // The metadata that was passed when making the API request that triggered the
+  // event
+  // (for instance, cancelling a mandate).
+  //
+  // This field will only be populated if the `details[origin]` field is `api`
+  // otherwise it will be an empty object.
+  //
   metadata?: JsonMap;
+
+  // The metadata of the resource that the event is for. For example, this field
+  // will have the same
+  // value of the `mandate[metadata]` field on the response you would receive
+  // from performing a GET request on a mandate.
+  //
+  resource_metadata?: JsonMap;
 
   // The resource type for this event. One of:
   // <ul>
@@ -2195,10 +2239,10 @@ export enum InstalmentScheduleStatus {
 
 /** Type for a institution resource. */
 export interface Institution {
-  // Flag to show if the institution supports redirection to its authorisation
-  // flow or if a provider's one is being used. The bank authorisation screen on
-  // the UI is visible based on this property.
-  bank_redirect?: boolean;
+  // Flag to show if selecting this institution in the select_institution action
+  // can auto-complete the collect_bank_account action. The bank can return the
+  // payer's bank account details to GoCardless.
+  autocompletes_collect_bank_account?: boolean;
 
   // [ISO
   // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
@@ -2242,6 +2286,17 @@ export interface Mandate {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
+
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: MandateFundsSettlement;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
@@ -2354,6 +2409,11 @@ export enum MandateConsentParametersPeriodPeriod {
   Flexible = 'flexible',
 }
 
+export enum MandateFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
+}
+
 /** Type for a mandatelinks resource. */
 export interface MandateLinks {
   // ID of the associated [creditor](#core-endpoints-creditors).
@@ -2393,6 +2453,9 @@ export interface MandateImport {
   // Unique identifier, beginning with "IM".
   id?: string;
 
+  // Resources linked to this MandateImport.
+  links?: MandateImportLinks;
+
   // The scheme of the mandates to be imported.<br>All mandates in a single
   // mandate
   // import must be for the same scheme.
@@ -2412,6 +2475,19 @@ export interface MandateImport {
   // <li>`processed`: When all mandates have been imported successfully.</li>
   // </ul>
   status?: MandateImportStatus;
+}
+
+/** Type for a mandateimportcreaterequestlinks resource. */
+export interface MandateImportCreateRequestLinks {
+  // ID of the associated creditor. Only required if your account manages
+  // multiple creditors.
+  creditor?: string;
+}
+
+/** Type for a mandateimportlinks resource. */
+export interface MandateImportLinks {
+  // ID of the associated creditor.
+  creditor?: string;
 }
 
 export enum MandateImportScheme {
@@ -2633,6 +2709,54 @@ export enum MandatePdfSubscriptionFrequency {
   Weekly = 'weekly',
   Monthly = 'monthly',
   Yearly = 'yearly',
+}
+
+/** Type for a negativebalancelimit resource. */
+export interface NegativeBalanceLimit {
+  // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
+  balance_limit?: string;
+
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this limit
+  // was created.
+  created_at?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: NegativeBalanceLimitCurrency;
+
+  // Unique identifier, beginning with "NBL".
+  id?: string;
+
+  // Resources linked to this NegativeBalanceLimit.
+  links?: NegativeBalanceLimitLinks;
+}
+
+/** Type for a negativebalancelimitcreaterequestlinks resource. */
+export interface NegativeBalanceLimitCreateRequestLinks {
+  // ID of the [creditor](#core-endpoints-creditors) this limit relates to
+  creditor: string;
+}
+
+export enum NegativeBalanceLimitCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
+
+/** Type for a negativebalancelimitlinks resource. */
+export interface NegativeBalanceLimitLinks {
+  // ID of the [creator_user](#core-endpoints-creator_users) who created this
+  // limit
+  creator_user?: string;
+
+  // ID of [creditor](#core-endpoints-creditors) which this limit relates to
+  creditor?: string;
 }
 
 /** Type for a payerauthorisation resource. */
@@ -3372,6 +3496,7 @@ export enum PayoutItemType {
   AppFee = 'app_fee',
   RevenueShare = 'revenue_share',
   SurchargeFee = 'surcharge_fee',
+  RefundFundsReturned = 'refund_funds_returned',
 }
 
 /** Type for a redirectflow resource. */
@@ -3772,8 +3897,7 @@ export interface ScenarioSimulator {
   // `transferred` and resubmits it to the banks, can be caused be the UK's
   // Current Account Switching Service (CASS) or when a customer contacts
   // GoCardless to change their bank details. It must start in the
-  // `pending_submission` state. Only compatible with Bacs, SEPA and Autogiro
-  // mandates.</li>
+  // `pending_submission` state. Only compatible with Bacs mandates.</li>
   // <li>`mandate_suspended_by_payer`: Transitions a mandate to
   // `suspended_by_payer`, as if payer has suspended the mandate after it has
   // been setup successfully. It must start in the `activated` state. Only
@@ -3882,6 +4006,14 @@ export interface SchemeIdentifier {
   // The status of the scheme identifier. Only `active` scheme identifiers will
   // be applied to a creditor and used against payments.
   status?: SchemeIdentifierStatus;
+}
+
+/** Type for a schemeidentifiercreaterequestlinks resource. */
+export interface SchemeIdentifierCreateRequestLinks {
+  // <em>required</em> ID of the associated
+  // [creditor](#core-endpoints-creditors).
+  //
+  creditor?: string;
 }
 
 export enum SchemeIdentifierCurrency {

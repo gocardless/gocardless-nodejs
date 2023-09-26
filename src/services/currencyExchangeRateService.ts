@@ -21,9 +21,6 @@ interface CurrencyExchangeRateListRequest {
 
   before?: string;
 
-  // The creation date of this CurrencyExchangeRate.
-  created_at?: Types.CreatedAtFilter;
-
   // Number of records to return.
 
   limit?: string;

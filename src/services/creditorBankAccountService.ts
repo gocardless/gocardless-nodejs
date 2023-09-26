@@ -90,7 +90,8 @@ interface CreditorBankAccountListRequest {
 
   creditor?: string;
 
-  // Boolean value showing whether the bank account is enabled or disabled
+  // If `true`, only return enabled bank accounts. If `false`, only return
+  // disabled bank accounts.
 
   enabled?: boolean;
 

@@ -21,6 +21,7 @@ import { MandateService } from './services/mandateService';
 import { MandateImportService } from './services/mandateImportService';
 import { MandateImportEntryService } from './services/mandateImportEntryService';
 import { MandatePdfService } from './services/mandatePdfService';
+import { NegativeBalanceLimitService } from './services/negativeBalanceLimitService';
 import { PayerAuthorisationService } from './services/payerAuthorisationService';
 import { PaymentService } from './services/paymentService';
 import { PayoutService } from './services/payoutService';
@@ -56,6 +57,7 @@ export class GoCardlessClient {
   private _mandateImports: MandateImportService;
   private _mandateImportEntries: MandateImportEntryService;
   private _mandatePdfs: MandatePdfService;
+  private _negativeBalanceLimits: NegativeBalanceLimitService;
   private _payerAuthorisations: PayerAuthorisationService;
   private _payments: PaymentService;
   private _payouts: PayoutService;
@@ -91,6 +93,7 @@ export class GoCardlessClient {
     this._mandateImports = undefined;
     this._mandateImportEntries = undefined;
     this._mandatePdfs = undefined;
+    this._negativeBalanceLimits = undefined;
     this._payerAuthorisations = undefined;
     this._payments = undefined;
     this._payouts = undefined;
@@ -257,6 +260,14 @@ export class GoCardlessClient {
     }
 
     return this._mandatePdfs;
+  }
+
+  get negativeBalanceLimits(): NegativeBalanceLimitService {
+    if (!this._negativeBalanceLimits) {
+      this._negativeBalanceLimits = new NegativeBalanceLimitService(this._api);
+    }
+
+    return this._negativeBalanceLimits;
   }
 
   get payerAuthorisations(): PayerAuthorisationService {
