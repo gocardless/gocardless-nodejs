@@ -11,6 +11,17 @@ interface CreditorListResponse extends Types.APIResponse {
 }
 
 interface CreditorCreateRequest {
+  // Prefix for the bank reference of payouts sent to this creditor. For instance,
+  // if
+  // the creditor's `bank_reference_prefix` was `ACME`, the bank reference of a
+  // payout
+  // sent to that creditor could be `ACME-8G7Q8`.
+  //
+  // This prefix is also used for refunds in EUR and GBP.
+  //
+
+  bank_reference_prefix?: string;
+
   // [ISO 3166-1 alpha-2
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
@@ -56,6 +67,17 @@ interface CreditorUpdateRequest {
 
   address_line3?: string;
 
+  // Prefix for the bank reference of payouts sent to this creditor. For instance,
+  // if
+  // the creditor's `bank_reference_prefix` was `ACME`, the bank reference of a
+  // payout
+  // sent to that creditor could be `ACME-8G7Q8`.
+  //
+  // This prefix is also used for refunds in EUR and GBP.
+  //
+
+  bank_reference_prefix?: string;
+
   // The city of the creditor's address.
 
   city?: string;
@@ -79,11 +101,6 @@ interface CreditorUpdateRequest {
   // The creditor's address region, county or department.
 
   region?: string;
-}
-
-interface CreditorApplySchemeIdentifierRequest {
-  // Resources linked to this Creditor.
-  links: Types.CreditorApplySchemeIdentifierRequestLinks;
 }
 
 export class CreditorService {
@@ -187,29 +204,6 @@ export class CreditorService {
       urlParameters,
       requestParameters,
       payloadKey: 'creditors',
-      fetch: null,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: CreditorResponse = {
-      ...response.body['creditors'],
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
-  async applySchemeIdentifier(
-    identity: string,
-    requestParameters: CreditorApplySchemeIdentifierRequest
-  ): Promise<CreditorResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
-    const requestParams = {
-      path: '/creditors/:identity/actions/apply_scheme_identifier',
-      method: 'post',
-      urlParameters,
-      requestParameters,
-      payloadKey: null,
       fetch: null,
     };
 

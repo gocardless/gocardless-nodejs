@@ -13,6 +13,9 @@ interface SchemeIdentifierListResponse extends Types.APIResponse {
 }
 
 interface SchemeIdentifierCreateRequest {
+  // Resources linked to this SchemeIdentifier.
+  links?: Types.SchemeIdentifierCreateRequestLinks;
+
   // The name which appears on customers' bank statements. This should usually be
   // the merchant's trading name.
 
@@ -31,6 +34,10 @@ interface SchemeIdentifierListRequest {
   // Cursor pointing to the end of the desired set.
 
   before?: string;
+
+  // Unique identifier, beginning with "CR".
+
+  creditor?: string;
 
   // Number of records to return.
 

@@ -22,6 +22,10 @@ interface TaxRateListRequest {
   // The jurisdiction this tax rate applies to
 
   jurisdiction?: string;
+
+  // Number of records to return.
+
+  limit?: string;
 }
 
 export class TaxRateService {

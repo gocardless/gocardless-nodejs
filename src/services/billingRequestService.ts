@@ -18,7 +18,7 @@ interface BillingRequestCreateRequest {
   // Should not be set if GoCardless payment intelligence feature is used.
   //
   // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/getting-started/billing-requests/retain-customers-with-fallbacks/)
+  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
   // for more information.
 
   fallback_enabled?: boolean;
@@ -186,7 +186,7 @@ interface BillingRequestChooseCurrencyRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: string;
+  currency: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
