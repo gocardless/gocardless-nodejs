@@ -3372,6 +3372,7 @@ export enum PayoutItemType {
   AppFee = 'app_fee',
   RevenueShare = 'revenue_share',
   SurchargeFee = 'surcharge_fee',
+  RefundFundsReturned = 'refund_funds_returned',
 }
 
 /** Type for a redirectflow resource. */
