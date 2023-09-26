@@ -7,7 +7,7 @@ jobs:
   test_library:
     runs-on: ubuntu-latest
     container:
-      image: node:10
+      image: node:lts
     steps:
     - uses: actions/checkout@v3.3.0
     - run: npm install --save-dev jest typescript ts-jest @types/jest
@@ -15,7 +15,7 @@ jobs:
   transpile_library:
     runs-on: ubuntu-latest
     container:
-      image: node:10
+      image: node:lts
     needs:
     - test_library
     steps:
@@ -30,7 +30,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     container:
-      image: node:10
+      image: node:lts
     needs:
     - transpile_library
     env:
