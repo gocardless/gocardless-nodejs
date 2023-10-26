@@ -420,6 +420,9 @@ export interface BillingRequestLinks {
   // ID of the associated organisation.
   organisation?: string;
 
+  // (Optional) ID of the associated payment provider
+  payment_provider?: string;
+
   // (Optional) ID of the associated payment request
   payment_request?: string;
 
@@ -1530,6 +1533,10 @@ export interface CreditorBankAccount {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
+
+  // Verification status of the Bank Account. Can be one of `pending`,
+  // `in_review` or `successful`
+  verification_status?: CreditorBankAccountVerificationStatus;
 }
 
 /** Type for a creditorbankaccountcreaterequestlinks resource. */
@@ -1549,6 +1556,13 @@ export interface CreditorBankAccountLinks {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
   creditor?: string;
+}
+
+export enum CreditorBankAccountVerificationStatus {
+  Pending = 'pending',
+  InReview = 'in_review',
+  Successful = 'successful',
+  CouldNotVerify = 'could_not_verify',
 }
 
 /** Type for a currencyexchangerate resource. */
@@ -2615,7 +2629,7 @@ export interface MandateImportEntryCustomer {
 
   // Customer's email address. Required in most cases, as this allows GoCardless
   // to send notifications to this customer.
-  email: string | null;
+  email?: string | null;
 
   // Customer's surname. Required unless a `company_name` is provided.
   family_name?: string | null;
