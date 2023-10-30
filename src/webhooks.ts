@@ -10,7 +10,8 @@
  * JSON object into an `GoCardless.Event` class.
  */
 
-import cryptoJS from 'crypto-js';
+// import cryptoJS from 'crypto-js';
+import createHmac from 'crypto';
 import safeCompare from 'buffer-equal-constant-time';
 
 function InvalidSignatureError() {
@@ -51,9 +52,9 @@ function verifySignature(
   webhookSecret: string,
   signatureHeader: string
 ) {
-  const rawDigest = cryptoJS.HmacSHA256(body, webhookSecret);
+  const rawDigest = createHmac("sha256", webhookSecret).update(body).digest('hex');
 
-  const bufferDigest = Buffer.from(rawDigest.toString(cryptoJS.enc.Hex));
+  const bufferDigest = Buffer.from(rawDigest);
   const bufferSignatureHeader = Buffer.from(signatureHeader);
 
   if (!safeCompare(bufferDigest, bufferSignatureHeader)) {
