@@ -1,6 +1,6 @@
 {
   "name": "gocardless-nodejs",
-  "version": "3.17.0",
+  "version": "3.18.0",
   "description": "Node.js client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments",
   "author": "GoCardless Ltd <client-libraries@gocardless.com>",
   "repository": {
@@ -23,12 +23,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "buffer-equal-constant-time": "1.0.1",
-    "crypto-js": "^4.2.0",
     "got": "^11.8.5",
     "lodash": "^4.17.15",
-    "qs": "^6.9.1",
-    "uuid": "^7.0.2"
+    "uuid": "^7.0.2",
+    "crypto-js": "4.2.0",
+    "buffer-equal-constant-time": "1.0.1",
+    "qs": "^6.9.1"
   },
   "devDependencies": {
     "@types/node": "^13.9.0",
