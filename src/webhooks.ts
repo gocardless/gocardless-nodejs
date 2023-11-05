@@ -10,7 +10,6 @@
  * JSON object into an `GoCardless.Event` class.
  */
 
-
 import { createHmac } from 'crypto';
 import safeCompare from 'buffer-equal-constant-time';
 
