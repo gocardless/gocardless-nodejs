@@ -11,7 +11,7 @@
  */
 
 // import cryptoJS from 'crypto-js';
-import createHmac from 'crypto';
+import {createHmac} from 'crypto';
 import safeCompare from 'buffer-equal-constant-time';
 
 function InvalidSignatureError() {
