@@ -1,7 +1,7 @@
 'use strict';
 
 import { Environments } from './constants';
-import { Api } from './api/api';
+import { Api, APIOptions } from './api/api';
 import { BankAuthorisationService } from './services/bankAuthorisationService';
 import { BankDetailsLookupService } from './services/bankDetailsLookupService';
 import { BillingRequestService } from './services/billingRequestService';
@@ -71,7 +71,7 @@ export class GoCardlessClient {
   private _verificationDetails: VerificationDetailService;
   private _webhooks: WebhookService;
 
-  constructor(token: string, environment = Environments.Live, options = {}) {
+  constructor(token: string, environment = Environments.Live, options: APIOptions = {}) {
     this._api = new Api(token, environment, options);
 
     this._bankAuthorisations = undefined;
