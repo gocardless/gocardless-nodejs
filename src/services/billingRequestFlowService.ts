@@ -18,6 +18,10 @@ interface BillingRequestFlowCreateRequest {
 
   auto_fulfil?: boolean;
 
+  // Identifies whether a Billing Request belongs to a specific customer
+
+  customer_details_captured?: boolean;
+
   // URL that the payer can be taken to if there isn't a way to progress ahead in
   // flow.
 
