@@ -13,6 +13,12 @@ interface BankDetailsLookupListResponse extends Types.APIResponse {
 }
 
 interface BankDetailsLookupCreateRequest {
+  // The account holder name associated with the account number (if available). If
+  // provided and the country code is GB, a payer name verification will be
+  // performed.
+
+  account_holder_name?: string;
+
   // Bank account number - see [local details](#appendix-local-bank-details) for
   // more information. Alternatively you can provide an `iban`.
 

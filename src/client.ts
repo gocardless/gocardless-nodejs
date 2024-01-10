@@ -32,6 +32,7 @@ import { ScenarioSimulatorService } from './services/scenarioSimulatorService';
 import { SchemeIdentifierService } from './services/schemeIdentifierService';
 import { SubscriptionService } from './services/subscriptionService';
 import { TaxRateService } from './services/taxRateService';
+import { TransferredMandateService } from './services/transferredMandateService';
 import { VerificationDetailService } from './services/verificationDetailService';
 import { WebhookService } from './services/webhookService';
 
@@ -68,6 +69,7 @@ export class GoCardlessClient {
   private _schemeIdentifiers: SchemeIdentifierService;
   private _subscriptions: SubscriptionService;
   private _taxRates: TaxRateService;
+  private _transferredMandates: TransferredMandateService;
   private _verificationDetails: VerificationDetailService;
   private _webhooks: WebhookService;
 
@@ -104,6 +106,7 @@ export class GoCardlessClient {
     this._schemeIdentifiers = undefined;
     this._subscriptions = undefined;
     this._taxRates = undefined;
+    this._transferredMandates = undefined;
     this._verificationDetails = undefined;
     this._webhooks = undefined;
   }
@@ -348,6 +351,14 @@ export class GoCardlessClient {
     }
 
     return this._taxRates;
+  }
+
+  get transferredMandates(): TransferredMandateService {
+    if (!this._transferredMandates) {
+      this._transferredMandates = new TransferredMandateService(this._api);
+    }
+
+    return this._transferredMandates;
   }
 
   get verificationDetails(): VerificationDetailService {
