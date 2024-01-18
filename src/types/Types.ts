@@ -466,6 +466,14 @@ export interface BillingRequestMandateRequest {
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
+  // This attribute can be set to true if the payer has indicated that multiple
+  // signatures are required for the mandate. As long as every other Billing
+  // Request actions have been completed, the payer will receive an email
+  // notification containing instructions on how to complete the additional
+  // signature. The dual signature flow can only be completed using GoCardless
+  // branded pages.
+  payer_requested_dual_signature?: boolean;
+
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
   // "sepa_core" are supported. Optional for mandate only requests - if left
@@ -2681,6 +2689,15 @@ export interface MandateImportEntryCustomer {
 export interface MandateImportEntryCreateRequestLinks {
   // Unique identifier, beginning with "IM".
   mandate_import: string;
+}
+
+/** Type for a mandateimportentrymandate resource. */
+export interface MandateImportEntryMandate {
+  // Unique reference. Different schemes have different length and [character
+  // set](#appendix-character-sets) requirements. GoCardless will generate a
+  // unique reference satisfying the different scheme requirements if this field
+  // is left blank.
+  reference?: string | null;
 }
 
 /** Type for a mandateimportentrylinks resource. */

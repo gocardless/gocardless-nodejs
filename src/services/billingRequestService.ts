@@ -125,6 +125,15 @@ interface BillingRequestConfirmPayerDetailsRequest {
   // to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
+
+  // This attribute can be set to true if the payer has indicated that multiple
+  // signatures are required for the mandate. As long as every other Billing
+  // Request actions have been completed, the payer will receive an email
+  // notification containing instructions on how to complete the additional
+  // signature. The dual signature flow can only be completed using GoCardless
+  // branded pages.
+
+  payer_requested_dual_signature?: boolean;
 }
 
 interface BillingRequestFulfilRequest {

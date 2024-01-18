@@ -25,6 +25,9 @@ interface MandateImportEntryCreateRequest {
   // Resources linked to this MandateImportEntry.
   links: Types.MandateImportEntryCreateRequestLinks;
 
+  //
+  mandate?: Types.MandateImportEntryMandate;
+
   // A unique identifier for this entry, which you can use (once the import has
   // been
   // processed by GoCardless) to identify the records that have been created.
