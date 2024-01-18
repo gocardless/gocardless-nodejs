@@ -26,6 +26,8 @@
     "got": "^11.8.5",
     "lodash": "^4.17.15",
     "uuid": "^7.0.2",
+    "crypto-js": "3.2.1",
+    "buffer-equal-constant-time": "1.0.1",
     "qs": "^6.9.1"
   },
   "devDependencies": {
