@@ -42,6 +42,13 @@ interface PaymentCreateRequest {
 
   description?: string;
 
+  // Set this to true or false in the request to create an ACH payment to
+  // explicitly choose whether the payment should be processed through Faster
+  // ACH or standard ACH, rather than relying on the presence or absence of the
+  // charge date to indicate that.
+
+  faster_ach?: boolean;
+
   // Resources linked to this Payment.
   links: Types.PaymentCreateRequestLinks;
 

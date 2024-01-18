@@ -113,6 +113,11 @@ interface BillingRequestCollectBankAccountRequest {
   // to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
+
+  // A unique record such as an email address, mobile number or company number,
+  // that can be used to make and accept payments.
+
+  pay_id?: string;
 }
 
 interface BillingRequestConfirmPayerDetailsRequest {

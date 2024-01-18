@@ -846,6 +846,9 @@ export interface BillingRequestFlow {
   // Timestamp when the flow was created
   created_at?: string;
 
+  // Identifies whether a Billing Request belongs to a specific customer
+  customer_details_captured?: boolean;
+
   // URL that the payer can be taken to if there isn't a way to progress ahead
   // in flow.
   exit_uri?: string | null;
@@ -2327,6 +2330,13 @@ export interface Mandate {
   // payment for this mandate. This value will change over time.
   next_possible_charge_date?: string | null;
 
+  // If this is an an ACH mandate, the earliest date that can be used as a
+  // `charge_date` on any newly created payment to be charged through standard
+  // ACH, rather than Faster ACH. This value will change over time.
+  //
+  // It is only present in the API response for ACH mandates.
+  next_possible_standard_ach_charge_date?: string | null;
+
   // Boolean value showing whether payments and subscriptions under this mandate
   // require approval via an automated email before being processed.
   payments_require_approval?: boolean;
@@ -3045,6 +3055,12 @@ export interface Payment {
   // does not send its own notifications (see [compliance
   // requirements](#appendix-compliance-requirements)).
   description?: string | null;
+
+  // This field indicates whether the ACH payment is processed through Faster
+  // ACH or standard ACH.
+  //
+  // It is only present in the API response for ACH payments.
+  faster_ach?: boolean | null;
 
   //
   fx?: PaymentFx;
@@ -4317,6 +4333,35 @@ export interface TaxRate {
 
   // The type of tax applied by this rate
   type?: string;
+}
+
+/** Type for a transferredmandate resource. */
+export interface TransferredMandate {
+  // Encrypted customer bank account details, containing:
+  // `iban`, `account_holder_name`, `swift_bank_code`, `swift_branch_code`,
+  // `swift_account_number`
+  encrypted_customer_bank_details?: string;
+
+  // Random AES-256 key used to encrypt bank account details, itself encrypted
+  // with your public key.
+  encrypted_decryption_key?: string;
+
+  // Resources linked to this TransferredMandate.
+  links?: TransferredMandateLinks;
+
+  // The ID of an RSA-2048 public key, from your JWKS, used to encrypt the AES
+  // key.
+  public_key_id?: string;
+}
+
+/** Type for a transferredmandatelinks resource. */
+export interface TransferredMandateLinks {
+  // The ID of the updated
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts)
+  customer_bank_account?: string;
+
+  // The ID of the transferred mandate
+  mandate?: string;
 }
 
 /** Type for a verificationdetail resource. */
