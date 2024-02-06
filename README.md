@@ -51,7 +51,7 @@ const payment = await client.payments.create(
     currency: "GBP",
     links: { mandate: "MD123" },
   },
-  { idempotencyKey: uuidv4() },
+  uuidv4(),
 );
 
 // List the first three payments past a certain date.
