@@ -44,14 +44,14 @@ For a full list of available resources, visit the [GoCardless API reference](htt
 ```js
 const uuidv4 = require('uuid/v4');
 
-// Create a new payment.
+// Create a new payment with an idempotency key
 const payment = await client.payments.create(
   {
     amount: 100,
     currency: "GBP",
     links: { mandate: "MD123" },
   },
-  { idempotencyKey: uuidv4() },
+  uuidv4(),
 );
 
 // List the first three payments past a certain date.
