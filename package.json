@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "buffer-equal-constant-time": "1.0.1",
-    "crypto-js": "3.2.1",
+    "crypto-js": "4.2.0",
     "got": "^11.8.5",
     "lodash": "^4.17.15",
     "qs": "^6.9.1",
