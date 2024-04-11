@@ -42,6 +42,6 @@
   "main": "index.js",
   "types": "types/Types.d.ts",
   "engines": {
-    "node": ">=10.0"
+    "node": ">=18.0"
   }
 }
