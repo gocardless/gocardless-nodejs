@@ -117,6 +117,30 @@ describe(".request", () => {
         });
       });
 
+      describe("NoResponseInFailureError", () =>{
+        it("throws the correct error", async () => {
+          const check = nock("https://api.gocardless.com").
+            post("/").
+            reply(422, '', { 'Content-Type': 'application/json' });
+
+          const params = { path: "/", method: "post", fetch: null }
+          const api = new Api(token, environment, {});
+
+          let e;
+          try {
+            await api.request(params);
+          } catch (err) {
+            e = err;
+          }
+
+          expect(e).toBeInstanceOf(GoCardlessErrors.GoCardlessInternalError);
+          expect(e.toString()).
+            toEqual("Internal server error")
+
+          expect(check.isDone()).toEqual(true);
+        });
+      });
+
       describe("ValidationFailedError", () =>{
         it("throws the correct error", async () => {
           const check = nock("https://api.gocardless.com").
