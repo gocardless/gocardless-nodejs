@@ -17,12 +17,14 @@ import { CustomerNotificationService } from './services/customerNotificationServ
 import { EventService } from './services/eventService';
 import { InstalmentScheduleService } from './services/instalmentScheduleService';
 import { InstitutionService } from './services/institutionService';
+import { LogoService } from './services/logoService';
 import { MandateService } from './services/mandateService';
 import { MandateImportService } from './services/mandateImportService';
 import { MandateImportEntryService } from './services/mandateImportEntryService';
 import { MandatePdfService } from './services/mandatePdfService';
 import { NegativeBalanceLimitService } from './services/negativeBalanceLimitService';
 import { PayerAuthorisationService } from './services/payerAuthorisationService';
+import { PayerThemeService } from './services/payerThemeService';
 import { PaymentService } from './services/paymentService';
 import { PayoutService } from './services/payoutService';
 import { PayoutItemService } from './services/payoutItemService';
@@ -54,12 +56,14 @@ export class GoCardlessClient {
   private _events: EventService;
   private _instalmentSchedules: InstalmentScheduleService;
   private _institutions: InstitutionService;
+  private _logos: LogoService;
   private _mandates: MandateService;
   private _mandateImports: MandateImportService;
   private _mandateImportEntries: MandateImportEntryService;
   private _mandatePdfs: MandatePdfService;
   private _negativeBalanceLimits: NegativeBalanceLimitService;
   private _payerAuthorisations: PayerAuthorisationService;
+  private _payerThemes: PayerThemeService;
   private _payments: PaymentService;
   private _payouts: PayoutService;
   private _payoutItems: PayoutItemService;
@@ -91,12 +95,14 @@ export class GoCardlessClient {
     this._events = undefined;
     this._instalmentSchedules = undefined;
     this._institutions = undefined;
+    this._logos = undefined;
     this._mandates = undefined;
     this._mandateImports = undefined;
     this._mandateImportEntries = undefined;
     this._mandatePdfs = undefined;
     this._negativeBalanceLimits = undefined;
     this._payerAuthorisations = undefined;
+    this._payerThemes = undefined;
     this._payments = undefined;
     this._payouts = undefined;
     this._payoutItems = undefined;
@@ -233,6 +239,14 @@ export class GoCardlessClient {
     return this._institutions;
   }
 
+  get logos(): LogoService {
+    if (!this._logos) {
+      this._logos = new LogoService(this._api);
+    }
+
+    return this._logos;
+  }
+
   get mandates(): MandateService {
     if (!this._mandates) {
       this._mandates = new MandateService(this._api);
@@ -279,6 +293,14 @@ export class GoCardlessClient {
     }
 
     return this._payerAuthorisations;
+  }
+
+  get payerThemes(): PayerThemeService {
+    if (!this._payerThemes) {
+      this._payerThemes = new PayerThemeService(this._api);
+    }
+
+    return this._payerThemes;
   }
 
   get payments(): PaymentService {
