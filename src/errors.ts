@@ -57,53 +57,77 @@ class ApiError extends GoCardlessException {
   }
 
   static buildFromResponse(response) {
-    const {
-      statusCode,
-      body: {
-        error: { type, errors },
-      },
-    } = response;
+    try {
+      const {
+        statusCode,
+        body: {
+          error: { type, errors },
+        },
+      } = response;
 
-    // These statuses are for unique errors
-    switch (statusCode) {
-      case 401:
-        return new AuthenticationError(response);
-      case 403:
-        return new PermissionsError(response);
-      case 429:
-        return new RateLimitError(response);
-      default:
-      //noop
-    }
+      // These statuses are for unique errors
+      switch (statusCode) {
+        case 401:
+          return new AuthenticationError(response);
+        case 403:
+          return new PermissionsError(response);
+        case 429:
+          return new RateLimitError(response);
+        default:
+        //noop
+      }
 
-    // Whereas these errors have different meanings over the same codes
-    switch (type) {
-      case 'validation_failed':
-        return new ValidationFailedError(response);
-      case 'invalid_api_usage':
-        return new InvalidApiUsageError(response);
-      case 'invalid_state':
-        for (const e of errors) {
-          if (e.reason === 'idempotent_creation_conflict') {
-            if (e.links && e.links.conflicting_resource_id) {
-              return new IdempotentCreationConflictError(
-                response,
-                e.links.conflicting_resource_id
+      // Whereas these errors have different meanings over the same codes
+      switch (type) {
+        case 'validation_failed':
+          return new ValidationFailedError(response);
+        case 'invalid_api_usage':
+          return new InvalidApiUsageError(response);
+        case 'invalid_state':
+          for (const e of errors) {
+            if (e.reason === 'idempotent_creation_conflict') {
+              if (e.links && e.links.conflicting_resource_id) {
+                return new IdempotentCreationConflictError(
+                  response,
+                  e.links.conflicting_resource_id
+                );
+              }
+
+              return new MalformedResponseError(
+                'Idempotent Creation Conflict Error missing conflicting_resource_id',
+                response
               );
             }
-
-            return new MalformedResponseError(
-              'Idempotent Creation Conflict Error missing conflicting_resource_id',
-              response
-            );
           }
-        }
 
-        return new InvalidStateError(response);
-      case 'gocardless':
-        return new GoCardlessInternalError(response);
-      default:
-        return new ApiError(response);
+          return new InvalidStateError(response);
+        case 'gocardless':
+          return new GoCardlessInternalError(response);
+        default:
+          return new ApiError(response);
+      }
+    } catch (err) {
+      const failureResponse = {
+        statusCode: 500,
+        body: {
+          error: {
+            message: 'Internal server error',
+            errors: [
+              {
+                reason: 'internal_server_error',
+                message: 'Internal server error',
+              },
+            ],
+            documentation_url:
+              'https://developer.gocardless.com/api-reference#internal_server_error',
+            type: 'gocardless',
+            request_id: response.headers['x-request-id'],
+            code: 500,
+          },
+        },
+      };
+
+      return new GoCardlessInternalError(failureResponse);
     }
   }
 
