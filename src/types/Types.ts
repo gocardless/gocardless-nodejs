@@ -620,6 +620,17 @@ export interface BillingRequestPaymentRequest {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestPaymentRequestFundsSettlement;
+
   // Resources linked to this BillingRequestPaymentRequest.
   links?: BillingRequestPaymentRequestLinks;
 
@@ -634,6 +645,11 @@ export interface BillingRequestPaymentRequest {
   // that `sepa_instant_credit_transfer` may incur an additional fee for your
   // customer.
   scheme?: string | null;
+}
+
+export enum BillingRequestPaymentRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
 }
 
 /** Type for a billingrequestpaymentrequestlinks resource. */
@@ -2290,6 +2306,18 @@ export interface Institution {
 /** Type for a institutionid resource. */
 export interface InstitutionId {}
 
+/** Type for a logo resource. */
+export interface Logo {
+  // Unique identifier, beginning with "LO".
+  id?: string;
+}
+
+/** Type for a logocreateforcreditorrequestlinks resource. */
+export interface LogoCreateForCreditorRequestLinks {
+  // ID of the creditor the logo belongs to
+  creditor?: string;
+}
+
 /** Type for a mandate resource. */
 export interface Mandate {
   // This field is ACH specific, sometimes referred to as [SEC
@@ -3039,6 +3067,18 @@ export enum PayerAuthorisationStatus {
   Confirmed = 'confirmed',
   Completed = 'completed',
   Failed = 'failed',
+}
+
+/** Type for a payertheme resource. */
+export interface PayerTheme {
+  // Unique identifier, beginning with "PTH".
+  id?: string;
+}
+
+/** Type for a payerthemecreateforcreditorrequestlinks resource. */
+export interface PayerThemeCreateForCreditorRequestLinks {
+  // ID of the creditor the payer theme belongs to
+  creditor?: string | null;
 }
 
 /** Type for a payment resource. */

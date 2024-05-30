@@ -196,6 +196,12 @@ interface SubscriptionPauseRequest {
 
   // The number of cycles to pause a subscription for. A cycle is one duration of
   // `interval` and `interval_unit`. This should be a non zero positive value.
+  // For AUD subscriptions with `interval_unit: weekly` the minimum value varies
+  // between `3` & `4` because of the [mandatory minimum waiting
+  // period](#subscriptions-resume-a-subscription).
+  // For NZD subscriptions with `interval_unit: weekly` the minimum value is `2`
+  // because of the [mandatory minimum waiting
+  // period](#subscriptions-resume-a-subscription).
 
   pause_cycles?: number;
 }
