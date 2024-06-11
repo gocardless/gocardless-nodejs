@@ -10,8 +10,8 @@
  * JSON object into an `GoCardless.Event` class.
  */
 
-import cryptoJS from 'crypto-js';
-import safeCompare from 'buffer-equal-constant-time';
+import crypto from 'crypto';
+import { Event } from './types/Types';
 
 function InvalidSignatureError() {
   this.message =
@@ -23,42 +23,51 @@ function InvalidSignatureError() {
  * Validates that a webhook was genuinely sent by GoCardless, then parses each `event`
  * object into an array of `GoCardless.Event` classes.
  *
- * @body [string]: The raw webhook body.
- * @webhookSecret [string]: The webhook endpoint secret for your webhook endpoint, as
+ * @body The raw webhook body.
+ * @webhookSecret The webhook endpoint secret for your webhook endpoint, as
  *   configured in your GoCardless Dashboard.
- * @signatureHeader [string]: The signature included in the webhook request, as specified
+ * @signatureHeader The signature included in the webhook request, as specified
  *   by the `Webhook-Signature` header.
  */
-function parse(body: string, webhookSecret: string, signatureHeader: string) {
+function parse(
+  body: crypto.BinaryLike,
+  webhookSecret: string,
+  signatureHeader: string
+): Event[] {
   verifySignature(body, webhookSecret, signatureHeader);
 
-  const eventsData = JSON.parse(body)['events'];
-  return eventsData.map(eventJson => eventJson);
+  const bodyString = typeof body === 'string' ? body : body.toString();
+  const eventsData = JSON.parse(bodyString) as { events: Event[] };
+  return eventsData.events;
 }
 
 /**
- * Validate the signature header. Note, we're using the `buffer-equal-constant-time`
+ * Validate the signature header. Note, we're using the `crypto.timingSafeEqual`
  * library for the hash comparison, to protect against timing attacks.
  *
- * @body [string]: The raw webhook body.
- * @webhookSecret [string]: The webhook endpoint secret for your webhook endpoint, as
+ * @body The raw webhook body.
+ * @webhookSecret The webhook endpoint secret for your webhook endpoint, as
  *   configured in your GoCardless Dashboard.
- * @signatureHeader [string]: The signature included in the webhook request, as specified
+ * @signatureHeader The signature included in the webhook request, as specified
  *   by the `Webhook-Signature` header.
  */
 function verifySignature(
-  body: string,
+  body: crypto.BinaryLike,
   webhookSecret: string,
   signatureHeader: string
 ) {
-  const rawDigest = cryptoJS.HmacSHA256(body, webhookSecret);
+  const bufferDigest = crypto
+    .createHmac('sha256', webhookSecret)
+    .update(body)
+    .digest();
+  const bufferSignatureHeader = Buffer.from(signatureHeader, 'hex');
 
-  const bufferDigest = Buffer.from(rawDigest.toString(cryptoJS.enc.Hex));
-  const bufferSignatureHeader = Buffer.from(signatureHeader);
-
-  if (!safeCompare(bufferDigest, bufferSignatureHeader)) {
+  if (
+    bufferDigest.length !== bufferSignatureHeader.length ||
+    !crypto.timingSafeEqual(bufferDigest, bufferSignatureHeader)
+  ) {
     throw new InvalidSignatureError();
   }
 }
 
-export { parse, InvalidSignatureError };
+export { parse, verifySignature, InvalidSignatureError };
