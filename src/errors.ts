@@ -111,17 +111,17 @@ class ApiError extends GoCardlessException {
         statusCode: 500,
         body: {
           error: {
-            message: 'Internal server error',
+            message: response.body,
             errors: [
               {
                 reason: 'internal_server_error',
-                message: 'Internal server error',
+                message: response.body,
               },
             ],
             documentation_url:
               'https://developer.gocardless.com/api-reference#internal_server_error',
             type: 'gocardless',
-            request_id: response.headers['x-request-id'],
+            request_id: response?.headers?.['x-request-id'] ?? null,
             code: 500,
           },
         },
