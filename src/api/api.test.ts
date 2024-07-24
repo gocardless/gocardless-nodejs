@@ -117,11 +117,11 @@ describe(".request", () => {
         });
       });
 
-      describe("NoResponseInFailureError", () =>{
-        it("throws the correct error", async () => {
+      describe("NoDestructurableResponseInFailureError", () =>{
+        it("includes the correct error message", async () => {
           const check = nock("https://api.gocardless.com").
             post("/").
-            reply(422, '', { 'Content-Type': 'application/json' });
+            reply(422, 'GC Api Error', { 'Content-Type': 'application/json' });
 
           const params = { path: "/", method: "post", fetch: null }
           const api = new Api(token, environment, {});
@@ -135,7 +135,7 @@ describe(".request", () => {
 
           expect(e).toBeInstanceOf(GoCardlessErrors.GoCardlessInternalError);
           expect(e.toString()).
-            toEqual("Internal server error")
+            toEqual("GC Api Error")
 
           expect(check.isDone()).toEqual(true);
         });
