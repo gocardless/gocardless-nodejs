@@ -15,7 +15,7 @@ export interface BankAuthorisation {
   expires_at?: string;
 
   // Unique identifier, beginning with "BAU".
-  id?: string;
+  id: string;
 
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when the
   // authorisation URL has been visited.
@@ -126,7 +126,7 @@ export interface BillingRequest {
   fallback_enabled?: boolean;
 
   // Unique identifier, beginning with "BRQ".
-  id?: string;
+  id: string;
 
   // Resources linked to this BillingRequest.
   links?: BillingRequestLinks;
@@ -612,7 +612,7 @@ export interface BillingRequestPaymentRequest {
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
-  // for `EUR` with your customers in Germany only.
+  // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
@@ -638,12 +638,18 @@ export interface BillingRequestPaymentRequest {
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
+  // A custom payment reference defined by the merchant. It is only available
+  // for payments using the Direct Funds settlement model on the Faster Payments
+  // scheme.
+  //
+  reference?: string | null;
+
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
-  // and `sepa_instant_credit_transfer` are supported in Germany (EUR). In
-  // Germany, `sepa_credit_transfer` is used as the default. Please be aware
-  // that `sepa_instant_credit_transfer` may incur an additional fee for your
-  // customer.
+  // and `sepa_instant_credit_transfer` are supported in supported Eurozone
+  // countries (EUR). For Eurozone countries, `sepa_credit_transfer` is used as
+  // the default. Please be aware that `sepa_instant_credit_transfer` may incur
+  // an additional fee for your customer.
   scheme?: string | null;
 }
 
@@ -732,10 +738,9 @@ export interface BillingRequestResourcesCustomer {
 
 /** Type for a billingrequestresourcescustomerbankaccount resource. */
 export interface BillingRequestResourcesCustomerBankAccount {
-  // Name of the account holder, as known by the bank. Usually this is the same
-  // as the name stored with the linked [creditor](#core-endpoints-creditors).
-  // This field will be transliterated, upcased and truncated to 18 characters.
-  // This field is required unless the request includes a [customer bank account
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
   // token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
@@ -881,7 +886,7 @@ export interface BillingRequestFlow {
   expires_at?: string;
 
   // Unique identifier, beginning with "BRF".
-  id?: string;
+  id: string;
 
   // Sets the default language of the Billing Request Flow and the customer.
   // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
@@ -1095,7 +1100,7 @@ export interface BillingRequestTemplate {
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
-  // for `EUR` with your customers in Germany only.
+  // for `EUR` with your customers in supported Eurozone countries only.
   payment_request_currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
@@ -1110,10 +1115,10 @@ export interface BillingRequestTemplate {
 
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
-  // and `sepa_instant_credit_transfer` are supported in Germany (EUR). In
-  // Germany, `sepa_credit_transfer` is used as the default. Please be aware
-  // that `sepa_instant_credit_transfer` may incur an additional fee for your
-  // customer.
+  // and `sepa_instant_credit_transfer` are supported in supported Eurozone
+  // countries (EUR). For Eurozone countries, `sepa_credit_transfer` is used as
+  // the default. Please be aware that `sepa_instant_credit_transfer` may incur
+  // an additional fee for your customer.
   payment_request_scheme?: string | null;
 
   // URL that the payer can be redirected to after completing the request flow.
@@ -1711,10 +1716,9 @@ export enum CustomerSortField {
 
 /** Type for a customerbankaccount resource. */
 export interface CustomerBankAccount {
-  // Name of the account holder, as known by the bank. Usually this is the same
-  // as the name stored with the linked [creditor](#core-endpoints-creditors).
-  // This field will be transliterated, upcased and truncated to 18 characters.
-  // This field is required unless the request includes a [customer bank account
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
   // token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
@@ -1902,6 +1906,7 @@ export interface Event {
   // <ul>
   // <li>`billing_requests`</li>
   // <li>`creditors`</li>
+  // <li>`exports`</li>
   // <li>`instalment_schedules`</li>
   // <li>`mandates`</li>
   // <li>`payer_authorisations`</li>
@@ -2114,6 +2119,7 @@ export interface EventLinks {
 export enum EventResourceType {
   BillingRequests = 'billing_requests',
   Creditors = 'creditors',
+  Exports = 'exports',
   InstalmentSchedules = 'instalment_schedules',
   Mandates = 'mandates',
   Organisations = 'organisations',
@@ -2123,6 +2129,50 @@ export enum EventResourceType {
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
+}
+
+/** Type for a export resource. */
+export interface Export {
+  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // resource was created.
+  created_at?: string;
+
+  // The currency of the export (if applicable)
+  currency?: string;
+
+  // Download url for the export file. Subject to expiry.
+  download_url?: string | null;
+
+  // The type of the export
+  export_type?: ExportExportType;
+
+  // Unique identifier, beginning with "EX".
+  id?: string;
+}
+
+export enum ExportExportType {
+  PaymentsIndex = 'payments_index',
+  EventsIndex = 'events_index',
+  RefundsIndex = 'refunds_index',
+  PayoutsIndex = 'payouts_index',
+  CustomersIndex = 'customers_index',
+  SubscriptionsIndex = 'subscriptions_index',
+  PaymentEvents = 'payment_events',
+  SubscriptionEvents = 'subscription_events',
+  PayoutEvents = 'payout_events',
+  RefundEvents = 'refund_events',
+  MandateEvents = 'mandate_events',
+  PayoutEventsBreakdown = 'payout_events_breakdown',
+  PayoutEventsReconciliation = 'payout_events_reconciliation',
+  PayoutTransactionsBreakdown = 'payout_transactions_breakdown',
+  PayoutTransactionsReconciliation = 'payout_transactions_reconciliation',
+  AuthorisationRequests = 'authorisation_requests',
+  CustomerBankAccounts = 'customer_bank_accounts',
+  Users = 'users',
+  OrganisationAuthorisations = 'organisation_authorisations',
+  GcInvalidAuthorisationRequests = 'gc_invalid_authorisation_requests',
+  PartnerFees = 'partner_fees',
+  PaymentsImportTemplate = 'payments_import_template',
 }
 
 /** Type for a instalmentschedule resource. */
@@ -2609,16 +2659,20 @@ export interface MandateImportEntryAmendment {
 
 /** Type for a mandateimportentrybankaccount resource. */
 export interface MandateImportEntryBankAccount {
-  // Name of the account holder, as known by the bank. Usually this is the same
-  // as the name stored with the linked [creditor](#core-endpoints-creditors).
-  // This field will be transliterated, upcased and truncated to 18 characters.
-  // This field is required unless the request includes a [customer bank account
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
   // token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
   // more information. Alternatively you can provide an `iban`.
   account_number?: string | null;
+
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type?: MandateImportEntryBankAccountAccountType;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -2639,6 +2693,15 @@ export interface MandateImportEntryBankAccount {
   // bank accounts denominated in SEK - you must supply [local
   // details](#local-bank-details-sweden).
   iban?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+}
+
+export enum MandateImportEntryBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
 }
 
 /** Type for a mandateimportentrycustomer resource. */
@@ -2692,6 +2755,10 @@ export interface MandateImportEntryCustomer {
   // `country_code` (if supplied) or default to "en".
   language?: string | null;
 
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
@@ -2721,6 +2788,10 @@ export interface MandateImportEntryCreateRequestLinks {
 
 /** Type for a mandateimportentrymandate resource. */
 export interface MandateImportEntryMandate {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a
   // unique reference satisfying the different scheme requirements if this field
@@ -2872,10 +2943,9 @@ export interface PayerAuthorisation {
 
 /** Type for a payerauthorisationbankaccount resource. */
 export interface PayerAuthorisationBankAccount {
-  // Name of the account holder, as known by the bank. Usually this is the same
-  // as the name stored with the linked [creditor](#core-endpoints-creditors).
-  // This field will be transliterated, upcased and truncated to 18 characters.
-  // This field is required unless the request includes a [customer bank account
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
   // token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
@@ -4270,6 +4340,9 @@ export interface Subscription {
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
   name?: string | null;
+
+  // Whether the parent plan of this subscription is paused.
+  parent_plan_paused?: boolean;
 
   // An optional payment reference. This will be set as the reference on each
   // payment

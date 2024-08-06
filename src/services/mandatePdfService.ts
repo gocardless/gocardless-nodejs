@@ -59,6 +59,11 @@ interface MandatePdfCreateRequest {
 
   city?: string;
 
+  // The customer's company name. Used to populate the "Customer Name or Company
+  // name" field on the PDF.
+
+  company_name?: string;
+
   // [ISO
   // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. Required if providing local details.
@@ -69,6 +74,18 @@ interface MandatePdfCreateRequest {
   // customer. Should only be supplied for Betalingsservice mandates.
 
   danish_identity_number?: string;
+
+  // The customer's family name (i.e. last name). Used to populate the "Customer
+  // Name or Company name" field on the PDF. Ignored if `company_name` is
+  // provided.
+
+  family_name?: string;
+
+  // The customer's given name (i.e. first name). Used to populate the "Customer
+  // Name or Company name" field on the PDF. Ignored if `company_name` is
+  // provided.
+
+  given_name?: string;
 
   // International Bank Account Number. Alternatively you can provide [local
   // details](#appendix-local-bank-details). IBANs cannot be provided for Autogiro
