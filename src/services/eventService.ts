@@ -36,6 +36,11 @@ interface EventListRequest {
 
   creditor?: string;
 
+  // ID of an export. If specified, this endpoint will return all events for the
+  // given export.
+
+  export?: string;
+
   // Includes linked resources in the response. Must be used with the
   // `resource_type` parameter specified. The include should be one of:
   // <ul>
@@ -94,12 +99,13 @@ interface EventListRequest {
 
   // Type of resource that you'd like to get all events for.
   // Cannot be used together with the `billing_request`, `creditor`,
-  // `instalment_schedule`, `mandate`, `payer_authorisation`, `payment`, `payout`,
-  // `refund`, `scheme_identifier` or `subscription` parameters.
+  // `export`,`instalment_schedule`, `mandate`, `payer_authorisation`, `payment`,
+  // `payout`, `refund`, `scheme_identifier` or `subscription` parameters.
   // The type can be one of:
   // <ul>
   // <li>`billing_requests`</li>
   // <li>`creditors`</li>
+  // <li>`exports`</li>
   // <li>`instalment_schedules`</li>
   // <li>`mandates`</li>
   // <li>`payer_authorisations`</li>
