@@ -5,14 +5,14 @@ import process = require('process');
 import _ = require('lodash');
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
-import got from 'got';
+import got, { Agents } from 'got';
 import qs from 'qs';
 
 import { Environments, CLIENT_VERSION, API_VERSION } from '../constants';
 import * as GoCardlessErrors from '../errors';
 
-interface APIOptions {
-  proxy?: object;
+export interface APIOptions {
+  proxy?: Agents;
   raiseOnIdempotencyConflict?: boolean;
 }
 
@@ -36,7 +36,7 @@ export class Api {
   private _token: string;
   private _environment: Environments;
   private _baseUrl: string;
-  private _agent: object;
+  private _agent: Agents | undefined;
   private raiseOnIdempotencyConflict: boolean;
 
   private processVersion: string;
