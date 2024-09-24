@@ -44,6 +44,9 @@ interface BillingRequestCreateRequest {
   // and `other` are supported.
 
   purpose_code?: Types.BillingRequestPurposeCode;
+
+  //
+  subscription_request?: Types.BillingRequestSubscriptionRequest;
 }
 
 interface BillingRequestCollectCustomerDetailsRequest {
