@@ -163,6 +163,9 @@ export interface BillingRequest {
   // used</li>
   // </ul>
   status?: BillingRequestStatus;
+
+  // Request for a subscription
+  subscription_request?: BillingRequestSubscriptionRequest;
 }
 
 /** Type for a billingrequestcreaterequestlinks resource. */
@@ -429,6 +432,9 @@ export interface BillingRequestLinks {
   // (Optional) ID of the [payment](#core-endpoints-payments) that was created
   // from this payment request.
   payment_request_payment?: string;
+
+  // (Optional) ID of the associated subscription request
+  subscription_request?: string;
 }
 
 /** Type for a billingrequestmandaterequest resource. */
@@ -445,6 +451,11 @@ export interface BillingRequestMandateRequest {
   // authenticated (maps to SEC code: PPD)
   //
   authorisation_source?: BillingRequestMandateRequestAuthorisationSource;
+
+  // This attribute represents the authorisation type between the payer and
+  // merchant. It can be set to one-off, recurring or standing for ACH scheme.
+  // And single, recurring and sporadic for PAD scheme.
+  consent_type?: string | null;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // for PayTo and VRP.
@@ -753,6 +764,10 @@ export interface BillingRequestResourcesCustomerBankAccount {
   // details](#local-bank-details-united-states) for more information.
   account_type?: BillingRequestResourcesCustomerBankAccountAccountType;
 
+  // A token to uniquely refer to a set of bank account details. This feature is
+  // still in early access and is only available for certain organisations.
+  bank_account_token?: string | null;
+
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
@@ -860,6 +875,91 @@ export enum BillingRequestStatus {
   Fulfilling = 'fulfilling',
   Fulfilled = 'fulfilled',
   Cancelled = 'cancelled',
+}
+
+/** Type for a billingrequestsubscriptionrequest resource. */
+export interface BillingRequestSubscriptionRequest {
+  // Amount in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: string;
+
+  // The amount to be deducted from each payment as an app fee, to be paid to
+  // the partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // The total number of payments that should be taken by this subscription.
+  count?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string;
+
+  // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
+  // `-1` to indicate the last day of the month.
+  day_of_month?: string | null;
+
+  // Number of `interval_units` between customer charge dates. Must be greater
+  // than or equal to `1`. Must result in at least one charge date per year.
+  // Defaults to `1`.
+  interval?: string;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit?: BillingRequestSubscriptionRequestIntervalUnit;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Name of the month on which to charge a customer. Must be lowercase. Only
+  // applies
+  // when the interval_unit is `yearly`.
+  //
+  month?: BillingRequestSubscriptionRequestMonth;
+
+  // Optional name for the subscription. This will be set as the description on
+  // each payment created. Must not exceed 255 characters.
+  name?: string | null;
+
+  // An optional payment reference. This will be set as the reference on each
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  // <br />
+  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
+  // Service User Number to specify a payment reference for Bacs payments.</p>
+  payment_reference?: string | null;
+
+  // The date on which the first payment should be charged. Must be on or after
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
+  // left blank and `month` or `day_of_month` are provided, this will be set to
+  // the date of the first payment. If created without `month` or `day_of_month`
+  // this will be set as the mandate's `next_possible_charge_date`
+  start_date?: string | null;
+}
+
+export enum BillingRequestSubscriptionRequestIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
+export enum BillingRequestSubscriptionRequestMonth {
+  January = 'january',
+  February = 'february',
+  March = 'march',
+  April = 'april',
+  May = 'may',
+  June = 'june',
+  July = 'july',
+  August = 'august',
+  September = 'september',
+  October = 'october',
+  November = 'november',
+  December = 'december',
 }
 
 /** Type for a billingrequestflow resource. */
@@ -1095,7 +1195,7 @@ export interface BillingRequestTemplate {
   // it is shown in the dashboard. Must not exceed 255 characters.
   name?: string;
 
-  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  // Amount in full.
   payment_request_amount?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -1731,6 +1831,10 @@ export interface CustomerBankAccount {
   // details](#local-bank-details-united-states) for more information.
   account_type?: CustomerBankAccountAccountType;
 
+  // A token to uniquely refer to a set of bank account details. This feature is
+  // still in early access and is only available for certain organisations.
+  bank_account_token?: string | null;
+
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
@@ -1924,6 +2028,7 @@ export enum EventInclude {
   Creditor = 'creditor',
   InstalmentSchedule = 'instalment_schedule',
   Mandate = 'mandate',
+  OutboundPayment = 'outbound_payment',
   PayerAuthorisation = 'payer_authorisation',
   Payment = 'payment',
   Payout = 'payout',
@@ -1965,6 +2070,9 @@ export interface EventDetails {
   // Human readable description of the cause. _Note:_ Changes to event
   // descriptions are not considered breaking.
   description?: string;
+
+  // Count of rows in the csv. This is sent for export events
+  item_count?: number;
 
   // When will_attempt_retry is set to false, this field will contain
   // the reason the payment was not retried. This can be one of:
@@ -2123,6 +2231,7 @@ export enum EventResourceType {
   InstalmentSchedules = 'instalment_schedules',
   Mandates = 'mandates',
   Organisations = 'organisations',
+  OutboundPayments = 'outbound_payments',
   PayerAuthorisations = 'payer_authorisations',
   Payments = 'payments',
   Payouts = 'payouts',
@@ -2386,6 +2495,11 @@ export interface Mandate {
   // (Optional) Payto and VRP Scheme specific information
   consent_parameters?: MandateConsentParameters | null;
 
+  // (Optional) Specifies the type of authorisation agreed between the payer and
+  // merchant. It can be set to one-off, recurring or standing for ACH, or
+  // single, recurring and sporadic for PAD.
+  consent_type?: MandateConsentType | null;
+
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
@@ -2517,6 +2631,14 @@ export enum MandateConsentParametersPeriodPeriod {
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum MandateConsentType {
+  OneOff = 'one_off',
+  Single = 'single',
+  Recurring = 'recurring',
+  Standing = 'standing',
+  Sporadic = 'sporadic',
 }
 
 export enum MandateFundsSettlement {

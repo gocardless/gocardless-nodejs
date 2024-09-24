@@ -92,7 +92,7 @@ interface BillingRequestTemplateCreateRequest {
 
   name?: string;
 
-  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  // Amount in full.
 
   payment_request_amount?: string;
 
@@ -191,7 +191,7 @@ interface BillingRequestTemplateUpdateRequest {
 
   name?: string;
 
-  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  // Amount in full.
 
   payment_request_amount?: string;
 
