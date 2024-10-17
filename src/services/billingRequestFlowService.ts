@@ -94,6 +94,12 @@ interface BillingRequestFlowCreateRequest {
   // automatic redirections are not possible.
 
   show_success_redirect_button?: boolean;
+
+  // If true, the payer will not be redirected to the success screen after
+  // completing the flow. A redirect_uri needs to be provided for this parameter
+  // to be taken into account.
+
+  skip_success_screen?: boolean;
 }
 
 export class BillingRequestFlowService {
