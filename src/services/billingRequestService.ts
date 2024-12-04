@@ -23,6 +23,9 @@ interface BillingRequestCreateRequest {
 
   fallback_enabled?: boolean;
 
+  //
+  instalment_schedule_request?: Types.BillingRequestInstalmentScheduleRequest;
+
   // Resources linked to this BillingRequest.
   links?: Types.BillingRequestCreateRequestLinks;
 
@@ -44,6 +47,9 @@ interface BillingRequestCreateRequest {
   // and `other` are supported.
 
   purpose_code?: Types.BillingRequestPurposeCode;
+
+  //
+  subscription_request?: Types.BillingRequestSubscriptionRequest;
 }
 
 interface BillingRequestCollectCustomerDetailsRequest {
