@@ -125,8 +125,14 @@ export interface BillingRequest {
   // for more information.
   fallback_enabled?: boolean;
 
+  // True if the billing request was completed with direct debit.
+  fallback_occurred?: boolean;
+
   // Unique identifier, beginning with "BRQ".
   id: string;
+
+  // Request for an instalment schedule
+  instalment_schedule_request?: BillingRequestInstalmentScheduleRequest | null;
 
   // Resources linked to this BillingRequest.
   links?: BillingRequestLinks;
@@ -163,6 +169,9 @@ export interface BillingRequest {
   // used</li>
   // </ul>
   status?: BillingRequestStatus;
+
+  // Request for a subscription
+  subscription_request?: BillingRequestSubscriptionRequest | null;
 }
 
 /** Type for a billingrequestcreaterequestlinks resource. */
@@ -388,6 +397,81 @@ export enum BillingRequestActionType {
   SelectInstitution = 'select_institution',
 }
 
+/** Type for a billingrequestinstalmentschedulerequest resource. */
+export interface BillingRequestInstalmentScheduleRequest {
+  // The amount to be deducted from each payment as an app fee, to be paid to
+  // the partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: BillingRequestInstalmentScheduleRequestCurrency;
+
+  // instalments to be created. See [create (with
+  // dates)](#instalment-schedules-create-with-dates) and [create (with
+  // schedule)](#instalment-schedules-create-with-schedule) for more information
+  // on how to specify instalments.
+  instalments?: string | null[];
+
+  // Resources linked to this BillingRequestInstalmentScheduleRequest.
+  links?: BillingRequestInstalmentScheduleRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Name of the instalment schedule, up to 100 chars. This name will also be
+  // copied to the payments of the instalment schedule if you use schedule-based
+  // creation.
+  name?: string;
+
+  // An optional payment reference. This will be set as the reference on each
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  // <br />
+  payment_reference?: string | null;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  retry_if_possible?: boolean;
+
+  // The total amount of the instalment schedule, defined as the sum of all
+  // individual
+  // payments, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in
+  // EUR). If the requested payment amounts do not sum up correctly, a
+  // validation error
+  // will be returned.
+  total_amount?: string;
+}
+
+export enum BillingRequestInstalmentScheduleRequestCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
+
+/** Type for a billingrequestinstalmentschedulerequestlinks resource. */
+export interface BillingRequestInstalmentScheduleRequestLinks {
+  // (Optional) ID of the
+  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
+  // created from this instalment schedule request.
+  //
+  instalment_schedule?: string;
+}
+
 /** Type for a billingrequestlinks resource. */
 export interface BillingRequestLinks {
   // (Optional) ID of the [bank
@@ -410,6 +494,14 @@ export interface BillingRequestLinks {
   // ID of the customer billing detail that will be used for this request
   customer_billing_detail?: string;
 
+  // (Optional) ID of the associated instalment schedule request
+  instalment_schedule_request?: string;
+
+  // (Optional) ID of the
+  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
+  // created from this instalment schedule request.
+  instalment_schedule_request_instalment_schedule?: string;
+
   // (Optional) ID of the associated mandate request
   mandate_request?: string;
 
@@ -429,6 +521,13 @@ export interface BillingRequestLinks {
   // (Optional) ID of the [payment](#core-endpoints-payments) that was created
   // from this payment request.
   payment_request_payment?: string;
+
+  // (Optional) ID of the associated subscription request
+  subscription_request?: string;
+
+  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
+  // created from this subscription request.
+  subscription_request_subscription?: string;
 }
 
 /** Type for a billingrequestmandaterequest resource. */
@@ -447,8 +546,11 @@ export interface BillingRequestMandateRequest {
   authorisation_source?: BillingRequestMandateRequestAuthorisationSource;
 
   // This attribute represents the authorisation type between the payer and
-  // merchant. It can be set to one-off, recurring or standing for ACH scheme.
-  // And single, recurring and sporadic for PAD scheme.
+  // merchant. It can be set to `one_off`,
+  // `recurring` or `standing` for ACH scheme. And `single`, `recurring` and
+  // `sporadic` for PAD scheme. _Note:_ This is only supported for ACH and PAD
+  // schemes.
+  //
   consent_type?: string | null;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
@@ -536,6 +638,12 @@ export interface BillingRequestMandateRequestConstraints {
   // The maximum amount that can be charged for a single payment. Required for
   // VRP.
   max_amount_per_payment?: number;
+
+  // A constraint where you can specify info (free text string) about how
+  // payments are calculated. _Note:_ This is only supported for ACH and PAD
+  // schemes.
+  //
+  payment_method?: string;
 
   // List of periodic limits and constraints which apply to them
   periodic_limits?: BillingRequestMandateRequestConstraintsPeriodicLimit[];
@@ -869,6 +977,109 @@ export enum BillingRequestStatus {
   Fulfilling = 'fulfilling',
   Fulfilled = 'fulfilled',
   Cancelled = 'cancelled',
+}
+
+/** Type for a billingrequestsubscriptionrequest resource. */
+export interface BillingRequestSubscriptionRequest {
+  // Amount in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: string;
+
+  // The amount to be deducted from each payment as an app fee, to be paid to
+  // the partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // The total number of payments that should be taken by this subscription.
+  count?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string;
+
+  // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
+  // `-1` to indicate the last day of the month.
+  day_of_month?: string | null;
+
+  // Number of `interval_units` between customer charge dates. Must be greater
+  // than or equal to `1`. Must result in at least one charge date per year.
+  // Defaults to `1`.
+  interval?: string;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit?: BillingRequestSubscriptionRequestIntervalUnit;
+
+  // Resources linked to this BillingRequestSubscriptionRequest.
+  links?: BillingRequestSubscriptionRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Name of the month on which to charge a customer. Must be lowercase. Only
+  // applies
+  // when the interval_unit is `yearly`.
+  //
+  month?: BillingRequestSubscriptionRequestMonth;
+
+  // Optional name for the subscription. This will be set as the description on
+  // each payment created. Must not exceed 255 characters.
+  name?: string | null;
+
+  // An optional payment reference. This will be set as the reference on each
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  // <br />
+  payment_reference?: string | null;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  retry_if_possible?: boolean;
+
+  // The date on which the first payment should be charged. If fulfilled after
+  // this date, this will be set as the mandate's `next_possible_charge_date`.
+  // When left blank and `month` or `day_of_month` are provided, this will be
+  // set to the date of the first payment.
+  // If created without `month` or `day_of_month` this will be set as the
+  // mandate's `next_possible_charge_date`.
+  //
+  start_date?: string | null;
+}
+
+export enum BillingRequestSubscriptionRequestIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
+/** Type for a billingrequestsubscriptionrequestlinks resource. */
+export interface BillingRequestSubscriptionRequestLinks {
+  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
+  // created from this subscription request.
+  //
+  subscription?: string;
+}
+
+export enum BillingRequestSubscriptionRequestMonth {
+  January = 'january',
+  February = 'february',
+  March = 'march',
+  April = 'april',
+  May = 'may',
+  June = 'june',
+  July = 'july',
+  August = 'august',
+  September = 'september',
+  October = 'october',
+  November = 'november',
+  December = 'december',
 }
 
 /** Type for a billingrequestflow resource. */
