@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface NegativeBalanceLimitResponse
-  extends Types.NegativeBalanceLimit,
-    Types.APIResponse {}
+interface NegativeBalanceLimitResponse extends Types.NegativeBalanceLimit, Types.APIResponse {}
 
 interface NegativeBalanceLimitListResponse extends Types.APIResponse {
-  negative_balance_limits: Types.NegativeBalanceLimit[];
+  negative_balance_limits: Array<Types.NegativeBalanceLimit>;
   meta: Types.ListMeta;
 }
 
@@ -58,9 +56,7 @@ export class NegativeBalanceLimitService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: NegativeBalanceLimitListRequest
-  ): Promise<NegativeBalanceLimitListResponse> {
+  public async list(requestParameters: NegativeBalanceLimitListRequest): Promise<NegativeBalanceLimitListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/negative_balance_limits',
@@ -80,8 +76,8 @@ export class NegativeBalanceLimitService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: NegativeBalanceLimitListRequest
+  public async *all(
+    requestParameters: NegativeBalanceLimitListRequest,
   ): AsyncGenerator<Types.NegativeBalanceLimit, void, unknown> {
     let cursor = undefined;
     do {
@@ -95,10 +91,10 @@ export class NegativeBalanceLimitService {
     } while (cursor);
   }
 
-  async create(
+  public async create(
     requestParameters: NegativeBalanceLimitCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<NegativeBalanceLimitResponse> {
     const urlParameters = [];
     const requestParams = {

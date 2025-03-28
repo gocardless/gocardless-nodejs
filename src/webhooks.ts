@@ -14,8 +14,7 @@ import crypto from 'crypto';
 import { Event } from './types/Types';
 
 function InvalidSignatureError() {
-  this.message =
-    'The signature header secret does not match your webhook secret!';
+  this.message = 'The signature header secret does not match your webhook secret!';
   this.name = 'InvalidSignatureError';
 }
 
@@ -29,11 +28,7 @@ function InvalidSignatureError() {
  * @signatureHeader The signature included in the webhook request, as specified
  *   by the `Webhook-Signature` header.
  */
-function parse(
-  body: crypto.BinaryLike,
-  webhookSecret: string,
-  signatureHeader: string
-): Event[] {
+function parse(body: crypto.BinaryLike, webhookSecret: string, signatureHeader: string): Event[] {
   verifySignature(body, webhookSecret, signatureHeader);
 
   const bodyString = typeof body === 'string' ? body : body.toString();
@@ -51,15 +46,8 @@ function parse(
  * @signatureHeader The signature included in the webhook request, as specified
  *   by the `Webhook-Signature` header.
  */
-function verifySignature(
-  body: crypto.BinaryLike,
-  webhookSecret: string,
-  signatureHeader: string
-) {
-  const bufferDigest = crypto
-    .createHmac('sha256', webhookSecret)
-    .update(body)
-    .digest();
+function verifySignature(body: crypto.BinaryLike, webhookSecret: string, signatureHeader: string) {
+  const bufferDigest = crypto.createHmac('sha256', webhookSecret).update(body).digest();
   const bufferSignatureHeader = Buffer.from(signatureHeader, 'hex');
 
   if (

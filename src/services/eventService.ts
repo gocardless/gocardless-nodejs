@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface EventResponse extends Types.Event, Types.APIResponse {}
 
 interface EventListResponse extends Types.APIResponse {
-  events: Types.Event[];
+  events: Array<Types.Event>;
   meta: Types.ListMeta;
 }
 
@@ -137,7 +137,7 @@ export class EventService {
     this.api = api;
   }
 
-  async list(requestParameters: EventListRequest): Promise<EventListResponse> {
+  public async list(requestParameters: EventListRequest): Promise<EventListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/events',
@@ -157,9 +157,7 @@ export class EventService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: EventListRequest
-  ): AsyncGenerator<Types.Event, void, unknown> {
+  public async *all(requestParameters: EventListRequest): AsyncGenerator<Types.Event, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -172,7 +170,7 @@ export class EventService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<EventResponse> {
+  public async find(identity: string): Promise<EventResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/events/:identity',

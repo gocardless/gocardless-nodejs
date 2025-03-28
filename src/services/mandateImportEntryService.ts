@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface MandateImportEntryResponse
-  extends Types.MandateImportEntry,
-    Types.APIResponse {}
+interface MandateImportEntryResponse extends Types.MandateImportEntry, Types.APIResponse {}
 
 interface MandateImportEntryListResponse extends Types.APIResponse {
-  mandate_import_entries: Types.MandateImportEntry[];
+  mandate_import_entries: Array<Types.MandateImportEntry>;
   meta: Types.ListMeta;
 }
 
@@ -54,6 +52,16 @@ interface MandateImportEntryListRequest {
   // Unique identifier, beginning with "IM".
 
   mandate_import: string;
+
+  // One of:
+  // <ul>
+  // <li>`sucessfully_processed`: the entry has been imported and the associated
+  // records created.</li>
+  // <li>`unsuccessfully_processed`: the entry could not be processed due to an
+  // error, see the 'processing_errors' value</li>
+  // </ul>
+
+  status?: Types.MandateImportEntryStatus;
 }
 
 export class MandateImportEntryService {
@@ -63,10 +71,10 @@ export class MandateImportEntryService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: MandateImportEntryCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<MandateImportEntryResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -89,9 +97,7 @@ export class MandateImportEntryService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: MandateImportEntryListRequest
-  ): Promise<MandateImportEntryListResponse> {
+  public async list(requestParameters: MandateImportEntryListRequest): Promise<MandateImportEntryListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/mandate_import_entries',
@@ -111,8 +117,8 @@ export class MandateImportEntryService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: MandateImportEntryListRequest
+  public async *all(
+    requestParameters: MandateImportEntryListRequest,
   ): AsyncGenerator<Types.MandateImportEntry, void, unknown> {
     let cursor = undefined;
     do {

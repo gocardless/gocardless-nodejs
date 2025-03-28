@@ -26,9 +26,9 @@ interface APIRequestParameters {
   method: string;
   urlParameters?: UrlParameter[];
   requestParameters?: object;
-  payloadKey?: string;
+  payloadKey?: string | null;
   idempotencyKey?: string;
-  fetch: Function | null;
+  fetch?: (identity: string) => Promise<any> | null;
   customHeaders?: object;
 }
 
@@ -43,11 +43,7 @@ export class Api {
   private osRelease: string;
   private osPlatform;
 
-  constructor(
-    token: string,
-    environment = Environments.Live,
-    options: APIOptions
-  ) {
+  constructor(token: string, environment = Environments.Live, options: APIOptions) {
     this._token = token;
     this._environment = environment;
 
@@ -61,8 +57,7 @@ export class Api {
       this._agent = options.proxy;
     }
 
-    this.raiseOnIdempotencyConflict =
-      options.raiseOnIdempotencyConflict || false;
+    this.raiseOnIdempotencyConflict = options.raiseOnIdempotencyConflict || false;
 
     this.processVersion = process.version;
     this.osPlatform = os.platform();
@@ -79,7 +74,7 @@ export class Api {
     customHeaders = {},
     fetch,
   }: APIRequestParameters) {
-    urlParameters.forEach(urlParameter => {
+    urlParameters.forEach((urlParameter) => {
       path = path.replace(`:${urlParameter.key}`, urlParameter.value);
     });
 
@@ -94,7 +89,7 @@ export class Api {
       requestParameters,
       payloadKey,
       idempotencyKey,
-      customHeaders
+      customHeaders,
     );
 
     try {
@@ -111,19 +106,13 @@ export class Api {
       };
     } catch (e) {
       if (e instanceof got.ParseError) {
-        throw new GoCardlessErrors.MalformedResponseError(
-          'Malformed JSON received from GoCardless API',
-          e.response
-        );
+        throw new GoCardlessErrors.MalformedResponseError('Malformed JSON received from GoCardless API', e.response);
       }
 
       if (e instanceof got.HTTPError) {
         const err = GoCardlessErrors.ApiError.buildFromResponse(e.response);
 
-        if (
-          err instanceof GoCardlessErrors.IdempotentCreationConflictError &&
-          !this.raiseOnIdempotencyConflict
-        ) {
+        if (err instanceof GoCardlessErrors.IdempotentCreationConflictError && !this.raiseOnIdempotencyConflict) {
           return fetch(err.conflictingResourceId);
         }
 
@@ -152,20 +141,16 @@ export class Api {
     requestParameters = {},
     payloadKey = '',
     idempotencyKey = '',
-    customHeaders = {}
+    customHeaders = {},
   ) {
     const headers = this.getHeaders(this._token, customHeaders);
     const searchParams =
-      method === 'get'
-        ? new url.URLSearchParams(this.formatQueryParameters(requestParameters))
-        : undefined;
+      method === 'get' ? new url.URLSearchParams(this.formatQueryParameters(requestParameters)) : undefined;
 
     // We want to always send POST requests with an idempotency key. If the user does not
     // specify one, we'll generate one for them.
     if (method.toLowerCase() === 'post') {
-      headers['Idempotency-Key'] = idempotencyKey
-        ? idempotencyKey
-        : this.generateIdempotencyKey();
+      headers['Idempotency-Key'] = idempotencyKey ? idempotencyKey : this.generateIdempotencyKey();
     }
 
     const json = this.getRequestBody(method, requestParameters, payloadKey);
@@ -174,7 +159,7 @@ export class Api {
       prefixUrl: this._baseUrl,
       // tslint:disable-next-line:no-any
       method: method as any,
-      responseType: 'json' as 'json',
+      responseType: 'json' as const,
       headers,
       searchParams,
       json,

@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface PayoutResponse extends Types.Payout, Types.APIResponse {}
 
 interface PayoutListResponse extends Types.APIResponse {
-  payouts: Types.Payout[];
+  payouts: Array<Types.Payout>;
   meta: Types.ListMeta;
 }
 
@@ -80,9 +80,7 @@ export class PayoutService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: PayoutListRequest
-  ): Promise<PayoutListResponse> {
+  public async list(requestParameters: PayoutListRequest): Promise<PayoutListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/payouts',
@@ -102,9 +100,7 @@ export class PayoutService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: PayoutListRequest
-  ): AsyncGenerator<Types.Payout, void, unknown> {
+  public async *all(requestParameters: PayoutListRequest): AsyncGenerator<Types.Payout, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -117,7 +113,7 @@ export class PayoutService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<PayoutResponse> {
+  public async find(identity: string): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payouts/:identity',
@@ -137,10 +133,7 @@ export class PayoutService {
     return formattedResponse;
   }
 
-  async update(
-    identity: string,
-    requestParameters: PayoutUpdateRequest
-  ): Promise<PayoutResponse> {
+  public async update(identity: string, requestParameters: PayoutUpdateRequest): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payouts/:identity',

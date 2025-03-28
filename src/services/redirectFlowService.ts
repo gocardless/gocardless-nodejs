@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface RedirectFlowResponse extends Types.RedirectFlow, Types.APIResponse {}
 
 interface RedirectFlowListResponse extends Types.APIResponse {
-  redirect_flows: Types.RedirectFlow[];
+  redirect_flows: Array<Types.RedirectFlow>;
   meta: Types.ListMeta;
 }
 
@@ -73,10 +73,10 @@ export class RedirectFlowService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: RedirectFlowCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -87,7 +87,7 @@ export class RedirectFlowService {
       payloadKey: 'redirect_flows',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -99,7 +99,7 @@ export class RedirectFlowService {
     return formattedResponse;
   }
 
-  async find(identity: string): Promise<RedirectFlowResponse> {
+  public async find(identity: string): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/redirect_flows/:identity',
@@ -119,9 +119,9 @@ export class RedirectFlowService {
     return formattedResponse;
   }
 
-  async complete(
+  public async complete(
     identity: string,
-    requestParameters: RedirectFlowCompleteRequest
+    requestParameters: RedirectFlowCompleteRequest,
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {

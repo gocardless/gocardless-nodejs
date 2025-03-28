@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface PayerAuthorisationResponse
-  extends Types.PayerAuthorisation,
-    Types.APIResponse {}
+interface PayerAuthorisationResponse extends Types.PayerAuthorisation, Types.APIResponse {}
 
 interface PayerAuthorisationListResponse extends Types.APIResponse {
-  payer_authorisations: Types.PayerAuthorisation[];
+  payer_authorisations: Array<Types.PayerAuthorisation>;
   meta: Types.ListMeta;
 }
 
@@ -47,7 +45,7 @@ export class PayerAuthorisationService {
     this.api = api;
   }
 
-  async find(identity: string): Promise<PayerAuthorisationResponse> {
+  public async find(identity: string): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payer_authorisations/:identity',
@@ -67,10 +65,10 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  async create(
+  public async create(
     requestParameters: PayerAuthorisationCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<PayerAuthorisationResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -81,7 +79,7 @@ export class PayerAuthorisationService {
       payloadKey: 'payer_authorisations',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -93,9 +91,9 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  async update(
+  public async update(
     identity: string,
-    requestParameters: PayerAuthorisationUpdateRequest
+    requestParameters: PayerAuthorisationUpdateRequest,
   ): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -116,7 +114,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  async submit(identity: string): Promise<PayerAuthorisationResponse> {
+  public async submit(identity: string): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payer_authorisations/:identity/actions/submit',
@@ -136,7 +134,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  async confirm(identity: string): Promise<PayerAuthorisationResponse> {
+  public async confirm(identity: string): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payer_authorisations/:identity/actions/confirm',

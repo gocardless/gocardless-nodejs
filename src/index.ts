@@ -2,7 +2,7 @@
 
 import { GoCardlessClient } from './client';
 
-const initialiser = function(token, envrionment, options = {}) {
+const initialiser = function (token, envrionment, options = {}) {
   return new GoCardlessClient(token, envrionment, options);
 };
 

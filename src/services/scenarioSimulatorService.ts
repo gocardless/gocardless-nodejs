@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface ScenarioSimulatorResponse
-  extends Types.ScenarioSimulator,
-    Types.APIResponse {}
+interface ScenarioSimulatorResponse extends Types.ScenarioSimulator, Types.APIResponse {}
 
 interface ScenarioSimulatorListResponse extends Types.APIResponse {
-  scenario_simulators: Types.ScenarioSimulator[];
+  scenario_simulators: Array<Types.ScenarioSimulator>;
   meta: Types.ListMeta;
 }
 
@@ -24,9 +22,9 @@ export class ScenarioSimulatorService {
     this.api = api;
   }
 
-  async run(
+  public async run(
     identity: string,
-    requestParameters: ScenarioSimulatorRunRequest
+    requestParameters: ScenarioSimulatorRunRequest,
   ): Promise<ScenarioSimulatorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {

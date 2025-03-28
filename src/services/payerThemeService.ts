@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface PayerThemeResponse extends Types.PayerTheme, Types.APIResponse {}
 
 interface PayerThemeListResponse extends Types.APIResponse {
-  payer_themes: Types.PayerTheme[];
+  payer_themes: Array<Types.PayerTheme>;
   meta: Types.ListMeta;
 }
 
@@ -38,10 +38,10 @@ export class PayerThemeService {
     this.api = api;
   }
 
-  async createForCreditor(
+  public async createForCreditor(
     requestParameters: PayerThemeCreateForCreditorRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<PayerThemeResponse> {
     const urlParameters = [];
     const requestParams = {

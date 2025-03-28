@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface SchemeIdentifierResponse
-  extends Types.SchemeIdentifier,
-    Types.APIResponse {}
+interface SchemeIdentifierResponse extends Types.SchemeIdentifier, Types.APIResponse {}
 
 interface SchemeIdentifierListResponse extends Types.APIResponse {
-  scheme_identifiers: Types.SchemeIdentifier[];
+  scheme_identifiers: Array<Types.SchemeIdentifier>;
   meta: Types.ListMeta;
 }
 
@@ -51,10 +49,10 @@ export class SchemeIdentifierService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: SchemeIdentifierCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<SchemeIdentifierResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -65,7 +63,7 @@ export class SchemeIdentifierService {
       payloadKey: 'scheme_identifiers',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -77,9 +75,7 @@ export class SchemeIdentifierService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: SchemeIdentifierListRequest
-  ): Promise<SchemeIdentifierListResponse> {
+  public async list(requestParameters: SchemeIdentifierListRequest): Promise<SchemeIdentifierListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/scheme_identifiers',
@@ -99,8 +95,8 @@ export class SchemeIdentifierService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: SchemeIdentifierListRequest
+  public async *all(
+    requestParameters: SchemeIdentifierListRequest,
   ): AsyncGenerator<Types.SchemeIdentifier, void, unknown> {
     let cursor = undefined;
     do {
@@ -114,7 +110,7 @@ export class SchemeIdentifierService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<SchemeIdentifierResponse> {
+  public async find(identity: string): Promise<SchemeIdentifierResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/scheme_identifiers/:identity',

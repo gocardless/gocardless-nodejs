@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface InstalmentScheduleResponse
-  extends Types.InstalmentSchedule,
-    Types.APIResponse {}
+interface InstalmentScheduleResponse extends Types.InstalmentSchedule, Types.APIResponse {}
 
 interface InstalmentScheduleListResponse extends Types.APIResponse {
-  instalment_schedules: Types.InstalmentSchedule[];
+  instalment_schedules: Array<Types.InstalmentSchedule>;
   meta: Types.ListMeta;
 }
 
@@ -26,7 +24,8 @@ interface InstalmentScheduleCreateWithDatesRequest {
   currency: Types.InstalmentScheduleCurrency;
 
   // An explicit array of instalment payments, each specifying at least an
-  // `amount` and `charge_date`.
+  // `amount` and `charge_date`. See [create (with
+  // dates)](#instalment-schedules-create-with-dates)
 
   instalments: Types.InstalmentScheduleInstalment[];
 
@@ -98,6 +97,7 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // Frequency of the payments you want to create, together with an array of
   // payment
   // amounts to be collected, with a specified start date for the first payment.
+  // See [create (with schedule)](#instalment-schedules-create-with-schedule)
   //
   instalments: Types.InstalmentScheduleInstalments;
 
@@ -197,10 +197,10 @@ export class InstalmentScheduleService {
     this.api = api;
   }
 
-  async createWithDates(
+  public async createWithDates(
     requestParameters: InstalmentScheduleCreateWithDatesRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -211,7 +211,7 @@ export class InstalmentScheduleService {
       payloadKey: 'instalment_schedules',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -223,10 +223,10 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  async createWithSchedule(
+  public async createWithSchedule(
     requestParameters: InstalmentScheduleCreateWithScheduleRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -237,7 +237,7 @@ export class InstalmentScheduleService {
       payloadKey: 'instalment_schedules',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -249,9 +249,7 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: InstalmentScheduleListRequest
-  ): Promise<InstalmentScheduleListResponse> {
+  public async list(requestParameters: InstalmentScheduleListRequest): Promise<InstalmentScheduleListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/instalment_schedules',
@@ -271,8 +269,8 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: InstalmentScheduleListRequest
+  public async *all(
+    requestParameters: InstalmentScheduleListRequest,
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {
     let cursor = undefined;
     do {
@@ -286,7 +284,7 @@ export class InstalmentScheduleService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<InstalmentScheduleResponse> {
+  public async find(identity: string): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/instalment_schedules/:identity',
@@ -306,9 +304,9 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  async update(
+  public async update(
     identity: string,
-    requestParameters: InstalmentScheduleUpdateRequest
+    requestParameters: InstalmentScheduleUpdateRequest,
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -329,7 +327,7 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  async cancel(identity: string): Promise<InstalmentScheduleResponse> {
+  public async cancel(identity: string): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/instalment_schedules/:identity/actions/cancel',

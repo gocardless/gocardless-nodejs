@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface BankDetailsLookupResponse
-  extends Types.BankDetailsLookup,
-    Types.APIResponse {}
+interface BankDetailsLookupResponse extends Types.BankDetailsLookup, Types.APIResponse {}
 
 interface BankDetailsLookupListResponse extends Types.APIResponse {
-  bank_details_lookups: Types.BankDetailsLookup[];
+  bank_details_lookups: Array<Types.BankDetailsLookup>;
   meta: Types.ListMeta;
 }
 
@@ -53,10 +51,10 @@ export class BankDetailsLookupService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: BankDetailsLookupCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<BankDetailsLookupResponse> {
     const urlParameters = [];
     const requestParams = {

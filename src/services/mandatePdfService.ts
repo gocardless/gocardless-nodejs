@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface MandatePdfResponse extends Types.MandatePdf, Types.APIResponse {}
 
 interface MandatePdfListResponse extends Types.APIResponse {
-  mandate_pdfs: Types.MandatePdf[];
+  mandate_pdfs: Array<Types.MandatePdf>;
   meta: Types.ListMeta;
 }
 
@@ -158,10 +158,10 @@ export class MandatePdfService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: MandatePdfCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<MandatePdfResponse> {
     const urlParameters = [];
     const requestParams = {

@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface CurrencyExchangeRateResponse
-  extends Types.CurrencyExchangeRate,
-    Types.APIResponse {}
+interface CurrencyExchangeRateResponse extends Types.CurrencyExchangeRate, Types.APIResponse {}
 
 interface CurrencyExchangeRateListResponse extends Types.APIResponse {
-  currency_exchange_rates: Types.CurrencyExchangeRate[];
+  currency_exchange_rates: Array<Types.CurrencyExchangeRate>;
   meta: Types.ListMeta;
 }
 
@@ -41,9 +39,7 @@ export class CurrencyExchangeRateService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: CurrencyExchangeRateListRequest
-  ): Promise<CurrencyExchangeRateListResponse> {
+  public async list(requestParameters: CurrencyExchangeRateListRequest): Promise<CurrencyExchangeRateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/currency_exchange_rates',
@@ -63,8 +59,8 @@ export class CurrencyExchangeRateService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: CurrencyExchangeRateListRequest
+  public async *all(
+    requestParameters: CurrencyExchangeRateListRequest,
   ): AsyncGenerator<Types.CurrencyExchangeRate, void, unknown> {
     let cursor = undefined;
     do {

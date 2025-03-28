@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface TaxRateResponse extends Types.TaxRate, Types.APIResponse {}
 
 interface TaxRateListResponse extends Types.APIResponse {
-  tax_rates: Types.TaxRate[];
+  tax_rates: Array<Types.TaxRate>;
   meta: Types.ListMeta;
 }
 
@@ -35,9 +35,7 @@ export class TaxRateService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: TaxRateListRequest
-  ): Promise<TaxRateListResponse> {
+  public async list(requestParameters: TaxRateListRequest): Promise<TaxRateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/tax_rates',
@@ -57,9 +55,7 @@ export class TaxRateService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: TaxRateListRequest
-  ): AsyncGenerator<Types.TaxRate, void, unknown> {
+  public async *all(requestParameters: TaxRateListRequest): AsyncGenerator<Types.TaxRate, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -72,7 +68,7 @@ export class TaxRateService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<TaxRateResponse> {
+  public async find(identity: string): Promise<TaxRateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/tax_rates/:identity',

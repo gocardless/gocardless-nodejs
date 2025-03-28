@@ -1,5 +1,66 @@
+/** Type for a balance resource. */
+export type Balance = {
+  // The total amount in the balance, defined as the sum of all debits
+  // subtracted from the sum of all credits,
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
+  amount?: number;
+
+  // Type of the balance. Could be one of
+  // <ul>
+  // <li>pending_payments_submitted: Payments we have submitted to the scheme
+  // but not yet confirmed. This does not exactly correspond to <i>Pending
+  // payments</i> in the dashboard, because this balance does not include
+  // payments that are pending submission.</li>
+  // <li>confirmed_funds: Payments that have been confirmed minus fees and
+  // unclaimed debits for refunds, failures and chargebacks. These funds have
+  // not yet been moved into a payout.</li>
+  // <li>pending_payouts: Confirmed payments that have been moved into a payout.
+  // This is the total due to be paid into your bank account in the next payout
+  // run (payouts happen once every business day).
+  // pending_payouts will only be non-zero while we are generating and
+  // submitting the payouts to our partner bank.</li>
+  // </ul>
+  balance_type?: BalanceBalanceType;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: BalanceCurrency;
+
+  // Dynamic [timestamp](#api-usage-time-zones--dates) recording when this
+  // resource was last updated.
+  last_updated_at?: string;
+
+  // Resources linked to this Balance.
+  links?: BalanceLinks;
+};
+
+export enum BalanceBalanceType {
+  ConfirmedFunds = 'confirmed_funds',
+  PendingPayouts = 'pending_payouts',
+  PendingPaymentsSubmitted = 'pending_payments_submitted',
+}
+
+export enum BalanceCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
+
+/** Type for a balancelinks resource. */
+export type BalanceLinks = {
+  // ID of the associated [creditor](#core-endpoints-creditors).
+  creditor?: string;
+};
+
 /** Type for a bankauthorisation resource. */
-export interface BankAuthorisation {
+export type BankAuthorisation = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
   authorisation_type?: BankAuthorisationAuthorisationType;
 
@@ -39,9 +100,13 @@ export interface BankAuthorisation {
   // `redirect_uri`, in which case you should
   // prompt the user to try the bank authorisation step again.
   //
-  // The `redirect_uri` you provide should handle the `outcome` query parameter
-  // for displaying the result of the
-  // bank authorisation as outlined above.
+  // Please note: bank authorisations can still fail despite an
+  // `outcome=success` on the `redirect_uri`. It is therefore recommended to
+  // wait for the relevant bank authorisation event, such as
+  // [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
+  // [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
+  // [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
+  // order to show the correct outcome to the user.
   //
   // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
   // query parameter `id=BRF123`.
@@ -51,14 +116,14 @@ export interface BankAuthorisation {
 
   // URL for an oauth flow that will allow the user to authorise the payment
   url?: string;
-}
+};
 
 /** Type for a bankauthorisationcreaterequestlinks resource. */
-export interface BankAuthorisationCreateRequestLinks {
+export type BankAuthorisationCreateRequestLinks = {
   // ID of the [billing request](#billing-requests-billing-requests) against
   // which this authorisation was created.
   billing_request?: string;
-}
+};
 
 export enum BankAuthorisationAuthorisationType {
   Mandate = 'mandate',
@@ -66,7 +131,7 @@ export enum BankAuthorisationAuthorisationType {
 }
 
 /** Type for a bankauthorisationlinks resource. */
-export interface BankAuthorisationLinks {
+export type BankAuthorisationLinks = {
   // ID of the [billing request](#billing-requests-billing-requests) against
   // which this authorisation was created.
   billing_request?: string;
@@ -74,10 +139,10 @@ export interface BankAuthorisationLinks {
   // ID of the [institution](#billing-requests-institutions) against which this
   // authorisation was created.
   institution?: string;
-}
+};
 
 /** Type for a bankdetailslookup resource. */
-export interface BankDetailsLookup {
+export type BankDetailsLookup = {
   // Array of [schemes](#mandates_scheme) supported for this bank account. This
   // will be an empty array if the bank account is not reachable by any schemes.
   available_debit_schemes?: BankDetailsLookupAvailableDebitScheme[];
@@ -91,7 +156,7 @@ export interface BankDetailsLookup {
   // still be able to collect payments from it - you should refer to the
   // `available_debit_schemes` attribute to determine reachability.</p>
   bic?: string | null;
-}
+};
 
 export enum BankDetailsLookupAvailableDebitScheme {
   Ach = 'ach',
@@ -107,7 +172,7 @@ export enum BankDetailsLookupAvailableDebitScheme {
 }
 
 /** Type for a billingrequest resource. */
-export interface BillingRequest {
+export type BillingRequest = {
   // List of actions that can be performed before this billing request can be
   // fulfilled.
   actions?: BillingRequestAction[];
@@ -131,7 +196,9 @@ export interface BillingRequest {
   // Unique identifier, beginning with "BRQ".
   id: string;
 
-  // Request for an instalment schedule
+  // Request for an instalment schedule. Has to contain either
+  // `instalments_with_schedule` object or an array of `instalments_with_dates`
+  // objects
   instalment_schedule_request?: BillingRequestInstalmentScheduleRequest | null;
 
   // Resources linked to this BillingRequest.
@@ -172,10 +239,10 @@ export interface BillingRequest {
 
   // Request for a subscription
   subscription_request?: BillingRequestSubscriptionRequest | null;
-}
+};
 
 /** Type for a billingrequestcreaterequestlinks resource. */
-export interface BillingRequestCreateRequestLinks {
+export type BillingRequestCreateRequestLinks = {
   // ID of the associated [creditor](#core-endpoints-creditors). Only required
   // if your account manages multiple creditors.
   creditor?: string;
@@ -189,10 +256,10 @@ export interface BillingRequestCreateRequestLinks {
   // which this request should be made.
   //
   customer_bank_account?: string;
-}
+};
 
 /** Type for a billingrequestcustomer resource. */
-export interface BillingRequestCustomer {
+export type BillingRequestCustomer = {
   // Customer's company name. Required unless a `given_name` and `family_name`
   // are provided. For Canadian customers, the use of a `company_name` value
   // will mean that any mandate created from this customer will be considered to
@@ -227,10 +294,10 @@ export interface BillingRequestCustomer {
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
-}
+};
 
 /** Type for a billingrequestcustomerbillingdetail resource. */
-export interface BillingRequestCustomerBillingDetail {
+export type BillingRequestCustomerBillingDetail = {
   // The first line of the customer's address.
   address_line1?: string | null;
 
@@ -274,7 +341,7 @@ export interface BillingRequestCustomerBillingDetail {
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
-}
+};
 
 export enum BillingRequestAccountType {
   Savings = 'savings',
@@ -286,7 +353,7 @@ export enum BillingRequestNotificationType {
 }
 
 /** Type for a billingrequestaction resource. */
-export interface BillingRequestAction {
+export type BillingRequestAction = {
   // List of currencies the current mandate supports
   available_currencies?: string[];
 
@@ -325,24 +392,24 @@ export interface BillingRequestAction {
 
   // Unique identifier for the action.
   type?: BillingRequestActionType;
-}
+};
 
 /** Type for a billingrequestactionavailablecurrencies resource. */
-export interface BillingRequestActionAvailableCurrencies {
+export type BillingRequestActionAvailableCurrencies = {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
-}
+};
 
 /** Type for a billingrequestactionbankauthorisation resource. */
-export interface BillingRequestActionBankAuthorisation {
+export type BillingRequestActionBankAuthorisation = {
   // Which authorisation adapter will be used to power these authorisations
   // (GoCardless internal use only)
   adapter?: BillingRequestActionBankAuthorisationAdapter;
 
   // What type of bank authorisations are supported on this billing request
   authorisation_type?: BillingRequestActionBankAuthorisationAuthorisationType;
-}
+};
 
 export enum BillingRequestActionBankAuthorisationAdapter {
   OpenBankingGatewayPis = 'open_banking_gateway_pis',
@@ -358,22 +425,22 @@ export enum BillingRequestActionBankAuthorisationAuthorisationType {
 }
 
 /** Type for a billingrequestactioncollectcustomerdetails resource. */
-export interface BillingRequestActionCollectCustomerDetails {
+export type BillingRequestActionCollectCustomerDetails = {
   // Default customer country code, as determined by scheme and payer location
   default_country_code?: string;
 
   //
   incomplete_fields?: BillingRequestActionCollectCustomerDetailsIncompleteFields;
-}
+};
 
 /** Type for a billingrequestactioncollectcustomerdetailsincompletefields resource. */
-export interface BillingRequestActionCollectCustomerDetailsIncompleteFields {
+export type BillingRequestActionCollectCustomerDetailsIncompleteFields = {
   //
   customer?: string[];
 
   //
   customer_billing_detail?: string[];
-}
+};
 
 export enum BillingRequestActionInstitutionGuessStatus {
   NotNeeded = 'not_needed',
@@ -398,22 +465,27 @@ export enum BillingRequestActionType {
 }
 
 /** Type for a billingrequestinstalmentschedulerequest resource. */
-export interface BillingRequestInstalmentScheduleRequest {
+export type BillingRequestInstalmentScheduleRequest = {
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
-  // are supported.
-  currency?: BillingRequestInstalmentScheduleRequestCurrency;
+  // code. Currently "USD" and "CAD" are supported.
+  currency?: string;
 
-  // instalments to be created. See [create (with
-  // dates)](#instalment-schedules-create-with-dates) and [create (with
-  // schedule)](#instalment-schedules-create-with-schedule) for more information
-  // on how to specify instalments.
-  instalments?: string | null[];
+  // An explicit array of instalment payments, each specifying at least an
+  // `amount` and `charge_date`. See [create (with
+  // dates)](#instalment-schedules-create-with-dates)
+  instalments_with_dates?: BillingRequestInstalmentScheduleRequestInstalmentsWithDate[] | null;
+
+  // Frequency of the payments you want to create, together with an array of
+  // payment
+  // amounts to be collected, with a specified start date for the first payment.
+  // See [create (with schedule)](#instalment-schedules-create-with-schedule)
+  //
+  instalments_with_schedule?: BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule | null;
 
   // Resources linked to this BillingRequestInstalmentScheduleRequest.
   links?: BillingRequestInstalmentScheduleRequestLinks;
@@ -450,30 +522,68 @@ export interface BillingRequestInstalmentScheduleRequest {
   // validation error
   // will be returned.
   total_amount?: string;
-}
+};
 
-export enum BillingRequestInstalmentScheduleRequestCurrency {
-  AUD = 'AUD',
-  CAD = 'CAD',
-  DKK = 'DKK',
-  EUR = 'EUR',
-  GBP = 'GBP',
-  NZD = 'NZD',
-  SEK = 'SEK',
-  USD = 'USD',
+/** Type for a billingrequestinstalmentschedulerequestinstalmentswithdate resource. */
+export type BillingRequestInstalmentScheduleRequestInstalmentsWithDate = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount: string;
+
+  // A future date on which the payment should be collected. If the date
+  // is before the next_possible_charge_date on the
+  // [mandate](#core-endpoints-mandates), it will be automatically rolled
+  // forwards to that date.
+  charge_date: string | null;
+
+  // A human-readable description of the payment. This will be included in the
+  // notification email GoCardless sends to your customer if your organisation
+  // does not send its own notifications (see [compliance
+  // requirements](#appendix-compliance-requirements)).
+  description?: string | null;
+};
+
+/** Type for a billingrequestinstalmentschedulerequestinstalmentswithschedule resource. */
+export type BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule = {
+  // List of amounts of each instalment, in the lowest denomination for the
+  // currency (e.g. cents in USD).
+  //
+  amounts: string[];
+
+  // Number of `interval_units` between charge dates. Must be greater than or
+  // equal to `1`.
+  //
+  interval: number;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit: BillingRequestInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit;
+
+  // The date on which the first payment should be charged. Must be on or after
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
+  // left blank and `month` or `day_of_month` are provided, this will be set to
+  // the date of the first payment. If created without `month` or `day_of_month`
+  // this will be set as the mandate's `next_possible_charge_date`
+  start_date?: string | null;
+};
+
+export enum BillingRequestInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
 }
 
 /** Type for a billingrequestinstalmentschedulerequestlinks resource. */
-export interface BillingRequestInstalmentScheduleRequestLinks {
+export type BillingRequestInstalmentScheduleRequestLinks = {
   // (Optional) ID of the
   // [instalment_schedule](#core-endpoints-instalment-schedules) that was
   // created from this instalment schedule request.
   //
   instalment_schedule?: string;
-}
+};
 
 /** Type for a billingrequestlinks resource. */
-export interface BillingRequestLinks {
+export type BillingRequestLinks = {
   // (Optional) ID of the [bank
   // authorisation](#billing-requests-bank-authorisations) that was used to
   // verify this request.
@@ -528,10 +638,10 @@ export interface BillingRequestLinks {
   // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
   // created from this subscription request.
   subscription_request_subscription?: string;
-}
+};
 
 /** Type for a billingrequestmandaterequest resource. */
-export interface BillingRequestMandateRequest {
+export type BillingRequestMandateRequest = {
   // This field is ACH specific, sometimes referred to as [SEC
   // code](https://www.moderntreasury.com/learn/sec-codes).
   //
@@ -588,6 +698,11 @@ export interface BillingRequestMandateRequest {
   // from a list of your available schemes.
   scheme?: string | null;
 
+  // If true, this billing request would be used to set up a mandate solely for
+  // moving (or sweeping) money from one account owned by the payer to another
+  // account that the payer also owns. This is required for Faster Payments
+  sweeping?: boolean;
+
   // Verification preference for the mandate. One of:
   // <ul>
   //   <li>`minimum`: only verify if absolutely required, such as when part of
@@ -614,7 +729,7 @@ export interface BillingRequestMandateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
   verify?: BillingRequestMandateRequestVerify;
-}
+};
 
 export enum BillingRequestMandateRequestAuthorisationSource {
   Web = 'web',
@@ -623,7 +738,7 @@ export enum BillingRequestMandateRequestAuthorisationSource {
 }
 
 /** Type for a billingrequestmandaterequestconstraints resource. */
-export interface BillingRequestMandateRequestConstraints {
+export type BillingRequestMandateRequestConstraints = {
   // The latest date at which payments can be taken, must occur after start_date
   // if present
   //
@@ -655,10 +770,10 @@ export interface BillingRequestMandateRequestConstraints {
   // authorisation happens.
   //
   start_date?: string;
-}
+};
 
 /** Type for a billingrequestmandaterequestconstraintsperiodiclimit resource. */
-export interface BillingRequestMandateRequestConstraintsPeriodicLimit {
+export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
   // The alignment of the period.
   //
   // `calendar` - this will finish on the end of the current period. For example
@@ -683,7 +798,7 @@ export interface BillingRequestMandateRequestConstraintsPeriodicLimit {
 
   // The repeating period for this mandate
   period?: BillingRequestMandateRequestConstraintsPeriodicLimitPeriod;
-}
+};
 
 export enum BillingRequestMandateRequestConstraintsPeriodicLimitAlignment {
   Calendar = 'calendar',
@@ -699,12 +814,12 @@ export enum BillingRequestMandateRequestConstraintsPeriodicLimitPeriod {
 }
 
 /** Type for a billingrequestmandaterequestlinks resource. */
-export interface BillingRequestMandateRequestLinks {
+export type BillingRequestMandateRequestLinks = {
   // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
   // from this mandate request. this mandate request.
   //
   mandate?: string;
-}
+};
 
 export enum BillingRequestMandateRequestVerify {
   Minimum = 'minimum',
@@ -714,7 +829,7 @@ export enum BillingRequestMandateRequestVerify {
 }
 
 /** Type for a billingrequestpaymentrequest resource. */
-export interface BillingRequestPaymentRequest {
+export type BillingRequestPaymentRequest = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount?: string;
 
@@ -764,7 +879,7 @@ export interface BillingRequestPaymentRequest {
   // the default. Please be aware that `sepa_instant_credit_transfer` may incur
   // an additional fee for your customer.
   scheme?: string | null;
-}
+};
 
 export enum BillingRequestPaymentRequestFundsSettlement {
   Managed = 'managed',
@@ -772,11 +887,11 @@ export enum BillingRequestPaymentRequestFundsSettlement {
 }
 
 /** Type for a billingrequestpaymentrequestlinks resource. */
-export interface BillingRequestPaymentRequestLinks {
+export type BillingRequestPaymentRequestLinks = {
   // (Optional) ID of the [payment](#core-endpoints-payments) that was created
   // from this payment request.
   payment?: string;
-}
+};
 
 export enum BillingRequestPurposeCode {
   Mortgage = 'mortgage',
@@ -794,7 +909,7 @@ export enum BillingRequestPurposeCode {
 }
 
 /** Type for a billingrequestresources resource. */
-export interface BillingRequestResources {
+export type BillingRequestResources = {
   // Embedded customer
   customer?: BillingRequestResourcesCustomer;
 
@@ -803,10 +918,10 @@ export interface BillingRequestResources {
 
   // Embedded customer billing detail
   customer_billing_detail?: BillingRequestResourcesCustomerBillingDetail;
-}
+};
 
 /** Type for a billingrequestresourcescustomer resource. */
-export interface BillingRequestResourcesCustomer {
+export type BillingRequestResourcesCustomer = {
   // Customer's company name. Required unless a `given_name` and `family_name`
   // are provided. For Canadian customers, the use of a `company_name` value
   // will mean that any mandate created from this customer will be considered to
@@ -847,10 +962,10 @@ export interface BillingRequestResourcesCustomer {
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
-}
+};
 
 /** Type for a billingrequestresourcescustomerbankaccount resource. */
-export interface BillingRequestResourcesCustomerBankAccount {
+export type BillingRequestResourcesCustomerBankAccount = {
   // Name of the account holder, as known by the bank. This field will be
   // transliterated, upcased and truncated to 18 characters. This field is
   // required unless the request includes a [customer bank account
@@ -900,7 +1015,7 @@ export interface BillingRequestResourcesCustomerBankAccount {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
-}
+};
 
 export enum BillingRequestResourcesCustomerBankAccountAccountType {
   Savings = 'savings',
@@ -908,14 +1023,14 @@ export enum BillingRequestResourcesCustomerBankAccountAccountType {
 }
 
 /** Type for a billingrequestresourcescustomerbankaccountlinks resource. */
-export interface BillingRequestResourcesCustomerBankAccountLinks {
+export type BillingRequestResourcesCustomerBankAccountLinks = {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
   // account.
   customer?: string;
-}
+};
 
 /** Type for a billingrequestresourcescustomerbillingdetail resource. */
-export interface BillingRequestResourcesCustomerBillingDetail {
+export type BillingRequestResourcesCustomerBillingDetail = {
   // The first line of the customer's address.
   address_line1?: string | null;
 
@@ -969,7 +1084,7 @@ export interface BillingRequestResourcesCustomerBillingDetail {
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
-}
+};
 
 export enum BillingRequestStatus {
   Pending = 'pending',
@@ -980,7 +1095,7 @@ export enum BillingRequestStatus {
 }
 
 /** Type for a billingrequestsubscriptionrequest resource. */
-export interface BillingRequestSubscriptionRequest {
+export type BillingRequestSubscriptionRequest = {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
   amount?: string;
@@ -994,8 +1109,7 @@ export interface BillingRequestSubscriptionRequest {
   count?: string | null;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
-  // are supported.
+  // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
@@ -1051,7 +1165,7 @@ export interface BillingRequestSubscriptionRequest {
   // mandate's `next_possible_charge_date`.
   //
   start_date?: string | null;
-}
+};
 
 export enum BillingRequestSubscriptionRequestIntervalUnit {
   Weekly = 'weekly',
@@ -1060,12 +1174,12 @@ export enum BillingRequestSubscriptionRequestIntervalUnit {
 }
 
 /** Type for a billingrequestsubscriptionrequestlinks resource. */
-export interface BillingRequestSubscriptionRequestLinks {
+export type BillingRequestSubscriptionRequestLinks = {
   // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
   // created from this subscription request.
   //
   subscription?: string;
-}
+};
 
 export enum BillingRequestSubscriptionRequestMonth {
   January = 'january',
@@ -1083,7 +1197,7 @@ export enum BillingRequestSubscriptionRequestMonth {
 }
 
 /** Type for a billingrequestflow resource. */
-export interface BillingRequestFlow {
+export type BillingRequestFlow = {
   // URL for a GC-controlled flow which will allow the payer to fulfil the
   // billing request
   authorisation_url?: string;
@@ -1176,29 +1290,29 @@ export interface BillingRequestFlow {
   // completing the flow. A redirect_uri needs to be provided for this parameter
   // to be taken into account.
   skip_success_screen?: boolean;
-}
+};
 
 /** Type for a billingrequestflowcreaterequestlinks resource. */
-export interface BillingRequestFlowCreateRequestLinks {
+export type BillingRequestFlowCreateRequestLinks = {
   // ID of the [billing request](#billing-requests-billing-requests) against
   // which this flow was created.
   billing_request: string;
-}
+};
 
 /** Type for a billingrequestflowlinks resource. */
-export interface BillingRequestFlowLinks {
+export type BillingRequestFlowLinks = {
   // ID of the [billing request](#billing-requests-billing-requests) against
   // which this flow was created.
   billing_request: string;
-}
+};
 
 /** Type for a billingrequestflowprefilledbankaccount resource. */
-export interface BillingRequestFlowPrefilledBankAccount {
+export type BillingRequestFlowPrefilledBankAccount = {
   // Bank account type for USD-denominated bank accounts. Must not be provided
   // for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
   account_type?: BillingRequestFlowPrefilledBankAccountAccountType;
-}
+};
 
 export enum BillingRequestFlowPrefilledBankAccountAccountType {
   Savings = 'savings',
@@ -1206,7 +1320,7 @@ export enum BillingRequestFlowPrefilledBankAccountAccountType {
 }
 
 /** Type for a billingrequestflowprefilledcustomer resource. */
-export interface BillingRequestFlowPrefilledCustomer {
+export type BillingRequestFlowPrefilledCustomer = {
   // The first line of the customer's address.
   address_line1?: string | null;
 
@@ -1249,10 +1363,10 @@ export interface BillingRequestFlowPrefilledCustomer {
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer.
   swedish_identity_number?: string | null;
-}
+};
 
 /** Type for a billingrequesttemplate resource. */
-export interface BillingRequestTemplate {
+export type BillingRequestTemplate = {
   // Permanent URL that customers can visit to allow them to complete a flow
   // based on this template, before being returned to the `redirect_uri`.
   authorisation_url?: string;
@@ -1352,14 +1466,14 @@ export interface BillingRequestTemplate {
   // Dynamic [timestamp](#api-usage-time-zones--dates) recording when this
   // resource was last updated.
   updated_at?: string;
-}
+};
 
 /** Type for a billingrequesttemplatecreaterequestlinks resource. */
-export interface BillingRequestTemplateCreateRequestLinks {
+export type BillingRequestTemplateCreateRequestLinks = {
   // ID of the associated [creditor](#core-endpoints-creditors). Only required
   // if your account manages multiple creditors.
   creditor?: string;
-}
+};
 
 export enum BillingRequestTemplateMandateRequestVerify {
   Minimum = 'minimum',
@@ -1369,7 +1483,7 @@ export enum BillingRequestTemplateMandateRequestVerify {
 }
 
 /** Type for a block resource. */
-export interface Block {
+export type Block = {
   // Shows if the block is active or disabled. Only active blocks will be used
   // when deciding
   // if a mandate should be blocked.
@@ -1419,7 +1533,7 @@ export interface Block {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was updated.
   updated_at?: string;
-}
+};
 
 export enum BlockReferenceType {
   Customer = 'customer',
@@ -1441,7 +1555,7 @@ export enum BlockReasonType {
 }
 
 /** Type for a creditor resource. */
-export interface Creditor {
+export type Creditor = {
   // The first line of the creditor's address.
   address_line1?: string | null;
 
@@ -1548,10 +1662,10 @@ export interface Creditor {
   // verification flow.</li>
   // </ul>
   verification_status?: CreditorVerificationStatus;
-}
+};
 
 /** Type for a creditorupdaterequestlinks resource. */
-export interface CreditorUpdateRequestLinks {
+export type CreditorUpdateRequestLinks = {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in AUD.
   default_aud_payout_account?: string | null;
@@ -1583,7 +1697,7 @@ export interface CreditorUpdateRequestLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
-}
+};
 
 export enum CreditorCreditorType {
   Company = 'company',
@@ -1605,7 +1719,7 @@ export enum CreditorFxPayoutCurrency {
 }
 
 /** Type for a creditorlinks resource. */
-export interface CreditorLinks {
+export type CreditorLinks = {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in AUD.
   default_aud_payout_account?: string | null;
@@ -1637,10 +1751,10 @@ export interface CreditorLinks {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
   // set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
-}
+};
 
 /** Type for a creditorschemeidentifier resource. */
-export interface CreditorSchemeIdentifier {
+export type CreditorSchemeIdentifier = {
   // The first line of the scheme identifier's support address.
   address_line1?: string;
 
@@ -1705,7 +1819,7 @@ export interface CreditorSchemeIdentifier {
   // The status of the scheme identifier. Only `active` scheme identifiers will
   // be applied to a creditor and used against payments.
   status?: CreditorSchemeIdentifierStatus;
-}
+};
 
 export enum CreditorSchemeIdentifierCurrency {
   AUD = 'AUD',
@@ -1745,7 +1859,7 @@ export enum CreditorVerificationStatus {
 }
 
 /** Type for a creditorbankaccount resource. */
-export interface CreditorBankAccount {
+export type CreditorBankAccount = {
   // Name of the account holder, as known by the bank. Usually this is the same
   // as the name stored with the linked [creditor](#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
@@ -1794,14 +1908,14 @@ export interface CreditorBankAccount {
   // Verification status of the Bank Account. Can be one of `pending`,
   // `in_review` or `successful`
   verification_status?: CreditorBankAccountVerificationStatus;
-}
+};
 
 /** Type for a creditorbankaccountcreaterequestlinks resource. */
-export interface CreditorBankAccountCreateRequestLinks {
+export type CreditorBankAccountCreateRequestLinks = {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
   creditor: string;
-}
+};
 
 export enum CreditorBankAccountAccountType {
   Savings = 'savings',
@@ -1809,11 +1923,11 @@ export enum CreditorBankAccountAccountType {
 }
 
 /** Type for a creditorbankaccountlinks resource. */
-export interface CreditorBankAccountLinks {
+export type CreditorBankAccountLinks = {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
   creditor?: string;
-}
+};
 
 export enum CreditorBankAccountVerificationStatus {
   Pending = 'pending',
@@ -1823,7 +1937,7 @@ export enum CreditorBankAccountVerificationStatus {
 }
 
 /** Type for a currencyexchangerate resource. */
-export interface CurrencyExchangeRate {
+export type CurrencyExchangeRate = {
   // The exchange rate from the source to target currencies provided with up to
   // 10 decimal places.
   rate?: string;
@@ -1836,10 +1950,10 @@ export interface CurrencyExchangeRate {
 
   // Time at which the rate was retrieved from the provider.
   time?: string;
-}
+};
 
 /** Type for a customer resource. */
-export interface Customer {
+export type Customer = {
   // The first line of the customer's address.
   address_line1?: string | null;
 
@@ -1915,7 +2029,7 @@ export interface Customer {
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
-}
+};
 
 export enum CustomerCurrency {
   AUD = 'AUD',
@@ -1940,7 +2054,7 @@ export enum CustomerSortField {
 }
 
 /** Type for a customerbankaccount resource. */
-export interface CustomerBankAccount {
+export type CustomerBankAccount = {
   // Name of the account holder, as known by the bank. This field will be
   // transliterated, upcased and truncated to 18 characters. This field is
   // required unless the request includes a [customer bank account
@@ -1990,10 +2104,10 @@ export interface CustomerBankAccount {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
-}
+};
 
 /** Type for a customerbankaccountcreaterequestlinks resource. */
-export interface CustomerBankAccountCreateRequestLinks {
+export type CustomerBankAccountCreateRequestLinks = {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
   // account.
   customer: string;
@@ -2002,7 +2116,7 @@ export interface CustomerBankAccountCreateRequestLinks {
   // token](#javascript-flow-customer-bank-account-tokens) to use in place of
   // bank account parameters.
   customer_bank_account_token?: string;
-}
+};
 
 export enum CustomerBankAccountAccountType {
   Savings = 'savings',
@@ -2010,14 +2124,14 @@ export enum CustomerBankAccountAccountType {
 }
 
 /** Type for a customerbankaccountlinks resource. */
-export interface CustomerBankAccountLinks {
+export type CustomerBankAccountLinks = {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
   // account.
   customer?: string;
-}
+};
 
 /** Type for a customernotification resource. */
-export interface CustomerNotification {
+export type CustomerNotification = {
   // The action that was taken on the notification. Currently this can only be
   // `handled`,
   // which means the integrator sent the notification themselves.
@@ -2051,14 +2165,14 @@ export interface CustomerNotification {
   // <li>`instalment_schedule_cancelled`</li>
   // </ul>
   type?: CustomerNotificationType;
-}
+};
 
 export enum CustomerNotificationActionTaken {
   Handled = 'handled',
 }
 
 /** Type for a customernotificationlinks resource. */
-export interface CustomerNotificationLinks {
+export type CustomerNotificationLinks = {
   // The customer who should be contacted with this notification.
   customer: string;
 
@@ -2076,7 +2190,7 @@ export interface CustomerNotificationLinks {
 
   // The identifier of the related subscription.
   subscription?: string;
-}
+};
 
 export enum CustomerNotificationType {
   PaymentCreated = 'payment_created',
@@ -2090,7 +2204,7 @@ export enum CustomerNotificationType {
 }
 
 /** Type for a event resource. */
-export interface Event {
+export type Event = {
   // What has happened to the resource. See [Event Actions](#event-actions) for
   // the possible actions.
   action?: string;
@@ -2146,7 +2260,7 @@ export interface Event {
   // <li>`subscriptions`</li>
   // </ul>
   resource_type?: EventResourceType;
-}
+};
 
 export enum EventInclude {
   BillingRequest = 'billing_request',
@@ -2163,7 +2277,7 @@ export enum EventInclude {
 }
 
 /** Type for a eventcustomernotification resource. */
-export interface EventCustomerNotification {
+export type EventCustomerNotification = {
   // Time after which GoCardless will send the notification by email.
   deadline?: string;
 
@@ -2176,10 +2290,10 @@ export interface EventCustomerNotification {
   // See [here](#core-endpoints-customer-notifications) for a complete list of
   // customer notification types.
   type?: string;
-}
+};
 
 /** Type for a eventdetails resource. */
-export interface EventDetails {
+export type EventDetails = {
   // When we send a creditor `new_payout_currency_added` webhook, we also send
   // the bank account id of the new account
   bank_account_id?: string;
@@ -2237,7 +2351,7 @@ export interface EventDetails {
   // Whether the payment will be retried automatically. Set on a payment failed
   // event.
   will_attempt_retry?: boolean;
-}
+};
 
 export enum EventDetailsOrigin {
   Bank = 'bank',
@@ -2262,7 +2376,7 @@ export enum EventDetailsScheme {
 }
 
 /** Type for a eventlinks resource. */
-export interface EventLinks {
+export type EventLinks = {
   // ID of a [bank authorisation](#billing-requests-bank-authorisations).
   bank_authorisation?: string;
 
@@ -2347,7 +2461,7 @@ export interface EventLinks {
   // If `resource_type` is `subscription`, this is the ID of the
   // [subscription](#core-endpoints-subscriptions) which has been updated.
   subscription?: string;
-}
+};
 
 export enum EventResourceType {
   BillingRequests = 'billing_requests',
@@ -2366,7 +2480,7 @@ export enum EventResourceType {
 }
 
 /** Type for a export resource. */
-export interface Export {
+export type Export = {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
@@ -2382,7 +2496,7 @@ export interface Export {
 
   // Unique identifier, beginning with "EX".
   id?: string;
-}
+};
 
 export enum ExportExportType {
   PaymentsIndex = 'payments_index',
@@ -2407,10 +2521,11 @@ export enum ExportExportType {
   GcInvalidAuthorisationRequests = 'gc_invalid_authorisation_requests',
   PartnerFees = 'partner_fees',
   PaymentsImportTemplate = 'payments_import_template',
+  PaymentAccountStatement = 'payment_account_statement',
 }
 
 /** Type for a instalmentschedule resource. */
-export interface InstalmentSchedule {
+export type InstalmentSchedule = {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
@@ -2464,10 +2579,10 @@ export interface InstalmentSchedule {
   // validation error
   // will be returned.
   total_amount?: string;
-}
+};
 
 /** Type for a instalmentscheduleinstalment resource. */
-export interface InstalmentScheduleInstalment {
+export type InstalmentScheduleInstalment = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
   amount: string;
@@ -2483,17 +2598,17 @@ export interface InstalmentScheduleInstalment {
   // does not send its own notifications (see [compliance
   // requirements](#appendix-compliance-requirements)).
   description?: string | null;
-}
+};
 
 /** Type for a instalmentschedulecreatewithdatesrequestlinks resource. */
-export interface InstalmentScheduleCreateWithDatesRequestLinks {
+export type InstalmentScheduleCreateWithDatesRequestLinks = {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // instalment schedule will create payments against.
   mandate: string;
-}
+};
 
 /** Type for a instalmentscheduleinstalments resource. */
-export interface InstalmentScheduleInstalments {
+export type InstalmentScheduleInstalments = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. pence in GBP, cents in EUR).
   //
@@ -2514,7 +2629,7 @@ export interface InstalmentScheduleInstalments {
   // the date of the first payment. If created without `month` or `day_of_month`
   // this will be set as the mandate's `next_possible_charge_date`
   start_date?: string | null;
-}
+};
 
 export enum InstalmentScheduleInstalmentsIntervalUnit {
   Weekly = 'weekly',
@@ -2523,11 +2638,11 @@ export enum InstalmentScheduleInstalmentsIntervalUnit {
 }
 
 /** Type for a instalmentschedulecreatewithschedulerequestlinks resource. */
-export interface InstalmentScheduleCreateWithScheduleRequestLinks {
+export type InstalmentScheduleCreateWithScheduleRequestLinks = {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // instalment schedule will create payments against.
   mandate: string;
-}
+};
 
 export enum InstalmentScheduleCurrency {
   AUD = 'AUD',
@@ -2541,7 +2656,7 @@ export enum InstalmentScheduleCurrency {
 }
 
 /** Type for a instalmentschedulelinks resource. */
-export interface InstalmentScheduleLinks {
+export type InstalmentScheduleLinks = {
   // ID of the associated [customer](#core-endpoints-customers).
   customer: string;
 
@@ -2551,7 +2666,7 @@ export interface InstalmentScheduleLinks {
 
   // Array of IDs of the associated [payments](#core-endpoints-payments)
   payments?: string[];
-}
+};
 
 export enum InstalmentScheduleStatus {
   Pending = 'pending',
@@ -2563,7 +2678,7 @@ export enum InstalmentScheduleStatus {
 }
 
 /** Type for a institution resource. */
-export interface Institution {
+export type Institution = {
   // Flag to show if selecting this institution in the select_institution action
   // can auto-complete the collect_bank_account action. The bank can return the
   // payer's bank account details to GoCardless.
@@ -2585,25 +2700,34 @@ export interface Institution {
 
   // A human readable name for this institution
   name?: string;
-}
+
+  // The status of the institution
+  status?: InstitutionStatus;
+};
 
 /** Type for a institutionid resource. */
-export interface InstitutionId {}
+export type InstitutionId = {};
+
+export enum InstitutionStatus {
+  Enabled = 'enabled',
+  Disabled = 'disabled',
+  TemporarilyDisabled = 'temporarily_disabled',
+}
 
 /** Type for a logo resource. */
-export interface Logo {
+export type Logo = {
   // Unique identifier, beginning with "LO".
   id?: string;
-}
+};
 
 /** Type for a logocreateforcreditorrequestlinks resource. */
-export interface LogoCreateForCreditorRequestLinks {
+export type LogoCreateForCreditorRequestLinks = {
   // ID of the creditor the logo belongs to
   creditor?: string;
-}
+};
 
 /** Type for a mandate resource. */
-export interface Mandate {
+export type Mandate = {
   // This field is ACH specific, sometimes referred to as [SEC
   // code](https://www.moderntreasury.com/learn/sec-codes).
   //
@@ -2701,10 +2825,10 @@ export interface Mandate {
   // [Timestamp](#api-usage-time-zones--dates) recording when this mandate was
   // verified.
   verified_at?: string | null;
-}
+};
 
 /** Type for a mandatecreaterequestlinks resource. */
-export interface MandateCreateRequestLinks {
+export type MandateCreateRequestLinks = {
   // ID of the associated [creditor](#core-endpoints-creditors). Only required
   // if your account manages multiple creditors.
   creditor?: string;
@@ -2713,7 +2837,7 @@ export interface MandateCreateRequestLinks {
   // account](#core-endpoints-customer-bank-accounts) which the mandate is
   // created and submits payments against.
   customer_bank_account: string;
-}
+};
 
 export enum MandateAuthorisationSource {
   Web = 'web',
@@ -2722,7 +2846,7 @@ export enum MandateAuthorisationSource {
 }
 
 /** Type for a mandateconsentparameters resource. */
-export interface MandateConsentParameters {
+export type MandateConsentParameters = {
   // The latest date at which payments can be taken, must occur after start_date
   // if present
   end_date?: string;
@@ -2735,10 +2859,10 @@ export interface MandateConsentParameters {
 
   // The date from which payments can be taken
   start_date?: string;
-}
+};
 
 /** Type for a mandateconsentparametersperiod resource. */
-export interface MandateConsentParametersPeriod {
+export type MandateConsentParametersPeriod = {
   // The maximum total amount that can be charged for all payments in this
   // period
   max_amount_per_period?: number;
@@ -2748,7 +2872,7 @@ export interface MandateConsentParametersPeriod {
 
   // The repeating period for this mandate
   period?: MandateConsentParametersPeriodPeriod;
-}
+};
 
 export enum MandateConsentParametersPeriodPeriod {
   Day = 'day',
@@ -2772,7 +2896,7 @@ export enum MandateFundsSettlement {
 }
 
 /** Type for a mandatelinks resource. */
-export interface MandateLinks {
+export type MandateLinks = {
   // ID of the associated [creditor](#core-endpoints-creditors).
   creditor?: string;
 
@@ -2786,7 +2910,7 @@ export interface MandateLinks {
 
   // ID of the new mandate if this mandate has been replaced.
   new_mandate?: string;
-}
+};
 
 export enum MandateStatus {
   PendingCustomerApproval = 'pending_customer_approval',
@@ -2802,7 +2926,7 @@ export enum MandateStatus {
 }
 
 /** Type for a mandateimport resource. */
-export interface MandateImport {
+export type MandateImport = {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
@@ -2832,20 +2956,20 @@ export interface MandateImport {
   // <li>`processed`: When all mandates have been imported successfully.</li>
   // </ul>
   status?: MandateImportStatus;
-}
+};
 
 /** Type for a mandateimportcreaterequestlinks resource. */
-export interface MandateImportCreateRequestLinks {
+export type MandateImportCreateRequestLinks = {
   // ID of the associated creditor. Only required if your account manages
   // multiple creditors.
   creditor?: string;
-}
+};
 
 /** Type for a mandateimportlinks resource. */
-export interface MandateImportLinks {
+export type MandateImportLinks = {
   // ID of the associated creditor.
   creditor?: string;
-}
+};
 
 export enum MandateImportScheme {
   Ach = 'ach',
@@ -2869,13 +2993,16 @@ export enum MandateImportStatus {
 }
 
 /** Type for a mandateimportentry resource. */
-export interface MandateImportEntry {
+export type MandateImportEntry = {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
 
   // Resources linked to this MandateImportEntry.
   links?: MandateImportEntryLinks;
+
+  // Per-resource processing errors
+  processing_errors?: JsonMap | null;
 
   // A unique identifier for this entry, which you can use (once the import has
   // been
@@ -2884,10 +3011,10 @@ export interface MandateImportEntry {
   // to 255 characters.
   //
   record_identifier?: string | null;
-}
+};
 
 /** Type for a mandateimportentryamendment resource. */
-export interface MandateImportEntryAmendment {
+export type MandateImportEntryAmendment = {
   // The creditor identifier of the direct debit originator. Required if mandate
   // import scheme is `sepa`.
   //
@@ -2902,10 +3029,10 @@ export interface MandateImportEntryAmendment {
   // import scheme is `sepa`.
   //
   original_mandate_reference: string;
-}
+};
 
 /** Type for a mandateimportentrybankaccount resource. */
-export interface MandateImportEntryBankAccount {
+export type MandateImportEntryBankAccount = {
   // Name of the account holder, as known by the bank. This field will be
   // transliterated, upcased and truncated to 18 characters. This field is
   // required unless the request includes a [customer bank account
@@ -2944,7 +3071,7 @@ export interface MandateImportEntryBankAccount {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
-}
+};
 
 export enum MandateImportEntryBankAccountAccountType {
   Savings = 'savings',
@@ -2952,7 +3079,7 @@ export enum MandateImportEntryBankAccountAccountType {
 }
 
 /** Type for a mandateimportentrycustomer resource. */
-export interface MandateImportEntryCustomer {
+export type MandateImportEntryCustomer = {
   // The first line of the customer's address. Required if mandate import scheme
   // is either `bacs` or `sepa`.
   //
@@ -3025,16 +3152,16 @@ export interface MandateImportEntryCustomer {
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
-}
+};
 
 /** Type for a mandateimportentrycreaterequestlinks resource. */
-export interface MandateImportEntryCreateRequestLinks {
+export type MandateImportEntryCreateRequestLinks = {
   // Unique identifier, beginning with "IM".
   mandate_import: string;
-}
+};
 
 /** Type for a mandateimportentrymandate resource. */
-export interface MandateImportEntryMandate {
+export type MandateImportEntryMandate = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
@@ -3044,10 +3171,15 @@ export interface MandateImportEntryMandate {
   // unique reference satisfying the different scheme requirements if this field
   // is left blank.
   reference?: string | null;
+};
+
+export enum MandateImportEntryStatus {
+  SuccessfullyProcessed = 'successfully_processed',
+  UnsuccessfullyProcessed = 'unsuccessfully_processed',
 }
 
 /** Type for a mandateimportentrylinks resource. */
-export interface MandateImportEntryLinks {
+export type MandateImportEntryLinks = {
   // The ID of the customer which was created when the mandate import was
   // processed.
   customer?: string;
@@ -3065,10 +3197,10 @@ export interface MandateImportEntryLinks {
   // [create a Mandate Import](#mandate-imports-create-a-new-mandate-import).
   //
   mandate_import: string;
-}
+};
 
 /** Type for a mandatepdf resource. */
-export interface MandatePdf {
+export type MandatePdf = {
   // The date and time at which the `url` will expire (10 minutes after the
   // original request).
   expires_at?: string;
@@ -3077,7 +3209,7 @@ export interface MandatePdf {
   // date and time specified by `expires_at`. You should not store this URL or
   // rely on its structure remaining the same.
   url?: string;
-}
+};
 
 export enum MandatePdfAccountType {
   Savings = 'savings',
@@ -3085,12 +3217,16 @@ export enum MandatePdfAccountType {
 }
 
 /** Type for a mandatepdfcreaterequestlinks resource. */
-export interface MandatePdfCreateRequestLinks {
+export type MandatePdfCreateRequestLinks = {
+  // ID of an existing [creditor](#core-endpoints-creditors). Only required if
+  // your account manages multiple creditors.
+  creditor?: string;
+
   // ID of an existing [mandate](#core-endpoints-mandates) to build the PDF
   // from. The customer's bank details will be censored in the generated PDF. No
   // other parameters may be provided alongside this.
   mandate?: string;
-}
+};
 
 export enum MandatePdfSubscriptionFrequency {
   Weekly = 'weekly',
@@ -3099,7 +3235,7 @@ export enum MandatePdfSubscriptionFrequency {
 }
 
 /** Type for a negativebalancelimit resource. */
-export interface NegativeBalanceLimit {
+export type NegativeBalanceLimit = {
   // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
   balance_limit?: string;
 
@@ -3117,13 +3253,13 @@ export interface NegativeBalanceLimit {
 
   // Resources linked to this NegativeBalanceLimit.
   links?: NegativeBalanceLimitLinks;
-}
+};
 
 /** Type for a negativebalancelimitcreaterequestlinks resource. */
-export interface NegativeBalanceLimitCreateRequestLinks {
+export type NegativeBalanceLimitCreateRequestLinks = {
   // ID of the [creditor](#core-endpoints-creditors) this limit relates to
   creditor: string;
-}
+};
 
 export enum NegativeBalanceLimitCurrency {
   AUD = 'AUD',
@@ -3137,17 +3273,17 @@ export enum NegativeBalanceLimitCurrency {
 }
 
 /** Type for a negativebalancelimitlinks resource. */
-export interface NegativeBalanceLimitLinks {
+export type NegativeBalanceLimitLinks = {
   // ID of the [creator_user](#core-endpoints-creator_users) who created this
   // limit
   creator_user?: string;
 
   // ID of [creditor](#core-endpoints-creditors) which this limit relates to
   creditor?: string;
-}
+};
 
 /** Type for a payerauthorisation resource. */
-export interface PayerAuthorisation {
+export type PayerAuthorisation = {
   // All details required for the creation of a
   // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
   bank_account?: PayerAuthorisationBankAccount;
@@ -3186,10 +3322,10 @@ export interface PayerAuthorisation {
   // and mandate is not created</li>
   // </ul>
   status?: PayerAuthorisationStatus;
-}
+};
 
 /** Type for a payerauthorisationbankaccount resource. */
-export interface PayerAuthorisationBankAccount {
+export type PayerAuthorisationBankAccount = {
   // Name of the account holder, as known by the bank. This field will be
   // transliterated, upcased and truncated to 18 characters. This field is
   // required unless the request includes a [customer bank account
@@ -3241,7 +3377,7 @@ export interface PayerAuthorisationBankAccount {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
-}
+};
 
 export enum PayerAuthorisationBankAccountAccountType {
   Savings = 'savings',
@@ -3249,7 +3385,7 @@ export enum PayerAuthorisationBankAccountAccountType {
 }
 
 /** Type for a payerauthorisationcustomer resource. */
-export interface PayerAuthorisationCustomer {
+export type PayerAuthorisationCustomer = {
   // The first line of the customer's address.
   address_line1?: string | null;
 
@@ -3311,10 +3447,10 @@ export interface PayerAuthorisationCustomer {
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
-}
+};
 
 /** Type for a payerauthorisationincompletefield resource. */
-export interface PayerAuthorisationIncompleteField {
+export type PayerAuthorisationIncompleteField = {
   // The root resource.
   field?: string;
 
@@ -3323,10 +3459,10 @@ export interface PayerAuthorisationIncompleteField {
 
   // The path to the field e.g. "/payer_authorisations/customer/city"
   request_pointer?: string;
-}
+};
 
 /** Type for a payerauthorisationlinks resource. */
-export interface PayerAuthorisationLinks {
+export type PayerAuthorisationLinks = {
   // Unique identifier, beginning with "BA".
   bank_account?: string;
 
@@ -3336,10 +3472,10 @@ export interface PayerAuthorisationLinks {
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
   mandate?: string;
-}
+};
 
 /** Type for a payerauthorisationmandate resource. */
-export interface PayerAuthorisationMandate {
+export type PayerAuthorisationMandate = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
@@ -3363,7 +3499,7 @@ export interface PayerAuthorisationMandate {
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
   // "sepa_core" are supported.
   scheme?: PayerAuthorisationMandateScheme;
-}
+};
 
 export enum PayerAuthorisationMandateScheme {
   Ach = 'ach',
@@ -3387,19 +3523,19 @@ export enum PayerAuthorisationStatus {
 }
 
 /** Type for a payertheme resource. */
-export interface PayerTheme {
+export type PayerTheme = {
   // Unique identifier, beginning with "PTH".
   id?: string;
-}
+};
 
 /** Type for a payerthemecreateforcreditorrequestlinks resource. */
-export interface PayerThemeCreateForCreditorRequestLinks {
+export type PayerThemeCreateForCreditorRequestLinks = {
   // ID of the creditor the payer theme belongs to
   creditor?: string | null;
-}
+};
 
 /** Type for a payment resource. */
-export interface Payment {
+export type Payment = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
   amount?: string;
@@ -3494,17 +3630,17 @@ export interface Payment {
   // <li>`charged_back`: the payment has been charged back</li>
   // </ul>
   status?: PaymentStatus;
-}
+};
 
 /** Type for a paymentcreaterequestlinks resource. */
-export interface PaymentCreateRequestLinks {
+export type PaymentCreateRequestLinks = {
   // ID of the [mandate](#core-endpoints-mandates) against which this payment
   // should be collected.
   mandate: string;
-}
+};
 
 /** Type for a paymentchargedate resource. */
-export interface PaymentChargeDate {
+export type PaymentChargeDate = {
   // Limit to records where the payment was or will be collected from the
   // customer's bank account after the specified date.
   gt?: string;
@@ -3520,7 +3656,7 @@ export interface PaymentChargeDate {
   // Limit to records where the payment was or will be collected from the
   // customer's bank account on or before the specified date.
   lte?: string;
-}
+};
 
 export enum PaymentSortDirection {
   Asc = 'asc',
@@ -3544,7 +3680,7 @@ export enum PaymentCurrency {
 }
 
 /** Type for a paymentfx resource. */
-export interface PaymentFx {
+export type PaymentFx = {
   // Estimated rate that will be used in the foreign exchange of the `amount`
   // into the `fx_currency`.
   // This will vary based on the prevailing market rate until the moment that it
@@ -3566,7 +3702,7 @@ export interface PaymentFx {
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
   fx_currency?: PaymentFxFxCurrency;
-}
+};
 
 export enum PaymentFxFxCurrency {
   AUD = 'AUD',
@@ -3580,7 +3716,7 @@ export enum PaymentFxFxCurrency {
 }
 
 /** Type for a paymentlinks resource. */
-export interface PaymentLinks {
+export type PaymentLinks = {
   // ID of [creditor](#core-endpoints-creditors) to which the collected payment
   // will be sent.
   creditor?: string;
@@ -3603,7 +3739,7 @@ export interface PaymentLinks {
   // was created.<br/>_Note_: this property will only be present if this payment
   // is part of a subscription.
   subscription?: string;
-}
+};
 
 export enum PaymentStatus {
   PendingCustomerApproval = 'pending_customer_approval',
@@ -3618,7 +3754,7 @@ export enum PaymentStatus {
 }
 
 /** Type for a payout resource. */
-export interface Payout {
+export type Payout = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount?: string;
 
@@ -3692,7 +3828,7 @@ export interface Payout {
   // jurisdiction. Currently “EUR”, “GBP”, for French or British merchants, this
   // will be `null` if tax is not applicable <em>beta</em>
   tax_currency?: string | null;
-}
+};
 
 export enum PayoutCurrency {
   AUD = 'AUD',
@@ -3706,7 +3842,7 @@ export enum PayoutCurrency {
 }
 
 /** Type for a payoutfx resource. */
-export interface PayoutFx {
+export type PayoutFx = {
   // Estimated rate that will be used in the foreign exchange of the `amount`
   // into the `fx_currency`.
   // This will vary based on the prevailing market rate until the moment that it
@@ -3728,7 +3864,7 @@ export interface PayoutFx {
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
   fx_currency?: PayoutFxFxCurrency;
-}
+};
 
 export enum PayoutFxFxCurrency {
   AUD = 'AUD',
@@ -3742,7 +3878,7 @@ export enum PayoutFxFxCurrency {
 }
 
 /** Type for a payoutlinks resource. */
-export interface PayoutLinks {
+export type PayoutLinks = {
   // ID of [creditor](#core-endpoints-creditors) who will receive this payout,
   // i.e. the owner of the `creditor_bank_account`.
   creditor?: string;
@@ -3750,7 +3886,7 @@ export interface PayoutLinks {
   // ID of [bank account](#core-endpoints-creditor-bank-accounts) which this
   // will be sent to.
   creditor_bank_account?: string;
-}
+};
 
 export enum PayoutPayoutType {
   Merchant = 'merchant',
@@ -3764,7 +3900,7 @@ export enum PayoutStatus {
 }
 
 /** Type for a payoutitem resource. */
-export interface PayoutItem {
+export type PayoutItem = {
   // The positive (credit) or negative (debit) value of the item, in fractional
   // currency;
   // the lowest denomination for the currency (e.g. pence in GBP, cents in EUR),
@@ -3815,7 +3951,7 @@ export interface PayoutItem {
   // </ul>
   //
   type?: PayoutItemType;
-}
+};
 
 export enum PayoutItemInclude2020TaxCutover {
   True = 'true',
@@ -3823,7 +3959,7 @@ export enum PayoutItemInclude2020TaxCutover {
 }
 
 /** Type for a payoutitemlinks resource. */
-export interface PayoutItemLinks {
+export type PayoutItemLinks = {
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016. Present only for the items of type
   // `payment_refunded`, `refund` and `refund_funds_returned`.
@@ -3835,10 +3971,10 @@ export interface PayoutItemLinks {
   // Unique identifier, beginning with "RF". Present only for the items of type
   // `payment_refunded`, `refund` and `refund_funds_returned`.
   refund?: string;
-}
+};
 
 /** Type for a payoutitemtaxis resource. */
-export interface PayoutItemTaxis {
+export type PayoutItemTaxis = {
   // The amount of tax applied to a fee in fractional currency; the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR), to one
   // decimal place.
@@ -3877,7 +4013,7 @@ export interface PayoutItemTaxis {
 
   // The unique identifier created by the jurisdiction, tax type and version
   tax_rate_id?: string;
-}
+};
 
 export enum PayoutItemTaxisCurrency {
   AUD = 'AUD',
@@ -3904,7 +4040,7 @@ export enum PayoutItemType {
 }
 
 /** Type for a redirectflow resource. */
-export interface RedirectFlow {
+export type RedirectFlow = {
   // The URL of a confirmation page, which you may optionally redirect the
   // customer to rather than use your own page, that confirms in their chosen
   // language that their Direct Debit has been set up successfully. Only
@@ -3957,23 +4093,23 @@ export interface RedirectFlow {
   // The URL to redirect to upon successful mandate setup. You must use a URL
   // beginning `https` in the live environment.
   success_redirect_url?: string;
-}
+};
 
 /** Type for a redirectflowcreaterequestlinks resource. */
-export interface RedirectFlowCreateRequestLinks {
+export type RedirectFlowCreateRequestLinks = {
   // The [creditor](#core-endpoints-creditors) for whom the mandate will be
   // created. The `name` of the creditor will be displayed on the payment page.
   // Required if your account manages multiple creditors.
   creditor?: string;
-}
+};
 
 /** Type for a redirectflowprefilledbankaccount resource. */
-export interface RedirectFlowPrefilledBankAccount {
+export type RedirectFlowPrefilledBankAccount = {
   // Bank account type for USD-denominated bank accounts. Must not be provided
   // for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
   account_type?: RedirectFlowPrefilledBankAccountAccountType;
-}
+};
 
 export enum RedirectFlowPrefilledBankAccountAccountType {
   Savings = 'savings',
@@ -3981,7 +4117,7 @@ export enum RedirectFlowPrefilledBankAccountAccountType {
 }
 
 /** Type for a redirectflowprefilledcustomer resource. */
-export interface RedirectFlowPrefilledCustomer {
+export type RedirectFlowPrefilledCustomer = {
   // The first line of the customer's address.
   address_line1?: string | null;
 
@@ -4030,10 +4166,10 @@ export interface RedirectFlowPrefilledCustomer {
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer.
   swedish_identity_number?: string | null;
-}
+};
 
 /** Type for a redirectflowlinks resource. */
-export interface RedirectFlowLinks {
+export type RedirectFlowLinks = {
   // ID of [billing request](#billing-requests-billing-requests) that a redirect
   // flow can create.<br />**Note**: The redirect flow will only create a
   // billing request in the event the redirect flow is eligible to send the
@@ -4058,7 +4194,7 @@ export interface RedirectFlowLinks {
   // flow.<br/>**Note**: this property will not be present until the redirect
   // flow has been successfully completed.
   mandate?: string;
-}
+};
 
 export enum RedirectFlowScheme {
   Ach = 'ach',
@@ -4072,7 +4208,7 @@ export enum RedirectFlowScheme {
 }
 
 /** Type for a refund resource. */
-export interface Refund {
+export type Refund = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount?: string;
 
@@ -4130,10 +4266,10 @@ export interface Refund {
   // <li>`funds_returned`: the refund has had its funds returned</li>
   // </ul>
   status?: RefundStatus;
-}
+};
 
 /** Type for a refundcreaterequestlinks resource. */
-export interface RefundCreateRequestLinks {
+export type RefundCreateRequestLinks = {
   //  ID of the [mandate](#core-endpoints-mandates) against which the refund is
   // being made. <br /> <p
   // class="restricted-notice"><strong>Restricted</strong>: You must request
@@ -4144,7 +4280,7 @@ export interface RefundCreateRequestLinks {
   // ID of the [payment](#core-endpoints-payments) against which the refund is
   // being made.
   payment?: string;
-}
+};
 
 export enum RefundRefundType {
   Mandate = 'mandate',
@@ -4152,7 +4288,7 @@ export enum RefundRefundType {
 }
 
 /** Type for a refundfx resource. */
-export interface RefundFx {
+export type RefundFx = {
   // Estimated rate that will be used in the foreign exchange of the `amount`
   // into the `fx_currency`.
   // This will vary based on the prevailing market rate until the moment that it
@@ -4174,7 +4310,7 @@ export interface RefundFx {
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
   fx_currency?: RefundFxFxCurrency;
-}
+};
 
 export enum RefundFxFxCurrency {
   AUD = 'AUD',
@@ -4188,7 +4324,7 @@ export enum RefundFxFxCurrency {
 }
 
 /** Type for a refundlinks resource. */
-export interface RefundLinks {
+export type RefundLinks = {
   // ID of the [mandate](#core-endpoints-mandates) against which the refund is
   // being made.
   mandate?: string;
@@ -4196,7 +4332,7 @@ export interface RefundLinks {
   // ID of the [payment](#core-endpoints-payments) against which the refund is
   // being made.
   payment?: string;
-}
+};
 
 export enum RefundStatus {
   Created = 'created',
@@ -4209,7 +4345,7 @@ export enum RefundStatus {
 }
 
 /** Type for a scenariosimulator resource. */
-export interface ScenarioSimulator {
+export type ScenarioSimulator = {
   // The unique identifier of the simulator, used to initiate simulations. One
   // of:
   // <ul>
@@ -4249,11 +4385,11 @@ export interface ScenarioSimulator {
   // charged back payment.</li>
   // <li>`payment_late_failure`: Transitions a payment through to
   // `late_failure`, having been apparently collected successfully beforehand.
-  // It must start in the `pending_submission` state, and its mandate must be in
-  // the `activated` state (unless it is a payment for ACH, BECS, BECS_NZ or
-  // SEPA, in which cases the mandate may be `pending_submission`, since their
-  // mandates are submitted with their first payment). Not compatible with
-  // Autogiro mandates.</li>
+  // It must start in either the `pending_submission` or `paid_out` state, and
+  // its mandate must be in the `activated` state (unless it is a payment for
+  // ACH, BECS, BECS_NZ or SEPA, in which cases the mandate may be
+  // `pending_submission`, since their mandates are submitted with their first
+  // payment). Not compatible with Autogiro mandates.</li>
   // <li>`payment_late_failure_settled`: Behaves the same as the
   // `payment_late_failure` simulator, except that the late failure is
   // additionally included as a debit item in a payout, thereby settling the
@@ -4334,18 +4470,18 @@ export interface ScenarioSimulator {
   // with a `payment_request` are supported.</li>
   // </ul>
   id?: string;
-}
+};
 
 /** Type for a scenariosimulatorrunrequestlinks resource. */
-export interface ScenarioSimulatorRunRequestLinks {
+export type ScenarioSimulatorRunRequestLinks = {
   // ID of the resource to run the simulation against.
   // Must be same type of resource as the simulator that is being run.
   // eg. Payment ID for `payment_failed`, Mandate ID for `mandate_activated` etc
   resource: string;
-}
+};
 
 /** Type for a schemeidentifier resource. */
-export interface SchemeIdentifier {
+export type SchemeIdentifier = {
   // The first line of the scheme identifier's support address.
   address_line1?: string;
 
@@ -4410,15 +4546,15 @@ export interface SchemeIdentifier {
   // The status of the scheme identifier. Only `active` scheme identifiers will
   // be applied to a creditor and used against payments.
   status?: SchemeIdentifierStatus;
-}
+};
 
 /** Type for a schemeidentifiercreaterequestlinks resource. */
-export interface SchemeIdentifierCreateRequestLinks {
+export type SchemeIdentifierCreateRequestLinks = {
   // <em>required</em> ID of the associated
   // [creditor](#core-endpoints-creditors).
   //
   creditor?: string;
-}
+};
 
 export enum SchemeIdentifierCurrency {
   AUD = 'AUD',
@@ -4456,13 +4592,13 @@ type JsonField = boolean | number | string | null;
 export interface JsonMap {
   [key: string]: JsonField | JsonMap | JsonArray;
 }
-export interface JsonArray extends Array<JsonField> {}
+export type JsonArray = Array<JsonField>
 
-export interface APIResponse {
+export type APIResponse = {
   __response__: object;
-}
+};
 
-export interface Fx {
+export type Fx = {
   // Rate used in the foreign exchange of the `amount` into the `fx_currency`.
   // Present only after a resource is paid out. Has up to 10 decimal places.,
   exchange_rate: string;
@@ -4482,7 +4618,7 @@ export interface Fx {
   // "EUR", "GBP", "NZD", "SEK" and "USD" are supported. Present only if payouts will be (or
   // were) made via foreign exchange.,
   fx_currency: FxCurrency;
-}
+};
 
 // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the currency in
 // which amounts will be paid out (after foreign exchange). Currently "AUD", "CAD", "DKK",
@@ -4517,7 +4653,7 @@ export interface ListMetaCursor {
 }
 
 /** Type for a subscription resource. */
-export interface Subscription {
+export type Subscription = {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
   amount?: string;
@@ -4634,14 +4770,14 @@ export interface Subscription {
 
   // Up to 10 upcoming payments with their amounts and charge dates.
   upcoming_payments?: SubscriptionUpcomingPayment[];
-}
+};
 
 /** Type for a subscriptioncreaterequestlinks resource. */
-export interface SubscriptionCreateRequestLinks {
+export type SubscriptionCreateRequestLinks = {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // subscription will create payments against.
   mandate: string;
-}
+};
 
 export enum SubscriptionIntervalUnit {
   Weekly = 'weekly',
@@ -4650,11 +4786,11 @@ export enum SubscriptionIntervalUnit {
 }
 
 /** Type for a subscriptionlinks resource. */
-export interface SubscriptionLinks {
+export type SubscriptionLinks = {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // subscription will create payments against.
   mandate?: string;
-}
+};
 
 export enum SubscriptionMonth {
   January = 'january',
@@ -4681,17 +4817,17 @@ export enum SubscriptionStatus {
 }
 
 /** Type for a subscriptionupcomingpayment resource. */
-export interface SubscriptionUpcomingPayment {
+export type SubscriptionUpcomingPayment = {
   // The amount of this payment, in minor unit (e.g. pence in GBP, cents in
   // EUR).
   amount?: string;
 
   // The date on which this payment will be charged.
   charge_date?: string;
-}
+};
 
 /** Type for a taxrate resource. */
-export interface TaxRate {
+export type TaxRate = {
   // Date at which GoCardless stopped applying the tax rate for the
   // jurisdiction.
   end_date?: string | null;
@@ -4710,10 +4846,10 @@ export interface TaxRate {
 
   // The type of tax applied by this rate
   type?: string;
-}
+};
 
 /** Type for a transferredmandate resource. */
-export interface TransferredMandate {
+export type TransferredMandate = {
   // Encrypted customer bank account details, containing:
   // `iban`, `account_holder_name`, `swift_bank_code`, `swift_branch_code`,
   // `swift_account_number`
@@ -4729,20 +4865,20 @@ export interface TransferredMandate {
   // The ID of an RSA-2048 public key, from your JWKS, used to encrypt the AES
   // key.
   public_key_id?: string;
-}
+};
 
 /** Type for a transferredmandatelinks resource. */
-export interface TransferredMandateLinks {
+export type TransferredMandateLinks = {
   // The ID of the updated
   // [customer_bank_account](#core-endpoints-customer-bank-accounts)
   customer_bank_account?: string;
 
   // The ID of the transferred mandate
   mandate?: string;
-}
+};
 
 /** Type for a verificationdetail resource. */
-export interface VerificationDetail {
+export type VerificationDetail = {
   // The first line of the company's address.
   address_line1?: string;
 
@@ -4772,16 +4908,16 @@ export interface VerificationDetail {
 
   // The company's postal code.
   postal_code?: string;
-}
+};
 
 /** Type for a verificationdetailcreaterequestlinks resource. */
-export interface VerificationDetailCreateRequestLinks {
+export type VerificationDetailCreateRequestLinks = {
   // ID of the associated [creditor](#core-endpoints-creditors).
   creditor: string;
-}
+};
 
 /** Type for a verificationdetaildirector resource. */
-export interface VerificationDetailDirector {
+export type VerificationDetailDirector = {
   // The city of the person's address.
   city: string;
 
@@ -4803,16 +4939,16 @@ export interface VerificationDetailDirector {
 
   // The street of the person's address.
   street: string;
-}
+};
 
 /** Type for a verificationdetaillinks resource. */
-export interface VerificationDetailLinks {
+export type VerificationDetailLinks = {
   // ID of the [creditor](#core-endpoints-creditors)
   creditor?: string;
-}
+};
 
 /** Type for a webhook resource. */
-export interface Webhook {
+export type Webhook = {
   // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
   // resource was created.
   created_at?: string;
@@ -4852,4 +4988,4 @@ export interface Webhook {
 
   // URL the webhook was POST-ed to
   url?: string;
-}
+};
