@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-import { Api } from '../api/api';
-import * as Types from '../types/Types';
+import { Api } from "../api/api";
+import * as Types from "../types/Types";
 
 interface PaymentResponse extends Types.Payment, Types.APIResponse {}
 
@@ -14,7 +14,7 @@ interface PaymentCreateRequest {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP, cents
   // in EUR).
 
-  amount: string;
+  amount: number;
 
   // The amount to be deducted from the payment as the OAuth app's fee, in the
   // lowest denomination for the currency (e.g. pence in GBP, cents in EUR).
@@ -214,24 +214,24 @@ export class PaymentService {
 
   async create(
     requestParameters: PaymentCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey = "",
     customHeaders: Types.JsonMap = {}
   ): Promise<PaymentResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/payments',
-      method: 'post',
+      path: "/payments",
+      method: "post",
       urlParameters,
       requestParameters,
-      payloadKey: 'payments',
+      payloadKey: "payments",
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentResponse = {
-      ...(response.body?.['payments'] ?? response),
+      ...(response.body?.["payments"] ?? response),
       __response__: response.__response__,
     };
 
@@ -243,8 +243,8 @@ export class PaymentService {
   ): Promise<PaymentListResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/payments',
-      method: 'get',
+      path: "/payments",
+      method: "get",
       urlParameters,
       requestParameters,
       payloadKey: null,
@@ -276,10 +276,10 @@ export class PaymentService {
   }
 
   async find(identity: string): Promise<PaymentResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
+    const urlParameters = [{ key: "identity", value: identity }];
     const requestParams = {
-      path: '/payments/:identity',
-      method: 'get',
+      path: "/payments/:identity",
+      method: "get",
       urlParameters,
 
       payloadKey: null,
@@ -288,7 +288,7 @@ export class PaymentService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentResponse = {
-      ...response.body['payments'],
+      ...response.body["payments"],
       __response__: response.__response__,
     };
 
@@ -299,19 +299,19 @@ export class PaymentService {
     identity: string,
     requestParameters: PaymentUpdateRequest
   ): Promise<PaymentResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
+    const urlParameters = [{ key: "identity", value: identity }];
     const requestParams = {
-      path: '/payments/:identity',
-      method: 'put',
+      path: "/payments/:identity",
+      method: "put",
       urlParameters,
       requestParameters,
-      payloadKey: 'payments',
+      payloadKey: "payments",
       fetch: null,
     };
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentResponse = {
-      ...response.body['payments'],
+      ...response.body["payments"],
       __response__: response.__response__,
     };
 
@@ -322,10 +322,10 @@ export class PaymentService {
     identity: string,
     requestParameters: PaymentCancelRequest
   ): Promise<PaymentResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
+    const urlParameters = [{ key: "identity", value: identity }];
     const requestParams = {
-      path: '/payments/:identity/actions/cancel',
-      method: 'post',
+      path: "/payments/:identity/actions/cancel",
+      method: "post",
       urlParameters,
       requestParameters,
       payloadKey: null,
@@ -334,7 +334,7 @@ export class PaymentService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentResponse = {
-      ...response.body['payments'],
+      ...response.body["payments"],
       __response__: response.__response__,
     };
 
@@ -345,10 +345,10 @@ export class PaymentService {
     identity: string,
     requestParameters: PaymentRetryRequest
   ): Promise<PaymentResponse> {
-    const urlParameters = [{ key: 'identity', value: identity }];
+    const urlParameters = [{ key: "identity", value: identity }];
     const requestParams = {
-      path: '/payments/:identity/actions/retry',
-      method: 'post',
+      path: "/payments/:identity/actions/retry",
+      method: "post",
       urlParameters,
       requestParameters,
       payloadKey: null,
@@ -357,7 +357,7 @@ export class PaymentService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: PaymentResponse = {
-      ...response.body['payments'],
+      ...response.body["payments"],
       __response__: response.__response__,
     };
 
