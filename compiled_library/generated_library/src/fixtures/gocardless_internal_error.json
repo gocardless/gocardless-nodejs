@@ -1,0 +1,15 @@
+{
+  "error": {
+    "message": "Internal server error",
+    "errors": [
+      {
+        "reason": "internal_server_error",
+        "message": "Internal server error"
+      }
+    ],
+    "documentation_url": "https://developer.gocardless.com/api-reference#internal_server_error",
+    "type": "gocardless",
+    "request_id": "HARDCODED_REQUEST_ID",
+    "code": 500
+  }
+}

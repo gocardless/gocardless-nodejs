@@ -1,0 +1,56 @@
+{
+  "name": "gocardless-nodejs",
+  "version": "4.4.0",
+  "description": "Node.js client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments",
+  "author": "GoCardless Ltd <client-libraries@gocardless.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gocardless/gocardless-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gocardless/gocardless-nodejs/issues"
+  },
+  "homepage": "https://github.com/gocardless/gocardless-nodejs#readme",
+  "license": "MIT",
+  "keywords": [
+    "gocardless",
+    "payments",
+    "rest",
+    "api",
+    "direct debit"
+  ],
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier src --check --write && eslint src/**/*.ts --fix"
+  },
+  "dependencies": {
+    "got": "^11.8.6",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.0",
+    "crypto-js": "4.1.1",
+    "buffer-equal-constant-time": "1.0.1",
+    "qs": "^6.11.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.10",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/parser": "^5.57.0",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.5.0",
+    "nock": "^13.3.0",
+    "prettier": "^2.8.7",
+    "prettier-eslint": "^15.0.1",
+    "prettier-eslint-cli": "^7.1.0",
+    "ts-jest": "29.0.5",
+    "typescript": "^5.0.2"
+  },
+  "main": "index.js",
+  "types": "types/Types.d.ts",
+  "engines": {
+    "node": ">=18.0"
+  }
+}

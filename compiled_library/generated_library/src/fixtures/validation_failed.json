@@ -1,0 +1,19 @@
+{
+  "error": {
+    "message": "Validation failed",
+    "errors": [
+      {
+        "field": "amount",
+        "message": "is greater than the permitted scheme maximum",
+        "metadata": {
+          "maximum_amount": 100000000
+        },
+        "request_pointer": "/payments/amount"
+      }
+    ],
+    "documentation_url": "https://developer.gocardless.com/api-reference#validation_failed",
+    "type": "validation_failed",
+    "request_id": "HARDCODED_REQUEST_ID",
+    "code": 422
+  }
+}
