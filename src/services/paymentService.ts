@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface PaymentResponse extends Types.Payment, Types.APIResponse {}
 
 interface PaymentListResponse extends Types.APIResponse {
-  payments: Types.Payment[];
+  payments: Array<Types.Payment>;
   meta: Types.ListMeta;
 }
 
@@ -212,10 +212,10 @@ export class PaymentService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: PaymentCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<PaymentResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -226,7 +226,7 @@ export class PaymentService {
       payloadKey: 'payments',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -238,9 +238,7 @@ export class PaymentService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: PaymentListRequest
-  ): Promise<PaymentListResponse> {
+  public async list(requestParameters: PaymentListRequest): Promise<PaymentListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/payments',
@@ -260,9 +258,7 @@ export class PaymentService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: PaymentListRequest
-  ): AsyncGenerator<Types.Payment, void, unknown> {
+  public async *all(requestParameters: PaymentListRequest): AsyncGenerator<Types.Payment, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -275,7 +271,7 @@ export class PaymentService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<PaymentResponse> {
+  public async find(identity: string): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payments/:identity',
@@ -295,10 +291,7 @@ export class PaymentService {
     return formattedResponse;
   }
 
-  async update(
-    identity: string,
-    requestParameters: PaymentUpdateRequest
-  ): Promise<PaymentResponse> {
+  public async update(identity: string, requestParameters: PaymentUpdateRequest): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payments/:identity',
@@ -318,10 +311,7 @@ export class PaymentService {
     return formattedResponse;
   }
 
-  async cancel(
-    identity: string,
-    requestParameters: PaymentCancelRequest
-  ): Promise<PaymentResponse> {
+  public async cancel(identity: string, requestParameters: PaymentCancelRequest): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payments/:identity/actions/cancel',
@@ -341,10 +331,7 @@ export class PaymentService {
     return formattedResponse;
   }
 
-  async retry(
-    identity: string,
-    requestParameters: PaymentRetryRequest
-  ): Promise<PaymentResponse> {
+  public async retry(identity: string, requestParameters: PaymentRetryRequest): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payments/:identity/actions/retry',

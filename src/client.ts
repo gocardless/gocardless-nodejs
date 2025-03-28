@@ -2,6 +2,7 @@
 
 import { Environments } from './constants';
 import { Api } from './api/api';
+import { BalanceService } from './services/balanceService';
 import { BankAuthorisationService } from './services/bankAuthorisationService';
 import { BankDetailsLookupService } from './services/bankDetailsLookupService';
 import { BillingRequestService } from './services/billingRequestService';
@@ -42,6 +43,7 @@ import { WebhookService } from './services/webhookService';
 export class GoCardlessClient {
   private _api: Api;
 
+  private _balances: BalanceService;
   private _bankAuthorisations: BankAuthorisationService;
   private _bankDetailsLookups: BankDetailsLookupService;
   private _billingRequests: BillingRequestService;
@@ -82,6 +84,7 @@ export class GoCardlessClient {
   constructor(token: string, environment = Environments.Live, options = {}) {
     this._api = new Api(token, environment, options);
 
+    this._balances = undefined;
     this._bankAuthorisations = undefined;
     this._bankDetailsLookups = undefined;
     this._billingRequests = undefined;
@@ -120,6 +123,14 @@ export class GoCardlessClient {
     this._webhooks = undefined;
   }
 
+  get balances(): BalanceService {
+    if (!this._balances) {
+      this._balances = new BalanceService(this._api);
+    }
+
+    return this._balances;
+  }
+
   get bankAuthorisations(): BankAuthorisationService {
     if (!this._bankAuthorisations) {
       this._bankAuthorisations = new BankAuthorisationService(this._api);
@@ -154,9 +165,7 @@ export class GoCardlessClient {
 
   get billingRequestTemplates(): BillingRequestTemplateService {
     if (!this._billingRequestTemplates) {
-      this._billingRequestTemplates = new BillingRequestTemplateService(
-        this._api
-      );
+      this._billingRequestTemplates = new BillingRequestTemplateService(this._api);
     }
 
     return this._billingRequestTemplates;

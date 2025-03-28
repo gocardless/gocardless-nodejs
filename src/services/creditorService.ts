@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface CreditorResponse extends Types.Creditor, Types.APIResponse {}
 
 interface CreditorListResponse extends Types.APIResponse {
-  creditors: Types.Creditor[];
+  creditors: Array<Types.Creditor>;
   meta: Types.ListMeta;
 }
 
@@ -110,10 +110,10 @@ export class CreditorService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: CreditorCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<CreditorResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -124,7 +124,7 @@ export class CreditorService {
       payloadKey: 'creditors',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -136,9 +136,7 @@ export class CreditorService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: CreditorListRequest
-  ): Promise<CreditorListResponse> {
+  public async list(requestParameters: CreditorListRequest): Promise<CreditorListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/creditors',
@@ -158,9 +156,7 @@ export class CreditorService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: CreditorListRequest
-  ): AsyncGenerator<Types.Creditor, void, unknown> {
+  public async *all(requestParameters: CreditorListRequest): AsyncGenerator<Types.Creditor, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -173,7 +169,7 @@ export class CreditorService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<CreditorResponse> {
+  public async find(identity: string): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/creditors/:identity',
@@ -193,10 +189,7 @@ export class CreditorService {
     return formattedResponse;
   }
 
-  async update(
-    identity: string,
-    requestParameters: CreditorUpdateRequest
-  ): Promise<CreditorResponse> {
+  public async update(identity: string, requestParameters: CreditorUpdateRequest): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/creditors/:identity',

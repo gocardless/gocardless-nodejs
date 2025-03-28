@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface BankAuthorisationResponse
-  extends Types.BankAuthorisation,
-    Types.APIResponse {}
+interface BankAuthorisationResponse extends Types.BankAuthorisation, Types.APIResponse {}
 
 interface BankAuthorisationListResponse extends Types.APIResponse {
-  bank_authorisations: Types.BankAuthorisation[];
+  bank_authorisations: Array<Types.BankAuthorisation>;
   meta: Types.ListMeta;
 }
 
@@ -26,9 +24,13 @@ interface BankAuthorisationCreateRequest {
   // `redirect_uri`, in which case you should
   // prompt the user to try the bank authorisation step again.
   //
-  // The `redirect_uri` you provide should handle the `outcome` query parameter
-  // for displaying the result of the
-  // bank authorisation as outlined above.
+  // Please note: bank authorisations can still fail despite an `outcome=success`
+  // on the `redirect_uri`. It is therefore recommended to wait for the relevant
+  // bank authorisation event, such as
+  // [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
+  // [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
+  // [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
+  // order to show the correct outcome to the user.
   //
   // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
   // query parameter `id=BRF123`.
@@ -45,10 +47,10 @@ export class BankAuthorisationService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: BankAuthorisationCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<BankAuthorisationResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -59,7 +61,7 @@ export class BankAuthorisationService {
       payloadKey: 'bank_authorisations',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -71,7 +73,7 @@ export class BankAuthorisationService {
     return formattedResponse;
   }
 
-  async find(identity: string): Promise<BankAuthorisationResponse> {
+  public async find(identity: string): Promise<BankAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/bank_authorisations/:identity',

@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface SubscriptionResponse extends Types.Subscription, Types.APIResponse {}
 
 interface SubscriptionListResponse extends Types.APIResponse {
-  subscriptions: Types.Subscription[];
+  subscriptions: Array<Types.Subscription>;
   meta: Types.ListMeta;
 }
 
@@ -227,10 +227,10 @@ export class SubscriptionService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: SubscriptionCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<SubscriptionResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -241,7 +241,7 @@ export class SubscriptionService {
       payloadKey: 'subscriptions',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -253,9 +253,7 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: SubscriptionListRequest
-  ): Promise<SubscriptionListResponse> {
+  public async list(requestParameters: SubscriptionListRequest): Promise<SubscriptionListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/subscriptions',
@@ -275,9 +273,7 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: SubscriptionListRequest
-  ): AsyncGenerator<Types.Subscription, void, unknown> {
+  public async *all(requestParameters: SubscriptionListRequest): AsyncGenerator<Types.Subscription, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -290,7 +286,7 @@ export class SubscriptionService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<SubscriptionResponse> {
+  public async find(identity: string): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity',
@@ -310,10 +306,7 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  async update(
-    identity: string,
-    requestParameters: SubscriptionUpdateRequest
-  ): Promise<SubscriptionResponse> {
+  public async update(identity: string, requestParameters: SubscriptionUpdateRequest): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity',
@@ -333,10 +326,7 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  async pause(
-    identity: string,
-    requestParameters: SubscriptionPauseRequest
-  ): Promise<SubscriptionResponse> {
+  public async pause(identity: string, requestParameters: SubscriptionPauseRequest): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity/actions/pause',
@@ -356,10 +346,7 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  async resume(
-    identity: string,
-    requestParameters: SubscriptionResumeRequest
-  ): Promise<SubscriptionResponse> {
+  public async resume(identity: string, requestParameters: SubscriptionResumeRequest): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity/actions/resume',
@@ -379,10 +366,7 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  async cancel(
-    identity: string,
-    requestParameters: SubscriptionCancelRequest
-  ): Promise<SubscriptionResponse> {
+  public async cancel(identity: string, requestParameters: SubscriptionCancelRequest): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity/actions/cancel',

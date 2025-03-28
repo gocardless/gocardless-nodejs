@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface CustomerNotificationResponse
-  extends Types.CustomerNotification,
-    Types.APIResponse {}
+interface CustomerNotificationResponse extends Types.CustomerNotification, Types.APIResponse {}
 
 interface CustomerNotificationListResponse extends Types.APIResponse {
-  customer_notifications: Types.CustomerNotification[];
+  customer_notifications: Array<Types.CustomerNotification>;
   meta: Types.ListMeta;
 }
 
@@ -19,7 +17,7 @@ export class CustomerNotificationService {
     this.api = api;
   }
 
-  async handle(identity: string): Promise<CustomerNotificationResponse> {
+  public async handle(identity: string): Promise<CustomerNotificationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customer_notifications/:identity/actions/handle',

@@ -3,14 +3,14 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface PayoutItemResponse extends Types.PayoutItem, Types.APIResponse {}
+interface BalanceResponse extends Types.Balance, Types.APIResponse {}
 
-interface PayoutItemListResponse extends Types.APIResponse {
-  payout_items: Array<Types.PayoutItem>;
+interface BalanceListResponse extends Types.APIResponse {
+  balances: Array<Types.Balance>;
   meta: Types.ListMeta;
 }
 
-interface PayoutItemListRequest {
+interface BalanceListRequest {
   // Cursor pointing to the start of the desired set.
 
   after?: string;
@@ -19,31 +19,26 @@ interface PayoutItemListRequest {
 
   before?: string;
 
-  // Boolean value indicating whether the API should return tax data for the
-  // cutover period of April to August 2020. Defaults to false.
+  // ID of a [creditor](#core-endpoints-creditors).
 
-  include_2020_tax_cutover?: Types.PayoutItemInclude2020TaxCutover;
+  creditor: string;
 
   // Number of records to return.
 
   limit?: string;
-
-  // Unique identifier, beginning with "PO".
-
-  payout: string;
 }
 
-export class PayoutItemService {
+export class BalanceService {
   private api: Api;
 
   constructor(api) {
     this.api = api;
   }
 
-  public async list(requestParameters: PayoutItemListRequest): Promise<PayoutItemListResponse> {
+  public async list(requestParameters: BalanceListRequest): Promise<BalanceListResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/payout_items',
+      path: '/balances',
       method: 'get',
       urlParameters,
       requestParameters,
@@ -52,7 +47,7 @@ export class PayoutItemService {
     };
 
     const response = await this.api.request(requestParams);
-    const formattedResponse: PayoutItemListResponse = {
+    const formattedResponse: BalanceListResponse = {
       ...response.body,
       __response__: response.__response__,
     };
@@ -60,13 +55,13 @@ export class PayoutItemService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: PayoutItemListRequest): AsyncGenerator<Types.PayoutItem, void, unknown> {
+  public async *all(requestParameters: BalanceListRequest): AsyncGenerator<Types.Balance, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
 
-      for (const payoutitem of list.payout_items) {
-        yield payoutitem;
+      for (const balance of list.balances) {
+        yield balance;
       }
 
       cursor = list.meta.cursors.after;

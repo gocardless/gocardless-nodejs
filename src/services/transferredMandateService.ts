@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface TransferredMandateResponse
-  extends Types.TransferredMandate,
-    Types.APIResponse {}
+interface TransferredMandateResponse extends Types.TransferredMandate, Types.APIResponse {}
 
 interface TransferredMandateListResponse extends Types.APIResponse {
-  transferred_mandates: Types.TransferredMandate[];
+  transferred_mandates: Array<Types.TransferredMandate>;
   meta: Types.ListMeta;
 }
 
@@ -19,7 +17,7 @@ export class TransferredMandateService {
     this.api = api;
   }
 
-  async find(identity: string): Promise<TransferredMandateResponse> {
+  public async find(identity: string): Promise<TransferredMandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/transferred_mandates/:identity',

@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface ExportResponse extends Types.Export, Types.APIResponse {}
 
 interface ExportListResponse extends Types.APIResponse {
-  exports: Types.Export[];
+  exports: Array<Types.Export>;
   meta: Types.ListMeta;
 }
 
@@ -31,7 +31,7 @@ export class ExportService {
     this.api = api;
   }
 
-  async find(identity: string): Promise<ExportResponse> {
+  public async find(identity: string): Promise<ExportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/exports/:identity',
@@ -51,9 +51,7 @@ export class ExportService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: ExportListRequest
-  ): Promise<ExportListResponse> {
+  public async list(requestParameters: ExportListRequest): Promise<ExportListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/exports',
@@ -73,9 +71,7 @@ export class ExportService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: ExportListRequest
-  ): AsyncGenerator<Types.Export, void, unknown> {
+  public async *all(requestParameters: ExportListRequest): AsyncGenerator<Types.Export, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });

@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface LogoResponse extends Types.Logo, Types.APIResponse {}
 
 interface LogoListResponse extends Types.APIResponse {
-  logos: Types.Logo[];
+  logos: Array<Types.Logo>;
   meta: Types.ListMeta;
 }
 
@@ -26,10 +26,10 @@ export class LogoService {
     this.api = api;
   }
 
-  async createForCreditor(
+  public async createForCreditor(
     requestParameters: LogoCreateForCreditorRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<LogoResponse> {
     const urlParameters = [];
     const requestParams = {

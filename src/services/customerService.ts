@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface CustomerResponse extends Types.Customer, Types.APIResponse {}
 
 interface CustomerListResponse extends Types.APIResponse {
-  customers: Types.Customer[];
+  customers: Array<Types.Customer>;
   meta: Types.ListMeta;
 }
 
@@ -233,10 +233,10 @@ export class CustomerService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: CustomerCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<CustomerResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -247,7 +247,7 @@ export class CustomerService {
       payloadKey: 'customers',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -259,9 +259,7 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: CustomerListRequest
-  ): Promise<CustomerListResponse> {
+  public async list(requestParameters: CustomerListRequest): Promise<CustomerListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/customers',
@@ -281,9 +279,7 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: CustomerListRequest
-  ): AsyncGenerator<Types.Customer, void, unknown> {
+  public async *all(requestParameters: CustomerListRequest): AsyncGenerator<Types.Customer, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -296,7 +292,7 @@ export class CustomerService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<CustomerResponse> {
+  public async find(identity: string): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customers/:identity',
@@ -316,10 +312,7 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  async update(
-    identity: string,
-    requestParameters: CustomerUpdateRequest
-  ): Promise<CustomerResponse> {
+  public async update(identity: string, requestParameters: CustomerUpdateRequest): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customers/:identity',
@@ -339,7 +332,7 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  async remove(identity: string): Promise<CustomerResponse> {
+  public async remove(identity: string): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customers/:identity',

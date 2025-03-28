@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface WebhookResponse extends Types.Webhook, Types.APIResponse {}
 
 interface WebhookListResponse extends Types.APIResponse {
-  webhooks: Types.Webhook[];
+  webhooks: Array<Types.Webhook>;
   meta: Types.ListMeta;
 }
 
@@ -42,9 +42,7 @@ export class WebhookService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: WebhookListRequest
-  ): Promise<WebhookListResponse> {
+  public async list(requestParameters: WebhookListRequest): Promise<WebhookListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/webhooks',
@@ -64,9 +62,7 @@ export class WebhookService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: WebhookListRequest
-  ): AsyncGenerator<Types.Webhook, void, unknown> {
+  public async *all(requestParameters: WebhookListRequest): AsyncGenerator<Types.Webhook, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -79,7 +75,7 @@ export class WebhookService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<WebhookResponse> {
+  public async find(identity: string): Promise<WebhookResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/webhooks/:identity',
@@ -99,7 +95,7 @@ export class WebhookService {
     return formattedResponse;
   }
 
-  async retry(identity: string): Promise<WebhookResponse> {
+  public async retry(identity: string): Promise<WebhookResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/webhooks/:identity/actions/retry',

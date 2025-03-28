@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface BillingRequestTemplateResponse
-  extends Types.BillingRequestTemplate,
-    Types.APIResponse {}
+interface BillingRequestTemplateResponse extends Types.BillingRequestTemplate, Types.APIResponse {}
 
 interface BillingRequestTemplateListResponse extends Types.APIResponse {
-  billing_request_templates: Types.BillingRequestTemplate[];
+  billing_request_templates: Array<Types.BillingRequestTemplate>;
   meta: Types.ListMeta;
 }
 
@@ -234,9 +232,7 @@ export class BillingRequestTemplateService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: BillingRequestTemplateListRequest
-  ): Promise<BillingRequestTemplateListResponse> {
+  public async list(requestParameters: BillingRequestTemplateListRequest): Promise<BillingRequestTemplateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/billing_request_templates',
@@ -256,8 +252,8 @@ export class BillingRequestTemplateService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: BillingRequestTemplateListRequest
+  public async *all(
+    requestParameters: BillingRequestTemplateListRequest,
   ): AsyncGenerator<Types.BillingRequestTemplate, void, unknown> {
     let cursor = undefined;
     do {
@@ -271,7 +267,7 @@ export class BillingRequestTemplateService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<BillingRequestTemplateResponse> {
+  public async find(identity: string): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_request_templates/:identity',
@@ -291,10 +287,10 @@ export class BillingRequestTemplateService {
     return formattedResponse;
   }
 
-  async create(
+  public async create(
     requestParameters: BillingRequestTemplateCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -305,7 +301,7 @@ export class BillingRequestTemplateService {
       payloadKey: 'billing_request_templates',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -317,9 +313,9 @@ export class BillingRequestTemplateService {
     return formattedResponse;
   }
 
-  async update(
+  public async update(
     identity: string,
-    requestParameters: BillingRequestTemplateUpdateRequest
+    requestParameters: BillingRequestTemplateUpdateRequest,
   ): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {

@@ -20,6 +20,6 @@
     }
   },
   "files": ["src/api/api.ts"],
-  "include": ["src/**/*"],
-  "exclude": ["**/*.test.ts"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }

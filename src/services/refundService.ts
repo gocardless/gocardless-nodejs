@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface RefundResponse extends Types.Refund, Types.APIResponse {}
 
 interface RefundListResponse extends Types.APIResponse {
-  refunds: Types.Refund[];
+  refunds: Array<Types.Refund>;
   meta: Types.ListMeta;
 }
 
@@ -49,6 +49,10 @@ interface RefundCreateRequest {
   // existing refunds plus the amount of the refund being created.
   // <br />
   // Must be supplied if `links[payment]` is present.
+  // <p class="notice">It is possible to opt out of requiring
+  // `total_amount_confirmation`, please contact <a
+  // href="mailto:support@gocardless.com">our support team</a> for more
+  // information.</p>
 
   total_amount_confirmation?: string;
 }
@@ -102,10 +106,10 @@ export class RefundService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: RefundCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<RefundResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -116,7 +120,7 @@ export class RefundService {
       payloadKey: 'refunds',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -128,9 +132,7 @@ export class RefundService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: RefundListRequest
-  ): Promise<RefundListResponse> {
+  public async list(requestParameters: RefundListRequest): Promise<RefundListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/refunds',
@@ -150,9 +152,7 @@ export class RefundService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: RefundListRequest
-  ): AsyncGenerator<Types.Refund, void, unknown> {
+  public async *all(requestParameters: RefundListRequest): AsyncGenerator<Types.Refund, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -165,7 +165,7 @@ export class RefundService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<RefundResponse> {
+  public async find(identity: string): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/refunds/:identity',
@@ -185,10 +185,7 @@ export class RefundService {
     return formattedResponse;
   }
 
-  async update(
-    identity: string,
-    requestParameters: RefundUpdateRequest
-  ): Promise<RefundResponse> {
+  public async update(identity: string, requestParameters: RefundUpdateRequest): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/refunds/:identity',

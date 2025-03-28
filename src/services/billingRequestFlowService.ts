@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface BillingRequestFlowResponse
-  extends Types.BillingRequestFlow,
-    Types.APIResponse {}
+interface BillingRequestFlowResponse extends Types.BillingRequestFlow, Types.APIResponse {}
 
 interface BillingRequestFlowListResponse extends Types.APIResponse {
-  billing_request_flows: Types.BillingRequestFlow[];
+  billing_request_flows: Array<Types.BillingRequestFlow>;
   meta: Types.ListMeta;
 }
 
@@ -109,10 +107,10 @@ export class BillingRequestFlowService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: BillingRequestFlowCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestFlowResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -135,7 +133,7 @@ export class BillingRequestFlowService {
     return formattedResponse;
   }
 
-  async initialise(identity: string): Promise<BillingRequestFlowResponse> {
+  public async initialise(identity: string): Promise<BillingRequestFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_request_flows/:identity/actions/initialise',

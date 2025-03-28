@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface InstitutionResponse extends Types.Institution, Types.APIResponse {}
 
 interface InstitutionListResponse extends Types.APIResponse {
-  institutions: Types.Institution[];
+  institutions: Array<Types.Institution>;
   meta: Types.ListMeta;
 }
 
@@ -43,9 +43,7 @@ export class InstitutionService {
     this.api = api;
   }
 
-  async list(
-    requestParameters: InstitutionListRequest
-  ): Promise<InstitutionListResponse> {
+  public async list(requestParameters: InstitutionListRequest): Promise<InstitutionListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/institutions',
@@ -65,8 +63,8 @@ export class InstitutionService {
     return formattedResponse;
   }
 
-  async list_for_billing_request(
-    requestParameters: InstitutionListForBillingRequestRequest
+  public async list_for_billing_request(
+    requestParameters: InstitutionListForBillingRequestRequest,
   ): Promise<InstitutionListResponse> {
     const urlParameters = [];
     const requestParams = {

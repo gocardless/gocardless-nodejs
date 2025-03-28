@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface VerificationDetailResponse
-  extends Types.VerificationDetail,
-    Types.APIResponse {}
+interface VerificationDetailResponse extends Types.VerificationDetail, Types.APIResponse {}
 
 interface VerificationDetailListResponse extends Types.APIResponse {
-  verification_details: Types.VerificationDetail[];
+  verification_details: Array<Types.VerificationDetail>;
   meta: Types.ListMeta;
 }
 
@@ -78,10 +76,10 @@ export class VerificationDetailService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: VerificationDetailCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<VerificationDetailResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -104,9 +102,7 @@ export class VerificationDetailService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: VerificationDetailListRequest
-  ): Promise<VerificationDetailListResponse> {
+  public async list(requestParameters: VerificationDetailListRequest): Promise<VerificationDetailListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/verification_details',
@@ -126,8 +122,8 @@ export class VerificationDetailService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: VerificationDetailListRequest
+  public async *all(
+    requestParameters: VerificationDetailListRequest,
   ): AsyncGenerator<Types.VerificationDetail, void, unknown> {
     let cursor = undefined;
     do {

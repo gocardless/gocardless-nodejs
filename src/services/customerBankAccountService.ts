@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface CustomerBankAccountResponse
-  extends Types.CustomerBankAccount,
-    Types.APIResponse {}
+interface CustomerBankAccountResponse extends Types.CustomerBankAccount, Types.APIResponse {}
 
 interface CustomerBankAccountListResponse extends Types.APIResponse {
-  customer_bank_accounts: Types.CustomerBankAccount[];
+  customer_bank_accounts: Array<Types.CustomerBankAccount>;
   meta: Types.ListMeta;
 }
 
@@ -109,10 +107,10 @@ export class CustomerBankAccountService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: CustomerBankAccountCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -123,7 +121,7 @@ export class CustomerBankAccountService {
       payloadKey: 'customer_bank_accounts',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -135,9 +133,7 @@ export class CustomerBankAccountService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: CustomerBankAccountListRequest
-  ): Promise<CustomerBankAccountListResponse> {
+  public async list(requestParameters: CustomerBankAccountListRequest): Promise<CustomerBankAccountListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/customer_bank_accounts',
@@ -157,8 +153,8 @@ export class CustomerBankAccountService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: CustomerBankAccountListRequest
+  public async *all(
+    requestParameters: CustomerBankAccountListRequest,
   ): AsyncGenerator<Types.CustomerBankAccount, void, unknown> {
     let cursor = undefined;
     do {
@@ -172,7 +168,7 @@ export class CustomerBankAccountService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<CustomerBankAccountResponse> {
+  public async find(identity: string): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customer_bank_accounts/:identity',
@@ -192,9 +188,9 @@ export class CustomerBankAccountService {
     return formattedResponse;
   }
 
-  async update(
+  public async update(
     identity: string,
-    requestParameters: CustomerBankAccountUpdateRequest
+    requestParameters: CustomerBankAccountUpdateRequest,
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -215,7 +211,7 @@ export class CustomerBankAccountService {
     return formattedResponse;
   }
 
-  async disable(identity: string): Promise<CustomerBankAccountResponse> {
+  public async disable(identity: string): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customer_bank_accounts/:identity/actions/disable',

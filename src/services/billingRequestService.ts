@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface BillingRequestResponse
-  extends Types.BillingRequest,
-    Types.APIResponse {}
+interface BillingRequestResponse extends Types.BillingRequest, Types.APIResponse {}
 
 interface BillingRequestListResponse extends Types.APIResponse {
-  billing_requests: Types.BillingRequest[];
+  billing_requests: Array<Types.BillingRequest>;
   meta: Types.ListMeta;
 }
 
@@ -23,7 +21,9 @@ interface BillingRequestCreateRequest {
 
   fallback_enabled?: boolean;
 
-  //
+  // Request for an instalment schedule. Has to contain either
+  // `instalments_with_schedule` object or an array of `instalments_with_dates`
+  // objects
   instalment_schedule_request?: Types.BillingRequestInstalmentScheduleRequest;
 
   // Resources linked to this BillingRequest.
@@ -232,10 +232,10 @@ export class BillingRequestService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: BillingRequestCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -246,7 +246,7 @@ export class BillingRequestService {
       payloadKey: 'billing_requests',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -258,9 +258,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async collectCustomerDetails(
+  public async collectCustomerDetails(
     identity: string,
-    requestParameters: BillingRequestCollectCustomerDetailsRequest
+    requestParameters: BillingRequestCollectCustomerDetailsRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -281,9 +281,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async collectBankAccount(
+  public async collectBankAccount(
     identity: string,
-    requestParameters: BillingRequestCollectBankAccountRequest
+    requestParameters: BillingRequestCollectBankAccountRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -304,9 +304,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async confirmPayerDetails(
+  public async confirmPayerDetails(
     identity: string,
-    requestParameters: BillingRequestConfirmPayerDetailsRequest
+    requestParameters: BillingRequestConfirmPayerDetailsRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -327,9 +327,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async fulfil(
+  public async fulfil(
     identity: string,
-    requestParameters: BillingRequestFulfilRequest
+    requestParameters: BillingRequestFulfilRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -350,9 +350,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async cancel(
+  public async cancel(
     identity: string,
-    requestParameters: BillingRequestCancelRequest
+    requestParameters: BillingRequestCancelRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -373,9 +373,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async list(
-    requestParameters: BillingRequestListRequest
-  ): Promise<BillingRequestListResponse> {
+  public async list(requestParameters: BillingRequestListRequest): Promise<BillingRequestListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/billing_requests',
@@ -395,9 +393,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async *all(
-    requestParameters: BillingRequestListRequest
-  ): AsyncGenerator<Types.BillingRequest, void, unknown> {
+  public async *all(requestParameters: BillingRequestListRequest): AsyncGenerator<Types.BillingRequest, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor });
@@ -410,7 +406,7 @@ export class BillingRequestService {
     } while (cursor);
   }
 
-  async find(identity: string): Promise<BillingRequestResponse> {
+  public async find(identity: string): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity',
@@ -430,9 +426,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async notify(
+  public async notify(
     identity: string,
-    requestParameters: BillingRequestNotifyRequest
+    requestParameters: BillingRequestNotifyRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -453,7 +449,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async fallback(identity: string): Promise<BillingRequestResponse> {
+  public async fallback(identity: string): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/actions/fallback',
@@ -473,9 +469,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async chooseCurrency(
+  public async chooseCurrency(
     identity: string,
-    requestParameters: BillingRequestChooseCurrencyRequest
+    requestParameters: BillingRequestChooseCurrencyRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -496,9 +492,9 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  async selectInstitution(
+  public async selectInstitution(
     identity: string,
-    requestParameters: BillingRequestSelectInstitutionRequest
+    requestParameters: BillingRequestSelectInstitutionRequest,
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {

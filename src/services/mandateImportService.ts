@@ -3,12 +3,10 @@
 import { Api } from '../api/api';
 import * as Types from '../types/Types';
 
-interface MandateImportResponse
-  extends Types.MandateImport,
-    Types.APIResponse {}
+interface MandateImportResponse extends Types.MandateImport, Types.APIResponse {}
 
 interface MandateImportListResponse extends Types.APIResponse {
-  mandate_imports: Types.MandateImport[];
+  mandate_imports: Array<Types.MandateImport>;
   meta: Types.ListMeta;
 }
 
@@ -30,10 +28,10 @@ export class MandateImportService {
     this.api = api;
   }
 
-  async create(
+  public async create(
     requestParameters: MandateImportCreateRequest,
     idempotencyKey = '',
-    customHeaders: Types.JsonMap = {}
+    customHeaders: Types.JsonMap = {},
   ): Promise<MandateImportResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -44,7 +42,7 @@ export class MandateImportService {
       payloadKey: 'mandate_imports',
       idempotencyKey,
       customHeaders,
-      fetch: async identity => this.find(identity),
+      fetch: async (identity) => await this.find(identity),
     };
 
     const response = await this.api.request(requestParams);
@@ -56,7 +54,7 @@ export class MandateImportService {
     return formattedResponse;
   }
 
-  async find(identity: string): Promise<MandateImportResponse> {
+  public async find(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandate_imports/:identity',
@@ -76,7 +74,7 @@ export class MandateImportService {
     return formattedResponse;
   }
 
-  async submit(identity: string): Promise<MandateImportResponse> {
+  public async submit(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandate_imports/:identity/actions/submit',
@@ -96,7 +94,7 @@ export class MandateImportService {
     return formattedResponse;
   }
 
-  async cancel(identity: string): Promise<MandateImportResponse> {
+  public async cancel(identity: string): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandate_imports/:identity/actions/cancel',

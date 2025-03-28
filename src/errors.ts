@@ -3,10 +3,10 @@
 class GoCardlessException extends Error {}
 
 class MalformedResponseError extends GoCardlessException {
-  response: object;
-  requestId: string;
+  public response: object;
+  public requestId: string;
 
-  constructor(message, response) {
+  public constructor(message, response) {
     super(message);
 
     this.response = response;
@@ -24,26 +24,19 @@ interface ErrorObject {
 }
 
 class ApiError extends GoCardlessException {
-  message: string;
-  errors: ErrorObject[];
-  documentationUrl: string;
-  errorType: string;
-  requestId: string;
-  code: string;
-  response: object;
+  public message: string;
+  public errors: Array<ErrorObject>;
+  public documentationUrl: string;
+  public errorType: string;
+  public requestId: string;
+  public code: string;
+  public response: object;
 
-  constructor(response) {
+  public constructor(response) {
     const {
       body: { error },
     } = response;
-    const {
-      message,
-      errors,
-      documentation_url: documentationUrl,
-      type,
-      request_id: requestId,
-      code,
-    } = error;
+    const { message, errors, documentation_url: documentationUrl, type, request_id: requestId, code } = error;
 
     super(message);
 
@@ -87,15 +80,12 @@ class ApiError extends GoCardlessException {
           for (const e of errors) {
             if (e.reason === 'idempotent_creation_conflict') {
               if (e.links && e.links.conflicting_resource_id) {
-                return new IdempotentCreationConflictError(
-                  response,
-                  e.links.conflicting_resource_id
-                );
+                return new IdempotentCreationConflictError(response, e.links.conflicting_resource_id);
               }
 
               return new MalformedResponseError(
                 'Idempotent Creation Conflict Error missing conflicting_resource_id',
-                response
+                response,
               );
             }
           }
@@ -118,8 +108,7 @@ class ApiError extends GoCardlessException {
                 message: response.body,
               },
             ],
-            documentation_url:
-              'https://developer.gocardless.com/api-reference#internal_server_error',
+            documentation_url: 'https://developer.gocardless.com/api-reference#internal_server_error',
             type: 'gocardless',
             request_id: response?.headers?.['x-request-id'] ?? null,
             code: 500,
@@ -131,10 +120,8 @@ class ApiError extends GoCardlessException {
     }
   }
 
-  toString() {
-    const messages = (this.errors || [])
-      .filter(e => e.message !== this.message)
-      .map(e => e.message);
+  public toString() {
+    const messages = (this.errors || []).filter((e) => e.message !== this.message).map((e) => e.message);
 
     if (messages.length > 0) {
       return `${this.message} (${messages.join(', ')})`;
@@ -145,19 +132,17 @@ class ApiError extends GoCardlessException {
 }
 
 class IdempotentCreationConflictError extends ApiError {
-  conflictingResourceId: string;
+  public conflictingResourceId: string;
 
-  constructor(response, conflictingResourceId) {
+  public constructor(response, conflictingResourceId) {
     super(response);
     this.conflictingResourceId = conflictingResourceId;
   }
 }
 
 class ValidationFailedError extends ApiError {
-  toString() {
-    const messages = (this.errors || [])
-      .filter(e => e.field)
-      .map(e => `${e.field} ${e.message}`);
+  public toString() {
+    const messages = (this.errors || []).filter((e) => e.field).map((e) => `${e.field} ${e.message}`);
 
     if (messages.length > 0) {
       return `${this.message} (${messages.join(', ')})`;
