@@ -21,9 +21,7 @@ interface BillingRequestCreateRequest {
 
   fallback_enabled?: boolean;
 
-  // Request for an instalment schedule. Has to contain either
-  // `instalments_with_schedule` object or an array of `instalments_with_dates`
-  // objects
+  //
   instalment_schedule_request?: Types.BillingRequestInstalmentScheduleRequest;
 
   // Resources linked to this BillingRequest.
