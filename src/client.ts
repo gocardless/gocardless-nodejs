@@ -3,6 +3,7 @@
 import { Environments } from './constants';
 import { Api } from './api/api';
 import { BalanceService } from './services/balanceService';
+import { BankAccountDetailService } from './services/bankAccountDetailService';
 import { BankAuthorisationService } from './services/bankAuthorisationService';
 import { BankDetailsLookupService } from './services/bankDetailsLookupService';
 import { BillingRequestService } from './services/billingRequestService';
@@ -44,6 +45,7 @@ export class GoCardlessClient {
   private _api: Api;
 
   private _balances: BalanceService;
+  private _bankAccountDetails: BankAccountDetailService;
   private _bankAuthorisations: BankAuthorisationService;
   private _bankDetailsLookups: BankDetailsLookupService;
   private _billingRequests: BillingRequestService;
@@ -85,6 +87,7 @@ export class GoCardlessClient {
     this._api = new Api(token, environment, options);
 
     this._balances = undefined;
+    this._bankAccountDetails = undefined;
     this._bankAuthorisations = undefined;
     this._bankDetailsLookups = undefined;
     this._billingRequests = undefined;
@@ -129,6 +132,14 @@ export class GoCardlessClient {
     }
 
     return this._balances;
+  }
+
+  get bankAccountDetails(): BankAccountDetailService {
+    if (!this._bankAccountDetails) {
+      this._bankAccountDetails = new BankAccountDetailService(this._api);
+    }
+
+    return this._bankAccountDetails;
   }
 
   get bankAuthorisations(): BankAuthorisationService {
