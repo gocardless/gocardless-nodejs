@@ -22,7 +22,7 @@ To initialise the client, you must provide:
 
 <!-- prettier-ignore -->
 ```js
-const gocardless = require('gocardless-nodejs');
+const gocardless = require('gocardless-nodejs/client');
 const constants = require('gocardless-nodejs/constants');
 
 
