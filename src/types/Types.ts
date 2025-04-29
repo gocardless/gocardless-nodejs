@@ -28,7 +28,7 @@ export type Balance = {
   // are supported.
   currency?: BalanceCurrency;
 
-  // Dynamic [timestamp](#api-usage-time-zones--dates) recording when this
+  // Dynamic [timestamp](#api-usage-dates-and-times) recording when this
   // resource was last updated.
   last_updated_at?: string;
 
@@ -90,8 +90,8 @@ export type BankAuthorisation = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
   authorisation_type?: BankAuthorisationAuthorisationType;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when the user
-  // has been authorised.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when the user has
+  // been authorised.
   authorised_at?: string | null;
 
   // Timestamp when the flow was created
@@ -104,7 +104,7 @@ export type BankAuthorisation = {
   // Unique identifier, beginning with "BAU".
   id: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when the
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when the
   // authorisation URL has been visited.
   last_visited_at?: string | null;
 
@@ -203,8 +203,8 @@ export type BillingRequest = {
   // fulfilled.
   actions?: BillingRequestAction[];
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // (Optional) If true, this billing request can fallback from instant payment
@@ -283,6 +283,21 @@ export type BillingRequestCreateRequestLinks = {
   //
   customer_bank_account?: string;
 };
+
+export enum BillingRequestPurposeCode {
+  Mortgage = 'mortgage',
+  Utility = 'utility',
+  Loan = 'loan',
+  DependantSupport = 'dependant_support',
+  Gambling = 'gambling',
+  Retail = 'retail',
+  Salary = 'salary',
+  Personal = 'personal',
+  Government = 'government',
+  Pension = 'pension',
+  Tax = 'tax',
+  Other = 'other',
+}
 
 /** Type for a billingrequestcustomer resource. */
 export type BillingRequestCustomer = {
@@ -372,6 +387,14 @@ export type BillingRequestCustomerBillingDetail = {
 export enum BillingRequestAccountType {
   Savings = 'savings',
   Checking = 'checking',
+}
+
+export enum BillingRequestStatus {
+  Pending = 'pending',
+  ReadyToFulfil = 'ready_to_fulfil',
+  Fulfilling = 'fulfilling',
+  Fulfilled = 'fulfilled',
+  Cancelled = 'cancelled',
 }
 
 export enum BillingRequestNotificationType {
@@ -919,21 +942,6 @@ export type BillingRequestPaymentRequestLinks = {
   payment?: string;
 };
 
-export enum BillingRequestPurposeCode {
-  Mortgage = 'mortgage',
-  Utility = 'utility',
-  Loan = 'loan',
-  DependantSupport = 'dependant_support',
-  Gambling = 'gambling',
-  Retail = 'retail',
-  Salary = 'salary',
-  Personal = 'personal',
-  Government = 'government',
-  Pension = 'pension',
-  Tax = 'tax',
-  Other = 'other',
-}
-
 /** Type for a billingrequestresources resource. */
 export type BillingRequestResources = {
   // Embedded customer
@@ -955,8 +963,8 @@ export type BillingRequestResourcesCustomer = {
   // "Personal PAD").
   company_name?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // Customer's email address. Required in most cases, as this allows GoCardless
@@ -1020,8 +1028,8 @@ export type BillingRequestResourcesCustomerBankAccount = {
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -1073,8 +1081,8 @@ export type BillingRequestResourcesCustomerBillingDetail = {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -1111,14 +1119,6 @@ export type BillingRequestResourcesCustomerBillingDetail = {
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
 };
-
-export enum BillingRequestStatus {
-  Pending = 'pending',
-  ReadyToFulfil = 'ready_to_fulfil',
-  Fulfilling = 'fulfilling',
-  Fulfilled = 'fulfilled',
-  Cancelled = 'cancelled',
-}
 
 /** Type for a billingrequestsubscriptionrequest resource. */
 export type BillingRequestSubscriptionRequest = {
@@ -1397,8 +1397,8 @@ export type BillingRequestTemplate = {
   // based on this template, before being returned to the `redirect_uri`.
   authorisation_url?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // Unique identifier, beginning with "BRT".
@@ -1489,7 +1489,7 @@ export type BillingRequestTemplate = {
   // URL that the payer can be redirected to after completing the request flow.
   redirect_uri?: string | null;
 
-  // Dynamic [timestamp](#api-usage-time-zones--dates) recording when this
+  // Dynamic [timestamp](#api-usage-dates-and-times) recording when this
   // resource was last updated.
   updated_at?: string;
 };
@@ -1521,7 +1521,7 @@ export type Block = {
   // 'bank_name'.
   block_type?: BlockBlockType;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
   // resource was created.
   created_at?: string;
 
@@ -1556,15 +1556,10 @@ export type Block = {
   // a resource.
   resource_reference?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
   // resource was updated.
   updated_at?: string;
 };
-
-export enum BlockReferenceType {
-  Customer = 'customer',
-  Mandate = 'mandate',
-}
 
 export enum BlockBlockType {
   Email = 'email',
@@ -1578,6 +1573,11 @@ export enum BlockReasonType {
   NoIntentToPay = 'no_intent_to_pay',
   UnfairChargeback = 'unfair_chargeback',
   Other = 'other',
+}
+
+export enum BlockReferenceType {
+  Customer = 'customer',
+  Mandate = 'mandate',
 }
 
 /** Type for a creditor resource. */
@@ -1611,8 +1611,8 @@ export type Creditor = {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // The type of business of the creditor. Currently, `individual`, `company`,
@@ -1690,6 +1690,14 @@ export type Creditor = {
   verification_status?: CreditorVerificationStatus;
 };
 
+export enum CreditorCreditorType {
+  Company = 'company',
+  Individual = 'individual',
+  Charity = 'charity',
+  Partnership = 'partnership',
+  Trust = 'trust',
+}
+
 /** Type for a creditorupdaterequestlinks resource. */
 export type CreditorUpdateRequestLinks = {
   // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
@@ -1724,14 +1732,6 @@ export type CreditorUpdateRequestLinks = {
   // set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
 };
-
-export enum CreditorCreditorType {
-  Company = 'company',
-  Individual = 'individual',
-  Charity = 'charity',
-  Partnership = 'partnership',
-  Trust = 'trust',
-}
 
 export enum CreditorFxPayoutCurrency {
   AUD = 'AUD',
@@ -1801,8 +1801,8 @@ export type CreditorSchemeIdentifier = {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // The currency of the scheme identifier.
@@ -1909,8 +1909,8 @@ export type CreditorBankAccount = {
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -1936,17 +1936,17 @@ export type CreditorBankAccount = {
   verification_status?: CreditorBankAccountVerificationStatus;
 };
 
+export enum CreditorBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
 /** Type for a creditorbankaccountcreaterequestlinks resource. */
 export type CreditorBankAccountCreateRequestLinks = {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
   // account.
   creditor: string;
 };
-
-export enum CreditorBankAccountAccountType {
-  Savings = 'savings',
-  Checking = 'checking',
-}
 
 /** Type for a creditorbankaccountlinks resource. */
 export type CreditorBankAccountLinks = {
@@ -2003,8 +2003,8 @@ export type Customer = {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -2109,8 +2109,8 @@ export type CustomerBankAccount = {
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -2132,6 +2132,11 @@ export type CustomerBankAccount = {
   metadata?: JsonMap;
 };
 
+export enum CustomerBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
 /** Type for a customerbankaccountcreaterequestlinks resource. */
 export type CustomerBankAccountCreateRequestLinks = {
   // ID of the [customer](#core-endpoints-customers) that owns this bank
@@ -2143,11 +2148,6 @@ export type CustomerBankAccountCreateRequestLinks = {
   // bank account parameters.
   customer_bank_account_token?: string;
 };
-
-export enum CustomerBankAccountAccountType {
-  Savings = 'savings',
-  Checking = 'checking',
-}
 
 /** Type for a customerbankaccountlinks resource. */
 export type CustomerBankAccountLinks = {
@@ -2164,7 +2164,7 @@ export type CustomerNotification = {
   //
   action_taken?: CustomerNotificationActionTaken;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
   // action was taken.
   action_taken_at?: string | null;
 
@@ -2235,8 +2235,8 @@ export type Event = {
   // the possible actions.
   action?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // Present only in webhooks when an integrator is authorised to send their own
@@ -2284,6 +2284,7 @@ export type Event = {
   // <li>`refunds`</li>
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
+  // <li>`outbound_payment`</li>
   // </ul>
   resource_type?: EventResourceType;
 };
@@ -2503,12 +2504,13 @@ export enum EventResourceType {
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
+  OutboundPayment = 'outbound_payment',
 }
 
 /** Type for a export resource. */
 export type Export = {
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // The currency of the export (if applicable)
@@ -2552,8 +2554,8 @@ export enum ExportExportType {
 
 /** Type for a instalmentschedule resource. */
 export type InstalmentSchedule = {
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -2606,6 +2608,17 @@ export type InstalmentSchedule = {
   // will be returned.
   total_amount?: string;
 };
+
+export enum InstalmentScheduleCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
 
 /** Type for a instalmentscheduleinstalment resource. */
 export type InstalmentScheduleInstalment = {
@@ -2669,17 +2682,6 @@ export type InstalmentScheduleCreateWithScheduleRequestLinks = {
   // instalment schedule will create payments against.
   mandate: string;
 };
-
-export enum InstalmentScheduleCurrency {
-  AUD = 'AUD',
-  CAD = 'CAD',
-  DKK = 'DKK',
-  EUR = 'EUR',
-  GBP = 'GBP',
-  NZD = 'NZD',
-  SEK = 'SEK',
-  USD = 'USD',
-}
 
 /** Type for a instalmentschedulelinks resource. */
 export type InstalmentScheduleLinks = {
@@ -2775,8 +2777,8 @@ export type Mandate = {
   // single, recurring and sporadic for PAD.
   consent_type?: MandateConsentType | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -2848,10 +2850,16 @@ export type Mandate = {
   // </ul>
   status?: MandateStatus;
 
-  // [Timestamp](#api-usage-time-zones--dates) recording when this mandate was
+  // [Timestamp](#api-usage-dates-and-times) recording when this mandate was
   // verified.
   verified_at?: string | null;
 };
+
+export enum MandateAuthorisationSource {
+  Web = 'web',
+  Telephone = 'telephone',
+  Paper = 'paper',
+}
 
 /** Type for a mandatecreaterequestlinks resource. */
 export type MandateCreateRequestLinks = {
@@ -2864,12 +2872,6 @@ export type MandateCreateRequestLinks = {
   // created and submits payments against.
   customer_bank_account: string;
 };
-
-export enum MandateAuthorisationSource {
-  Web = 'web',
-  Telephone = 'telephone',
-  Paper = 'paper',
-}
 
 /** Type for a mandateconsentparameters resource. */
 export type MandateConsentParameters = {
@@ -2953,8 +2955,8 @@ export enum MandateStatus {
 
 /** Type for a mandateimport resource. */
 export type MandateImport = {
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // Unique identifier, beginning with "IM".
@@ -3020,8 +3022,8 @@ export enum MandateImportStatus {
 
 /** Type for a mandateimportentry resource. */
 export type MandateImportEntry = {
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // Resources linked to this MandateImportEntry.
@@ -3265,7 +3267,7 @@ export type NegativeBalanceLimit = {
   // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
   balance_limit?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this limit
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this limit
   // was created.
   created_at?: string;
 
@@ -3281,12 +3283,6 @@ export type NegativeBalanceLimit = {
   links?: NegativeBalanceLimitLinks;
 };
 
-/** Type for a negativebalancelimitcreaterequestlinks resource. */
-export type NegativeBalanceLimitCreateRequestLinks = {
-  // ID of the [creditor](#core-endpoints-creditors) this limit relates to
-  creditor: string;
-};
-
 export enum NegativeBalanceLimitCurrency {
   AUD = 'AUD',
   CAD = 'CAD',
@@ -3298,15 +3294,165 @@ export enum NegativeBalanceLimitCurrency {
   USD = 'USD',
 }
 
+/** Type for a negativebalancelimitcreaterequestlinks resource. */
+export type NegativeBalanceLimitCreateRequestLinks = {
+  // ID of the [creditor](#core-endpoints-creditors) this limit relates to
+  creditor: string;
+};
+
 /** Type for a negativebalancelimitlinks resource. */
 export type NegativeBalanceLimitLinks = {
-  // ID of the [creator_user](#core-endpoints-creator_users) who created this
-  // limit
+  // ID of the creator_user who created this limit
   creator_user?: string;
 
   // ID of [creditor](#core-endpoints-creditors) which this limit relates to
   creditor?: string;
 };
+
+/** Type for a outboundpayment resource. */
+export type OutboundPayment = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: number;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when the outbound
+  // payment was created.
+  created_at?: string;
+
+  // A human-readable description of the outbound payment
+  description?: string;
+
+  // A future date on which the outbound payment should be sent.
+  // If not specified, the payment will be sent as soon as possible.
+  execution_date?: string;
+
+  // Unique identifier of the outbound payment.
+  id: string;
+
+  // Indicates whether the outbound payment is a withdrawal to your verified
+  // business bank account.
+  is_withdrawal?: boolean;
+
+  // Resources linked to this OutboundPayment.
+  links?: OutboundPaymentLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with
+  // key names up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // An auto-generated reference that will appear on your receiver's bank
+  // statement.
+  reference?: string;
+
+  // Bank payment scheme to process the outbound payment. Currently only
+  // "faster_payments" (GBP) is supported.
+  scheme?: string;
+
+  // One of:
+  // <ul>
+  // <li>`verifying`: The payment has been
+  // [created](#outbound-payments-create-an-outbound-payment) and the
+  // verification process has begun.</li>
+  // <li>`pending_approval`: The payment is awaiting
+  // [approval](#outbound-payments-approve-an-outbound-payment).</li>
+  // <li>`scheduled`: The payment has passed verification &
+  // [approval](#outbound-payments-approve-an-outbound-payment), but processing
+  // has not yet begun.</li>
+  // <li>`executing`: The execution date has arrived and the payment has been
+  // placed in queue for processing.</li>
+  // <li>`executed`: The payment has been accepted by the scheme and is now on
+  // its way to the recipient.</li>
+  // <li>`cancelled`: The payment has been
+  // [cancelled](#outbound-payments-cancel-an-outbound-payment) or was not
+  // [approved](#outbound-payments-approve-an-outbound-payment) on time.</li>
+  // <li>`failed`: The payment was not sent, usually due to an error while or
+  // after executing.</li>
+  // </ul>
+  status?: OutboundPaymentStatus;
+
+  // Contains details of the verifications performed for the outbound payment
+  verifications?: OutboundPaymentVerifications | null;
+};
+
+/** Type for a outboundpaymentcreaterequestlinks resource. */
+export type OutboundPaymentCreateRequestLinks = {
+  // ID of the creditor who sends the outbound payment.
+  creditor?: string;
+
+  // ID of the customer bank account which receives the outbound payment.
+  recipient_bank_account: string;
+};
+
+/** Type for a outboundpaymentwithdrawrequestlinks resource. */
+export type OutboundPaymentWithdrawRequestLinks = {
+  // ID of the creditor who sends the outbound payment.
+  creditor?: string;
+};
+
+export enum OutboundPaymentStatus {
+  Verifying = 'verifying',
+  PendingApproval = 'pending_approval',
+  Scheduled = 'scheduled',
+  Executing = 'executing',
+  Executed = 'executed',
+  Cancelled = 'cancelled',
+  Failed = 'failed',
+}
+
+/** Type for a outboundpaymentlinks resource. */
+export type OutboundPaymentLinks = {
+  // ID of the creditor who sends the outbound payment.
+  creditor?: string;
+
+  // ID of the [customer](#core-endpoints-customers) that receives this outbound
+  // payment
+  customer?: string;
+
+  // ID of the customer bank account which receives the outbound payment.
+  recipient_bank_account?: string;
+};
+
+/** Type for a outboundpaymentverifications resource. */
+export type OutboundPaymentVerifications = {
+  // Checks if the recipient owns the provided bank account
+  recipient_bank_account_holder_verification?: OutboundPaymentVerificationsRecipientBankAccountHolderVerification | null;
+};
+
+/** Type for a outboundpaymentverificationsrecipientbankaccountholderverification resource. */
+export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification = {
+  // -| The actual account name returned by the recipient's bank, populated only
+  // in the case of a partial match.
+  actual_account_name?: string | null;
+
+  // Result of the verification, could be one of
+  // <ul>
+  //   <li>`full_match`: The verification has confirmed that the account name
+  // exactly matches the details provided.</li>
+  //   <li>`partial_match`:  The verification has confirmed that the account
+  // name is similar but does not match to the details provided. </li>
+  //   <li>`no_match`: The verification concludes the provided name does not
+  // match the account details.</li>
+  //   <li>`unable_to_match`: The verification could not be performed due to
+  // recipient bank issues or technical issues </li>
+  // </ul>
+  result?: OutboundPaymentVerificationsRecipientBankAccountHolderVerificationResult;
+
+  // Type of the verification that has been performed
+  // eg. [Confirmation of
+  // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
+  type?: OutboundPaymentVerificationsRecipientBankAccountHolderVerificationType;
+};
+
+export enum OutboundPaymentVerificationsRecipientBankAccountHolderVerificationResult {
+  FullMatch = 'full_match',
+  PartialMatch = 'partial_match',
+  NoMatch = 'no_match',
+  UnableToMatch = 'unable_to_match',
+}
+
+export enum OutboundPaymentVerificationsRecipientBankAccountHolderVerificationType {
+  ConfirmationOfPayee = 'confirmation_of_payee',
+}
 
 /** Type for a payerauthorisation resource. */
 export type PayerAuthorisation = {
@@ -3314,7 +3460,7 @@ export type PayerAuthorisation = {
   // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
   bank_account?: PayerAuthorisationBankAccount;
 
-  // [Timestamp](#api-usage-time-zones--dates), recording when this Payer
+  // [Timestamp](#api-usage-dates-and-times), recording when this Payer
   // Authorisation was created.
   created_at?: string | null;
 
@@ -3577,8 +3723,8 @@ export type Payment = {
   // forwards to the next available one.
   charge_date?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -3658,6 +3804,17 @@ export type Payment = {
   status?: PaymentStatus;
 };
 
+export enum PaymentCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
+}
+
 /** Type for a paymentcreaterequestlinks resource. */
 export type PaymentCreateRequestLinks = {
   // ID of the [mandate](#core-endpoints-mandates) against which this payment
@@ -3694,15 +3851,16 @@ export enum PaymentSortField {
   Amount = 'amount',
 }
 
-export enum PaymentCurrency {
-  AUD = 'AUD',
-  CAD = 'CAD',
-  DKK = 'DKK',
-  EUR = 'EUR',
-  GBP = 'GBP',
-  NZD = 'NZD',
-  SEK = 'SEK',
-  USD = 'USD',
+export enum PaymentStatus {
+  PendingCustomerApproval = 'pending_customer_approval',
+  PendingSubmission = 'pending_submission',
+  Submitted = 'submitted',
+  Confirmed = 'confirmed',
+  PaidOut = 'paid_out',
+  Cancelled = 'cancelled',
+  CustomerApprovalDenied = 'customer_approval_denied',
+  Failed = 'failed',
+  ChargedBack = 'charged_back',
 }
 
 /** Type for a paymentfx resource. */
@@ -3767,18 +3925,6 @@ export type PaymentLinks = {
   subscription?: string;
 };
 
-export enum PaymentStatus {
-  PendingCustomerApproval = 'pending_customer_approval',
-  PendingSubmission = 'pending_submission',
-  Submitted = 'submitted',
-  Confirmed = 'confirmed',
-  PaidOut = 'paid_out',
-  Cancelled = 'cancelled',
-  CustomerApprovalDenied = 'customer_approval_denied',
-  Failed = 'failed',
-  ChargedBack = 'charged_back',
-}
-
 /** Type for a payout resource. */
 export type Payout = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
@@ -3795,8 +3941,8 @@ export type Payout = {
   //
   arrival_date?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -3867,6 +4013,17 @@ export enum PayoutCurrency {
   USD = 'USD',
 }
 
+export enum PayoutPayoutType {
+  Merchant = 'merchant',
+  Partner = 'partner',
+}
+
+export enum PayoutStatus {
+  Pending = 'pending',
+  Paid = 'paid',
+  Bounced = 'bounced',
+}
+
 /** Type for a payoutfx resource. */
 export type PayoutFx = {
   // Estimated rate that will be used in the foreign exchange of the `amount`
@@ -3913,17 +4070,6 @@ export type PayoutLinks = {
   // will be sent to.
   creditor_bank_account?: string;
 };
-
-export enum PayoutPayoutType {
-  Merchant = 'merchant',
-  Partner = 'partner',
-}
-
-export enum PayoutStatus {
-  Pending = 'pending',
-  Paid = 'paid',
-  Bounced = 'bounced',
-}
 
 /** Type for a payoutitem resource. */
 export type PayoutItem = {
@@ -4078,8 +4224,8 @@ export type RedirectFlow = {
   // API response.
   confirmation_url?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // A description of the item the customer is paying for. This will be shown on
@@ -4194,6 +4340,17 @@ export type RedirectFlowPrefilledCustomer = {
   swedish_identity_number?: string | null;
 };
 
+export enum RedirectFlowScheme {
+  Ach = 'ach',
+  Autogiro = 'autogiro',
+  Bacs = 'bacs',
+  Becs = 'becs',
+  BecsNz = 'becs_nz',
+  Betalingsservice = 'betalingsservice',
+  Pad = 'pad',
+  SepaCore = 'sepa_core',
+}
+
 /** Type for a redirectflowlinks resource. */
 export type RedirectFlowLinks = {
   // ID of [billing request](#billing-requests-billing-requests) that a redirect
@@ -4222,24 +4379,13 @@ export type RedirectFlowLinks = {
   mandate?: string;
 };
 
-export enum RedirectFlowScheme {
-  Ach = 'ach',
-  Autogiro = 'autogiro',
-  Bacs = 'bacs',
-  Becs = 'becs',
-  BecsNz = 'becs_nz',
-  Betalingsservice = 'betalingsservice',
-  Pad = 'pad',
-  SepaCore = 'sepa_core',
-}
-
 /** Type for a refund resource. */
 export type Refund = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -4528,8 +4674,8 @@ export type SchemeIdentifier = {
   // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // The currency of the scheme identifier.
@@ -4582,17 +4728,6 @@ export type SchemeIdentifierCreateRequestLinks = {
   creditor?: string;
 };
 
-export enum SchemeIdentifierCurrency {
-  AUD = 'AUD',
-  CAD = 'CAD',
-  DKK = 'DKK',
-  EUR = 'EUR',
-  GBP = 'GBP',
-  NZD = 'NZD',
-  SEK = 'SEK',
-  USD = 'USD',
-}
-
 export enum SchemeIdentifierScheme {
   Ach = 'ach',
   Autogiro = 'autogiro',
@@ -4606,6 +4741,17 @@ export enum SchemeIdentifierScheme {
   Sepa = 'sepa',
   SepaCreditTransfer = 'sepa_credit_transfer',
   SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
+}
+
+export enum SchemeIdentifierCurrency {
+  AUD = 'AUD',
+  CAD = 'CAD',
+  DKK = 'DKK',
+  EUR = 'EUR',
+  GBP = 'GBP',
+  NZD = 'NZD',
+  SEK = 'SEK',
+  USD = 'USD',
 }
 
 export enum SchemeIdentifierStatus {
@@ -4692,8 +4838,8 @@ export type Subscription = {
   // The total number of payments that should be taken by this subscription.
   count?: string | null;
 
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -4798,24 +4944,17 @@ export type Subscription = {
   upcoming_payments?: SubscriptionUpcomingPayment[];
 };
 
-/** Type for a subscriptioncreaterequestlinks resource. */
-export type SubscriptionCreateRequestLinks = {
-  // ID of the associated [mandate](#core-endpoints-mandates) which the
-  // subscription will create payments against.
-  mandate: string;
-};
-
 export enum SubscriptionIntervalUnit {
   Weekly = 'weekly',
   Monthly = 'monthly',
   Yearly = 'yearly',
 }
 
-/** Type for a subscriptionlinks resource. */
-export type SubscriptionLinks = {
+/** Type for a subscriptioncreaterequestlinks resource. */
+export type SubscriptionCreateRequestLinks = {
   // ID of the associated [mandate](#core-endpoints-mandates) which the
   // subscription will create payments against.
-  mandate?: string;
+  mandate: string;
 };
 
 export enum SubscriptionMonth {
@@ -4832,6 +4971,13 @@ export enum SubscriptionMonth {
   November = 'november',
   December = 'december',
 }
+
+/** Type for a subscriptionlinks resource. */
+export type SubscriptionLinks = {
+  // ID of the associated [mandate](#core-endpoints-mandates) which the
+  // subscription will create payments against.
+  mandate?: string;
+};
 
 export enum SubscriptionStatus {
   PendingCustomerApproval = 'pending_customer_approval',
@@ -4975,8 +5121,8 @@ export type VerificationDetailLinks = {
 
 /** Type for a webhook resource. */
 export type Webhook = {
-  // Fixed [timestamp](#api-usage-time-zones--dates), recording when this
-  // resource was created.
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
   created_at?: string;
 
   // Unique identifier, beginning with "WB".
