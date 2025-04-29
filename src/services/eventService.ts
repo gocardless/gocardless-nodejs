@@ -73,6 +73,11 @@ interface EventListRequest {
 
   mandate?: string;
 
+  // ID of an outbound_payment. If specified, this endpoint will return all events
+  // for the given payment.
+
+  outbound_payment?: string;
+
   // ID of an event. If specified, this endpoint will return all events whose
   // parent_event is the given event ID.
 
