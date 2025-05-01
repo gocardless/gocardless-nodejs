@@ -2284,7 +2284,7 @@ export type Event = {
   // <li>`refunds`</li>
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
-  // <li>`outbound_payment`</li>
+  // <li>`outbound_payments`</li>
   // </ul>
   resource_type?: EventResourceType;
 };
@@ -2504,7 +2504,6 @@ export enum EventResourceType {
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
-  OutboundPayment = 'outbound_payment',
 }
 
 /** Type for a export resource. */
@@ -2714,7 +2713,8 @@ export type Institution = {
 
   // [ISO
   // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-  // alpha-2 code. The country code of the institution.
+  // alpha-2 code. The country code of the institution. If nothing is provided,
+  // institutions with the country code 'GB' are returned by default.
   country_code?: string;
 
   // A URL pointing to the icon for this institution
@@ -2722,6 +2722,9 @@ export type Institution = {
 
   // The unique identifier for this institution
   id?: string;
+
+  // Defines individual limits for business and personal accounts.
+  limits?: InstitutionLimits | null;
 
   // A URL pointing to the logo for this institution
   logo_url?: string;
@@ -2733,8 +2736,29 @@ export type Institution = {
   status?: InstitutionStatus;
 };
 
+/** Type for a institutionbranchcode resource. */
+export type InstitutionBranchCode = {};
+
+/** Type for a institutionfeature resource. */
+export type InstitutionFeature = {};
+
+/** Type for a institutionscheme resource. */
+export type InstitutionScheme = {};
+
 /** Type for a institutionid resource. */
 export type InstitutionId = {};
+
+/** Type for a institutionlimits resource. */
+export type InstitutionLimits = {
+  // Daily limit details for this institution. (The 'limits' property is only
+  // available via an authenticated request with a generated access token)
+  daily?: JsonMap | null;
+
+  // Single transaction limit details for this institution. (The 'limits'
+  // property is only available via an authenticated request with a generated
+  // access token)
+  single?: JsonMap | null;
+};
 
 export enum InstitutionStatus {
   Enabled = 'enabled',
