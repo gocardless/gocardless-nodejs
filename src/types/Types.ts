@@ -401,6 +401,232 @@ export enum BillingRequestNotificationType {
   Email = 'email',
 }
 
+/** Type for a billingrequestactions resource. */
+export type BillingRequestActions = {
+  // URL for an oauth flow that will allow the user to authorise the payment
+  bank_authorisation_redirect_uri?: string;
+
+  // Supports the same structure as the collect_bank_account endpoint.
+  collect_bank_account?: BillingRequestActionsCollectBankAccount;
+
+  // Supports the same structure as the collect_customer_details endpoint.
+  collect_customer_details?: BillingRequestActionsCollectCustomerDetails;
+
+  // By default, we will auto confirm the payer details when this endpoint is
+  // used for relevant billing requests. You can skip this parameter entirely if
+  // you don't need to specify dual signatory or metadata. The assumption is
+  // that you have already adhered to your compliance requirements of confirming
+  // these details with the payer before calling this endpoint. Please refer to
+  // the confirm_payer_details endpoint for more information.
+  confirm_payer_details?: BillingRequestActionsConfirmPayerDetails;
+
+  // For instant payments, pass this boolean in order to create a bank
+  // authorisation link that payer's can use to authorise the payment. By
+  // default this is considered false.
+  create_bank_authorisation?: boolean;
+
+  // Supports the same structure as the select_institution endpoint.
+  select_institution?: BillingRequestActionsSelectInstitution;
+};
+
+/** Type for a billingrequestactionscollectbankaccount resource. */
+export type BillingRequestActionsCollectBankAccount = {
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
+  account_holder_name?: string;
+
+  // Bank account number - see [local details](#appendix-local-bank-details) for
+  // more information. Alternatively you can provide an `iban`.
+  account_number?: string | null;
+
+  // Account number suffix (only for bank accounts denominated in NZD) - see
+  // [local details](#local-bank-details-new-zealand) for more information.
+  account_number_suffix?: string | null;
+
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type?: BillingRequestActionsCollectBankAccountAccountType;
+
+  // Bank code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  bank_code?: string | null;
+
+  // Branch code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  branch_code?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // Defaults to the country code of the `iban` if supplied, otherwise is
+  // required.
+  country_code?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string | null;
+
+  // International Bank Account Number. Alternatively you can provide [local
+  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
+  // bank accounts denominated in SEK - you must supply [local
+  // details](#local-bank-details-sweden).
+  iban?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // A unique record such as an email address, mobile number or company number,
+  // that can be used to make and accept payments.
+  pay_id?: string;
+};
+
+export enum BillingRequestActionsCollectBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+/** Type for a billingrequestactionscollectcustomerdetails resource. */
+export type BillingRequestActionsCollectCustomerDetails = {
+  //
+  customer?: BillingRequestActionsCollectCustomerDetailsCustomer;
+
+  //
+  customer_billing_detail?: BillingRequestActionsCollectCustomerDetailsCustomerBillingDetail;
+};
+
+/** Type for a billingrequestactionscollectcustomerdetailscustomer resource. */
+export type BillingRequestActionsCollectCustomerDetailsCustomer = {
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string | null;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string | null;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string | null;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string | null;
+
+  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for notification emails sent by GoCardless if your
+  // organisation does not send its own (see [compliance
+  // requirements](#appendix-compliance-requirements)). Currently only "en",
+  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
+  // If this is not provided and a customer was linked during billing request
+  // creation, the linked customer language will be used. Otherwise, the
+  // language is default to "en".
+  language?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // including country code.
+  phone_number?: string | null;
+};
+
+/** Type for a billingrequestactionscollectcustomerdetailscustomerbillingdetail resource. */
+export type BillingRequestActionsCollectCustomerDetailsCustomerBillingDetail = {
+  // The first line of the customer's address.
+  address_line1?: string | null;
+
+  // The second line of the customer's address.
+  address_line2?: string | null;
+
+  // The third line of the customer's address.
+  address_line3?: string | null;
+
+  // The city of the customer's address.
+  city?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string | null;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string | null;
+
+  // For ACH customers only. Required for ACH customers. A string containing the
+  // IP address of the payer to whom the mandate belongs (i.e. as a result of
+  // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
+  ip_address?: string | null;
+
+  // The customer's postal code.
+  postal_code?: string | null;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string | null;
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string | null;
+};
+
+/** Type for a billingrequestactionsconfirmpayerdetails resource. */
+export type BillingRequestActionsConfirmPayerDetails = {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // This attribute can be set to true if the payer has indicated that multiple
+  // signatures are required for the mandate. As long as every other Billing
+  // Request actions have been completed, the payer will receive an email
+  // notification containing instructions on how to complete the additional
+  // signature. The dual signature flow can only be completed using GoCardless
+  // branded pages.
+  payer_requested_dual_signature?: boolean;
+};
+
+/** Type for a billingrequestactionsselectinstitution resource. */
+export type BillingRequestActionsSelectInstitution = {
+  // [ISO
+  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // alpha-2 code. The country code of the institution. If nothing is provided,
+  // institutions with the country code 'GB' are returned by default.
+  country_code: string;
+
+  // The unique identifier for this institution
+  institution: string;
+};
+
+/** Type for a billingrequestcreatewithactionsrequestlinks resource. */
+export type BillingRequestCreateWithActionsRequestLinks = {
+  // ID of the associated [creditor](#core-endpoints-creditors). Only required
+  // if your account manages multiple creditors.
+  creditor?: string;
+
+  // ID of the [customer](#core-endpoints-customers) against which this request
+  // should be made.
+  customer?: string;
+
+  // (Optional) ID of the
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
+  // which this request should be made.
+  //
+  customer_bank_account?: string;
+};
+
 /** Type for a billingrequestaction resource. */
 export type BillingRequestAction = {
   // List of currencies the current mandate supports
