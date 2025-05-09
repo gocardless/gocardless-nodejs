@@ -54,6 +54,7 @@ interface EventListRequest {
   // <li>`refund`</li>
   // <li>`scheme_identifier`</li>
   // <li>`subscription`</li>
+  // <li>`outbound_payment`</li>
   // </ul>
 
   include?: Types.EventInclude;
@@ -105,7 +106,8 @@ interface EventListRequest {
   // Type of resource that you'd like to get all events for.
   // Cannot be used together with the `billing_request`, `creditor`,
   // `export`,`instalment_schedule`, `mandate`, `payer_authorisation`, `payment`,
-  // `payout`, `refund`, `scheme_identifier` or `subscription` parameters.
+  // `payout`, `refund`, `scheme_identifier`, `subscription` or `outbound_payment`
+  // parameters.
   // The type can be one of:
   // <ul>
   // <li>`billing_requests`</li>
@@ -119,6 +121,7 @@ interface EventListRequest {
   // <li>`refunds`</li>
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
+  // <li>`outbound_payments`</li>
   // </ul>
 
   resource_type?: Types.EventResourceType;
