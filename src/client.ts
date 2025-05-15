@@ -9,6 +9,7 @@ import { BankDetailsLookupService } from './services/bankDetailsLookupService';
 import { BillingRequestService } from './services/billingRequestService';
 import { BillingRequestFlowService } from './services/billingRequestFlowService';
 import { BillingRequestTemplateService } from './services/billingRequestTemplateService';
+import { BillingRequestWithActionService } from './services/billingRequestWithActionService';
 import { BlockService } from './services/blockService';
 import { CreditorService } from './services/creditorService';
 import { CreditorBankAccountService } from './services/creditorBankAccountService';
@@ -52,6 +53,7 @@ export class GoCardlessClient {
   private _billingRequests: BillingRequestService;
   private _billingRequestFlows: BillingRequestFlowService;
   private _billingRequestTemplates: BillingRequestTemplateService;
+  private _billingRequestWithActions: BillingRequestWithActionService;
   private _blocks: BlockService;
   private _creditors: CreditorService;
   private _creditorBankAccounts: CreditorBankAccountService;
@@ -95,6 +97,7 @@ export class GoCardlessClient {
     this._billingRequests = undefined;
     this._billingRequestFlows = undefined;
     this._billingRequestTemplates = undefined;
+    this._billingRequestWithActions = undefined;
     this._blocks = undefined;
     this._creditors = undefined;
     this._creditorBankAccounts = undefined;
@@ -183,6 +186,14 @@ export class GoCardlessClient {
     }
 
     return this._billingRequestTemplates;
+  }
+
+  get billingRequestWithActions(): BillingRequestWithActionService {
+    if (!this._billingRequestWithActions) {
+      this._billingRequestWithActions = new BillingRequestWithActionService(this._api);
+    }
+
+    return this._billingRequestWithActions;
   }
 
   get blocks(): BlockService {
