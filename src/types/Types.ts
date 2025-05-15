@@ -1508,6 +1508,1698 @@ export enum BillingRequestTemplateMandateRequestVerify {
   Always = 'always',
 }
 
+/** Type for a billingrequestwithaction resource. */
+export type BillingRequestWithAction = {
+  // Bank Authorisations can be used to authorise Billing Requests.
+  // Authorisations
+  // are created against a specific bank, usually the bank that provides the
+  // payer's
+  // account.
+  //
+  // Creation of Bank Authorisations is only permitted from GoCardless hosted
+  // UIs
+  // (see Billing Request Flows) to ensure we meet regulatory requirements for
+  // checkout flows.
+  bank_authorisations?: BillingRequestWithActionBankAuthorisations;
+
+  //  Billing Requests help create resources that require input or action from a
+  // customer. An example of required input might be additional customer billing
+  // details, while an action would be asking a customer to authorise a payment
+  // using their mobile banking app.
+  //
+  // See [Billing Requests:
+  // Overview](https://developer.gocardless.com/getting-started/billing-requests/overview/)
+  // for how-to's, explanations and tutorials. <p
+  // class="notice"><strong>Important</strong>: All properties associated with
+  // `subscription_request` and `instalment_schedule_request` are only supported
+  // for ACH and PAD schemes.</p>
+  billing_requests: BillingRequestWithActionBillingRequests;
+};
+
+/** Type for a billingrequestwithactionactions resource. */
+export type BillingRequestWithActionActions = {
+  // URL for an oauth flow that will allow the user to authorise the payment
+  bank_authorisation_redirect_uri?: string;
+
+  //
+  collect_bank_account?: BillingRequestWithActionActionsCollectBankAccount;
+
+  //
+  collect_customer_details?: BillingRequestWithActionActionsCollectCustomerDetails;
+
+  //
+  confirm_payer_details?: BillingRequestWithActionActionsConfirmPayerDetails;
+
+  // Create a bank authorisation object as part of this request
+  create_bank_authorisation?: boolean;
+
+  //
+  select_institution?: BillingRequestWithActionActionsSelectInstitution;
+};
+
+/** Type for a billingrequestwithactionactionscollectbankaccount resource. */
+export type BillingRequestWithActionActionsCollectBankAccount = {
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
+  account_holder_name?: string;
+
+  // Bank account number - see [local details](#appendix-local-bank-details) for
+  // more information. Alternatively you can provide an `iban`.
+  account_number?: string | null;
+
+  // Account number suffix (only for bank accounts denominated in NZD) - see
+  // [local details](#local-bank-details-new-zealand) for more information.
+  account_number_suffix?: string | null;
+
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type?: BillingRequestWithActionActionsCollectBankAccountAccountType;
+
+  // Bank code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  bank_code?: string | null;
+
+  // Branch code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  branch_code?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // Defaults to the country code of the `iban` if supplied, otherwise is
+  // required.
+  country_code?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string | null;
+
+  // International Bank Account Number. Alternatively you can provide [local
+  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
+  // bank accounts denominated in SEK - you must supply [local
+  // details](#local-bank-details-sweden).
+  iban?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // A unique record such as an email address, mobile number or company number,
+  // that can be used to make and accept payments.
+  pay_id?: string;
+};
+
+export enum BillingRequestWithActionActionsCollectBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+/** Type for a billingrequestwithactionactionscollectcustomerdetails resource. */
+export type BillingRequestWithActionActionsCollectCustomerDetails = {
+  //
+  customer?: BillingRequestWithActionActionsCollectCustomerDetailsCustomer;
+
+  //
+  customer_billing_detail?: BillingRequestWithActionActionsCollectCustomerDetailsCustomerBillingDetail;
+};
+
+/** Type for a billingrequestwithactionactionscollectcustomerdetailscustomer resource. */
+export type BillingRequestWithActionActionsCollectCustomerDetailsCustomer = {
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string | null;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string | null;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string | null;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string | null;
+
+  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for notification emails sent by GoCardless if your
+  // organisation does not send its own (see [compliance
+  // requirements](#appendix-compliance-requirements)). Currently only "en",
+  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
+  // If this is not provided and a customer was linked during billing request
+  // creation, the linked customer language will be used. Otherwise, the
+  // language is default to "en".
+  language?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // including country code.
+  phone_number?: string | null;
+};
+
+/** Type for a billingrequestwithactionactionscollectcustomerdetailscustomerbillingdetail resource. */
+export type BillingRequestWithActionActionsCollectCustomerDetailsCustomerBillingDetail = {
+  // The first line of the customer's address.
+  address_line1?: string | null;
+
+  // The second line of the customer's address.
+  address_line2?: string | null;
+
+  // The third line of the customer's address.
+  address_line3?: string | null;
+
+  // The city of the customer's address.
+  city?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string | null;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string | null;
+
+  // For ACH customers only. Required for ACH customers. A string containing the
+  // IP address of the payer to whom the mandate belongs (i.e. as a result of
+  // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
+  ip_address?: string | null;
+
+  // The customer's postal code.
+  postal_code?: string | null;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string | null;
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string | null;
+};
+
+/** Type for a billingrequestwithactionactionsconfirmpayerdetails resource. */
+export type BillingRequestWithActionActionsConfirmPayerDetails = {
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // This attribute can be set to true if the payer has indicated that multiple
+  // signatures are required for the mandate. As long as every other Billing
+  // Request actions have been completed, the payer will receive an email
+  // notification containing instructions on how to complete the additional
+  // signature. The dual signature flow can only be completed using GoCardless
+  // branded pages.
+  payer_requested_dual_signature?: boolean;
+};
+
+/** Type for a billingrequestwithactionactionsselectinstitution resource. */
+export type BillingRequestWithActionActionsSelectInstitution = {
+  // [ISO
+  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // alpha-2 code. The country code of the institution. If nothing is provided,
+  // institutions with the country code 'GB' are returned by default.
+  country_code: string;
+
+  // The unique identifier for this institution
+  institution: string;
+};
+
+/** Type for a billingrequestwithactioncreatewithactionsrequestlinks resource. */
+export type BillingRequestWithActionCreateWithActionsRequestLinks = {
+  // ID of the associated [creditor](#core-endpoints-creditors). Only required
+  // if your account manages multiple creditors.
+  creditor?: string;
+
+  // ID of the [customer](#core-endpoints-customers) against which this request
+  // should be made.
+  customer?: string;
+
+  // (Optional) ID of the
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
+  // which this request should be made.
+  //
+  customer_bank_account?: string;
+};
+
+/** Type for a billingrequestwithactionmandaterequest resource. */
+export type BillingRequestWithActionMandateRequest = {
+  // This field is ACH specific, sometimes referred to as [SEC
+  // code](https://www.moderntreasury.com/learn/sec-codes).
+  //
+  // This is the way that the payer gives authorisation to the merchant.
+  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // code: WEB)
+  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // code: TEL)
+  //   paper: Authorisation is provided in writing and signed, or similarly
+  // authenticated (maps to SEC code: PPD)
+  //
+  authorisation_source?: BillingRequestWithActionMandateRequestAuthorisationSource;
+
+  // Constraints that will apply to the mandate_request. (Optional) Specifically
+  // for PayTo and VRP.
+  constraints?: BillingRequestWithActionMandateRequestConstraints | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
+  currency?: string;
+
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
+  //
+  description?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Unique reference. Different schemes have different length and [character
+  // set](#appendix-character-sets) requirements. GoCardless will generate a
+  // unique reference satisfying the different scheme requirements if this field
+  // is left blank.
+  reference?: string | null;
+
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported. Optional for mandate only requests - if left
+  // blank, the payer will be able to select the currency/scheme to pay with
+  // from a list of your available schemes.
+  scheme?: string | null;
+
+  // If true, this billing request would be used to set up a mandate solely for
+  // moving (or sweeping) money from one account owned by the payer to another
+  // account that the payer also owns. This is required for Faster Payments
+  sweeping?: boolean;
+
+  // Verification preference for the mandate. One of:
+  // <ul>
+  //   <li>`minimum`: only verify if absolutely required, such as when part of
+  // scheme rules</li>
+  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified</li>
+  //   <li>`when_available`: if verification mechanisms are available, use
+  // them</li>
+  //   <li>`always`: as `when_available`, but fail to create the Billing Request
+  // if a mechanism isn't available</li>
+  // </ul>
+  //
+  // By default, all Billing Requests use the `recommended` verification
+  // preference. It uses GoCardless payment intelligence solution to determine
+  // if a payer is fraudulent or not. The verification mechanism is based on the
+  // response and the payer may be asked to verify themselves. If the feature is
+  // not available, `recommended` behaves like `minimum`.
+  //
+  // If you never wish to take advantage of our reduced risk products and
+  // Verified Mandates as they are released in new schemes, please use the
+  // `minimum` verification preference.
+  //
+  // See [Billing Requests: Creating Verified
+  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // for more information.
+  verify?: BillingRequestWithActionMandateRequestVerify;
+};
+
+export enum BillingRequestWithActionMandateRequestAuthorisationSource {
+  Web = 'web',
+  Telephone = 'telephone',
+  Paper = 'paper',
+}
+
+/** Type for a billingrequestwithactionmandaterequestconstraints resource. */
+export type BillingRequestWithActionMandateRequestConstraints = {
+  // The latest date at which payments can be taken, must occur after start_date
+  // if present
+  //
+  // This is an optional field and if it is not supplied the agreement will be
+  // considered open and
+  // will not have an end date. Keep in mind the end date must take into account
+  // how long it will
+  // take the user to set up this agreement via the Billing Request.
+  //
+  end_date?: string;
+
+  // The maximum amount that can be charged for a single payment. Required for
+  // VRP.
+  max_amount_per_payment?: number;
+
+  // A constraint where you can specify info (free text string) about how
+  // payments are calculated. _Note:_ This is only supported for ACH and PAD
+  // schemes.
+  //
+  payment_method?: string;
+
+  // List of periodic limits and constraints which apply to them
+  periodic_limits?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimit[];
+
+  // The date from which payments can be taken.
+  //
+  // This is an optional field and if it is not supplied the start date will be
+  // set to the day
+  // authorisation happens.
+  //
+  start_date?: string;
+};
+
+/** Type for a billingrequestwithactionmandaterequestconstraintsperiodiclimit resource. */
+export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
+  // The alignment of the period.
+  //
+  // `calendar` - this will finish on the end of the current period. For example
+  // this will expire on the Monday for the current week or the January for the
+  // next year.
+  //
+  // `creation_date` - this will finish on the next instance of the current
+  // period. For example Monthly it will expire on the same day of the next
+  // month, or yearly the same day of the next year.
+  //
+  alignment?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment;
+
+  // (Optional) The maximum number of payments that can be collected in this
+  // periodic limit.
+  max_payments?: number;
+
+  // The maximum total amount that can be charged for all payments in this
+  // periodic limit.
+  // Required for VRP.
+  //
+  max_total_amount?: number;
+
+  // The repeating period for this mandate
+  period?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod;
+};
+
+export enum BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment {
+  Calendar = 'calendar',
+  CreationDate = 'creation_date',
+}
+
+export enum BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
+  Flexible = 'flexible',
+}
+
+export enum BillingRequestWithActionMandateRequestVerify {
+  Minimum = 'minimum',
+  Recommended = 'recommended',
+  WhenAvailable = 'when_available',
+  Always = 'always',
+}
+
+/** Type for a billingrequestwithactionpaymentrequest resource. */
+export type BillingRequestWithActionPaymentRequest = {
+  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  amount?: string;
+
+  // The amount to be deducted from the payment as an app fee, to be paid to the
+  // partner integration which created the billing request, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
+  // for `EUR` with your customers in supported Eurozone countries only.
+  currency?: string;
+
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
+  //
+  description?: string | null;
+
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestWithActionPaymentRequestFundsSettlement;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // A custom payment reference defined by the merchant. It is only available
+  // for payments using the Direct Funds settlement model on the Faster Payments
+  // scheme.
+  //
+  reference?: string | null;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p> <p
+  // class="notice"><strong>Important</strong>: This is not applicable to IBP
+  // and VRP payments. </p>
+  retry_if_possible?: boolean;
+
+  // (Optional) A scheme used for Open Banking payments. Currently
+  // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
+  // and `sepa_instant_credit_transfer` are supported in supported Eurozone
+  // countries (EUR). For Eurozone countries, `sepa_credit_transfer` is used as
+  // the default. Please be aware that `sepa_instant_credit_transfer` may incur
+  // an additional fee for your customer.
+  scheme?: string | null;
+};
+
+export enum BillingRequestWithActionPaymentRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
+}
+
+export enum BillingRequestWithActionPurposeCode {
+  Mortgage = 'mortgage',
+  Utility = 'utility',
+  Loan = 'loan',
+  DependantSupport = 'dependant_support',
+  Gambling = 'gambling',
+  Retail = 'retail',
+  Salary = 'salary',
+  Personal = 'personal',
+  Government = 'government',
+  Pension = 'pension',
+  Tax = 'tax',
+  Other = 'other',
+}
+
+/** Type for a billingrequestwithactionsubscriptionrequest resource. */
+export type BillingRequestWithActionSubscriptionRequest = {
+  // Amount in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount: string;
+
+  // The amount to be deducted from each payment as an app fee, to be paid to
+  // the partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // The total number of payments that should be taken by this subscription.
+  count?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency: string;
+
+  // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
+  // `-1` to indicate the last day of the month.
+  day_of_month?: string | null;
+
+  // Number of `interval_units` between customer charge dates. Must be greater
+  // than or equal to `1`. Must result in at least one charge date per year.
+  // Defaults to `1`.
+  interval?: string;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit: BillingRequestWithActionSubscriptionRequestIntervalUnit;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Name of the month on which to charge a customer. Must be lowercase. Only
+  // applies
+  // when the interval_unit is `yearly`.
+  //
+  month?: BillingRequestWithActionSubscriptionRequestMonth;
+
+  // Optional name for the subscription. This will be set as the description on
+  // each payment created. Must not exceed 255 characters.
+  name?: string | null;
+
+  // An optional payment reference. This will be set as the reference on each
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  // <br />
+  payment_reference?: string | null;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  retry_if_possible?: boolean;
+
+  // The date on which the first payment should be charged. If fulfilled after
+  // this date, this will be set as the mandate's `next_possible_charge_date`.
+  // When left blank and `month` or `day_of_month` are provided, this will be
+  // set to the date of the first payment.
+  // If created without `month` or `day_of_month` this will be set as the
+  // mandate's `next_possible_charge_date`.
+  //
+  start_date?: string | null;
+};
+
+export enum BillingRequestWithActionSubscriptionRequestIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
+export enum BillingRequestWithActionSubscriptionRequestMonth {
+  January = 'january',
+  February = 'february',
+  March = 'march',
+  April = 'april',
+  May = 'may',
+  June = 'june',
+  July = 'july',
+  August = 'august',
+  September = 'september',
+  October = 'october',
+  November = 'november',
+  December = 'december',
+}
+
+/** Type for a billingrequestwithactionbankauthorisations resource. */
+export type BillingRequestWithActionBankAuthorisations = {
+  // Type of authorisation, can be either 'mandate' or 'payment'.
+  authorisation_type?: BillingRequestWithActionBankAuthorisationsAuthorisationType;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when the user has
+  // been authorised.
+  authorised_at?: string | null;
+
+  // Timestamp when the flow was created
+  created_at?: string;
+
+  // Timestamp when the url will expire. Each authorisation url currently lasts
+  // for 15 minutes, but this can vary by bank.
+  expires_at?: string;
+
+  // Unique identifier, beginning with "BAU".
+  id: string;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when the
+  // authorisation URL has been visited.
+  last_visited_at?: string | null;
+
+  // Resources linked to this BillingRequestWithActionBankAuthorisations.
+  links?: BillingRequestWithActionBankAuthorisationsLinks;
+
+  // URL to a QR code PNG image of the bank authorisation url.
+  // This QR code can be used as an alternative to providing the `url` to the
+  // payer to allow them to authorise with their mobile devices.
+  qr_code_url?: string | null;
+
+  // URL that the payer can be redirected to after authorising the payment.
+  //
+  // On completion of bank authorisation, the query parameter of either
+  // `outcome=success` or `outcome=failure` will be
+  // appended to the `redirect_uri` to indicate the result of the bank
+  // authorisation. If the bank authorisation is
+  // expired, the query parameter `outcome=timeout` will be appended to the
+  // `redirect_uri`, in which case you should
+  // prompt the user to try the bank authorisation step again.
+  //
+  // Please note: bank authorisations can still fail despite an
+  // `outcome=success` on the `redirect_uri`. It is therefore recommended to
+  // wait for the relevant bank authorisation event, such as
+  // [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
+  // [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
+  // [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
+  // order to show the correct outcome to the user.
+  //
+  // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
+  // query parameter `id=BRF123`.
+  //
+  // Defaults to `https://pay.gocardless.com/billing/static/thankyou`.
+  redirect_uri?: string;
+
+  // URL for an oauth flow that will allow the user to authorise the payment
+  url?: string;
+};
+
+/** Type for a billingrequestwithactionbankauthorisationscreaterequestlinks resource. */
+export type BillingRequestWithActionBankAuthorisationsCreateRequestLinks = {
+  // ID of the [billing request](#billing-requests-billing-requests) against
+  // which this authorisation was created.
+  billing_request?: string;
+};
+
+export enum BillingRequestWithActionBankAuthorisationsAuthorisationType {
+  Mandate = 'mandate',
+  Payment = 'payment',
+}
+
+/** Type for a billingrequestwithactionbankauthorisationslinks resource. */
+export type BillingRequestWithActionBankAuthorisationsLinks = {
+  // ID of the [billing request](#billing-requests-billing-requests) against
+  // which this authorisation was created.
+  billing_request?: string;
+
+  // ID of the [institution](#billing-requests-institutions) against which this
+  // authorisation was created.
+  institution?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequests resource. */
+export type BillingRequestWithActionBillingRequests = {
+  // List of actions that can be performed before this billing request can be
+  // fulfilled.
+  actions?: BillingRequestWithActionBillingRequestsAction[];
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
+  created_at?: string;
+
+  // (Optional) If true, this billing request can fallback from instant payment
+  // to direct debit.
+  // Should not be set if GoCardless payment intelligence feature is used.
+  //
+  // See [Billing Requests: Retain customers with
+  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  // for more information.
+  fallback_enabled?: boolean;
+
+  // True if the billing request was completed with direct debit.
+  fallback_occurred?: boolean;
+
+  // Unique identifier, beginning with "BRQ".
+  id: string;
+
+  // Request for an instalment schedule. Has to contain either
+  // `instalments_with_schedule` object or an array of `instalments_with_dates`
+  // objects
+  instalment_schedule_request?: BillingRequestWithActionBillingRequestsInstalmentScheduleRequest | null;
+
+  // Resources linked to this BillingRequestWithActionBillingRequests.
+  links?: BillingRequestWithActionBillingRequestsLinks;
+
+  // Request for a mandate
+  mandate_request?: BillingRequestWithActionBillingRequestsMandateRequest;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Request for a one-off strongly authorised payment
+  payment_request?: BillingRequestWithActionBillingRequestsPaymentRequest;
+
+  // Specifies the high-level purpose of a mandate and/or payment using a set of
+  // pre-defined categories. Required for the PayTo scheme, optional for all
+  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
+  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
+  // and `other` are supported.
+  purpose_code?: BillingRequestWithActionBillingRequestsPurposeCode;
+
+  //
+  resources?: BillingRequestWithActionBillingRequestsResources;
+
+  // One of:
+  // <ul>
+  // <li>`pending`: the billing request is pending and can be used</li>
+  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  // <li>`fulfilling`: the billing request is currently undergoing
+  // fulfilment</li>
+  // <li>`fulfilled`: the billing request has been fulfilled and a payment
+  // created</li>
+  // <li>`cancelled`: the billing request has been cancelled and cannot be
+  // used</li>
+  // </ul>
+  status?: BillingRequestWithActionBillingRequestsStatus;
+
+  // Request for a subscription
+  subscription_request?: BillingRequestWithActionBillingRequestsSubscriptionRequest | null;
+};
+
+/** Type for a billingrequestwithactionbillingrequestscreaterequestlinks resource. */
+export type BillingRequestWithActionBillingRequestsCreateRequestLinks = {
+  // ID of the associated [creditor](#core-endpoints-creditors). Only required
+  // if your account manages multiple creditors.
+  creditor?: string;
+
+  // ID of the [customer](#core-endpoints-customers) against which this request
+  // should be made.
+  customer?: string;
+
+  // (Optional) ID of the
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
+  // which this request should be made.
+  //
+  customer_bank_account?: string;
+};
+
+export enum BillingRequestWithActionBillingRequestsPurposeCode {
+  Mortgage = 'mortgage',
+  Utility = 'utility',
+  Loan = 'loan',
+  DependantSupport = 'dependant_support',
+  Gambling = 'gambling',
+  Retail = 'retail',
+  Salary = 'salary',
+  Personal = 'personal',
+  Government = 'government',
+  Pension = 'pension',
+  Tax = 'tax',
+  Other = 'other',
+}
+
+/** Type for a billingrequestwithactionbillingrequestscustomer resource. */
+export type BillingRequestWithActionBillingRequestsCustomer = {
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string | null;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string | null;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string | null;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string | null;
+
+  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for notification emails sent by GoCardless if your
+  // organisation does not send its own (see [compliance
+  // requirements](#appendix-compliance-requirements)). Currently only "en",
+  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
+  // If this is not provided and a customer was linked during billing request
+  // creation, the linked customer language will be used. Otherwise, the
+  // language is default to "en".
+  language?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // including country code.
+  phone_number?: string | null;
+};
+
+/** Type for a billingrequestwithactionbillingrequestscustomerbillingdetail resource. */
+export type BillingRequestWithActionBillingRequestsCustomerBillingDetail = {
+  // The first line of the customer's address.
+  address_line1?: string | null;
+
+  // The second line of the customer's address.
+  address_line2?: string | null;
+
+  // The third line of the customer's address.
+  address_line3?: string | null;
+
+  // The city of the customer's address.
+  city?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string | null;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string | null;
+
+  // For ACH customers only. Required for ACH customers. A string containing the
+  // IP address of the payer to whom the mandate belongs (i.e. as a result of
+  // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
+  ip_address?: string | null;
+
+  // The customer's postal code.
+  postal_code?: string | null;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string | null;
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string | null;
+};
+
+export enum BillingRequestWithActionBillingRequestsAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+export enum BillingRequestWithActionBillingRequestsStatus {
+  Pending = 'pending',
+  ReadyToFulfil = 'ready_to_fulfil',
+  Fulfilling = 'fulfilling',
+  Fulfilled = 'fulfilled',
+  Cancelled = 'cancelled',
+}
+
+export enum BillingRequestWithActionBillingRequestsNotificationType {
+  Email = 'email',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsaction resource. */
+export type BillingRequestWithActionBillingRequestsAction = {
+  // List of currencies the current mandate supports
+  available_currencies?: string[];
+
+  // Describes the behaviour of bank authorisations, for the bank_authorisation
+  // action
+  bank_authorisation?: BillingRequestWithActionBillingRequestsActionBankAuthorisation;
+
+  // Additional parameters to help complete the collect_customer_details action
+  collect_customer_details?: BillingRequestWithActionBillingRequestsActionCollectCustomerDetails;
+
+  // Which other action types this action can complete.
+  completes_actions?: string[];
+
+  // Describes whether we inferred the institution from the provided bank
+  // account details. One of:
+  // - `not_needed`: we won't attempt to infer the institution as it is not
+  // needed. Either because it was manually selected or the billing request does
+  // not support this feature
+  // - `pending`: we are waiting on the bank details in order to infer the
+  // institution
+  // - `failed`: we weren't able to infer the institution
+  // - `success`: we inferred the institution and added it to the resources of a
+  // Billing Request
+  //
+  institution_guess_status?: BillingRequestWithActionBillingRequestsActionInstitutionGuessStatus;
+
+  // Informs you whether the action is required to fulfil the billing request or
+  // not.
+  required?: boolean;
+
+  // Requires completing these actions before this action can be completed.
+  requires_actions?: string[];
+
+  // Status of the action
+  status?: BillingRequestWithActionBillingRequestsActionStatus;
+
+  // Unique identifier for the action.
+  type?: BillingRequestWithActionBillingRequestsActionType;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsactionavailablecurrencies resource. */
+export type BillingRequestWithActionBillingRequestsActionAvailableCurrencies = {
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
+  currency?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsactionbankauthorisation resource. */
+export type BillingRequestWithActionBillingRequestsActionBankAuthorisation = {
+  // Which authorisation adapter will be used to power these authorisations
+  // (GoCardless internal use only)
+  adapter?: BillingRequestWithActionBillingRequestsActionBankAuthorisationAdapter;
+
+  // What type of bank authorisations are supported on this billing request
+  authorisation_type?: BillingRequestWithActionBillingRequestsActionBankAuthorisationAuthorisationType;
+};
+
+export enum BillingRequestWithActionBillingRequestsActionBankAuthorisationAdapter {
+  OpenBankingGatewayPis = 'open_banking_gateway_pis',
+  PlaidAis = 'plaid_ais',
+  OpenBankingGatewayAis = 'open_banking_gateway_ais',
+  BankidAis = 'bankid_ais',
+  BankPayRecurring = 'bank_pay_recurring',
+}
+
+export enum BillingRequestWithActionBillingRequestsActionBankAuthorisationAuthorisationType {
+  Payment = 'payment',
+  Mandate = 'mandate',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsactioncollectcustomerdetails resource. */
+export type BillingRequestWithActionBillingRequestsActionCollectCustomerDetails = {
+  // Default customer country code, as determined by scheme and payer location
+  default_country_code?: string;
+
+  //
+  incomplete_fields?: BillingRequestWithActionBillingRequestsActionCollectCustomerDetailsIncompleteFields;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsactioncollectcustomerdetailsincompletefields resource. */
+export type BillingRequestWithActionBillingRequestsActionCollectCustomerDetailsIncompleteFields = {
+  //
+  customer?: string[];
+
+  //
+  customer_billing_detail?: string[];
+};
+
+export enum BillingRequestWithActionBillingRequestsActionInstitutionGuessStatus {
+  NotNeeded = 'not_needed',
+  Pending = 'pending',
+  Failed = 'failed',
+  Success = 'success',
+}
+
+export enum BillingRequestWithActionBillingRequestsActionStatus {
+  Pending = 'pending',
+  Completed = 'completed',
+}
+
+export enum BillingRequestWithActionBillingRequestsActionType {
+  ChooseCurrency = 'choose_currency',
+  CollectAmount = 'collect_amount',
+  CollectCustomerDetails = 'collect_customer_details',
+  CollectBankAccount = 'collect_bank_account',
+  BankAuthorisation = 'bank_authorisation',
+  ConfirmPayerDetails = 'confirm_payer_details',
+  SelectInstitution = 'select_institution',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsinstalmentschedulerequest resource. */
+export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
+  // The amount to be deducted from each payment as an app fee, to be paid to
+  // the partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "USD" and "CAD" are supported.
+  currency?: string;
+
+  // An explicit array of instalment payments, each specifying at least an
+  // `amount` and `charge_date`. See [create (with
+  // dates)](#instalment-schedules-create-with-dates)
+  instalments_with_dates?: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithDate[] | null;
+
+  // Frequency of the payments you want to create, together with an array of
+  // payment
+  // amounts to be collected, with a specified start date for the first payment.
+  // See [create (with schedule)](#instalment-schedules-create-with-schedule)
+  //
+  instalments_with_schedule?: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithSchedule | null;
+
+  // Resources linked to this BillingRequestWithActionBillingRequestsInstalmentScheduleRequest.
+  links?: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Name of the instalment schedule, up to 100 chars. This name will also be
+  // copied to the payments of the instalment schedule if you use schedule-based
+  // creation.
+  name?: string;
+
+  // An optional payment reference. This will be set as the reference on each
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  // <br />
+  payment_reference?: string | null;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  retry_if_possible?: boolean;
+
+  // The total amount of the instalment schedule, defined as the sum of all
+  // individual
+  // payments, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in
+  // EUR). If the requested payment amounts do not sum up correctly, a
+  // validation error
+  // will be returned.
+  total_amount?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsinstalmentschedulerequestinstalmentswithdate resource. */
+export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithDate = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount: string;
+
+  // A future date on which the payment should be collected. If the date
+  // is before the next_possible_charge_date on the
+  // [mandate](#core-endpoints-mandates), it will be automatically rolled
+  // forwards to that date.
+  charge_date: string | null;
+
+  // A human-readable description of the payment. This will be included in the
+  // notification email GoCardless sends to your customer if your organisation
+  // does not send its own notifications (see [compliance
+  // requirements](#appendix-compliance-requirements)).
+  description?: string | null;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsinstalmentschedulerequestinstalmentswithschedule resource. */
+export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithSchedule = {
+  // List of amounts of each instalment, in the lowest denomination for the
+  // currency (e.g. cents in USD).
+  //
+  amounts: string[];
+
+  // Number of `interval_units` between charge dates. Must be greater than or
+  // equal to `1`.
+  //
+  interval: number;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit;
+
+  // The date on which the first payment should be charged. Must be on or after
+  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
+  // left blank and `month` or `day_of_month` are provided, this will be set to
+  // the date of the first payment. If created without `month` or `day_of_month`
+  // this will be set as the mandate's `next_possible_charge_date`
+  start_date?: string | null;
+};
+
+export enum BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsinstalmentschedulerequestlinks resource. */
+export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestLinks = {
+  // (Optional) ID of the
+  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
+  // created from this instalment schedule request.
+  //
+  instalment_schedule?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestslinks resource. */
+export type BillingRequestWithActionBillingRequestsLinks = {
+  // (Optional) ID of the [bank
+  // authorisation](#billing-requests-bank-authorisations) that was used to
+  // verify this request.
+  bank_authorisation?: string;
+
+  // ID of the associated [creditor](#core-endpoints-creditors).
+  creditor?: string;
+
+  // ID of the [customer](#core-endpoints-customers) that will be used for this
+  // request
+  customer?: string;
+
+  // (Optional) ID of the
+  // [customer_bank_account](#core-endpoints-customer-bank-accounts) that will
+  // be used for this request
+  customer_bank_account?: string;
+
+  // ID of the customer billing detail that will be used for this request
+  customer_billing_detail?: string;
+
+  // (Optional) ID of the associated instalment schedule request
+  instalment_schedule_request?: string;
+
+  // (Optional) ID of the
+  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
+  // created from this instalment schedule request.
+  instalment_schedule_request_instalment_schedule?: string;
+
+  // (Optional) ID of the associated mandate request
+  mandate_request?: string;
+
+  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
+  // from this mandate request. this mandate request.
+  mandate_request_mandate?: string;
+
+  // ID of the associated organisation.
+  organisation?: string;
+
+  // (Optional) ID of the associated payment provider
+  payment_provider?: string;
+
+  // (Optional) ID of the associated payment request
+  payment_request?: string;
+
+  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
+  // from this payment request.
+  payment_request_payment?: string;
+
+  // (Optional) ID of the associated subscription request
+  subscription_request?: string;
+
+  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
+  // created from this subscription request.
+  subscription_request_subscription?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsmandaterequest resource. */
+export type BillingRequestWithActionBillingRequestsMandateRequest = {
+  // This field is ACH specific, sometimes referred to as [SEC
+  // code](https://www.moderntreasury.com/learn/sec-codes).
+  //
+  // This is the way that the payer gives authorisation to the merchant.
+  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // code: WEB)
+  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // code: TEL)
+  //   paper: Authorisation is provided in writing and signed, or similarly
+  // authenticated (maps to SEC code: PPD)
+  //
+  authorisation_source?: BillingRequestWithActionBillingRequestsMandateRequestAuthorisationSource;
+
+  // This attribute represents the authorisation type between the payer and
+  // merchant. It can be set to `one_off`,
+  // `recurring` or `standing` for ACH scheme. And `single`, `recurring` and
+  // `sporadic` for PAD scheme. _Note:_ This is only supported for ACH and PAD
+  // schemes.
+  //
+  consent_type?: string | null;
+
+  // Constraints that will apply to the mandate_request. (Optional) Specifically
+  // for PayTo and VRP.
+  constraints?: BillingRequestWithActionBillingRequestsMandateRequestConstraints | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
+  currency?: string;
+
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
+  //
+  description?: string | null;
+
+  // Resources linked to this BillingRequestWithActionBillingRequestsMandateRequest.
+  links?: BillingRequestWithActionBillingRequestsMandateRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // This attribute can be set to true if the payer has indicated that multiple
+  // signatures are required for the mandate. As long as every other Billing
+  // Request actions have been completed, the payer will receive an email
+  // notification containing instructions on how to complete the additional
+  // signature. The dual signature flow can only be completed using GoCardless
+  // branded pages.
+  payer_requested_dual_signature?: boolean;
+
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported. Optional for mandate only requests - if left
+  // blank, the payer will be able to select the currency/scheme to pay with
+  // from a list of your available schemes.
+  scheme?: string | null;
+
+  // If true, this billing request would be used to set up a mandate solely for
+  // moving (or sweeping) money from one account owned by the payer to another
+  // account that the payer also owns. This is required for Faster Payments
+  sweeping?: boolean;
+
+  // Verification preference for the mandate. One of:
+  // <ul>
+  //   <li>`minimum`: only verify if absolutely required, such as when part of
+  // scheme rules</li>
+  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified</li>
+  //   <li>`when_available`: if verification mechanisms are available, use
+  // them</li>
+  //   <li>`always`: as `when_available`, but fail to create the Billing Request
+  // if a mechanism isn't available</li>
+  // </ul>
+  //
+  // By default, all Billing Requests use the `recommended` verification
+  // preference. It uses GoCardless payment intelligence solution to determine
+  // if a payer is fraudulent or not. The verification mechanism is based on the
+  // response and the payer may be asked to verify themselves. If the feature is
+  // not available, `recommended` behaves like `minimum`.
+  //
+  // If you never wish to take advantage of our reduced risk products and
+  // Verified Mandates as they are released in new schemes, please use the
+  // `minimum` verification preference.
+  //
+  // See [Billing Requests: Creating Verified
+  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // for more information.
+  verify?: BillingRequestWithActionBillingRequestsMandateRequestVerify;
+};
+
+export enum BillingRequestWithActionBillingRequestsMandateRequestAuthorisationSource {
+  Web = 'web',
+  Telephone = 'telephone',
+  Paper = 'paper',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsmandaterequestconstraints resource. */
+export type BillingRequestWithActionBillingRequestsMandateRequestConstraints = {
+  // The latest date at which payments can be taken, must occur after start_date
+  // if present
+  //
+  // This is an optional field and if it is not supplied the agreement will be
+  // considered open and
+  // will not have an end date. Keep in mind the end date must take into account
+  // how long it will
+  // take the user to set up this agreement via the Billing Request.
+  //
+  end_date?: string;
+
+  // The maximum amount that can be charged for a single payment. Required for
+  // VRP.
+  max_amount_per_payment?: number;
+
+  // A constraint where you can specify info (free text string) about how
+  // payments are calculated. _Note:_ This is only supported for ACH and PAD
+  // schemes.
+  //
+  payment_method?: string;
+
+  // List of periodic limits and constraints which apply to them
+  periodic_limits?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimit[];
+
+  // The date from which payments can be taken.
+  //
+  // This is an optional field and if it is not supplied the start date will be
+  // set to the day
+  // authorisation happens.
+  //
+  start_date?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsmandaterequestconstraintsperiodiclimit resource. */
+export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimit = {
+  // The alignment of the period.
+  //
+  // `calendar` - this will finish on the end of the current period. For example
+  // this will expire on the Monday for the current week or the January for the
+  // next year.
+  //
+  // `creation_date` - this will finish on the next instance of the current
+  // period. For example Monthly it will expire on the same day of the next
+  // month, or yearly the same day of the next year.
+  //
+  alignment?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment;
+
+  // (Optional) The maximum number of payments that can be collected in this
+  // periodic limit.
+  max_payments?: number;
+
+  // The maximum total amount that can be charged for all payments in this
+  // periodic limit.
+  // Required for VRP.
+  //
+  max_total_amount?: number;
+
+  // The repeating period for this mandate
+  period?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitPeriod;
+};
+
+export enum BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment {
+  Calendar = 'calendar',
+  CreationDate = 'creation_date',
+}
+
+export enum BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitPeriod {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
+  Flexible = 'flexible',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsmandaterequestlinks resource. */
+export type BillingRequestWithActionBillingRequestsMandateRequestLinks = {
+  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
+  // from this mandate request. this mandate request.
+  //
+  mandate?: string;
+};
+
+export enum BillingRequestWithActionBillingRequestsMandateRequestVerify {
+  Minimum = 'minimum',
+  Recommended = 'recommended',
+  WhenAvailable = 'when_available',
+  Always = 'always',
+}
+
+/** Type for a billingrequestwithactionbillingrequestspaymentrequest resource. */
+export type BillingRequestWithActionBillingRequestsPaymentRequest = {
+  // Amount in minor unit (e.g. pence in GBP, cents in EUR).
+  amount?: string;
+
+  // The amount to be deducted from the payment as an app fee, to be paid to the
+  // partner integration which created the billing request, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
+  // for `EUR` with your customers in supported Eurozone countries only.
+  currency?: string;
+
+  // A human-readable description of the payment and/or mandate. This will be
+  // displayed to the payer when authorising the billing request.
+  //
+  description?: string | null;
+
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestWithActionBillingRequestsPaymentRequestFundsSettlement;
+
+  // Resources linked to this BillingRequestWithActionBillingRequestsPaymentRequest.
+  links?: BillingRequestWithActionBillingRequestsPaymentRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // A custom payment reference defined by the merchant. It is only available
+  // for payments using the Direct Funds settlement model on the Faster Payments
+  // scheme.
+  //
+  reference?: string | null;
+
+  // (Optional) A scheme used for Open Banking payments. Currently
+  // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
+  // and `sepa_instant_credit_transfer` are supported in supported Eurozone
+  // countries (EUR). For Eurozone countries, `sepa_credit_transfer` is used as
+  // the default. Please be aware that `sepa_instant_credit_transfer` may incur
+  // an additional fee for your customer.
+  scheme?: string | null;
+};
+
+export enum BillingRequestWithActionBillingRequestsPaymentRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
+}
+
+/** Type for a billingrequestwithactionbillingrequestspaymentrequestlinks resource. */
+export type BillingRequestWithActionBillingRequestsPaymentRequestLinks = {
+  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
+  // from this payment request.
+  payment?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsresources resource. */
+export type BillingRequestWithActionBillingRequestsResources = {
+  // Embedded customer
+  customer?: BillingRequestWithActionBillingRequestsResourcesCustomer;
+
+  // Embedded customer bank account, only if a bank account is linked
+  customer_bank_account?: BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount | null;
+
+  // Embedded customer billing detail
+  customer_billing_detail?: BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetail;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsresourcescustomer resource. */
+export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
+  // Customer's company name. Required unless a `given_name` and `family_name`
+  // are provided. For Canadian customers, the use of a `company_name` value
+  // will mean that any mandate created from this customer will be considered to
+  // be a "Business PAD" (otherwise, any mandate will be considered to be a
+  // "Personal PAD").
+  company_name?: string | null;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
+  created_at?: string;
+
+  // Customer's email address. Required in most cases, as this allows GoCardless
+  // to send notifications to this customer.
+  email?: string | null;
+
+  // Customer's surname. Required unless a `company_name` is provided.
+  family_name?: string | null;
+
+  // Customer's first name. Required unless a `company_name` is provided.
+  given_name?: string | null;
+
+  // Unique identifier, beginning with "CU".
+  id?: string;
+
+  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for notification emails sent by GoCardless if your
+  // organisation does not send its own (see [compliance
+  // requirements](#appendix-compliance-requirements)). Currently only "en",
+  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
+  // If this is not provided, the language will be chosen based on the
+  // `country_code` (if supplied) or default to "en".
+  language?: string | null;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // including country code.
+  phone_number?: string | null;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsresourcescustomerbankaccount resource. */
+export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount = {
+  // Name of the account holder, as known by the bank. This field will be
+  // transliterated, upcased and truncated to 18 characters. This field is
+  // required unless the request includes a [customer bank account
+  // token](#javascript-flow-customer-bank-account-tokens).
+  account_holder_name?: string;
+
+  // The last few digits of the account number. Currently 4 digits for NZD bank
+  // accounts and 2 digits for other currencies.
+  account_number_ending?: string;
+
+  // Bank account type. Required for USD-denominated bank accounts. Must not be
+  // provided for bank accounts in other currencies. See [local
+  // details](#local-bank-details-united-states) for more information.
+  account_type?: BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType;
+
+  // A token to uniquely refer to a set of bank account details. This feature is
+  // still in early access and is only available for certain organisations.
+  bank_account_token?: string | null;
+
+  // Name of bank, taken from the bank details.
+  bank_name?: string;
+
+  // [ISO 3166-1 alpha-2
+  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // Defaults to the country code of the `iban` if supplied, otherwise is
+  // required.
+  country_code?: string | null;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
+  created_at?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string | null;
+
+  // Boolean value showing whether the bank account is enabled or disabled.
+  enabled?: boolean;
+
+  // Unique identifier, beginning with "BA".
+  id?: string;
+
+  // Resources linked to this BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount.
+  links?: BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+};
+
+export enum BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType {
+  Savings = 'savings',
+  Checking = 'checking',
+}
+
+/** Type for a billingrequestwithactionbillingrequestsresourcescustomerbankaccountlinks resource. */
+export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountLinks = {
+  // ID of the [customer](#core-endpoints-customers) that owns this bank
+  // account.
+  customer?: string;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsresourcescustomerbillingdetail resource. */
+export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetail = {
+  // The first line of the customer's address.
+  address_line1?: string | null;
+
+  // The second line of the customer's address.
+  address_line2?: string | null;
+
+  // The third line of the customer's address.
+  address_line3?: string | null;
+
+  // The city of the customer's address.
+  city?: string | null;
+
+  // [ISO 3166-1 alpha-2
+  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code?: string | null;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
+  created_at?: string;
+
+  // For Danish customers only. The civic/company number (CPR or CVR) of the
+  // customer. Must be supplied if the customer's bank account is denominated in
+  // Danish krone (DKK).
+  danish_identity_number?: string | null;
+
+  // Unique identifier, beginning with "CU".
+  id?: string;
+
+  // For ACH customers only. Required for ACH customers. A string containing the
+  // IP address of the payer to whom the mandate belongs (i.e. as a result of
+  // their completion of a mandate setup flow in their browser).
+  //
+  // Not required for creating offline mandates where `authorisation_source` is
+  // set to telephone or paper.
+  //
+  ip_address?: string | null;
+
+  // The customer's postal code.
+  postal_code?: string | null;
+
+  // The customer's address region, county or department. For US customers a 2
+  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // code is required (e.g. `CA` for California).
+  region?: string | null;
+
+  // The schemes associated with this customer billing detail
+  schemes?: string[];
+
+  // For Swedish customers only. The civic/company number (personnummer,
+  // samordningsnummer, or organisationsnummer) of the customer. Must be
+  // supplied if the customer's bank account is denominated in Swedish krona
+  // (SEK). This field cannot be changed once it has been set.
+  swedish_identity_number?: string | null;
+};
+
+/** Type for a billingrequestwithactionbillingrequestssubscriptionrequest resource. */
+export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
+  // Amount in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: string;
+
+  // The amount to be deducted from each payment as an app fee, to be paid to
+  // the partner integration which created the subscription, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  app_fee?: string | null;
+
+  // The total number of payments that should be taken by this subscription.
+  count?: string | null;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "USD" and "CAD" are supported.
+  currency?: string;
+
+  // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
+  // `-1` to indicate the last day of the month.
+  day_of_month?: string | null;
+
+  // Number of `interval_units` between customer charge dates. Must be greater
+  // than or equal to `1`. Must result in at least one charge date per year.
+  // Defaults to `1`.
+  interval?: string;
+
+  // The unit of time between customer charge dates. One of `weekly`, `monthly`
+  // or `yearly`.
+  interval_unit?: BillingRequestWithActionBillingRequestsSubscriptionRequestIntervalUnit;
+
+  // Resources linked to this BillingRequestWithActionBillingRequestsSubscriptionRequest.
+  links?: BillingRequestWithActionBillingRequestsSubscriptionRequestLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with key names
+  // up to 50 characters and values up to 500 characters.
+  metadata?: JsonMap;
+
+  // Name of the month on which to charge a customer. Must be lowercase. Only
+  // applies
+  // when the interval_unit is `yearly`.
+  //
+  month?: BillingRequestWithActionBillingRequestsSubscriptionRequestMonth;
+
+  // Optional name for the subscription. This will be set as the description on
+  // each payment created. Must not exceed 255 characters.
+  name?: string | null;
+
+  // An optional payment reference. This will be set as the reference on each
+  // payment
+  // created and will appear on your customer's bank statement. See the
+  // documentation for
+  // the [create payment endpoint](#payments-create-a-payment) for more details.
+  // <br />
+  payment_reference?: string | null;
+
+  // On failure, automatically retry payments using [intelligent
+  // retries](#success-intelligent-retries). Default is `false`. <p
+  // class="notice"><strong>Important</strong>: To be able to use intelligent
+  // retries, Success+ needs to be enabled in [GoCardless
+  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  retry_if_possible?: boolean;
+
+  // The date on which the first payment should be charged. If fulfilled after
+  // this date, this will be set as the mandate's `next_possible_charge_date`.
+  // When left blank and `month` or `day_of_month` are provided, this will be
+  // set to the date of the first payment.
+  // If created without `month` or `day_of_month` this will be set as the
+  // mandate's `next_possible_charge_date`.
+  //
+  start_date?: string | null;
+};
+
+export enum BillingRequestWithActionBillingRequestsSubscriptionRequestIntervalUnit {
+  Weekly = 'weekly',
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}
+
+/** Type for a billingrequestwithactionbillingrequestssubscriptionrequestlinks resource. */
+export type BillingRequestWithActionBillingRequestsSubscriptionRequestLinks = {
+  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
+  // created from this subscription request.
+  //
+  subscription?: string;
+};
+
+export enum BillingRequestWithActionBillingRequestsSubscriptionRequestMonth {
+  January = 'january',
+  February = 'february',
+  March = 'march',
+  April = 'april',
+  May = 'may',
+  June = 'june',
+  July = 'july',
+  August = 'august',
+  September = 'september',
+  October = 'october',
+  November = 'november',
+  December = 'december',
+}
+
 /** Type for a block resource. */
 export type Block = {
   // Shows if the block is active or disabled. Only active blocks will be used
@@ -2284,7 +3976,7 @@ export type Event = {
   // <li>`refunds`</li>
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
-  // <li>`outbound_payment`</li>
+  // <li>`outbound_payments`</li>
   // </ul>
   resource_type?: EventResourceType;
 };
@@ -2504,7 +4196,6 @@ export enum EventResourceType {
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
-  OutboundPayment = 'outbound_payment',
 }
 
 /** Type for a export resource. */
@@ -2714,7 +4405,8 @@ export type Institution = {
 
   // [ISO
   // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-  // alpha-2 code. The country code of the institution.
+  // alpha-2 code. The country code of the institution. If nothing is provided,
+  // institutions with the country code 'GB' are returned by default.
   country_code?: string;
 
   // A URL pointing to the icon for this institution
@@ -2722,6 +4414,9 @@ export type Institution = {
 
   // The unique identifier for this institution
   id?: string;
+
+  // Defines individual limits for business and personal accounts.
+  limits?: InstitutionLimits | null;
 
   // A URL pointing to the logo for this institution
   logo_url?: string;
@@ -2733,8 +4428,29 @@ export type Institution = {
   status?: InstitutionStatus;
 };
 
+/** Type for a institutionbranchcode resource. */
+export type InstitutionBranchCode = {};
+
+/** Type for a institutionfeature resource. */
+export type InstitutionFeature = {};
+
+/** Type for a institutionscheme resource. */
+export type InstitutionScheme = {};
+
 /** Type for a institutionid resource. */
 export type InstitutionId = {};
+
+/** Type for a institutionlimits resource. */
+export type InstitutionLimits = {
+  // Daily limit details for this institution. (The 'limits' property is only
+  // available via an authenticated request with a generated access token)
+  daily?: JsonMap | null;
+
+  // Single transaction limit details for this institution. (The 'limits'
+  // property is only available via an authenticated request with a generated
+  // access token)
+  single?: JsonMap | null;
+};
 
 export enum InstitutionStatus {
   Enabled = 'enabled',
@@ -3319,6 +5035,10 @@ export type OutboundPayment = {
   // payment was created.
   created_at?: string;
 
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // Currently only "GBP" is supported.
+  currency?: OutboundPaymentCurrency;
+
   // A human-readable description of the outbound payment
   description?: string;
 
@@ -3397,6 +5117,10 @@ export enum OutboundPaymentStatus {
   Executed = 'executed',
   Cancelled = 'cancelled',
   Failed = 'failed',
+}
+
+export enum OutboundPaymentCurrency {
+  GBP = 'GBP',
 }
 
 /** Type for a outboundpaymentlinks resource. */
