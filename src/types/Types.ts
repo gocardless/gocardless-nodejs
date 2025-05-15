@@ -3343,6 +3343,10 @@ export type OutboundPayment = {
   // payment was created.
   created_at?: string;
 
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // Currently only "GBP" is supported.
+  currency?: OutboundPaymentCurrency;
+
   // A human-readable description of the outbound payment
   description?: string;
 
@@ -3421,6 +3425,10 @@ export enum OutboundPaymentStatus {
   Executed = 'executed',
   Cancelled = 'cancelled',
   Failed = 'failed',
+}
+
+export enum OutboundPaymentCurrency {
+  GBP = 'GBP',
 }
 
 /** Type for a outboundpaymentlinks resource. */
