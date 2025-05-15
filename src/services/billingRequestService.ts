@@ -224,49 +224,6 @@ interface BillingRequestSelectInstitutionRequest {
   institution: string;
 }
 
-interface BillingRequestCreateWithActionsRequest {
-  // Supports the same shape of the request payload as individual action routes.
-  actions?: Types.BillingRequestActions;
-
-  // (Optional) If true, this billing request can fallback from instant payment to
-  // direct debit.
-  // Should not be set if GoCardless payment intelligence feature is used.
-  //
-  // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
-  // for more information.
-
-  fallback_enabled?: boolean;
-
-  // Resources linked to this BillingRequest.
-  links?: Types.BillingRequestCreateWithActionsRequestLinks;
-
-  // Supports all the same params as the standalone CREATE billing request
-  // endpoint.
-  mandate_request?: Types.BillingRequestMandateRequest;
-
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
-
-  metadata?: Types.JsonMap;
-
-  // Supports all the same params as the standalone CREATE billing request
-  // endpoint.
-  payment_request?: Types.BillingRequestPaymentRequest;
-
-  // Specifies the high-level purpose of a mandate and/or payment using a set of
-  // pre-defined categories. Required for the PayTo scheme, optional for all
-  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
-  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
-  // and `other` are supported.
-
-  purpose_code?: Types.BillingRequestPurposeCode;
-
-  // Supports all the same params as the standalone CREATE billing request
-  // endpoint.
-  subscription_request?: Types.BillingRequestSubscriptionRequest;
-}
-
 export class BillingRequestService {
   private api: Api;
 
@@ -551,32 +508,6 @@ export class BillingRequestService {
     const response = await this.api.request(requestParams);
     const formattedResponse: BillingRequestResponse = {
       ...response.body['billing_requests'],
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
-  public async createWithActions(
-    requestParameters: BillingRequestCreateWithActionsRequest,
-    idempotencyKey = '',
-    customHeaders: Types.JsonMap = {},
-  ): Promise<BillingRequestResponse> {
-    const urlParameters = [];
-    const requestParams = {
-      path: '/billing_requests/create_with_actions',
-      method: 'post',
-      urlParameters,
-      requestParameters,
-      payloadKey: 'billing_requests',
-      idempotencyKey,
-      customHeaders,
-      fetch: async (identity) => await this.find(identity),
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: BillingRequestResponse = {
-      ...(response.body?.['billing_requests'] ?? response),
       __response__: response.__response__,
     };
 
