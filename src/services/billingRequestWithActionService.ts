@@ -6,7 +6,7 @@ import * as Types from '../types/Types';
 interface BillingRequestWithActionResponse extends Types.BillingRequestWithAction, Types.APIResponse {}
 
 interface BillingRequestWithActionListResponse extends Types.APIResponse {
-  billing_requests: Array<Types.BillingRequestWithAction>;
+  billing_request_with_actions: Array<Types.BillingRequestWithAction>;
   meta: Types.ListMeta;
 }
 
@@ -76,7 +76,7 @@ export class BillingRequestWithActionService {
 
     const response = await this.api.request(requestParams);
     const formattedResponse: BillingRequestWithActionResponse = {
-      ...(response.body?.['billing_requests'] ?? response),
+      ...(response.body?.['billing_request_with_actions'] ?? response),
       __response__: response.__response__,
     };
 
