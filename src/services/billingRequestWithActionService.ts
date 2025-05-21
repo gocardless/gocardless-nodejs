@@ -45,9 +45,6 @@ interface BillingRequestWithActionCreateWithActionsRequest {
   // and `other` are supported.
 
   purpose_code?: Types.BillingRequestWithActionPurposeCode;
-
-  //
-  subscription_request?: Types.BillingRequestWithActionSubscriptionRequest;
 }
 
 export class BillingRequestWithActionService {
