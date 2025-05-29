@@ -80,7 +80,10 @@ export class PayoutService {
     this.api = api;
   }
 
-  public async list(requestParameters: PayoutListRequest): Promise<PayoutListResponse> {
+  public async list(
+    requestParameters: PayoutListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<PayoutListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/payouts',
@@ -89,6 +92,7 @@ export class PayoutService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -100,10 +104,13 @@ export class PayoutService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: PayoutListRequest): AsyncGenerator<Types.Payout, void, unknown> {
+  public async *all(
+    requestParameters: PayoutListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Payout, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const payout of list.payouts) {
         yield payout;
@@ -113,7 +120,7 @@ export class PayoutService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<PayoutResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payouts/:identity',
@@ -122,6 +129,7 @@ export class PayoutService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -133,7 +141,11 @@ export class PayoutService {
     return formattedResponse;
   }
 
-  public async update(identity: string, requestParameters: PayoutUpdateRequest): Promise<PayoutResponse> {
+  public async update(
+    identity: string,
+    requestParameters: PayoutUpdateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payouts/:identity',
@@ -142,6 +154,7 @@ export class PayoutService {
       requestParameters,
       payloadKey: 'payouts',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

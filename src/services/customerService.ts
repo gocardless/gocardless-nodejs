@@ -259,7 +259,10 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: CustomerListRequest): Promise<CustomerListResponse> {
+  public async list(
+    requestParameters: CustomerListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CustomerListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/customers',
@@ -268,6 +271,7 @@ export class CustomerService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -279,10 +283,13 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: CustomerListRequest): AsyncGenerator<Types.Customer, void, unknown> {
+  public async *all(
+    requestParameters: CustomerListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Customer, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const customer of list.customers) {
         yield customer;
@@ -292,7 +299,7 @@ export class CustomerService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<CustomerResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customers/:identity',
@@ -301,6 +308,7 @@ export class CustomerService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -312,7 +320,11 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  public async update(identity: string, requestParameters: CustomerUpdateRequest): Promise<CustomerResponse> {
+  public async update(
+    identity: string,
+    requestParameters: CustomerUpdateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customers/:identity',
@@ -321,6 +333,7 @@ export class CustomerService {
       requestParameters,
       payloadKey: 'customers',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -332,7 +345,7 @@ export class CustomerService {
     return formattedResponse;
   }
 
-  public async remove(identity: string): Promise<CustomerResponse> {
+  public async remove(identity: string, customHeaders: Types.JsonMap = {}): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customers/:identity',
@@ -341,6 +354,7 @@ export class CustomerService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

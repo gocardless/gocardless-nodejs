@@ -133,7 +133,7 @@ export class BillingRequestFlowService {
     return formattedResponse;
   }
 
-  public async initialise(identity: string): Promise<BillingRequestFlowResponse> {
+  public async initialise(identity: string, customHeaders: Types.JsonMap = {}): Promise<BillingRequestFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_request_flows/:identity/actions/initialise',
@@ -142,6 +142,7 @@ export class BillingRequestFlowService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

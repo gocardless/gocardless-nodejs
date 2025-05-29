@@ -102,7 +102,10 @@ export class VerificationDetailService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: VerificationDetailListRequest): Promise<VerificationDetailListResponse> {
+  public async list(
+    requestParameters: VerificationDetailListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<VerificationDetailListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/verification_details',
@@ -111,6 +114,7 @@ export class VerificationDetailService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -124,10 +128,11 @@ export class VerificationDetailService {
 
   public async *all(
     requestParameters: VerificationDetailListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.VerificationDetail, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const verificationdetail of list.verification_details) {
         yield verificationdetail;

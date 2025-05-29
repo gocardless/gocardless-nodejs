@@ -253,7 +253,10 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: SubscriptionListRequest): Promise<SubscriptionListResponse> {
+  public async list(
+    requestParameters: SubscriptionListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<SubscriptionListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/subscriptions',
@@ -262,6 +265,7 @@ export class SubscriptionService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -273,10 +277,13 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: SubscriptionListRequest): AsyncGenerator<Types.Subscription, void, unknown> {
+  public async *all(
+    requestParameters: SubscriptionListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Subscription, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const subscription of list.subscriptions) {
         yield subscription;
@@ -286,7 +293,7 @@ export class SubscriptionService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<SubscriptionResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity',
@@ -295,6 +302,7 @@ export class SubscriptionService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -306,7 +314,11 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  public async update(identity: string, requestParameters: SubscriptionUpdateRequest): Promise<SubscriptionResponse> {
+  public async update(
+    identity: string,
+    requestParameters: SubscriptionUpdateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity',
@@ -315,6 +327,7 @@ export class SubscriptionService {
       requestParameters,
       payloadKey: 'subscriptions',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -326,7 +339,11 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  public async pause(identity: string, requestParameters: SubscriptionPauseRequest): Promise<SubscriptionResponse> {
+  public async pause(
+    identity: string,
+    requestParameters: SubscriptionPauseRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity/actions/pause',
@@ -335,6 +352,7 @@ export class SubscriptionService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -346,7 +364,11 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  public async resume(identity: string, requestParameters: SubscriptionResumeRequest): Promise<SubscriptionResponse> {
+  public async resume(
+    identity: string,
+    requestParameters: SubscriptionResumeRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity/actions/resume',
@@ -355,6 +377,7 @@ export class SubscriptionService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -366,7 +389,11 @@ export class SubscriptionService {
     return formattedResponse;
   }
 
-  public async cancel(identity: string, requestParameters: SubscriptionCancelRequest): Promise<SubscriptionResponse> {
+  public async cancel(
+    identity: string,
+    requestParameters: SubscriptionCancelRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/subscriptions/:identity/actions/cancel',
@@ -375,6 +402,7 @@ export class SubscriptionService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

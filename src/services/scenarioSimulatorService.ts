@@ -25,6 +25,7 @@ export class ScenarioSimulatorService {
   public async run(
     identity: string,
     requestParameters: ScenarioSimulatorRunRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<ScenarioSimulatorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -34,6 +35,7 @@ export class ScenarioSimulatorService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

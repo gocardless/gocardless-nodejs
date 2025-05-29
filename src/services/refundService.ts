@@ -132,7 +132,10 @@ export class RefundService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: RefundListRequest): Promise<RefundListResponse> {
+  public async list(
+    requestParameters: RefundListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<RefundListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/refunds',
@@ -141,6 +144,7 @@ export class RefundService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -152,10 +156,13 @@ export class RefundService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: RefundListRequest): AsyncGenerator<Types.Refund, void, unknown> {
+  public async *all(
+    requestParameters: RefundListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Refund, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const refund of list.refunds) {
         yield refund;
@@ -165,7 +172,7 @@ export class RefundService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<RefundResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/refunds/:identity',
@@ -174,6 +181,7 @@ export class RefundService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -185,7 +193,11 @@ export class RefundService {
     return formattedResponse;
   }
 
-  public async update(identity: string, requestParameters: RefundUpdateRequest): Promise<RefundResponse> {
+  public async update(
+    identity: string,
+    requestParameters: RefundUpdateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/refunds/:identity',
@@ -194,6 +206,7 @@ export class RefundService {
       requestParameters,
       payloadKey: 'refunds',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

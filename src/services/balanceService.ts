@@ -35,7 +35,10 @@ export class BalanceService {
     this.api = api;
   }
 
-  public async list(requestParameters: BalanceListRequest): Promise<BalanceListResponse> {
+  public async list(
+    requestParameters: BalanceListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<BalanceListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/balances',
@@ -44,6 +47,7 @@ export class BalanceService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -55,10 +59,13 @@ export class BalanceService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: BalanceListRequest): AsyncGenerator<Types.Balance, void, unknown> {
+  public async *all(
+    requestParameters: BalanceListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Balance, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const balance of list.balances) {
         yield balance;

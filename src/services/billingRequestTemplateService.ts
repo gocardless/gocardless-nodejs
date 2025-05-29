@@ -232,7 +232,10 @@ export class BillingRequestTemplateService {
     this.api = api;
   }
 
-  public async list(requestParameters: BillingRequestTemplateListRequest): Promise<BillingRequestTemplateListResponse> {
+  public async list(
+    requestParameters: BillingRequestTemplateListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<BillingRequestTemplateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/billing_request_templates',
@@ -241,6 +244,7 @@ export class BillingRequestTemplateService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -254,10 +258,11 @@ export class BillingRequestTemplateService {
 
   public async *all(
     requestParameters: BillingRequestTemplateListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.BillingRequestTemplate, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const billingrequesttemplate of list.billing_request_templates) {
         yield billingrequesttemplate;
@@ -267,7 +272,7 @@ export class BillingRequestTemplateService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<BillingRequestTemplateResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_request_templates/:identity',
@@ -276,6 +281,7 @@ export class BillingRequestTemplateService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -316,6 +322,7 @@ export class BillingRequestTemplateService {
   public async update(
     identity: string,
     requestParameters: BillingRequestTemplateUpdateRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -325,6 +332,7 @@ export class BillingRequestTemplateService {
       requestParameters,
       payloadKey: 'billing_request_templates',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

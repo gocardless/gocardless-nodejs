@@ -165,7 +165,10 @@ export class MandateService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: MandateListRequest): Promise<MandateListResponse> {
+  public async list(
+    requestParameters: MandateListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<MandateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/mandates',
@@ -174,6 +177,7 @@ export class MandateService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -185,10 +189,13 @@ export class MandateService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: MandateListRequest): AsyncGenerator<Types.Mandate, void, unknown> {
+  public async *all(
+    requestParameters: MandateListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Mandate, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const mandate of list.mandates) {
         yield mandate;
@@ -198,7 +205,7 @@ export class MandateService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<MandateResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandates/:identity',
@@ -207,6 +214,7 @@ export class MandateService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -218,7 +226,11 @@ export class MandateService {
     return formattedResponse;
   }
 
-  public async update(identity: string, requestParameters: MandateUpdateRequest): Promise<MandateResponse> {
+  public async update(
+    identity: string,
+    requestParameters: MandateUpdateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandates/:identity',
@@ -227,6 +239,7 @@ export class MandateService {
       requestParameters,
       payloadKey: 'mandates',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -238,7 +251,11 @@ export class MandateService {
     return formattedResponse;
   }
 
-  public async cancel(identity: string, requestParameters: MandateCancelRequest): Promise<MandateResponse> {
+  public async cancel(
+    identity: string,
+    requestParameters: MandateCancelRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandates/:identity/actions/cancel',
@@ -247,6 +264,7 @@ export class MandateService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -258,7 +276,11 @@ export class MandateService {
     return formattedResponse;
   }
 
-  public async reinstate(identity: string, requestParameters: MandateReinstateRequest): Promise<MandateResponse> {
+  public async reinstate(
+    identity: string,
+    requestParameters: MandateReinstateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandates/:identity/actions/reinstate',
@@ -267,6 +289,7 @@ export class MandateService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

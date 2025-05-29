@@ -42,7 +42,10 @@ export class WebhookService {
     this.api = api;
   }
 
-  public async list(requestParameters: WebhookListRequest): Promise<WebhookListResponse> {
+  public async list(
+    requestParameters: WebhookListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<WebhookListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/webhooks',
@@ -51,6 +54,7 @@ export class WebhookService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -62,10 +66,13 @@ export class WebhookService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: WebhookListRequest): AsyncGenerator<Types.Webhook, void, unknown> {
+  public async *all(
+    requestParameters: WebhookListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Webhook, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const webhook of list.webhooks) {
         yield webhook;
@@ -75,7 +82,7 @@ export class WebhookService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<WebhookResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<WebhookResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/webhooks/:identity',
@@ -84,6 +91,7 @@ export class WebhookService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -95,7 +103,7 @@ export class WebhookService {
     return formattedResponse;
   }
 
-  public async retry(identity: string): Promise<WebhookResponse> {
+  public async retry(identity: string, customHeaders: Types.JsonMap = {}): Promise<WebhookResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/webhooks/:identity/actions/retry',
@@ -104,6 +112,7 @@ export class WebhookService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

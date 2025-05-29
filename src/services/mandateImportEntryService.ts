@@ -97,7 +97,10 @@ export class MandateImportEntryService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: MandateImportEntryListRequest): Promise<MandateImportEntryListResponse> {
+  public async list(
+    requestParameters: MandateImportEntryListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<MandateImportEntryListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/mandate_import_entries',
@@ -106,6 +109,7 @@ export class MandateImportEntryService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -119,10 +123,11 @@ export class MandateImportEntryService {
 
   public async *all(
     requestParameters: MandateImportEntryListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.MandateImportEntry, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const mandateimportentry of list.mandate_import_entries) {
         yield mandateimportentry;

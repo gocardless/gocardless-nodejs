@@ -133,7 +133,10 @@ export class CustomerBankAccountService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: CustomerBankAccountListRequest): Promise<CustomerBankAccountListResponse> {
+  public async list(
+    requestParameters: CustomerBankAccountListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CustomerBankAccountListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/customer_bank_accounts',
@@ -142,6 +145,7 @@ export class CustomerBankAccountService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -155,10 +159,11 @@ export class CustomerBankAccountService {
 
   public async *all(
     requestParameters: CustomerBankAccountListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CustomerBankAccount, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const customerbankaccount of list.customer_bank_accounts) {
         yield customerbankaccount;
@@ -168,7 +173,7 @@ export class CustomerBankAccountService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<CustomerBankAccountResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customer_bank_accounts/:identity',
@@ -177,6 +182,7 @@ export class CustomerBankAccountService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -191,6 +197,7 @@ export class CustomerBankAccountService {
   public async update(
     identity: string,
     requestParameters: CustomerBankAccountUpdateRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -200,6 +207,7 @@ export class CustomerBankAccountService {
       requestParameters,
       payloadKey: 'customer_bank_accounts',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -211,7 +219,7 @@ export class CustomerBankAccountService {
     return formattedResponse;
   }
 
-  public async disable(identity: string): Promise<CustomerBankAccountResponse> {
+  public async disable(identity: string, customHeaders: Types.JsonMap = {}): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customer_bank_accounts/:identity/actions/disable',
@@ -220,6 +228,7 @@ export class CustomerBankAccountService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

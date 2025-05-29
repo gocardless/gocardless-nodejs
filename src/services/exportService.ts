@@ -31,7 +31,7 @@ export class ExportService {
     this.api = api;
   }
 
-  public async find(identity: string): Promise<ExportResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<ExportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/exports/:identity',
@@ -40,6 +40,7 @@ export class ExportService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -51,7 +52,10 @@ export class ExportService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: ExportListRequest): Promise<ExportListResponse> {
+  public async list(
+    requestParameters: ExportListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<ExportListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/exports',
@@ -60,6 +64,7 @@ export class ExportService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -71,10 +76,13 @@ export class ExportService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: ExportListRequest): AsyncGenerator<Types.Export, void, unknown> {
+  public async *all(
+    requestParameters: ExportListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Export, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const exportdata of list.exports) {
         yield exportdata;

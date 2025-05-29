@@ -916,8 +916,8 @@ export type BillingRequestPaymentRequest = {
   metadata?: JsonMap;
 
   // A custom payment reference defined by the merchant. It is only available
-  // for payments using the Direct Funds settlement model on the Faster Payments
-  // scheme.
+  // for payments on the PayTo scheme or payments using the Direct Funds
+  // settlement model on the Faster Payments scheme.
   //
   reference?: string | null;
 
@@ -1958,8 +1958,8 @@ export type BillingRequestWithActionPaymentRequest = {
   metadata?: JsonMap;
 
   // A custom payment reference defined by the merchant. It is only available
-  // for payments using the Direct Funds settlement model on the Faster Payments
-  // scheme.
+  // for payments on the PayTo scheme or payments using the Direct Funds
+  // settlement model on the Faster Payments scheme.
   //
   reference?: string | null;
 
@@ -2802,8 +2802,8 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   metadata?: JsonMap;
 
   // A custom payment reference defined by the merchant. It is only available
-  // for payments using the Direct Funds settlement model on the Faster Payments
-  // scheme.
+  // for payments on the PayTo scheme or payments using the Direct Funds
+  // settlement model on the Faster Payments scheme.
   //
   reference?: string | null;
 

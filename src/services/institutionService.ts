@@ -70,7 +70,10 @@ export class InstitutionService {
     this.api = api;
   }
 
-  public async list(requestParameters: InstitutionListRequest): Promise<InstitutionListResponse> {
+  public async list(
+    requestParameters: InstitutionListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<InstitutionListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/institutions',
@@ -79,6 +82,7 @@ export class InstitutionService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -92,6 +96,7 @@ export class InstitutionService {
 
   public async list_for_billing_request(
     requestParameters: InstitutionListForBillingRequestRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<InstitutionListResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -101,6 +106,7 @@ export class InstitutionService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
