@@ -145,7 +145,10 @@ export class EventService {
     this.api = api;
   }
 
-  public async list(requestParameters: EventListRequest): Promise<EventListResponse> {
+  public async list(
+    requestParameters: EventListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<EventListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/events',
@@ -154,6 +157,7 @@ export class EventService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -165,10 +169,13 @@ export class EventService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: EventListRequest): AsyncGenerator<Types.Event, void, unknown> {
+  public async *all(
+    requestParameters: EventListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Event, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const event of list.events) {
         yield event;
@@ -178,7 +185,7 @@ export class EventService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<EventResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<EventResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/events/:identity',
@@ -187,6 +194,7 @@ export class EventService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

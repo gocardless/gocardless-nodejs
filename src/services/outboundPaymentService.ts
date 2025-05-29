@@ -163,6 +163,7 @@ export class OutboundPaymentService {
   public async withdraw(
     identity: string,
     requestParameters: OutboundPaymentWithdrawRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
     const urlParameters = [];
     const requestParams = {
@@ -172,6 +173,7 @@ export class OutboundPaymentService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -186,6 +188,7 @@ export class OutboundPaymentService {
   public async cancel(
     identity: string,
     requestParameters: OutboundPaymentCancelRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -195,6 +198,7 @@ export class OutboundPaymentService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -206,7 +210,7 @@ export class OutboundPaymentService {
     return formattedResponse;
   }
 
-  public async approve(identity: string): Promise<OutboundPaymentResponse> {
+  public async approve(identity: string, customHeaders: Types.JsonMap = {}): Promise<OutboundPaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/outbound_payments/:identity/actions/approve',
@@ -215,6 +219,7 @@ export class OutboundPaymentService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -226,7 +231,7 @@ export class OutboundPaymentService {
     return formattedResponse;
   }
 
-  public async find(identity: string): Promise<OutboundPaymentResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<OutboundPaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/outbound_payments/:identity',
@@ -235,6 +240,7 @@ export class OutboundPaymentService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -246,7 +252,10 @@ export class OutboundPaymentService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: OutboundPaymentListRequest): Promise<OutboundPaymentListResponse> {
+  public async list(
+    requestParameters: OutboundPaymentListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<OutboundPaymentListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/outbound_payments',
@@ -255,6 +264,7 @@ export class OutboundPaymentService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -268,10 +278,11 @@ export class OutboundPaymentService {
 
   public async *all(
     requestParameters: OutboundPaymentListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.OutboundPayment, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const outboundpayment of list.outbound_payments) {
         yield outboundpayment;
@@ -284,6 +295,7 @@ export class OutboundPaymentService {
   public async update(
     identity: string,
     requestParameters: OutboundPaymentUpdateRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -293,6 +305,7 @@ export class OutboundPaymentService {
       requestParameters,
       payloadKey: 'outbound_payments',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

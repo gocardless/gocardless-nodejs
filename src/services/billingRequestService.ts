@@ -260,6 +260,7 @@ export class BillingRequestService {
   public async collectCustomerDetails(
     identity: string,
     requestParameters: BillingRequestCollectCustomerDetailsRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -269,6 +270,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -283,6 +285,7 @@ export class BillingRequestService {
   public async collectBankAccount(
     identity: string,
     requestParameters: BillingRequestCollectBankAccountRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -292,6 +295,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -306,6 +310,7 @@ export class BillingRequestService {
   public async confirmPayerDetails(
     identity: string,
     requestParameters: BillingRequestConfirmPayerDetailsRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -315,6 +320,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -329,6 +335,7 @@ export class BillingRequestService {
   public async fulfil(
     identity: string,
     requestParameters: BillingRequestFulfilRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -338,6 +345,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -352,6 +360,7 @@ export class BillingRequestService {
   public async cancel(
     identity: string,
     requestParameters: BillingRequestCancelRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -361,6 +370,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -372,7 +382,10 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: BillingRequestListRequest): Promise<BillingRequestListResponse> {
+  public async list(
+    requestParameters: BillingRequestListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<BillingRequestListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/billing_requests',
@@ -381,6 +394,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -392,10 +406,13 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: BillingRequestListRequest): AsyncGenerator<Types.BillingRequest, void, unknown> {
+  public async *all(
+    requestParameters: BillingRequestListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.BillingRequest, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const billingrequest of list.billing_requests) {
         yield billingrequest;
@@ -405,7 +422,7 @@ export class BillingRequestService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<BillingRequestResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity',
@@ -414,6 +431,7 @@ export class BillingRequestService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -428,6 +446,7 @@ export class BillingRequestService {
   public async notify(
     identity: string,
     requestParameters: BillingRequestNotifyRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -437,6 +456,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -448,7 +468,7 @@ export class BillingRequestService {
     return formattedResponse;
   }
 
-  public async fallback(identity: string): Promise<BillingRequestResponse> {
+  public async fallback(identity: string, customHeaders: Types.JsonMap = {}): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/actions/fallback',
@@ -457,6 +477,7 @@ export class BillingRequestService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -471,6 +492,7 @@ export class BillingRequestService {
   public async chooseCurrency(
     identity: string,
     requestParameters: BillingRequestChooseCurrencyRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -480,6 +502,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -494,6 +517,7 @@ export class BillingRequestService {
   public async selectInstitution(
     identity: string,
     requestParameters: BillingRequestSelectInstitutionRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -503,6 +527,7 @@ export class BillingRequestService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

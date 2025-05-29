@@ -54,7 +54,7 @@ export class MandateImportService {
     return formattedResponse;
   }
 
-  public async find(identity: string): Promise<MandateImportResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandate_imports/:identity',
@@ -63,6 +63,7 @@ export class MandateImportService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -74,7 +75,7 @@ export class MandateImportService {
     return formattedResponse;
   }
 
-  public async submit(identity: string): Promise<MandateImportResponse> {
+  public async submit(identity: string, customHeaders: Types.JsonMap = {}): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandate_imports/:identity/actions/submit',
@@ -83,6 +84,7 @@ export class MandateImportService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -94,7 +96,7 @@ export class MandateImportService {
     return formattedResponse;
   }
 
-  public async cancel(identity: string): Promise<MandateImportResponse> {
+  public async cancel(identity: string, customHeaders: Types.JsonMap = {}): Promise<MandateImportResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/mandate_imports/:identity/actions/cancel',
@@ -103,6 +105,7 @@ export class MandateImportService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

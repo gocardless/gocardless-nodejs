@@ -17,7 +17,7 @@ export class BankAccountDetailService {
     this.api = api;
   }
 
-  public async find(identity: string): Promise<BankAccountDetailResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<BankAccountDetailResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/bank_account_details/:identity',
@@ -26,6 +26,7 @@ export class BankAccountDetailService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

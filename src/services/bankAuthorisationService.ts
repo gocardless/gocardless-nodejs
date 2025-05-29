@@ -73,7 +73,7 @@ export class BankAuthorisationService {
     return formattedResponse;
   }
 
-  public async find(identity: string): Promise<BankAuthorisationResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<BankAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/bank_authorisations/:identity',
@@ -82,6 +82,7 @@ export class BankAuthorisationService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

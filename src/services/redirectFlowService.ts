@@ -99,7 +99,7 @@ export class RedirectFlowService {
     return formattedResponse;
   }
 
-  public async find(identity: string): Promise<RedirectFlowResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/redirect_flows/:identity',
@@ -108,6 +108,7 @@ export class RedirectFlowService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -122,6 +123,7 @@ export class RedirectFlowService {
   public async complete(
     identity: string,
     requestParameters: RedirectFlowCompleteRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -131,6 +133,7 @@ export class RedirectFlowService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

@@ -131,7 +131,10 @@ export class CreditorBankAccountService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: CreditorBankAccountListRequest): Promise<CreditorBankAccountListResponse> {
+  public async list(
+    requestParameters: CreditorBankAccountListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CreditorBankAccountListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/creditor_bank_accounts',
@@ -140,6 +143,7 @@ export class CreditorBankAccountService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -153,10 +157,11 @@ export class CreditorBankAccountService {
 
   public async *all(
     requestParameters: CreditorBankAccountListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CreditorBankAccount, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const creditorbankaccount of list.creditor_bank_accounts) {
         yield creditorbankaccount;
@@ -166,7 +171,7 @@ export class CreditorBankAccountService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<CreditorBankAccountResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<CreditorBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/creditor_bank_accounts/:identity',
@@ -175,6 +180,7 @@ export class CreditorBankAccountService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -186,7 +192,7 @@ export class CreditorBankAccountService {
     return formattedResponse;
   }
 
-  public async disable(identity: string): Promise<CreditorBankAccountResponse> {
+  public async disable(identity: string, customHeaders: Types.JsonMap = {}): Promise<CreditorBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/creditor_bank_accounts/:identity/actions/disable',
@@ -195,6 +201,7 @@ export class CreditorBankAccountService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

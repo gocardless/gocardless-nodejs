@@ -39,7 +39,10 @@ export class CurrencyExchangeRateService {
     this.api = api;
   }
 
-  public async list(requestParameters: CurrencyExchangeRateListRequest): Promise<CurrencyExchangeRateListResponse> {
+  public async list(
+    requestParameters: CurrencyExchangeRateListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CurrencyExchangeRateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/currency_exchange_rates',
@@ -48,6 +51,7 @@ export class CurrencyExchangeRateService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -61,10 +65,11 @@ export class CurrencyExchangeRateService {
 
   public async *all(
     requestParameters: CurrencyExchangeRateListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CurrencyExchangeRate, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const currencyexchangerate of list.currency_exchange_rates) {
         yield currencyexchangerate;

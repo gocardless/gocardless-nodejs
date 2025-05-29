@@ -17,7 +17,7 @@ export class CustomerNotificationService {
     this.api = api;
   }
 
-  public async handle(identity: string): Promise<CustomerNotificationResponse> {
+  public async handle(identity: string, customHeaders: Types.JsonMap = {}): Promise<CustomerNotificationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/customer_notifications/:identity/actions/handle',
@@ -26,6 +26,7 @@ export class CustomerNotificationService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

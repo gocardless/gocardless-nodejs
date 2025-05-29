@@ -75,7 +75,10 @@ export class SchemeIdentifierService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: SchemeIdentifierListRequest): Promise<SchemeIdentifierListResponse> {
+  public async list(
+    requestParameters: SchemeIdentifierListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<SchemeIdentifierListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/scheme_identifiers',
@@ -84,6 +87,7 @@ export class SchemeIdentifierService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -97,10 +101,11 @@ export class SchemeIdentifierService {
 
   public async *all(
     requestParameters: SchemeIdentifierListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.SchemeIdentifier, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const schemeidentifier of list.scheme_identifiers) {
         yield schemeidentifier;
@@ -110,7 +115,7 @@ export class SchemeIdentifierService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<SchemeIdentifierResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<SchemeIdentifierResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/scheme_identifiers/:identity',
@@ -119,6 +124,7 @@ export class SchemeIdentifierService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

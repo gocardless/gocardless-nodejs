@@ -136,7 +136,10 @@ export class CreditorService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: CreditorListRequest): Promise<CreditorListResponse> {
+  public async list(
+    requestParameters: CreditorListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CreditorListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/creditors',
@@ -145,6 +148,7 @@ export class CreditorService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -156,10 +160,13 @@ export class CreditorService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: CreditorListRequest): AsyncGenerator<Types.Creditor, void, unknown> {
+  public async *all(
+    requestParameters: CreditorListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Creditor, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const creditor of list.creditors) {
         yield creditor;
@@ -169,7 +176,7 @@ export class CreditorService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<CreditorResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/creditors/:identity',
@@ -178,6 +185,7 @@ export class CreditorService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -189,7 +197,11 @@ export class CreditorService {
     return formattedResponse;
   }
 
-  public async update(identity: string, requestParameters: CreditorUpdateRequest): Promise<CreditorResponse> {
+  public async update(
+    identity: string,
+    requestParameters: CreditorUpdateRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/creditors/:identity',
@@ -198,6 +210,7 @@ export class CreditorService {
       requestParameters,
       payloadKey: 'creditors',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

@@ -249,7 +249,10 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: InstalmentScheduleListRequest): Promise<InstalmentScheduleListResponse> {
+  public async list(
+    requestParameters: InstalmentScheduleListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<InstalmentScheduleListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/instalment_schedules',
@@ -258,6 +261,7 @@ export class InstalmentScheduleService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -271,10 +275,11 @@ export class InstalmentScheduleService {
 
   public async *all(
     requestParameters: InstalmentScheduleListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const instalmentschedule of list.instalment_schedules) {
         yield instalmentschedule;
@@ -284,7 +289,7 @@ export class InstalmentScheduleService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<InstalmentScheduleResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/instalment_schedules/:identity',
@@ -293,6 +298,7 @@ export class InstalmentScheduleService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -307,6 +313,7 @@ export class InstalmentScheduleService {
   public async update(
     identity: string,
     requestParameters: InstalmentScheduleUpdateRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -316,6 +323,7 @@ export class InstalmentScheduleService {
       requestParameters,
       payloadKey: 'instalment_schedules',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -327,7 +335,7 @@ export class InstalmentScheduleService {
     return formattedResponse;
   }
 
-  public async cancel(identity: string): Promise<InstalmentScheduleResponse> {
+  public async cancel(identity: string, customHeaders: Types.JsonMap = {}): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/instalment_schedules/:identity/actions/cancel',
@@ -336,6 +344,7 @@ export class InstalmentScheduleService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

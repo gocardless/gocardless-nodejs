@@ -45,7 +45,7 @@ export class PayerAuthorisationService {
     this.api = api;
   }
 
-  public async find(identity: string): Promise<PayerAuthorisationResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payer_authorisations/:identity',
@@ -54,6 +54,7 @@ export class PayerAuthorisationService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -94,6 +95,7 @@ export class PayerAuthorisationService {
   public async update(
     identity: string,
     requestParameters: PayerAuthorisationUpdateRequest,
+    customHeaders: Types.JsonMap = {},
   ): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -103,6 +105,7 @@ export class PayerAuthorisationService {
       requestParameters,
       payloadKey: 'payer_authorisations',
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -114,7 +117,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  public async submit(identity: string): Promise<PayerAuthorisationResponse> {
+  public async submit(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payer_authorisations/:identity/actions/submit',
@@ -123,6 +126,7 @@ export class PayerAuthorisationService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -134,7 +138,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  public async confirm(identity: string): Promise<PayerAuthorisationResponse> {
+  public async confirm(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payer_authorisations/:identity/actions/confirm',
@@ -143,6 +147,7 @@ export class PayerAuthorisationService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

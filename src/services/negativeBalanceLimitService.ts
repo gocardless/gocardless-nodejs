@@ -56,7 +56,10 @@ export class NegativeBalanceLimitService {
     this.api = api;
   }
 
-  public async list(requestParameters: NegativeBalanceLimitListRequest): Promise<NegativeBalanceLimitListResponse> {
+  public async list(
+    requestParameters: NegativeBalanceLimitListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<NegativeBalanceLimitListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/negative_balance_limits',
@@ -65,6 +68,7 @@ export class NegativeBalanceLimitService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -78,10 +82,11 @@ export class NegativeBalanceLimitService {
 
   public async *all(
     requestParameters: NegativeBalanceLimitListRequest,
+    customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.NegativeBalanceLimit, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const negativebalancelimit of list.negative_balance_limits) {
         yield negativebalancelimit;

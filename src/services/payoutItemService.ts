@@ -40,7 +40,10 @@ export class PayoutItemService {
     this.api = api;
   }
 
-  public async list(requestParameters: PayoutItemListRequest): Promise<PayoutItemListResponse> {
+  public async list(
+    requestParameters: PayoutItemListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<PayoutItemListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/payout_items',
@@ -49,6 +52,7 @@ export class PayoutItemService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -60,10 +64,13 @@ export class PayoutItemService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: PayoutItemListRequest): AsyncGenerator<Types.PayoutItem, void, unknown> {
+  public async *all(
+    requestParameters: PayoutItemListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.PayoutItem, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const payoutitem of list.payout_items) {
         yield payoutitem;

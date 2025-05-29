@@ -166,7 +166,7 @@ export class BlockService {
     return formattedResponse;
   }
 
-  public async find(identity: string): Promise<BlockResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<BlockResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/blocks/:identity',
@@ -175,6 +175,7 @@ export class BlockService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -186,7 +187,10 @@ export class BlockService {
     return formattedResponse;
   }
 
-  public async list(requestParameters: BlockListRequest): Promise<BlockListResponse> {
+  public async list(
+    requestParameters: BlockListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<BlockListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/blocks',
@@ -195,6 +199,7 @@ export class BlockService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -206,10 +211,13 @@ export class BlockService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: BlockListRequest): AsyncGenerator<Types.Block, void, unknown> {
+  public async *all(
+    requestParameters: BlockListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.Block, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const block of list.blocks) {
         yield block;
@@ -219,7 +227,7 @@ export class BlockService {
     } while (cursor);
   }
 
-  public async disable(identity: string): Promise<BlockResponse> {
+  public async disable(identity: string, customHeaders: Types.JsonMap = {}): Promise<BlockResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/blocks/:identity/actions/disable',
@@ -228,6 +236,7 @@ export class BlockService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -239,7 +248,7 @@ export class BlockService {
     return formattedResponse;
   }
 
-  public async enable(identity: string): Promise<BlockResponse> {
+  public async enable(identity: string, customHeaders: Types.JsonMap = {}): Promise<BlockResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/blocks/:identity/actions/enable',
@@ -248,6 +257,7 @@ export class BlockService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -259,7 +269,10 @@ export class BlockService {
     return formattedResponse;
   }
 
-  public async block_by_ref(requestParameters: BlockBlockByRefRequest): Promise<BlockListResponse> {
+  public async block_by_ref(
+    requestParameters: BlockBlockByRefRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<BlockListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/blocks/block_by_ref',
@@ -268,6 +281,7 @@ export class BlockService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);

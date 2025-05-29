@@ -35,7 +35,10 @@ export class TaxRateService {
     this.api = api;
   }
 
-  public async list(requestParameters: TaxRateListRequest): Promise<TaxRateListResponse> {
+  public async list(
+    requestParameters: TaxRateListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<TaxRateListResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/tax_rates',
@@ -44,6 +47,7 @@ export class TaxRateService {
       requestParameters,
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
@@ -55,10 +59,13 @@ export class TaxRateService {
     return formattedResponse;
   }
 
-  public async *all(requestParameters: TaxRateListRequest): AsyncGenerator<Types.TaxRate, void, unknown> {
+  public async *all(
+    requestParameters: TaxRateListRequest,
+    customHeaders: Types.JsonMap = {},
+  ): AsyncGenerator<Types.TaxRate, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor });
+      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
       for (const taxrate of list.tax_rates) {
         yield taxrate;
@@ -68,7 +75,7 @@ export class TaxRateService {
     } while (cursor);
   }
 
-  public async find(identity: string): Promise<TaxRateResponse> {
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<TaxRateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/tax_rates/:identity',
@@ -77,6 +84,7 @@ export class TaxRateService {
 
       payloadKey: null,
       fetch: null,
+      customHeaders,
     };
 
     const response = await this.api.request(requestParams);
