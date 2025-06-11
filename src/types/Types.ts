@@ -713,7 +713,7 @@ export type BillingRequestMandateRequest = {
   consent_type?: string | null;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
-  // for PayTo and VRP.
+  // required for PayTo and VRP.
   constraints?: BillingRequestMandateRequestConstraints | null;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -800,7 +800,7 @@ export type BillingRequestMandateRequestConstraints = {
   end_date?: string;
 
   // The maximum amount that can be charged for a single payment. Required for
-  // VRP.
+  // PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
@@ -845,7 +845,8 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
   //
   max_total_amount?: number;
 
-  // The repeating period for this mandate
+  // The repeating period for this mandate. Defaults to flexible for PayTo if
+  // not specified.
   period?: BillingRequestMandateRequestConstraintsPeriodicLimitPeriod;
 };
 
@@ -1404,6 +1405,10 @@ export type BillingRequestTemplate = {
   // Unique identifier, beginning with "BRT".
   id?: string;
 
+  // Constraints that will apply to the mandate_request. (Optional) Specifically
+  // required for PayTo and VRP.
+  mandate_request_constraints?: BillingRequestTemplateMandateRequestConstraints | null;
+
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   mandate_request_currency?: string;
@@ -1506,6 +1511,83 @@ export enum BillingRequestTemplateMandateRequestVerify {
   Recommended = 'recommended',
   WhenAvailable = 'when_available',
   Always = 'always',
+}
+
+/** Type for a billingrequesttemplatemandaterequestconstraints resource. */
+export type BillingRequestTemplateMandateRequestConstraints = {
+  // The latest date at which payments can be taken, must occur after start_date
+  // if present
+  //
+  // This is an optional field and if it is not supplied the agreement will be
+  // considered open and
+  // will not have an end date. Keep in mind the end date must take into account
+  // how long it will
+  // take the user to set up this agreement via the Billing Request.
+  //
+  end_date?: string;
+
+  // The maximum amount that can be charged for a single payment. Required for
+  // PayTo and VRP.
+  max_amount_per_payment?: number;
+
+  // A constraint where you can specify info (free text string) about how
+  // payments are calculated. _Note:_ This is only supported for ACH and PAD
+  // schemes.
+  //
+  payment_method?: string;
+
+  // List of periodic limits and constraints which apply to them
+  periodic_limits?: BillingRequestTemplateMandateRequestConstraintsPeriodicLimit[];
+
+  // The date from which payments can be taken.
+  //
+  // This is an optional field and if it is not supplied the start date will be
+  // set to the day
+  // authorisation happens.
+  //
+  start_date?: string;
+};
+
+/** Type for a billingrequesttemplatemandaterequestconstraintsperiodiclimit resource. */
+export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
+  // The alignment of the period.
+  //
+  // `calendar` - this will finish on the end of the current period. For example
+  // this will expire on the Monday for the current week or the January for the
+  // next year.
+  //
+  // `creation_date` - this will finish on the next instance of the current
+  // period. For example Monthly it will expire on the same day of the next
+  // month, or yearly the same day of the next year.
+  //
+  alignment?: BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment;
+
+  // (Optional) The maximum number of payments that can be collected in this
+  // periodic limit.
+  max_payments?: number;
+
+  // The maximum total amount that can be charged for all payments in this
+  // periodic limit.
+  // Required for VRP.
+  //
+  max_total_amount?: number;
+
+  // The repeating period for this mandate. Defaults to flexible for PayTo if
+  // not specified.
+  period?: BillingRequestTemplateMandateRequestConstraintsPeriodicLimitPeriod;
+};
+
+export enum BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment {
+  Calendar = 'calendar',
+  CreationDate = 'creation_date',
+}
+
+export enum BillingRequestTemplateMandateRequestConstraintsPeriodicLimitPeriod {
+  Day = 'day',
+  Week = 'week',
+  Month = 'month',
+  Year = 'year',
+  Flexible = 'flexible',
 }
 
 /** Type for a billingrequestwithaction resource. */
@@ -1771,7 +1853,7 @@ export type BillingRequestWithActionMandateRequest = {
   authorisation_source?: BillingRequestWithActionMandateRequestAuthorisationSource;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
-  // for PayTo and VRP.
+  // required for PayTo and VRP.
   constraints?: BillingRequestWithActionMandateRequestConstraints | null;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -1853,7 +1935,7 @@ export type BillingRequestWithActionMandateRequestConstraints = {
   end_date?: string;
 
   // The maximum amount that can be charged for a single payment. Required for
-  // VRP.
+  // PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
@@ -1898,7 +1980,8 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
   //
   max_total_amount?: number;
 
-  // The repeating period for this mandate
+  // The repeating period for this mandate. Defaults to flexible for PayTo if
+  // not specified.
   period?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod;
 };
 
@@ -2599,7 +2682,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   consent_type?: string | null;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
-  // for PayTo and VRP.
+  // required for PayTo and VRP.
   constraints?: BillingRequestWithActionBillingRequestsMandateRequestConstraints | null;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
@@ -2686,7 +2769,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraints = {
   end_date?: string;
 
   // The maximum amount that can be charged for a single payment. Required for
-  // VRP.
+  // PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
@@ -2731,7 +2814,8 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   //
   max_total_amount?: number;
 
-  // The repeating period for this mandate
+  // The repeating period for this mandate. Defaults to flexible for PayTo if
+  // not specified.
   period?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitPeriod;
 };
 
