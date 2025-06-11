@@ -28,6 +28,10 @@ interface BillingRequestTemplateCreateRequest {
   // Resources linked to this BillingRequestTemplate.
   links?: Types.BillingRequestTemplateCreateRequestLinks;
 
+  // Constraints that will apply to the mandate_request. (Optional) Specifically
+  // required for PayTo and VRP.
+  mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
+
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
 
   mandate_request_currency?: string;
@@ -127,6 +131,10 @@ interface BillingRequestTemplateCreateRequest {
 }
 
 interface BillingRequestTemplateUpdateRequest {
+  // Constraints that will apply to the mandate_request. (Optional) Specifically
+  // required for PayTo and VRP.
+  mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
+
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
 
   mandate_request_currency?: string;
