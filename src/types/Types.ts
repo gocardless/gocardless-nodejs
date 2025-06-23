@@ -5002,12 +5002,6 @@ export enum NegativeBalanceLimitCurrency {
   USD = 'USD',
 }
 
-/** Type for a negativebalancelimitcreaterequestlinks resource. */
-export type NegativeBalanceLimitCreateRequestLinks = {
-  // ID of the [creditor](#core-endpoints-creditors) this limit relates to
-  creditor: string;
-};
-
 /** Type for a negativebalancelimitlinks resource. */
 export type NegativeBalanceLimitLinks = {
   // ID of the creator_user who created this limit
