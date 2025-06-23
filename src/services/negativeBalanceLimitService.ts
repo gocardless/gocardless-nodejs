@@ -34,21 +34,6 @@ interface NegativeBalanceLimitListRequest {
   limit?: string;
 }
 
-interface NegativeBalanceLimitCreateRequest {
-  // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
-
-  balance_limit: string;
-
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
-  // supported.
-
-  currency: Types.NegativeBalanceLimitCurrency;
-
-  // Resources linked to this NegativeBalanceLimit.
-  links?: Types.NegativeBalanceLimitCreateRequestLinks;
-}
-
 export class NegativeBalanceLimitService {
   private api: Api;
 
@@ -94,31 +79,5 @@ export class NegativeBalanceLimitService {
 
       cursor = list.meta.cursors.after;
     } while (cursor);
-  }
-
-  public async create(
-    requestParameters: NegativeBalanceLimitCreateRequest,
-    idempotencyKey = '',
-    customHeaders: Types.JsonMap = {},
-  ): Promise<NegativeBalanceLimitResponse> {
-    const urlParameters = [];
-    const requestParams = {
-      path: '/negative_balance_limits',
-      method: 'post',
-      urlParameters,
-      requestParameters,
-      payloadKey: 'negative_balance_limits',
-      idempotencyKey,
-      customHeaders,
-      fetch: undefined,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: NegativeBalanceLimitResponse = {
-      ...(response.body?.['negative_balance_limits'] ?? response),
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
   }
 }
