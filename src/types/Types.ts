@@ -297,6 +297,10 @@ export enum BillingRequestPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  Epayment = 'Epayment',
+  Commercial = 'Commercial',
+  OtherPayment = 'OtherPayment',
+  Trade = 'Trade',
 }
 
 /** Type for a billingrequestcustomer resource. */
@@ -2082,6 +2086,10 @@ export enum BillingRequestWithActionPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  Epayment = 'Epayment',
+  Commercial = 'Commercial',
+  OtherPayment = 'OtherPayment',
+  Trade = 'Trade',
 }
 
 /** Type for a billingrequestwithactionbankauthorisations resource. */
@@ -2266,6 +2274,10 @@ export enum BillingRequestWithActionBillingRequestsPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  Epayment = 'Epayment',
+  Commercial = 'Commercial',
+  OtherPayment = 'OtherPayment',
+  Trade = 'Trade',
 }
 
 /** Type for a billingrequestwithactionbillingrequestscustomer resource. */
