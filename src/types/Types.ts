@@ -4602,15 +4602,6 @@ export type MandateConsentParameters = {
   // The maximum amount that can be charged for a single payment
   max_amount_per_payment?: number;
 
-  // Frequency configuration
-  periods?: MandateConsentParametersPeriod[];
-
-  // The date from which payments can be taken
-  start_date?: string;
-};
-
-/** Type for a mandateconsentparametersperiod resource. */
-export type MandateConsentParametersPeriod = {
   // The maximum total amount that can be charged for all payments in this
   // period
   max_amount_per_period?: number;
@@ -4619,10 +4610,13 @@ export type MandateConsentParametersPeriod = {
   max_payments_per_period?: number;
 
   // The repeating period for this mandate
-  period?: MandateConsentParametersPeriodPeriod;
+  period?: MandateConsentParametersPeriod;
+
+  // The date from which payments can be taken
+  start_date?: string;
 };
 
-export enum MandateConsentParametersPeriodPeriod {
+export enum MandateConsentParametersPeriod {
   Day = 'day',
   Week = 'week',
   Month = 'month',
