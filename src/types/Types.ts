@@ -5058,7 +5058,7 @@ export type OutboundPayment = {
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
-  scheme?: string;
+  scheme?: OutboundPaymentScheme;
 
   // One of:
   // <ul>
@@ -5094,6 +5094,10 @@ export type OutboundPaymentCreateRequestLinks = {
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account: string;
 };
+
+export enum OutboundPaymentScheme {
+  FasterPayments = 'faster_payments',
+}
 
 /** Type for a outboundpaymentwithdrawrequestlinks resource. */
 export type OutboundPaymentWithdrawRequestLinks = {
