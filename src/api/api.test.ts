@@ -1,5 +1,5 @@
+import fs from 'node:fs';
 import nock from 'nock';
-
 import { Api } from './api';
 import { Environments } from '../constants';
 import * as GoCardlessErrors from '../errors';
@@ -13,6 +13,68 @@ describe('.request', () => {
 
   afterEach(() => {
     nock.cleanAll();
+  });
+
+  describe('when API signing options are provided', () => {
+    const privateKeyPem = fs.readFileSync('src/fixtures/private_key.pem', 'utf8');
+    const apiRequestSigningOptions = {
+      privateKeyPem,
+      publicKeyId: 'PublicKeyId',
+      testMode: true,
+    };
+
+    describe('GET request', () => {
+      test('it signs the request with the provided options', async () => {
+        const api = new Api(token, Environments.Live, { apiRequestSigningOptions });
+        const check = nock('https://api.gocardless.com', {
+          reqheaders: {
+            'Gc-Signature': 'sig-1=:SIG:',
+            'Gc-Signature-Input':
+              'sig-1=("@method" "@authority" "@request-target");keyid="PublicKeyId";created=created;nonce="nonce"',
+          },
+        })
+          .get('/')
+          .reply(200, {});
+
+        const params = {
+          path: '/',
+          method: 'get',
+          fetch: null,
+        };
+
+        await api.request(params);
+
+        expect(check.isDone()).toEqual(true);
+      });
+    });
+    describe('POST request', () => {
+      test('it signs the request with the provided options', async () => {
+        const requestParameters = { key: 'value' };
+        const api = new Api(token, Environments.Live, { apiRequestSigningOptions });
+        const check = nock('https://api.gocardless.com', {
+          reqheaders: {
+            'Gc-Signature': 'sig-1=:SIG:',
+            'Gc-Signature-Input':
+              'sig-1=("@method" "@authority" "@request-target" "content-digest" "content-type" "content-length");keyid="PublicKeyId";created=created;nonce="nonce"',
+            'Content-Digest': 'sha256=:bQMpn7uk4o1bZQB6zs1kNCPbcQv93mxnUNjb8o+A/Iw=:',
+            'Content-Length': '24',
+          },
+        })
+          .post('/', { data: requestParameters })
+          .reply(200, {});
+
+        const params = {
+          path: '/',
+          method: 'post',
+          requestParameters,
+          fetch: null,
+        };
+
+        await api.request(params);
+
+        expect(check.isDone()).toEqual(true);
+      });
+    });
   });
 
   describe('API environments', () => {

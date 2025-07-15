@@ -5,15 +5,21 @@ import process = require('process');
 import _ = require('lodash');
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
-import got from 'got';
+import got, { OptionsOfJSONResponseBody } from 'got';
 import qs from 'qs';
 
 import { Environments, CLIENT_VERSION, API_VERSION } from '../constants';
 import * as GoCardlessErrors from '../errors';
+import {
+  ApiRequestSignatureHelper,
+  ApiRequestSigningOptions,
+  ApiRequestSigningOptionsInternal,
+} from '../apiRequestSigning';
 
-interface APIOptions {
+export interface APIOptions {
   proxy?: object;
   raiseOnIdempotencyConflict?: boolean;
+  apiRequestSigningOptions?: ApiRequestSigningOptions;
 }
 
 interface UrlParameter {
@@ -38,6 +44,7 @@ export class Api {
   private _baseUrl: string;
   private _agent: object;
   private raiseOnIdempotencyConflict: boolean;
+  private apiRequestSigningOptions: ApiRequestSigningOptionsInternal | null = null;
 
   private processVersion: string;
   private osRelease: string;
@@ -58,6 +65,7 @@ export class Api {
     }
 
     this.raiseOnIdempotencyConflict = options.raiseOnIdempotencyConflict || false;
+    this.apiRequestSigningOptions = options.apiRequestSigningOptions as ApiRequestSigningOptionsInternal;
 
     this.processVersion = process.version;
     this.osPlatform = os.platform();
@@ -84,13 +92,17 @@ export class Api {
       path = path.slice(1);
     }
 
-    const requestOptions = this.createRequestOptions(
+    let requestOptions = this.createRequestOptions(
       method,
       requestParameters,
       payloadKey,
       idempotencyKey,
       customHeaders,
     );
+
+    if (this.apiRequestSigningOptions) {
+      requestOptions = this.signApiRequest(`/${path}`, requestOptions);
+    }
 
     try {
       const response = await got(path, requestOptions);
@@ -121,6 +133,35 @@ export class Api {
 
       throw e;
     }
+  }
+
+  private signApiRequest(path: string, requestOptions: OptionsOfJSONResponseBody): OptionsOfJSONResponseBody {
+    const body =
+      requestOptions.json !== null && requestOptions.json !== undefined
+        ? JSON.stringify(requestOptions.json)
+        : undefined;
+    const contentDigest = body !== undefined ? ApiRequestSignatureHelper.getSha256Digest(body) : undefined;
+    const contentLength = body !== undefined ? Buffer.byteLength(body, 'utf8') : undefined;
+    const signer = new ApiRequestSignatureHelper({
+      apiRequestSigningOptions: this.apiRequestSigningOptions,
+      requestPath: path,
+      contentType: 'application/json',
+      host: this._baseUrl,
+      httpMethod: requestOptions.method.toUpperCase(),
+      contentDigest,
+      contentLength,
+      created: this.apiRequestSigningOptions.testMode ? 'created' : undefined,
+      nonce: this.apiRequestSigningOptions.testMode ? 'nonce' : undefined,
+    });
+    return {
+      ...requestOptions,
+      headers: {
+        ...requestOptions.headers,
+        'Gc-Signature': signer.getGcSignature(),
+        'Gc-Signature-Input': signer.getGcSignatureInput(),
+        'Content-Digest': contentDigest ? ApiRequestSignatureHelper.getSha256DigestHeader(contentDigest) : undefined,
+      },
+    };
   }
 
   private getHeaders(token, customHeaders = {}) {
@@ -163,7 +204,7 @@ export class Api {
       headers,
       searchParams,
       json,
-    };
+    } as OptionsOfJSONResponseBody;
   }
 
   private getRequestBody(method: string, requestParameters, payloadKey) {

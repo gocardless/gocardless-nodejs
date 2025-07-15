@@ -297,6 +297,10 @@ export enum BillingRequestPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  Epayment = 'Epayment',
+  Commercial = 'Commercial',
+  OtherPayment = 'OtherPayment',
+  Trade = 'Trade',
 }
 
 /** Type for a billingrequestcustomer resource. */
@@ -2082,6 +2086,10 @@ export enum BillingRequestWithActionPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  Epayment = 'Epayment',
+  Commercial = 'Commercial',
+  OtherPayment = 'OtherPayment',
+  Trade = 'Trade',
 }
 
 /** Type for a billingrequestwithactionbankauthorisations resource. */
@@ -2266,6 +2274,10 @@ export enum BillingRequestWithActionBillingRequestsPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  Epayment = 'Epayment',
+  Commercial = 'Commercial',
+  OtherPayment = 'OtherPayment',
+  Trade = 'Trade',
 }
 
 /** Type for a billingrequestwithactionbillingrequestscustomer resource. */
@@ -4590,15 +4602,6 @@ export type MandateConsentParameters = {
   // The maximum amount that can be charged for a single payment
   max_amount_per_payment?: number;
 
-  // Frequency configuration
-  periods?: MandateConsentParametersPeriod[];
-
-  // The date from which payments can be taken
-  start_date?: string;
-};
-
-/** Type for a mandateconsentparametersperiod resource. */
-export type MandateConsentParametersPeriod = {
   // The maximum total amount that can be charged for all payments in this
   // period
   max_amount_per_period?: number;
@@ -4607,10 +4610,13 @@ export type MandateConsentParametersPeriod = {
   max_payments_per_period?: number;
 
   // The repeating period for this mandate
-  period?: MandateConsentParametersPeriodPeriod;
+  period?: MandateConsentParametersPeriod;
+
+  // The date from which payments can be taken
+  start_date?: string;
 };
 
-export enum MandateConsentParametersPeriodPeriod {
+export enum MandateConsentParametersPeriod {
   Day = 'day',
   Week = 'week',
   Month = 'month',
@@ -5052,7 +5058,7 @@ export type OutboundPayment = {
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
-  scheme?: string;
+  scheme?: OutboundPaymentScheme;
 
   // One of:
   // <ul>
@@ -5088,6 +5094,10 @@ export type OutboundPaymentCreateRequestLinks = {
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account: string;
 };
+
+export enum OutboundPaymentScheme {
+  FasterPayments = 'faster_payments',
+}
 
 /** Type for a outboundpaymentwithdrawrequestlinks resource. */
 export type OutboundPaymentWithdrawRequestLinks = {
