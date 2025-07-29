@@ -33,6 +33,13 @@ interface OutboundPaymentCreateRequest {
 
   metadata?: Types.JsonMap;
 
+  // An optional reference that will appear on your customer's bank statement.
+  // The character limit for this reference is dependent on the scheme.<br />
+  // <strong>Faster Payments</strong> - 18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+
+  reference?: string;
+
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
 
@@ -61,6 +68,13 @@ interface OutboundPaymentWithdrawRequest {
   // key names up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
+
+  // An optional reference that will appear on your customer's bank statement.
+  // The character limit for this reference is dependent on the scheme.<br />
+  // <strong>Faster Payments</strong> - 18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+
+  reference?: string;
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
