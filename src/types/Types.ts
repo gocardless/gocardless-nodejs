@@ -5153,8 +5153,8 @@ export type OutboundPaymentVerifications = {
 
 /** Type for a outboundpaymentverificationsrecipientbankaccountholderverification resource. */
 export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification = {
-  // -| The actual account name returned by the recipient's bank, populated only
-  // in the case of a partial match.
+  // The actual account name returned by the recipient's bank, populated only in
+  // the case of a partial match.
   actual_account_name?: string | null;
 
   // Result of the verification, could be one of
