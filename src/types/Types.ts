@@ -5516,6 +5516,11 @@ export type Payment = {
   // dashboard](https://manage.gocardless.com/success-plus). </p>
   retry_if_possible?: boolean;
 
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported.
+  scheme?: string | null;
+
   // One of:
   // <ul>
   // <li>`pending_customer_approval`: we're waiting for the customer to approve
