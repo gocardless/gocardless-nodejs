@@ -13,6 +13,7 @@ import { BillingRequestWithActionService } from './services/billingRequestWithAc
 import { BlockService } from './services/blockService';
 import { CreditorService } from './services/creditorService';
 import { CreditorBankAccountService } from './services/creditorBankAccountService';
+import { CreditorBankAccountValidateService } from './services/creditorBankAccountValidateService';
 import { CurrencyExchangeRateService } from './services/currencyExchangeRateService';
 import { CustomerService } from './services/customerService';
 import { CustomerBankAccountService } from './services/customerBankAccountService';
@@ -57,6 +58,7 @@ export class GoCardlessClient {
   private _blocks: BlockService;
   private _creditors: CreditorService;
   private _creditorBankAccounts: CreditorBankAccountService;
+  private _creditorBankAccountValidates: CreditorBankAccountValidateService;
   private _currencyExchangeRates: CurrencyExchangeRateService;
   private _customers: CustomerService;
   private _customerBankAccounts: CustomerBankAccountService;
@@ -101,6 +103,7 @@ export class GoCardlessClient {
     this._blocks = undefined;
     this._creditors = undefined;
     this._creditorBankAccounts = undefined;
+    this._creditorBankAccountValidates = undefined;
     this._currencyExchangeRates = undefined;
     this._customers = undefined;
     this._customerBankAccounts = undefined;
@@ -218,6 +221,14 @@ export class GoCardlessClient {
     }
 
     return this._creditorBankAccounts;
+  }
+
+  get creditorBankAccountValidates(): CreditorBankAccountValidateService {
+    if (!this._creditorBankAccountValidates) {
+      this._creditorBankAccountValidates = new CreditorBankAccountValidateService(this._api);
+    }
+
+    return this._creditorBankAccountValidates;
   }
 
   get currencyExchangeRates(): CurrencyExchangeRateService {
