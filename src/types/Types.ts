@@ -3644,6 +3644,17 @@ export type CreditorBankAccountCreateRequestLinks = {
   creditor: string;
 };
 
+/** Type for a creditorbankaccountlocaldetails resource. */
+export type CreditorBankAccountLocalDetails = {
+  // Bank account number - see [local details](#appendix-local-bank-details) for
+  // more information. Alternatively you can provide an `iban`.
+  bank_number?: string | null;
+
+  // Branch code - see [local details](#appendix-local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
+  sort_code?: string | null;
+};
+
 /** Type for a creditorbankaccountlinks resource. */
 export type CreditorBankAccountLinks = {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
@@ -3657,41 +3668,6 @@ export enum CreditorBankAccountVerificationStatus {
   Successful = 'successful',
   CouldNotVerify = 'could_not_verify',
 }
-
-/** Type for a creditorbankaccountvalidate resource. */
-export type CreditorBankAccountValidate = {
-  // Name of bank, taken from the bank details.
-  bank_name?: string;
-
-  // URL of the bank's icon.
-  icon_url?: string | null;
-
-  // The reason why the bank details are invalid, if applicable.
-  invalid_reasons?: CreditorBankAccountValidateInvalidReason[];
-
-  // Whether the bank account details are valid.
-  is_valid?: boolean;
-};
-
-/** Type for a creditorbankaccountvalidatelocaldetails resource. */
-export type CreditorBankAccountValidateLocalDetails = {
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
-  bank_number?: string | null;
-
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
-  sort_code?: string | null;
-};
-
-/** Type for a creditorbankaccountvalidateinvalidreason resource. */
-export type CreditorBankAccountValidateInvalidReason = {
-  // The name of the field with the error
-  field: string;
-
-  // The error message
-  message: string;
-};
 
 /** Type for a currencyexchangerate resource. */
 export type CurrencyExchangeRate = {
