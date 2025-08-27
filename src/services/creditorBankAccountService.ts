@@ -98,18 +98,6 @@ interface CreditorBankAccountListRequest {
   limit?: string;
 }
 
-interface CreditorBankAccountValidateRequest {
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
-
-  iban?: string;
-
-  //
-  local_details?: Types.CreditorBankAccountLocalDetails;
-}
-
 export class CreditorBankAccountService {
   private api: Api;
 
@@ -211,31 +199,6 @@ export class CreditorBankAccountService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
-      fetch: null,
-      customHeaders,
-    };
-
-    const response = await this.api.request(requestParams);
-    const formattedResponse: CreditorBankAccountResponse = {
-      ...response.body['creditor_bank_accounts'],
-      __response__: response.__response__,
-    };
-
-    return formattedResponse;
-  }
-
-  public async validate(
-    identity: string,
-    requestParameters: CreditorBankAccountValidateRequest,
-    customHeaders: Types.JsonMap = {},
-  ): Promise<CreditorBankAccountResponse> {
-    const urlParameters = [];
-    const requestParams = {
-      path: '/creditor_bank_accounts/validate',
-      method: 'post',
-      urlParameters,
-      requestParameters,
       payloadKey: null,
       fetch: null,
       customHeaders,

@@ -3644,17 +3644,6 @@ export type CreditorBankAccountCreateRequestLinks = {
   creditor: string;
 };
 
-/** Type for a creditorbankaccountlocaldetails resource. */
-export type CreditorBankAccountLocalDetails = {
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
-  bank_number?: string | null;
-
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
-  sort_code?: string | null;
-};
-
 /** Type for a creditorbankaccountlinks resource. */
 export type CreditorBankAccountLinks = {
   // ID of the [creditor](#core-endpoints-creditors) that owns this bank
