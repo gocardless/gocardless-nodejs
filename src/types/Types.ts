@@ -4128,6 +4128,9 @@ export type EventLinks = {
   // [mandate](#core-endpoints-mandates) which has been updated.
   mandate?: string;
 
+  // This is the id of the mandate request associated to this event
+  mandate_request?: string;
+
   // If `resource_type` is `billing_requests`, this is the ID of the
   // [mandate](#core-endpoints-mandates) which has been created.
   mandate_request_mandate?: string;
