@@ -4128,6 +4128,9 @@ export type EventLinks = {
   // [mandate](#core-endpoints-mandates) which has been updated.
   mandate?: string;
 
+  // This is the id of the mandate request associated to this event
+  mandate_request?: string;
+
   // If `resource_type` is `billing_requests`, this is the ID of the
   // [mandate](#core-endpoints-mandates) which has been created.
   mandate_request_mandate?: string;
@@ -5052,8 +5055,10 @@ export type OutboundPayment = {
   // key names up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
-  // An auto-generated reference that will appear on your receiver's bank
-  // statement.
+  // An optional reference that will appear on your customer's bank statement.
+  // The character limit for this reference is dependent on the scheme.<br />
+  // <strong>Faster Payments</strong> - 18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
   reference?: string;
 
   // Bank payment scheme to process the outbound payment. Currently only
@@ -5140,8 +5145,8 @@ export type OutboundPaymentVerifications = {
 
 /** Type for a outboundpaymentverificationsrecipientbankaccountholderverification resource. */
 export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification = {
-  // -| The actual account name returned by the recipient's bank, populated only
-  // in the case of a partial match.
+  // The actual account name returned by the recipient's bank, populated only in
+  // the case of a partial match.
   actual_account_name?: string | null;
 
   // Result of the verification, could be one of
@@ -5502,6 +5507,11 @@ export type Payment = {
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
   retry_if_possible?: boolean;
+
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported.
+  scheme?: string | null;
 
   // One of:
   // <ul>
@@ -6355,6 +6365,12 @@ export type ScenarioSimulator = {
   // billing request must be in the `pending` state, with all actions completed
   // except for `bank_authorisation`. Only billing requests with a
   // `payment_request` are supported.</li>
+  // <li>`billing_request_fulfilled_and_payment_confirmed_to_failed`: Authorises
+  // the billing request, fulfils it, moves the associated payment to
+  // `confirmed` and then moves it to `failed`. The billing request must be in
+  // the `pending` state, with all actions completed except for
+  // `bank_authorisation`. Only billing requests with a `payment_request` are
+  // supported.</li>
   // <li>`billing_request_fulfilled_and_payment_paid_out`: Authorises the
   // billing request, fulfils it, and moves the associated payment to
   // `paid_out`. The billing request must be in the `pending` state, with all
