@@ -106,7 +106,7 @@ interface MandateListRequest {
 
   scheme?: string[];
 
-  // At most four valid status values
+  // One or more valid statuses
 
   status?: Types.MandateStatus[];
 }
