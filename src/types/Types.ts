@@ -3983,6 +3983,9 @@ export type Event = {
   // <li>`outbound_payments`</li>
   // </ul>
   resource_type?: EventResourceType;
+
+  // Audit information about the source of the event.
+  source?: EventSource;
 };
 
 export enum EventInclude {
@@ -4203,6 +4206,22 @@ export enum EventResourceType {
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
+}
+
+/** Type for a eventsource resource. */
+export type EventSource = {
+  // The name of the event's source.
+  name?: string;
+
+  // The type of the event's source.
+  type?: EventSourceType;
+};
+
+export enum EventSourceType {
+  App = 'app',
+  User = 'user',
+  GcTeam = 'gc_team',
+  AccessToken = 'access_token',
 }
 
 /** Type for a export resource. */
