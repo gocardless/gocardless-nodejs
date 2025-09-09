@@ -4441,7 +4441,8 @@ export type Institution = {
   // The unique identifier for this institution
   id?: string;
 
-  // Defines individual limits for business and personal accounts.
+  // Defines individual limits for business and personal accounts, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR).
   limits?: InstitutionLimits | null;
 
   // A URL pointing to the logo for this institution
@@ -4468,13 +4469,15 @@ export type InstitutionId = {};
 
 /** Type for a institutionlimits resource. */
 export type InstitutionLimits = {
-  // Daily limit details for this institution. (The 'limits' property is only
-  // available via an authenticated request with a generated access token)
+  // Daily limit details for this institution, in the lowest denomination for
+  // the currency (e.g. pence in GBP, cents in EUR). The 'limits' property is
+  // only available via an authenticated request with a generated access token
   daily?: JsonMap | null;
 
-  // Single transaction limit details for this institution. (The 'limits'
-  // property is only available via an authenticated request with a generated
-  // access token)
+  // Single transaction limit details for this institution, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR). The
+  // 'limits' property is only available via an authenticated request with a
+  // generated access token
   single?: JsonMap | null;
 };
 
