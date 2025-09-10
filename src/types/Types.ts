@@ -4441,8 +4441,7 @@ export type Institution = {
   // The unique identifier for this institution
   id?: string;
 
-  // Defines individual limits for business and personal accounts, in the lowest
-  // denomination for the currency (e.g. pence in GBP, cents in EUR).
+  // Defines individual limits for business and personal accounts.
   limits?: InstitutionLimits | null;
 
   // A URL pointing to the logo for this institution
