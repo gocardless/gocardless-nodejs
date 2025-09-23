@@ -125,6 +125,12 @@ interface PaymentListRequest {
 
   mandate?: string;
 
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported.
+
+  scheme?: string;
+
   // The direction to sort in.
   // One of:
   // <ul>
