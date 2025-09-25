@@ -729,6 +729,17 @@ export type BillingRequestMandateRequest = {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestMandateRequestFundsSettlement;
+
   // Resources linked to this BillingRequestMandateRequest.
   links?: BillingRequestMandateRequestLinks;
 
@@ -865,6 +876,11 @@ export enum BillingRequestMandateRequestConstraintsPeriodicLimitPeriod {
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum BillingRequestMandateRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
 }
 
 /** Type for a billingrequestmandaterequestlinks resource. */
@@ -1869,6 +1885,17 @@ export type BillingRequestWithActionMandateRequest = {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestWithActionMandateRequestFundsSettlement;
+
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
@@ -2000,6 +2027,11 @@ export enum BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum BillingRequestWithActionMandateRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
 }
 
 export enum BillingRequestWithActionMandateRequestVerify {
@@ -2706,6 +2738,17 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement;
+
   // Resources linked to this BillingRequestWithActionBillingRequestsMandateRequest.
   links?: BillingRequestWithActionBillingRequestsMandateRequestLinks;
 
@@ -2842,6 +2885,11 @@ export enum BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
 }
 
 /** Type for a billingrequestwithactionbillingrequestsmandaterequestlinks resource. */
