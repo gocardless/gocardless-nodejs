@@ -4039,6 +4039,7 @@ export type Event = {
 export enum EventInclude {
   BillingRequest = 'billing_request',
   Creditor = 'creditor',
+  Customer = 'customer',
   InstalmentSchedule = 'instalment_schedule',
   Mandate = 'mandate',
   OutboundPayment = 'outbound_payment',
@@ -4243,6 +4244,7 @@ export type EventLinks = {
 export enum EventResourceType {
   BillingRequests = 'billing_requests',
   Creditors = 'creditors',
+  Customers = 'customers',
   Exports = 'exports',
   InstalmentSchedules = 'instalment_schedules',
   Mandates = 'mandates',
