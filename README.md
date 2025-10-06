@@ -20,6 +20,8 @@ To initialise the client, you must provide:
 - The environment that this token is for (see [here](https://github.com/gocardless/gocardless-nodejs/blob/master/src/constants.ts) for a list of available environments).
 - Any additional options (see [here](#available-client-options) for a list of supported options).
 
+#### JavaScript
+
 <!-- prettier-ignore -->
 ```js
 const gocardless = require('gocardless-nodejs');
@@ -33,6 +35,25 @@ const client = gocardless(
   { raiseOnIdempotencyConflict: true },
 );
 ```
+
+#### TypeScript
+
+When using TypeScript, the import and initialisation syntax differs slightly:
+
+<!-- prettier-ignore -->
+```ts
+import { GoCardlessClient } from 'gocardless-nodejs/client';
+import { Environments } from 'gocardless-nodejs/constants';
+
+// Initialise the client.
+const client = new GoCardlessClient(
+  process.env.GC_ACCESS_TOKEN,
+  Environments.Sandbox,
+  { raiseOnIdempotencyConflict: true },
+);
+```
+
+**Note:** The TypeScript client uses the `GoCardlessClient` class constructor with the `new` keyword, whereas the JavaScript client uses a factory function.
 
 ### The Basics
 
@@ -82,6 +103,47 @@ for await (const payment of client.payments.all()) {
   console.log(payment.id);
 }
 ```
+
+### TypeScript usage with types and enums
+
+When using TypeScript, you can import types and enums from `gocardless-nodejs/types/Types` to get full type safety and autocompletion.
+
+<!-- prettier-ignore -->
+```ts
+import { GoCardlessClient } from 'gocardless-nodejs/client';
+import { Environments } from 'gocardless-nodejs/constants';
+import { 
+  CustomerSortField, 
+  CustomerSortDirection,
+  PaymentStatus 
+} from 'gocardless-nodejs/types/Types';
+
+const client = new GoCardlessClient(
+  process.env.GC_ACCESS_TOKEN,
+  Environments.Sandbox
+);
+
+// List customers with sort options using enums.
+const customers = await client.customers.list({
+  limit: 10,
+  sort_field: CustomerSortField.CreatedAt,
+  sort_direction: CustomerSortDirection.Desc,
+});
+
+// Filter payments by status using enums.
+const payments = await client.payments.list({
+  status: PaymentStatus.PaidOut,
+});
+
+// Using the after parameter for pagination.
+let cursor: string | undefined = undefined;
+const page1 = await client.customers.list({ 
+  limit: 10,
+  after: cursor, // TypeScript handles optional parameters correctly
+});
+```
+
+All resource types, request parameters, and response types are fully typed. See [Types.ts](https://github.com/gocardless/gocardless-nodejs/blob/master/src/types/Types.ts) for the complete list of available types and enums.
 
 ### Available client options
 
