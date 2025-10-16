@@ -3975,8 +3975,8 @@ export enum CustomerNotificationType {
 
 /** Type for a event resource. */
 export type Event = {
-  // What has happened to the resource. See [Event Actions](#event-actions) for
-  // the possible actions.
+  // What has happened to the resource. See [Event Types](#event-types) for the
+  // possible actions.
   action?: string;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -5979,7 +5979,7 @@ export type PayoutItemTaxis = {
   // the exchange rate has been finalised.
   //
   // You can listen for the payout's [`tax_exchange_rates_confirmed`
-  // webhook](https://developer.gocardless.com/api-reference/#event-actions-payout)
+  // webhook](https://developer.gocardless.com/api-reference/#event-types-payout)
   // to know when the exchange rate has been finalised for all fees in the
   // payout.
   exchange_rate?: string | null;
