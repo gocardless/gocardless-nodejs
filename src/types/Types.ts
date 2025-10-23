@@ -447,13 +447,6 @@ export type BillingRequestAction = {
   type?: BillingRequestActionType;
 };
 
-/** Type for a billingrequestactionavailablecurrencies resource. */
-export type BillingRequestActionAvailableCurrencies = {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency?: string;
-};
-
 /** Type for a billingrequestactionbankauthorisation resource. */
 export type BillingRequestActionBankAuthorisation = {
   // Which authorisation adapter will be used to power these authorisations
@@ -2454,13 +2447,6 @@ export type BillingRequestWithActionBillingRequestsAction = {
 
   // Unique identifier for the action.
   type?: BillingRequestWithActionBillingRequestsActionType;
-};
-
-/** Type for a billingrequestwithactionbillingrequestsactionavailablecurrencies resource. */
-export type BillingRequestWithActionBillingRequestsActionAvailableCurrencies = {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency?: string;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsactionbankauthorisation resource. */
