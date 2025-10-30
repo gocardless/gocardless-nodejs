@@ -554,7 +554,7 @@ export type BillingRequestInstalmentScheduleRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -1191,7 +1191,7 @@ export type BillingRequestSubscriptionRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -2076,7 +2076,7 @@ export type BillingRequestWithActionPaymentRequest = {
   reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p> <p
@@ -2556,7 +2556,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -3193,7 +3193,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -5559,7 +5559,7 @@ export type Payment = {
   reference?: string | null;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -6703,7 +6703,7 @@ export type Subscription = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>

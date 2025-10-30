@@ -77,7 +77,7 @@ interface PaymentCreateRequest {
   reference?: string;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -181,7 +181,7 @@ interface PaymentUpdateRequest {
   metadata?: Types.JsonMap;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
