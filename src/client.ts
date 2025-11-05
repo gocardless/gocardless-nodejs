@@ -31,6 +31,7 @@ import { OutboundPaymentService } from './services/outboundPaymentService';
 import { PayerAuthorisationService } from './services/payerAuthorisationService';
 import { PayerThemeService } from './services/payerThemeService';
 import { PaymentService } from './services/paymentService';
+import { PaymentAccountTransactionService } from './services/paymentAccountTransactionService';
 import { PayoutService } from './services/payoutService';
 import { PayoutItemService } from './services/payoutItemService';
 import { RedirectFlowService } from './services/redirectFlowService';
@@ -75,6 +76,7 @@ export class GoCardlessClient {
   private _payerAuthorisations: PayerAuthorisationService;
   private _payerThemes: PayerThemeService;
   private _payments: PaymentService;
+  private _paymentAccountTransactions: PaymentAccountTransactionService;
   private _payouts: PayoutService;
   private _payoutItems: PayoutItemService;
   private _redirectFlows: RedirectFlowService;
@@ -119,6 +121,7 @@ export class GoCardlessClient {
     this._payerAuthorisations = undefined;
     this._payerThemes = undefined;
     this._payments = undefined;
+    this._paymentAccountTransactions = undefined;
     this._payouts = undefined;
     this._payoutItems = undefined;
     this._redirectFlows = undefined;
@@ -362,6 +365,14 @@ export class GoCardlessClient {
     }
 
     return this._payments;
+  }
+
+  get paymentAccountTransactions(): PaymentAccountTransactionService {
+    if (!this._paymentAccountTransactions) {
+      this._paymentAccountTransactions = new PaymentAccountTransactionService(this._api);
+    }
+
+    return this._paymentAccountTransactions;
   }
 
   get payouts(): PayoutService {

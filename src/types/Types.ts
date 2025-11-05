@@ -5712,6 +5712,66 @@ export type PaymentLinks = {
   subscription?: string;
 };
 
+/** Type for a paymentaccounttransaction resource. */
+export type PaymentAccountTransaction = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: number;
+
+  // Balance after transaction, in the lowest denomination for the currency
+  // (e.g. pence in GBP, cents in EUR).
+  balance_after_transaction?: number;
+
+  // The name of the counterparty of the transaction. The counterparty is the
+  // recipient for a credit, or the sender for a debit.
+  counterparty_name?: string;
+
+  // The currency of the transaction.
+  currency?: PaymentAccountTransactionCurrency;
+
+  // The description of the transaction, if available
+  description?: string;
+
+  // The direction of the transaction. Debits mean money leaving the account
+  // (e.g. outbound payment), while credits signify money coming in (e.g. manual
+  // top-up).
+  direction?: PaymentAccountTransactionDirection;
+
+  // The unique ID of the payment account transaction.
+  id?: string;
+
+  // Resources linked to this PaymentAccountTransaction.
+  links?: PaymentAccountTransactionLinks;
+
+  // The reference of the transaction. This is typically supplied by the sender.
+  reference?: string;
+
+  // The date of when the transaction occurred.
+  value_date?: string;
+};
+
+export enum PaymentAccountTransactionDirection {
+  Credit = 'credit',
+  Debit = 'debit',
+}
+
+export enum PaymentAccountTransactionCurrency {
+  GBP = 'GBP',
+}
+
+/** Type for a paymentaccounttransactionlinks resource. */
+export type PaymentAccountTransactionLinks = {
+  // ID of the [outbound_payment](#core-endpoints-outbound-payments) linked to
+  // the transaction
+  outbound_payment?: string;
+
+  // ID of the payment bank account.
+  payment_bank_account?: string;
+
+  // ID of the [payout](#core-endpoints-payouts) linked to the transaction.
+  payout?: string;
+};
+
 /** Type for a payout resource. */
 export type Payout = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
