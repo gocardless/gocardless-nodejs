@@ -5150,6 +5150,11 @@ export type OutboundPayment = {
 
 /** Type for a outboundpaymentcreaterequestlinks resource. */
 export type OutboundPaymentCreateRequestLinks = {
+  // ID of the app that created the outbound payment.
+  // <br/>_Note_: this property will only be present if the payment was created
+  // through an app.
+  app?: string;
+
   // ID of the creditor who sends the outbound payment.
   creditor?: string;
 
