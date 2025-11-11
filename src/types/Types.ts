@@ -1014,10 +1014,11 @@ export type BillingRequestResourcesCustomer = {
 
 /** Type for a billingrequestresourcescustomerbankaccount resource. */
 export type BillingRequestResourcesCustomerBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -1654,10 +1655,11 @@ export type BillingRequestWithActionActions = {
 
 /** Type for a billingrequestwithactionactionscollectbankaccount resource. */
 export type BillingRequestWithActionActionsCollectBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
@@ -3016,10 +3018,11 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
 
 /** Type for a billingrequestwithactionbillingrequestsresourcescustomerbankaccount resource. */
 export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -3811,10 +3814,11 @@ export enum CustomerSortField {
 
 /** Type for a customerbankaccount resource. */
 export type CustomerBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -4835,10 +4839,11 @@ export type MandateImportEntryAmendment = {
 
 /** Type for a mandateimportentrybankaccount resource. */
 export type MandateImportEntryBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
@@ -5285,10 +5290,11 @@ export type PayerAuthorisation = {
 
 /** Type for a payerauthorisationbankaccount resource. */
 export type PayerAuthorisationBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
