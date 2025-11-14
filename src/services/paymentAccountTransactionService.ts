@@ -31,11 +31,11 @@ interface PaymentAccountTransactionListRequest {
 
   // The beginning of query period
 
-  value_date_from?: string;
+  value_date_from: string;
 
   // The end of query period
 
-  value_date_to?: string;
+  value_date_to: string;
 }
 
 export class PaymentAccountTransactionService {
