@@ -4,6 +4,7 @@ import { Environments } from './constants';
 import { Api, APIOptions } from './api/api';
 import { BalanceService } from './services/balanceService';
 import { BankAccountDetailService } from './services/bankAccountDetailService';
+import { BankAccountHolderVerificationService } from './services/bankAccountHolderVerificationService';
 import { BankAuthorisationService } from './services/bankAuthorisationService';
 import { BankDetailsLookupService } from './services/bankDetailsLookupService';
 import { BillingRequestService } from './services/billingRequestService';
@@ -49,6 +50,7 @@ export class GoCardlessClient {
 
   private _balances: BalanceService;
   private _bankAccountDetails: BankAccountDetailService;
+  private _bankAccountHolderVerifications: BankAccountHolderVerificationService;
   private _bankAuthorisations: BankAuthorisationService;
   private _bankDetailsLookups: BankDetailsLookupService;
   private _billingRequests: BillingRequestService;
@@ -94,6 +96,7 @@ export class GoCardlessClient {
 
     this._balances = undefined;
     this._bankAccountDetails = undefined;
+    this._bankAccountHolderVerifications = undefined;
     this._bankAuthorisations = undefined;
     this._bankDetailsLookups = undefined;
     this._billingRequests = undefined;
@@ -149,6 +152,14 @@ export class GoCardlessClient {
     }
 
     return this._bankAccountDetails;
+  }
+
+  get bankAccountHolderVerifications(): BankAccountHolderVerificationService {
+    if (!this._bankAccountHolderVerifications) {
+      this._bankAccountHolderVerifications = new BankAccountHolderVerificationService(this._api);
+    }
+
+    return this._bankAccountHolderVerifications;
   }
 
   get bankAuthorisations(): BankAuthorisationService {

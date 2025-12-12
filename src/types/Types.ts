@@ -85,6 +85,67 @@ export type BankAccountDetail = {
   tag?: string;
 };
 
+/** Type for a bankaccountholderverification resource. */
+export type BankAccountHolderVerification = {
+  // The actual account name returned by the recipient's bank, populated only in
+  // the case of a partial match.
+  actual_account_name?: string | null;
+
+  // The unique identifier for the bank account holder verification resource,
+  // e.g. "BAHV123".
+  id: string;
+
+  // Result of the verification, could be one of
+  // <ul>
+  //   <li>`full_match`: The verification has confirmed that the account name
+  // exactly matches the details provided.</li>
+  //   <li>`partial_match`:  The verification has confirmed that the account
+  // name is similar but does not match to the details provided. </li>
+  //   <li>`no_match`: The verification concludes the provided name does not
+  // match the account details.</li>
+  //   <li>`unable_to_match`: The verification could not be performed due to
+  // recipient bank issues or technical issues </li>
+  // </ul>
+  result?: BankAccountHolderVerificationResult;
+
+  // The status of the bank account holder verification.
+  // <ul>
+  //   <li>`pending`: We have triggered the verification, but the result has not
+  // come back yet.</li>
+  //   <li>`completed`: The verification is complete and is ready to be
+  // used.</li>
+  // </ul>
+  //
+  status: BankAccountHolderVerificationStatus;
+
+  // Type of the verification that has been performed
+  // eg. [Confirmation of
+  // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
+  type: BankAccountHolderVerificationType;
+};
+
+/** Type for a bankaccountholderverificationcreaterequestlinks resource. */
+export type BankAccountHolderVerificationCreateRequestLinks = {
+  // The ID of the bank account to verify, e.g. "BA123".
+  bank_account: string;
+};
+
+export enum BankAccountHolderVerificationType {
+  ConfirmationOfPayee = 'confirmation_of_payee',
+}
+
+export enum BankAccountHolderVerificationResult {
+  FullMatch = 'full_match',
+  PartialMatch = 'partial_match',
+  NoMatch = 'no_match',
+  UnableToMatch = 'unable_to_match',
+}
+
+export enum BankAccountHolderVerificationStatus {
+  Pending = 'pending',
+  Completed = 'completed',
+}
+
 /** Type for a bankauthorisation resource. */
 export type BankAuthorisation = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
