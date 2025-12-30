@@ -330,4 +330,25 @@ export class OutboundPaymentService {
 
     return formattedResponse;
   }
+
+  public async stats(identity: string, customHeaders: Types.JsonMap = {}): Promise<OutboundPaymentResponse> {
+    const urlParameters = [];
+    const requestParams = {
+      path: '/outbound_payments/stats',
+      method: 'get',
+      urlParameters,
+
+      payloadKey: null,
+      fetch: null,
+      customHeaders,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: OutboundPaymentResponse = {
+      ...response.body['outbound_payments'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
 }

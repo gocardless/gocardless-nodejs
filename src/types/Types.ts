@@ -5779,6 +5779,44 @@ export type PaymentLinks = {
   subscription?: string;
 };
 
+/** Type for a paymentaccount resource. */
+export type PaymentAccount = {
+  // Current balance on a payment account in the lowest denomination for the
+  // currency (e.g. pence in GBP, cents in EUR).
+  // It is time-sensitive as it is ever changing.
+  account_balance?: number;
+
+  // Name of the account holder, as known by the bank. Usually this is the same
+  // as the name stored with the linked [creditor](#core-endpoints-creditors).
+  // This field will be transliterated, upcased and truncated to 18 characters.
+  account_holder_name?: string;
+
+  // The last few digits of the account number. Currently 4 digits for NZD bank
+  // accounts and 2 digits for other currencies.
+  account_number_ending?: string;
+
+  // Name of bank, taken from the bank details.
+  bank_name?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string | null;
+
+  // Unique identifier, beginning with "BA".
+  id?: string;
+
+  // Resources linked to this PaymentAccount.
+  links?: PaymentAccountLinks;
+};
+
+/** Type for a paymentaccountlinks resource. */
+export type PaymentAccountLinks = {
+  // ID of the [creditor](#core-endpoints-creditors) that owns this bank
+  // account.
+  creditor?: string;
+};
+
 /** Type for a paymentaccounttransaction resource. */
 export type PaymentAccountTransaction = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
