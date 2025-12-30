@@ -77,7 +77,7 @@ interface PaymentCreateRequest {
   reference?: string;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -124,6 +124,12 @@ interface PaymentListRequest {
   // to mandates created before 2016.
 
   mandate?: string;
+
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported.
+
+  scheme?: string;
 
   // The direction to sort in.
   // One of:
@@ -175,7 +181,7 @@ interface PaymentUpdateRequest {
   metadata?: Types.JsonMap;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>

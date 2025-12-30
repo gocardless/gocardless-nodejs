@@ -29,8 +29,6 @@ describe('.parse', () => {
   test('parses a webhook response body with an invalid signature', () => {
     const badSignatureHeader = 'NOTVERYCONVINCING';
 
-    expect(() => webhook.parse(requestBody, webhookSecret, badSignatureHeader)).toThrowError(
-      webhook.InvalidSignatureError,
-    );
+    expect(() => webhook.parse(requestBody, webhookSecret, badSignatureHeader)).toThrow(webhook.InvalidSignatureError);
   });
 });

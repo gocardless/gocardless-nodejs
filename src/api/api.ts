@@ -5,7 +5,7 @@ import process = require('process');
 import _ = require('lodash');
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
-import got, { OptionsOfJSONResponseBody } from 'got';
+import got, { Agents, OptionsOfJSONResponseBody } from 'got';
 import qs from 'qs';
 
 import { Environments, CLIENT_VERSION, API_VERSION } from '../constants';
@@ -17,7 +17,7 @@ import {
 } from '../apiRequestSigning';
 
 export interface APIOptions {
-  proxy?: object;
+  proxy?: Agents;
   raiseOnIdempotencyConflict?: boolean;
   apiRequestSigningOptions?: ApiRequestSigningOptions;
 }
@@ -42,7 +42,7 @@ export class Api {
   private _token: string;
   private _environment: Environments;
   private _baseUrl: string;
-  private _agent: object;
+  private _agent: Agents | undefined;
   private raiseOnIdempotencyConflict: boolean;
   private apiRequestSigningOptions: ApiRequestSigningOptionsInternal | null = null;
 

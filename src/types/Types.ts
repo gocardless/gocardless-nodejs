@@ -85,6 +85,67 @@ export type BankAccountDetail = {
   tag?: string;
 };
 
+/** Type for a bankaccountholderverification resource. */
+export type BankAccountHolderVerification = {
+  // The actual account name returned by the recipient's bank, populated only in
+  // the case of a partial match.
+  actual_account_name?: string | null;
+
+  // The unique identifier for the bank account holder verification resource,
+  // e.g. "BAHV123".
+  id: string;
+
+  // Result of the verification, could be one of
+  // <ul>
+  //   <li>`full_match`: The verification has confirmed that the account name
+  // exactly matches the details provided.</li>
+  //   <li>`partial_match`:  The verification has confirmed that the account
+  // name is similar but does not match to the details provided. </li>
+  //   <li>`no_match`: The verification concludes the provided name does not
+  // match the account details.</li>
+  //   <li>`unable_to_match`: The verification could not be performed due to
+  // recipient bank issues or technical issues </li>
+  // </ul>
+  result?: BankAccountHolderVerificationResult;
+
+  // The status of the bank account holder verification.
+  // <ul>
+  //   <li>`pending`: We have triggered the verification, but the result has not
+  // come back yet.</li>
+  //   <li>`completed`: The verification is complete and is ready to be
+  // used.</li>
+  // </ul>
+  //
+  status: BankAccountHolderVerificationStatus;
+
+  // Type of the verification that has been performed
+  // eg. [Confirmation of
+  // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
+  type: BankAccountHolderVerificationType;
+};
+
+/** Type for a bankaccountholderverificationcreaterequestlinks resource. */
+export type BankAccountHolderVerificationCreateRequestLinks = {
+  // The ID of the bank account to verify, e.g. "BA123".
+  bank_account: string;
+};
+
+export enum BankAccountHolderVerificationType {
+  ConfirmationOfPayee = 'confirmation_of_payee',
+}
+
+export enum BankAccountHolderVerificationResult {
+  FullMatch = 'full_match',
+  PartialMatch = 'partial_match',
+  NoMatch = 'no_match',
+  UnableToMatch = 'unable_to_match',
+}
+
+export enum BankAccountHolderVerificationStatus {
+  Pending = 'pending',
+  Completed = 'completed',
+}
+
 /** Type for a bankauthorisation resource. */
 export type BankAuthorisation = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
@@ -447,13 +508,6 @@ export type BillingRequestAction = {
   type?: BillingRequestActionType;
 };
 
-/** Type for a billingrequestactionavailablecurrencies resource. */
-export type BillingRequestActionAvailableCurrencies = {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency?: string;
-};
-
 /** Type for a billingrequestactionbankauthorisation resource. */
 export type BillingRequestActionBankAuthorisation = {
   // Which authorisation adapter will be used to power these authorisations
@@ -561,7 +615,7 @@ export type BillingRequestInstalmentScheduleRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -729,6 +783,17 @@ export type BillingRequestMandateRequest = {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestMandateRequestFundsSettlement;
+
   // Resources linked to this BillingRequestMandateRequest.
   links?: BillingRequestMandateRequestLinks;
 
@@ -865,6 +930,11 @@ export enum BillingRequestMandateRequestConstraintsPeriodicLimitPeriod {
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum BillingRequestMandateRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
 }
 
 /** Type for a billingrequestmandaterequestlinks resource. */
@@ -1005,10 +1075,11 @@ export type BillingRequestResourcesCustomer = {
 
 /** Type for a billingrequestresourcescustomerbankaccount resource. */
 export type BillingRequestResourcesCustomerBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -1182,7 +1253,7 @@ export type BillingRequestSubscriptionRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -1645,10 +1716,11 @@ export type BillingRequestWithActionActions = {
 
 /** Type for a billingrequestwithactionactionscollectbankaccount resource. */
 export type BillingRequestWithActionActionsCollectBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
@@ -1869,6 +1941,17 @@ export type BillingRequestWithActionMandateRequest = {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestWithActionMandateRequestFundsSettlement;
+
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
@@ -2002,6 +2085,11 @@ export enum BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod
   Flexible = 'flexible',
 }
 
+export enum BillingRequestWithActionMandateRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
+}
+
 export enum BillingRequestWithActionMandateRequestVerify {
   Minimum = 'minimum',
   Recommended = 'recommended',
@@ -2051,7 +2139,7 @@ export type BillingRequestWithActionPaymentRequest = {
   reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p> <p
@@ -2424,13 +2512,6 @@ export type BillingRequestWithActionBillingRequestsAction = {
   type?: BillingRequestWithActionBillingRequestsActionType;
 };
 
-/** Type for a billingrequestwithactionbillingrequestsactionavailablecurrencies resource. */
-export type BillingRequestWithActionBillingRequestsActionAvailableCurrencies = {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
-  currency?: string;
-};
-
 /** Type for a billingrequestwithactionbillingrequestsactionbankauthorisation resource. */
 export type BillingRequestWithActionBillingRequestsActionBankAuthorisation = {
   // Which authorisation adapter will be used to power these authorisations
@@ -2538,7 +2619,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -2706,6 +2787,17 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   //
   description?: string | null;
 
+  // This field will decide how GoCardless handles settlement of funds from the
+  // customer.
+  //
+  // - `managed` will be moved through GoCardless' account, batched, and payed
+  // out.
+  // - `direct` will be a direct transfer from the payer's account to the
+  // merchant where
+  //   invoicing will be handled separately.
+  //
+  funds_settlement?: BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement;
+
   // Resources linked to this BillingRequestWithActionBillingRequestsMandateRequest.
   links?: BillingRequestWithActionBillingRequestsMandateRequestLinks;
 
@@ -2842,6 +2934,11 @@ export enum BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement {
+  Managed = 'managed',
+  Direct = 'direct',
 }
 
 /** Type for a billingrequestwithactionbillingrequestsmandaterequestlinks resource. */
@@ -2982,10 +3079,11 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
 
 /** Type for a billingrequestwithactionbillingrequestsresourcescustomerbankaccount resource. */
 export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -3159,7 +3257,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
@@ -3777,10 +3875,11 @@ export enum CustomerSortField {
 
 /** Type for a customerbankaccount resource. */
 export type CustomerBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -3927,8 +4026,8 @@ export enum CustomerNotificationType {
 
 /** Type for a event resource. */
 export type Event = {
-  // What has happened to the resource. See [Event Actions](#event-actions) for
-  // the possible actions.
+  // What has happened to the resource. See [Event Types](#event-types) for the
+  // possible actions.
   action?: string;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -3983,11 +4082,15 @@ export type Event = {
   // <li>`outbound_payments`</li>
   // </ul>
   resource_type?: EventResourceType;
+
+  // Audit information about the source of the event.
+  source?: EventSource;
 };
 
 export enum EventInclude {
   BillingRequest = 'billing_request',
   Creditor = 'creditor',
+  Customer = 'customer',
   InstalmentSchedule = 'instalment_schedule',
   Mandate = 'mandate',
   OutboundPayment = 'outbound_payment',
@@ -4128,6 +4231,9 @@ export type EventLinks = {
   // [mandate](#core-endpoints-mandates) which has been updated.
   mandate?: string;
 
+  // This is the id of the mandate request associated to this event
+  mandate_request?: string;
+
   // If `resource_type` is `billing_requests`, this is the ID of the
   // [mandate](#core-endpoints-mandates) which has been created.
   mandate_request_mandate?: string;
@@ -4189,6 +4295,7 @@ export type EventLinks = {
 export enum EventResourceType {
   BillingRequests = 'billing_requests',
   Creditors = 'creditors',
+  Customers = 'customers',
   Exports = 'exports',
   InstalmentSchedules = 'instalment_schedules',
   Mandates = 'mandates',
@@ -4200,6 +4307,22 @@ export enum EventResourceType {
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
   Subscriptions = 'subscriptions',
+}
+
+/** Type for a eventsource resource. */
+export type EventSource = {
+  // The name of the event's source.
+  name?: string;
+
+  // The type of the event's source.
+  type?: EventSourceType;
+};
+
+export enum EventSourceType {
+  App = 'app',
+  User = 'user',
+  GcTeam = 'gc_team',
+  AccessToken = 'access_token',
 }
 
 /** Type for a export resource. */
@@ -4446,13 +4569,15 @@ export type InstitutionId = {};
 
 /** Type for a institutionlimits resource. */
 export type InstitutionLimits = {
-  // Daily limit details for this institution. (The 'limits' property is only
-  // available via an authenticated request with a generated access token)
+  // Daily limit details for this institution, in the lowest denomination for
+  // the currency (e.g. pence in GBP, cents in EUR). The 'limits' property is
+  // only available via an authenticated request with a generated access token
   daily?: JsonMap | null;
 
-  // Single transaction limit details for this institution. (The 'limits'
-  // property is only available via an authenticated request with a generated
-  // access token)
+  // Single transaction limit details for this institution, in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR). The
+  // 'limits' property is only available via an authenticated request with a
+  // generated access token
   single?: JsonMap | null;
 };
 
@@ -4775,10 +4900,11 @@ export type MandateImportEntryAmendment = {
 
 /** Type for a mandateimportentrybankaccount resource. */
 export type MandateImportEntryBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
@@ -5052,8 +5178,10 @@ export type OutboundPayment = {
   // key names up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
-  // An auto-generated reference that will appear on your receiver's bank
-  // statement.
+  // An optional reference that will appear on your customer's bank statement.
+  // The character limit for this reference is dependent on the scheme.<br />
+  // <strong>Faster Payments</strong> - 18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
   reference?: string;
 
   // Bank payment scheme to process the outbound payment. Currently only
@@ -5140,8 +5268,8 @@ export type OutboundPaymentVerifications = {
 
 /** Type for a outboundpaymentverificationsrecipientbankaccountholderverification resource. */
 export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification = {
-  // -| The actual account name returned by the recipient's bank, populated only
-  // in the case of a partial match.
+  // The actual account name returned by the recipient's bank, populated only in
+  // the case of a partial match.
   actual_account_name?: string | null;
 
   // Result of the verification, could be one of
@@ -5218,10 +5346,11 @@ export type PayerAuthorisation = {
 
 /** Type for a payerauthorisationbankaccount resource. */
 export type PayerAuthorisationBankAccount = {
-  // Name of the account holder, as known by the bank. This field will be
-  // transliterated, upcased and truncated to 18 characters. This field is
-  // required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // Name of the account holder, as known by the bank. The full name provided
+  // when the customer is created is stored and is available via the API, but is
+  // transliterated, upcased, and truncated to 18 characters in bank
+  // submissions. This field is required unless the request includes a [customer
+  // bank account token](#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // Bank account number - see [local details](#appendix-local-bank-details) for
@@ -5497,11 +5626,16 @@ export type Payment = {
   reference?: string | null;
 
   // On failure, automatically retry the payment using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>
   retry_if_possible?: boolean;
+
+  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  // "sepa_core" are supported.
+  scheme?: string | null;
 
   // One of:
   // <ul>
@@ -5643,6 +5777,104 @@ export type PaymentLinks = {
   // was created.<br/>_Note_: this property will only be present if this payment
   // is part of a subscription.
   subscription?: string;
+};
+
+/** Type for a paymentaccount resource. */
+export type PaymentAccount = {
+  // Current balance on a payment account in the lowest denomination for the
+  // currency (e.g. pence in GBP, cents in EUR).
+  // It is time-sensitive as it is ever changing.
+  account_balance?: number;
+
+  // Name of the account holder, as known by the bank. Usually this is the same
+  // as the name stored with the linked [creditor](#core-endpoints-creditors).
+  // This field will be transliterated, upcased and truncated to 18 characters.
+  account_holder_name?: string;
+
+  // The last few digits of the account number. Currently 4 digits for NZD bank
+  // accounts and 2 digits for other currencies.
+  account_number_ending?: string;
+
+  // Name of bank, taken from the bank details.
+  bank_name?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  // are supported.
+  currency?: string | null;
+
+  // Unique identifier, beginning with "BA".
+  id?: string;
+
+  // Resources linked to this PaymentAccount.
+  links?: PaymentAccountLinks;
+};
+
+/** Type for a paymentaccountlinks resource. */
+export type PaymentAccountLinks = {
+  // ID of the [creditor](#core-endpoints-creditors) that owns this bank
+  // account.
+  creditor?: string;
+};
+
+/** Type for a paymentaccounttransaction resource. */
+export type PaymentAccountTransaction = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: number;
+
+  // Balance after transaction, in the lowest denomination for the currency
+  // (e.g. pence in GBP, cents in EUR).
+  balance_after_transaction?: number;
+
+  // The name of the counterparty of the transaction. The counterparty is the
+  // recipient for a credit, or the sender for a debit.
+  counterparty_name?: string;
+
+  // The currency of the transaction.
+  currency?: PaymentAccountTransactionCurrency;
+
+  // The description of the transaction, if available
+  description?: string;
+
+  // The direction of the transaction. Debits mean money leaving the account
+  // (e.g. outbound payment), while credits signify money coming in (e.g. manual
+  // top-up).
+  direction?: PaymentAccountTransactionDirection;
+
+  // The unique ID of the payment account transaction.
+  id?: string;
+
+  // Resources linked to this PaymentAccountTransaction.
+  links?: PaymentAccountTransactionLinks;
+
+  // The reference of the transaction. This is typically supplied by the sender.
+  reference?: string;
+
+  // The date of when the transaction occurred.
+  value_date?: string;
+};
+
+export enum PaymentAccountTransactionDirection {
+  Credit = 'credit',
+  Debit = 'debit',
+}
+
+export enum PaymentAccountTransactionCurrency {
+  GBP = 'GBP',
+}
+
+/** Type for a paymentaccounttransactionlinks resource. */
+export type PaymentAccountTransactionLinks = {
+  // ID of the [outbound_payment](#core-endpoints-outbound-payments) linked to
+  // the transaction
+  outbound_payment?: string;
+
+  // ID of the payment bank account.
+  payment_bank_account?: string;
+
+  // ID of the [payout](#core-endpoints-payouts) linked to the transaction.
+  payout?: string;
 };
 
 /** Type for a payout resource. */
@@ -5898,7 +6130,7 @@ export type PayoutItemTaxis = {
   // the exchange rate has been finalised.
   //
   // You can listen for the payout's [`tax_exchange_rates_confirmed`
-  // webhook](https://developer.gocardless.com/api-reference/#event-actions-payout)
+  // webhook](https://developer.gocardless.com/api-reference/#event-types-payout)
   // to know when the exchange rate has been finalised for all fees in the
   // payout.
   exchange_rate?: string | null;
@@ -6355,6 +6587,12 @@ export type ScenarioSimulator = {
   // billing request must be in the `pending` state, with all actions completed
   // except for `bank_authorisation`. Only billing requests with a
   // `payment_request` are supported.</li>
+  // <li>`billing_request_fulfilled_and_payment_confirmed_to_failed`: Authorises
+  // the billing request, fulfils it, moves the associated payment to
+  // `confirmed` and then moves it to `failed`. The billing request must be in
+  // the `pending` state, with all actions completed except for
+  // `bank_authorisation`. Only billing requests with a `payment_request` are
+  // supported.</li>
   // <li>`billing_request_fulfilled_and_payment_paid_out`: Authorises the
   // billing request, fulfils it, and moves the associated payment to
   // `paid_out`. The billing request must be in the `pending` state, with all
@@ -6630,7 +6868,7 @@ export type Subscription = {
   payment_reference?: string | null;
 
   // On failure, automatically retry payments using [intelligent
-  // retries](#success-intelligent-retries). Default is `false`. <p
+  // retries](/success-plus/overview). Default is `false`. <p
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p>

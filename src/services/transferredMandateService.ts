@@ -17,7 +17,10 @@ export class TransferredMandateService {
     this.api = api;
   }
 
-  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<TransferredMandateResponse> {
+  public async transferredMandates(
+    identity: string,
+    customHeaders: Types.JsonMap = {},
+  ): Promise<TransferredMandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/transferred_mandates/:identity',
