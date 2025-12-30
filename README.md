@@ -86,3 +86,4 @@ for await (const payment of client.payments.all()) {
 ### Available client options
 
 - `raiseOnIdempotencyConflict`: set to `true` to raise exceptions on [idempotency](https://developer.gocardless.com/api-reference/#making-requests-idempotency-keys) conflicts. Defaults to `false`.
+
