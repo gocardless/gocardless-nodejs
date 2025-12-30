@@ -1,6 +1,10 @@
 name: test & publish
 on: push
 
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -43,7 +47,5 @@ jobs:
     - run: cp package.json $DIST_FOLDER
     - run: cp README.md $DIST_FOLDER
     - run: npm install
-    - name: Authenticate w/NPM.
-      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > .npmrc
     - name: Publish the library.
       run: npm publish $DIST_FOLDER
