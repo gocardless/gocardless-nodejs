@@ -4251,6 +4251,10 @@ export type EventLinks = {
   // app](#appendix-oauth), this is the ID of the account to which it belongs.
   organisation?: string;
 
+  // If `resource_type` is `outbound_payments`, this is the ID of the
+  // outbound_payment which has been updated.
+  outbound_payment?: string;
+
   // If this event was caused by another, this is the ID of the cause. For
   // example, if a mandate is cancelled it automatically cancels all pending
   // payments associated with it; in this case, the payment cancellation events
