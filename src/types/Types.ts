@@ -1315,7 +1315,8 @@ export type BillingRequestFlow = {
   customer_details_captured?: boolean;
 
   // URL that the payer can be taken to if there isn't a way to progress ahead
-  // in flow.
+  // in flow, for example if the customer searches for a bank that doesn't exist
+  // or isn't supported on the scheme.
   exit_uri?: string | null;
 
   // Timestamp when the flow will expire. Each flow currently lasts for 7 days.
