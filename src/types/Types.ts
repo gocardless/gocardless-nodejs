@@ -4375,6 +4375,12 @@ export enum ExportExportType {
   PaymentAccountStatement = 'payment_account_statement',
 }
 
+/** Type for a fundsavailability resource. */
+export type FundsAvailability = {
+  // Indicates if the amount is available
+  available?: boolean;
+};
+
 /** Type for a instalmentschedule resource. */
 export type InstalmentSchedule = {
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource

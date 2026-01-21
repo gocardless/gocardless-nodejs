@@ -20,6 +20,7 @@ import { CustomerBankAccountService } from './services/customerBankAccountServic
 import { CustomerNotificationService } from './services/customerNotificationService';
 import { EventService } from './services/eventService';
 import { ExportService } from './services/exportService';
+import { FundsAvailabilityService } from './services/fundsAvailabilityService';
 import { InstalmentScheduleService } from './services/instalmentScheduleService';
 import { InstitutionService } from './services/institutionService';
 import { LogoService } from './services/logoService';
@@ -67,6 +68,7 @@ export class GoCardlessClient {
   private _customerNotifications: CustomerNotificationService;
   private _events: EventService;
   private _exports: ExportService;
+  private _fundsAvailabilities: FundsAvailabilityService;
   private _instalmentSchedules: InstalmentScheduleService;
   private _institutions: InstitutionService;
   private _logos: LogoService;
@@ -114,6 +116,7 @@ export class GoCardlessClient {
     this._customerNotifications = undefined;
     this._events = undefined;
     this._exports = undefined;
+    this._fundsAvailabilities = undefined;
     this._instalmentSchedules = undefined;
     this._institutions = undefined;
     this._logos = undefined;
@@ -283,6 +286,14 @@ export class GoCardlessClient {
     }
 
     return this._exports;
+  }
+
+  get fundsAvailabilities(): FundsAvailabilityService {
+    if (!this._fundsAvailabilities) {
+      this._fundsAvailabilities = new FundsAvailabilityService(this._api);
+    }
+
+    return this._fundsAvailabilities;
   }
 
   get instalmentSchedules(): InstalmentScheduleService {
