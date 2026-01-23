@@ -19,6 +19,65 @@
     "api",
     "direct debit"
   ],
+  "type": "module",
+  "main": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    },
+    "./client": {
+      "import": {
+        "types": "./dist/types/client.d.ts",
+        "default": "./dist/esm/client.js"
+      },
+      "require": {
+        "types": "./dist/types/client.d.ts",
+        "default": "./dist/cjs/client.js"
+      }
+    },
+    "./constants": {
+      "import": {
+        "types": "./dist/types/constants.d.ts",
+        "default": "./dist/esm/constants.js"
+      },
+      "require": {
+        "types": "./dist/types/constants.d.ts",
+        "default": "./dist/cjs/constants.js"
+      }
+    },
+    "./webhooks": {
+      "import": {
+        "types": "./dist/types/webhooks.d.ts",
+        "default": "./dist/esm/webhooks.js"
+      },
+      "require": {
+        "types": "./dist/types/webhooks.d.ts",
+        "default": "./dist/cjs/webhooks.js"
+      }
+    },
+    "./errors": {
+      "import": {
+        "types": "./dist/types/errors.d.ts",
+        "default": "./dist/esm/errors.js"
+      },
+      "require": {
+        "types": "./dist/types/errors.d.ts",
+        "default": "./dist/cjs/errors.js"
+      }
+    },
+    "./types": {
+      "types": "./dist/types/Types.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "test": "jest",
     "lint": "eslint src/**/*.ts",
@@ -47,8 +106,11 @@
     "ts-jest": "29.4.1",
     "typescript": "^5.0.2"
   },
-  "main": "index.js",
-  "types": "types/Types.d.ts",
+  "files": [
+    "dist/",
+    "LICENSE.txt",
+    "README.md"
+  ],
   "engines": {
     "node": ">=18.0"
   }
