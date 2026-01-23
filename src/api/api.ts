@@ -1,20 +1,18 @@
-'use strict';
-
-import os = require('os');
-import process = require('process');
-import _ = require('lodash');
+import * as os from 'os';
+import * as process from 'process';
+import * as _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
 import got, { Agents, OptionsOfJSONResponseBody } from 'got';
-import qs from 'qs';
+import * as qs from 'qs';
 
-import { Environments, CLIENT_VERSION, API_VERSION } from '../constants';
-import * as GoCardlessErrors from '../errors';
+import { Environments, CLIENT_VERSION, API_VERSION } from '../constants.js';
+import * as GoCardlessErrors from '../errors.js';
 import {
   ApiRequestSignatureHelper,
   ApiRequestSigningOptions,
   ApiRequestSigningOptionsInternal,
-} from '../apiRequestSigning';
+} from '../apiRequestSigning.js';
 
 export interface APIOptions {
   proxy?: Agents;

@@ -1,5 +1,5 @@
-import fs from 'node:fs';
-import nock from 'nock';
+import * as fs from 'node:fs';
+import * as nock from 'nock';
 import { Api } from './api';
 import { Environments } from '../constants';
 import * as GoCardlessErrors from '../errors';

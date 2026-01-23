@@ -1,5 +1,3 @@
-'use strict';
-
 class GoCardlessException extends Error {}
 
 class MalformedResponseError extends GoCardlessException {
