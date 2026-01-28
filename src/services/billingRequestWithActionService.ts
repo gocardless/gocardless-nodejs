@@ -35,14 +35,32 @@ interface BillingRequestWithActionCreateWithActionsRequest {
 
   metadata?: Types.JsonMap;
 
+  // Specifies the context or scenario in which the payment is being made. Defines
+  // whether the payment is for advance/arrears billing, point of sale
+  // transactions, ecommerce, or account transfers. This helps banks and payment
+  // processors understand the payment scenario and apply appropriate processing
+  // rules and risk controls.
+
+  payment_context_code?: Types.BillingRequestWithActionPaymentContextCode;
+
+  // Specifies the underlying purpose of the payment. Defines the specific reason
+  // or type of service/goods the payment relates to, improving straight-through
+  // processing and compliance.
+  // See [VRP Commercial Payment Purpose
+  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
+  // for the complete list of valid codes.
+
+  payment_purpose_code?: string;
+
   //
   payment_request?: Types.BillingRequestWithActionPaymentRequest;
 
-  // Specifies the high-level purpose of a mandate and/or payment using a set of
-  // pre-defined categories. Required for the PayTo scheme, optional for all
-  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
-  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
-  // and `other` are supported.
+  // Specifies the high-level purpose/category of a mandate and/or payment using a
+  // set of pre-defined categories. Provides context on the nature and reason for
+  // the payment to facilitate processing and compliance.
+  // See [Billing Request Purpose
+  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
+  // the complete list of valid codes.
 
   purpose_code?: Types.BillingRequestWithActionPurposeCode;
 }

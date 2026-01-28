@@ -298,14 +298,30 @@ export type BillingRequest = {
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
+  // Specifies the context or scenario in which the payment is being made.
+  // Defines whether the payment is for advance/arrears billing, point of sale
+  // transactions, ecommerce, or account transfers. This helps banks and payment
+  // processors understand the payment scenario and apply appropriate processing
+  // rules and risk controls.
+  payment_context_code?: BillingRequestPaymentContextCode;
+
+  // Specifies the underlying purpose of the payment. Defines the specific
+  // reason or type of service/goods the payment relates to, improving
+  // straight-through processing and compliance.
+  // See [VRP Commercial Payment Purpose
+  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
+  // for the complete list of valid codes.
+  payment_purpose_code?: string;
+
   // Request for a one-off strongly authorised payment
   payment_request?: BillingRequestPaymentRequest;
 
-  // Specifies the high-level purpose of a mandate and/or payment using a set of
-  // pre-defined categories. Required for the PayTo scheme, optional for all
-  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
-  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
-  // and `other` are supported.
+  // Specifies the high-level purpose/category of a mandate and/or payment using
+  // a set of pre-defined categories. Provides context on the nature and reason
+  // for the payment to facilitate processing and compliance.
+  // See [Billing Request Purpose
+  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
+  // the complete list of valid codes.
   purpose_code?: BillingRequestPurposeCode;
 
   //
@@ -345,6 +361,15 @@ export type BillingRequestCreateRequestLinks = {
   customer_bank_account?: string;
 };
 
+export enum BillingRequestPaymentContextCode {
+  BillingGoodsAndServicesInAdvance = 'billing_goods_and_services_in_advance',
+  BillingGoodsAndServicesInArrears = 'billing_goods_and_services_in_arrears',
+  FaceToFacePointOfSale = 'face_to_face_point_of_sale',
+  EcommerceMerchantInitiatedPayment = 'ecommerce_merchant_initiated_payment',
+  TransferToSelf = 'transfer_to_self',
+  TransferToThirdParty = 'transfer_to_third_party',
+}
+
 export enum BillingRequestPurposeCode {
   Mortgage = 'mortgage',
   Utility = 'utility',
@@ -358,10 +383,49 @@ export enum BillingRequestPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  BonusPayment = 'bonus_payment',
+  CashManagementTransfer = 'cash_management_transfer',
+  CardBulkClearing = 'card_bulk_clearing',
+  CreditCardPayment = 'credit_card_payment',
+  TradeSettlementPayment = 'trade_settlement_payment',
+  DebitCardPayment = 'debit_card_payment',
+  Dividend = 'dividend',
+  DeliverAgainstPayment = 'deliver_against_payment',
   Epayment = 'epayment',
+  FeeCollectionAndInterest = 'fee_collection_and_interest',
+  FeeCollection = 'fee_collection',
+  PersonToPersonPayment = 'person_to_person_payment',
+  GovernmentPayment = 'government_payment',
+  HedgingTransaction = 'hedging_transaction',
+  IrrevocableCreditCardPayment = 'irrevocable_credit_card_payment',
+  IrrevocableDebitCardPayment = 'irrevocable_debit_card_payment',
+  IntraCompanyPayment = 'intra_company_payment',
+  Interest = 'interest',
+  LockboxTransactions = 'lockbox_transactions',
   Commercial = 'commercial',
+  Consumer = 'consumer',
   OtherPayment = 'other_payment',
+  PensionPayment = 'pension_payment',
+  Represented = 'represented',
+  ReimbursementReceivedCreditTransfer = 'reimbursement_received_credit_transfer',
+  ReceiveAgainstPayment = 'receive_against_payment',
+  SalaryPayment = 'salary_payment',
+  Securities = 'securities',
+  SocialSecurityBenefit = 'social_security_benefit',
+  SupplierPayment = 'supplier_payment',
+  TaxPayment = 'tax_payment',
   Trade = 'trade',
+  TreasuryPayment = 'treasury_payment',
+  ValueAddedTaxPayment = 'value_added_tax_payment',
+  WithHolding = 'with_holding',
+  CashManagementSweepAccount = 'cash_management_sweep_account',
+  CashManagementTopAccount = 'cash_management_top_account',
+  CashManagementZeroBalanceAccount = 'cash_management_zero_balance_account',
+  CrossborderMiPayments = 'crossborder_mi_payments',
+  ForeignCurrencyDomesticTransfer = 'foreign_currency_domestic_transfer',
+  CashInPreCredit = 'cash_in_pre_credit',
+  CashOutNotesCoins = 'cash_out_notes_coins',
+  CarrierGuardedWholesaleValuables = 'carrier_guarded_wholesale_valuables',
 }
 
 /** Type for a billingrequestcustomer resource. */
@@ -2098,6 +2162,15 @@ export enum BillingRequestWithActionMandateRequestVerify {
   Always = 'always',
 }
 
+export enum BillingRequestWithActionPaymentContextCode {
+  BillingGoodsAndServicesInAdvance = 'billing_goods_and_services_in_advance',
+  BillingGoodsAndServicesInArrears = 'billing_goods_and_services_in_arrears',
+  FaceToFacePointOfSale = 'face_to_face_point_of_sale',
+  EcommerceMerchantInitiatedPayment = 'ecommerce_merchant_initiated_payment',
+  TransferToSelf = 'transfer_to_self',
+  TransferToThirdParty = 'transfer_to_third_party',
+}
+
 /** Type for a billingrequestwithactionpaymentrequest resource. */
 export type BillingRequestWithActionPaymentRequest = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
@@ -2175,10 +2248,49 @@ export enum BillingRequestWithActionPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  BonusPayment = 'bonus_payment',
+  CashManagementTransfer = 'cash_management_transfer',
+  CardBulkClearing = 'card_bulk_clearing',
+  CreditCardPayment = 'credit_card_payment',
+  TradeSettlementPayment = 'trade_settlement_payment',
+  DebitCardPayment = 'debit_card_payment',
+  Dividend = 'dividend',
+  DeliverAgainstPayment = 'deliver_against_payment',
   Epayment = 'epayment',
+  FeeCollectionAndInterest = 'fee_collection_and_interest',
+  FeeCollection = 'fee_collection',
+  PersonToPersonPayment = 'person_to_person_payment',
+  GovernmentPayment = 'government_payment',
+  HedgingTransaction = 'hedging_transaction',
+  IrrevocableCreditCardPayment = 'irrevocable_credit_card_payment',
+  IrrevocableDebitCardPayment = 'irrevocable_debit_card_payment',
+  IntraCompanyPayment = 'intra_company_payment',
+  Interest = 'interest',
+  LockboxTransactions = 'lockbox_transactions',
   Commercial = 'commercial',
+  Consumer = 'consumer',
   OtherPayment = 'other_payment',
+  PensionPayment = 'pension_payment',
+  Represented = 'represented',
+  ReimbursementReceivedCreditTransfer = 'reimbursement_received_credit_transfer',
+  ReceiveAgainstPayment = 'receive_against_payment',
+  SalaryPayment = 'salary_payment',
+  Securities = 'securities',
+  SocialSecurityBenefit = 'social_security_benefit',
+  SupplierPayment = 'supplier_payment',
+  TaxPayment = 'tax_payment',
   Trade = 'trade',
+  TreasuryPayment = 'treasury_payment',
+  ValueAddedTaxPayment = 'value_added_tax_payment',
+  WithHolding = 'with_holding',
+  CashManagementSweepAccount = 'cash_management_sweep_account',
+  CashManagementTopAccount = 'cash_management_top_account',
+  CashManagementZeroBalanceAccount = 'cash_management_zero_balance_account',
+  CrossborderMiPayments = 'crossborder_mi_payments',
+  ForeignCurrencyDomesticTransfer = 'foreign_currency_domestic_transfer',
+  CashInPreCredit = 'cash_in_pre_credit',
+  CashOutNotesCoins = 'cash_out_notes_coins',
+  CarrierGuardedWholesaleValuables = 'carrier_guarded_wholesale_valuables',
 }
 
 /** Type for a billingrequestwithactionbankauthorisations resource. */
@@ -2303,14 +2415,30 @@ export type BillingRequestWithActionBillingRequests = {
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
 
+  // Specifies the context or scenario in which the payment is being made.
+  // Defines whether the payment is for advance/arrears billing, point of sale
+  // transactions, ecommerce, or account transfers. This helps banks and payment
+  // processors understand the payment scenario and apply appropriate processing
+  // rules and risk controls.
+  payment_context_code?: BillingRequestWithActionBillingRequestsPaymentContextCode;
+
+  // Specifies the underlying purpose of the payment. Defines the specific
+  // reason or type of service/goods the payment relates to, improving
+  // straight-through processing and compliance.
+  // See [VRP Commercial Payment Purpose
+  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
+  // for the complete list of valid codes.
+  payment_purpose_code?: string;
+
   // Request for a one-off strongly authorised payment
   payment_request?: BillingRequestWithActionBillingRequestsPaymentRequest;
 
-  // Specifies the high-level purpose of a mandate and/or payment using a set of
-  // pre-defined categories. Required for the PayTo scheme, optional for all
-  // others. Currently `mortgage`, `utility`, `loan`, `dependant_support`,
-  // `gambling`, `retail`, `salary`, `personal`, `government`, `pension`, `tax`
-  // and `other` are supported.
+  // Specifies the high-level purpose/category of a mandate and/or payment using
+  // a set of pre-defined categories. Provides context on the nature and reason
+  // for the payment to facilitate processing and compliance.
+  // See [Billing Request Purpose
+  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
+  // the complete list of valid codes.
   purpose_code?: BillingRequestWithActionBillingRequestsPurposeCode;
 
   //
@@ -2350,6 +2478,15 @@ export type BillingRequestWithActionBillingRequestsCreateRequestLinks = {
   customer_bank_account?: string;
 };
 
+export enum BillingRequestWithActionBillingRequestsPaymentContextCode {
+  BillingGoodsAndServicesInAdvance = 'billing_goods_and_services_in_advance',
+  BillingGoodsAndServicesInArrears = 'billing_goods_and_services_in_arrears',
+  FaceToFacePointOfSale = 'face_to_face_point_of_sale',
+  EcommerceMerchantInitiatedPayment = 'ecommerce_merchant_initiated_payment',
+  TransferToSelf = 'transfer_to_self',
+  TransferToThirdParty = 'transfer_to_third_party',
+}
+
 export enum BillingRequestWithActionBillingRequestsPurposeCode {
   Mortgage = 'mortgage',
   Utility = 'utility',
@@ -2363,10 +2500,49 @@ export enum BillingRequestWithActionBillingRequestsPurposeCode {
   Pension = 'pension',
   Tax = 'tax',
   Other = 'other',
+  BonusPayment = 'bonus_payment',
+  CashManagementTransfer = 'cash_management_transfer',
+  CardBulkClearing = 'card_bulk_clearing',
+  CreditCardPayment = 'credit_card_payment',
+  TradeSettlementPayment = 'trade_settlement_payment',
+  DebitCardPayment = 'debit_card_payment',
+  Dividend = 'dividend',
+  DeliverAgainstPayment = 'deliver_against_payment',
   Epayment = 'epayment',
+  FeeCollectionAndInterest = 'fee_collection_and_interest',
+  FeeCollection = 'fee_collection',
+  PersonToPersonPayment = 'person_to_person_payment',
+  GovernmentPayment = 'government_payment',
+  HedgingTransaction = 'hedging_transaction',
+  IrrevocableCreditCardPayment = 'irrevocable_credit_card_payment',
+  IrrevocableDebitCardPayment = 'irrevocable_debit_card_payment',
+  IntraCompanyPayment = 'intra_company_payment',
+  Interest = 'interest',
+  LockboxTransactions = 'lockbox_transactions',
   Commercial = 'commercial',
+  Consumer = 'consumer',
   OtherPayment = 'other_payment',
+  PensionPayment = 'pension_payment',
+  Represented = 'represented',
+  ReimbursementReceivedCreditTransfer = 'reimbursement_received_credit_transfer',
+  ReceiveAgainstPayment = 'receive_against_payment',
+  SalaryPayment = 'salary_payment',
+  Securities = 'securities',
+  SocialSecurityBenefit = 'social_security_benefit',
+  SupplierPayment = 'supplier_payment',
+  TaxPayment = 'tax_payment',
   Trade = 'trade',
+  TreasuryPayment = 'treasury_payment',
+  ValueAddedTaxPayment = 'value_added_tax_payment',
+  WithHolding = 'with_holding',
+  CashManagementSweepAccount = 'cash_management_sweep_account',
+  CashManagementTopAccount = 'cash_management_top_account',
+  CashManagementZeroBalanceAccount = 'cash_management_zero_balance_account',
+  CrossborderMiPayments = 'crossborder_mi_payments',
+  ForeignCurrencyDomesticTransfer = 'foreign_currency_domestic_transfer',
+  CashInPreCredit = 'cash_in_pre_credit',
+  CashOutNotesCoins = 'cash_out_notes_coins',
+  CarrierGuardedWholesaleValuables = 'carrier_guarded_wholesale_valuables',
 }
 
 /** Type for a billingrequestwithactionbillingrequestscustomer resource. */
