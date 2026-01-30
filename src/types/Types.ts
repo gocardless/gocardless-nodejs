@@ -5863,6 +5863,11 @@ export type PaymentCreateRequestLinks = {
   mandate: string;
 };
 
+export enum PaymentPsuInteractionType {
+  InSession = 'in_session',
+  OffSession = 'off_session',
+}
+
 /** Type for a paymentchargedate resource. */
 export type PaymentChargeDate = {
   // Limit to records where the payment was or will be collected from the
