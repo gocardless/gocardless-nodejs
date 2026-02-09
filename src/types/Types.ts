@@ -5217,6 +5217,19 @@ export type MandateImportEntryCreateRequestLinks = {
 
 /** Type for a mandateimportentrymandate resource. */
 export type MandateImportEntryMandate = {
+  // This field is ACH specific, sometimes referred to as [SEC
+  // code](https://www.moderntreasury.com/learn/sec-codes).
+  //
+  // This is the way that the payer gives authorisation to the merchant.
+  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // code: WEB)
+  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // code: TEL)
+  //   paper: Authorisation is provided in writing and signed, or similarly
+  // authenticated (maps to SEC code: PPD)
+  //
+  authorisation_source?: MandateImportEntryMandateAuthorisationSource;
+
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: JsonMap;
@@ -5227,6 +5240,12 @@ export type MandateImportEntryMandate = {
   // is left blank.
   reference?: string | null;
 };
+
+export enum MandateImportEntryMandateAuthorisationSource {
+  Web = 'web',
+  Telephone = 'telephone',
+  Paper = 'paper',
+}
 
 export enum MandateImportEntryStatus {
   SuccessfullyProcessed = 'successfully_processed',
