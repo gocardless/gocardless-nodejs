@@ -11,13 +11,13 @@ interface BillingRequestListResponse extends Types.APIResponse {
 }
 
 interface BillingRequestCreateRequest {
-  // (Optional) If true, this billing request can fallback from instant payment to
-  // direct debit.
-  // Should not be set if GoCardless payment intelligence feature is used.
+  //  (Optional) If true, this billing request can fallback from instant payment
+  //  to direct debit.
+  //  Should not be set if GoCardless payment intelligence feature is used.
   //
-  // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
-  // for more information.
+  //  See [Billing Requests: Retain customers with
+  //  Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  //  for more information.
 
   fallback_enabled?: boolean;
 
@@ -30,37 +30,37 @@ interface BillingRequestCreateRequest {
   //
   mandate_request?: Types.BillingRequestMandateRequest;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 
-  // Specifies the context or scenario in which the payment is being made. Defines
-  // whether the payment is for advance/arrears billing, point of sale
-  // transactions, ecommerce, or account transfers. This helps banks and payment
-  // processors understand the payment scenario and apply appropriate processing
-  // rules and risk controls.
+  //  Specifies the context or scenario in which the payment is being made.
+  //  Defines whether the payment is for advance/arrears billing, point of sale
+  //  transactions, ecommerce, or account transfers. This helps banks and payment
+  //  processors understand the payment scenario and apply appropriate processing
+  //  rules and risk controls.
 
   payment_context_code?: Types.BillingRequestPaymentContextCode;
 
-  // Specifies the underlying purpose of the payment. Defines the specific reason
-  // or type of service/goods the payment relates to, improving straight-through
-  // processing and compliance.
-  // See [VRP Commercial Payment Purpose
-  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
-  // for the complete list of valid codes.
+  //  Specifies the underlying purpose of the payment. Defines the specific reason
+  //  or type of service/goods the payment relates to, improving straight-through
+  //  processing and compliance.
+  //  See [VRP Commercial Payment Purpose
+  //  Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
+  //  for the complete list of valid codes.
 
   payment_purpose_code?: string;
 
   //
   payment_request?: Types.BillingRequestPaymentRequest;
 
-  // Specifies the high-level purpose/category of a mandate and/or payment using a
-  // set of pre-defined categories. Provides context on the nature and reason for
-  // the payment to facilitate processing and compliance.
-  // See [Billing Request Purpose
-  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
-  // the complete list of valid codes.
+  //  Specifies the high-level purpose/category of a mandate and/or payment using
+  //  a set of pre-defined categories. Provides context on the nature and reason
+  //  for the payment to facilitate processing and compliance.
+  //  See [Billing Request Purpose
+  //  Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
+  //  the complete list of valid codes.
 
   purpose_code?: Types.BillingRequestPurposeCode;
 
@@ -77,168 +77,169 @@ interface BillingRequestCollectCustomerDetailsRequest {
 }
 
 interface BillingRequestCollectBankAccountRequest {
-  // Name of the account holder, as known by the bank. The full name provided when
-  // the customer is created is stored and is available via the API, but is
-  // transliterated, upcased, and truncated to 18 characters in bank submissions.
-  // This field is required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  //  Name of the account holder, as known by the bank. The full name provided
+  //  when the customer is created is stored and is available via the API, but is
+  //  transliterated, upcased, and truncated to 18 characters in bank submissions.
+  //  This field is required unless the request includes a [customer bank account
+  //  token](#javascript-flow-customer-bank-account-tokens).
 
   account_holder_name?: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  //  Bank account number - see [local details](#appendix-local-bank-details) for
+  //  more information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
-  // Account number suffix (only for bank accounts denominated in NZD) - see
-  // [local details](#local-bank-details-new-zealand) for more information.
+  //  Account number suffix (only for bank accounts denominated in NZD) - see
+  //  [local details](#local-bank-details-new-zealand) for more information.
 
   account_number_suffix?: string;
 
-  // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  //  Bank account type. Required for USD-denominated bank accounts. Must not be
+  //  provided for bank accounts in other currencies. See [local
+  //  details](#local-bank-details-united-states) for more information.
 
   account_type?: Types.BillingRequestAccountType;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  //  Bank code - see [local details](#appendix-local-bank-details) for more
+  //  information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  //  Branch code - see [local details](#appendix-local-bank-details) for more
+  //  information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
-  // Defaults to the country code of the `iban` if supplied, otherwise is
-  // required.
+  //  [ISO 3166-1 alpha-2
+  //  code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  //  Defaults to the country code of the `iban` if supplied, otherwise is
+  //  required.
 
   country_code?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
-  // supported.
+  //  [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  //  code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  //  are supported.
 
   currency?: string;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  //  International Bank Account Number. Alternatively you can provide [local
+  //  details](#appendix-local-bank-details). IBANs are not accepted for Swedish
+  //  bank accounts denominated in SEK - you must supply [local
+  //  details](#local-bank-details-sweden).
 
   iban?: string;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 
-  // A unique record such as an email address, mobile number or company number,
-  // that can be used to make and accept payments.
+  //  A unique record such as an email address, mobile number or company number,
+  //  that can be used to make and accept payments.
 
   pay_id?: string;
 }
 
 interface BillingRequestConfirmPayerDetailsRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 
-  // This attribute can be set to true if the payer has indicated that multiple
-  // signatures are required for the mandate. As long as every other Billing
-  // Request actions have been completed, the payer will receive an email
-  // notification containing instructions on how to complete the additional
-  // signature. The dual signature flow can only be completed using GoCardless
-  // branded pages.
+  //  This attribute can be set to true if the payer has indicated that multiple
+  //  signatures are required for the mandate. As long as every other Billing
+  //  Request actions have been completed, the payer will receive an email
+  //  notification containing instructions on how to complete the additional
+  //  signature. The dual signature flow can only be completed using GoCardless
+  //  branded pages.
 
   payer_requested_dual_signature?: boolean;
 }
 
 interface BillingRequestFulfilRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 }
 
 interface BillingRequestCancelRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 }
 
 interface BillingRequestListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
   // The creation date of this BillingRequest.
   created_at?: Types.CreatedAtFilter;
 
-  // ID of a [customer](#core-endpoints-customers). If specified, this endpoint
-  // will return all requests for the given customer.
+  //  ID of a [customer](#core-endpoints-customers). If specified, this endpoint
+  //  will return all requests for the given customer.
 
   customer?: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 
-  // One of:
-  // <ul>
-  // <li>`pending`: the billing request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
-  // <li>`fulfilling`: the billing request is currently undergoing fulfilment</li>
-  // <li>`fulfilled`: the billing request has been fulfilled and a payment
-  // created</li>
-  // <li>`cancelled`: the billing request has been cancelled and cannot be
-  // used</li>
-  // </ul>
+  //  One of:
+  //  <ul>
+  //  <li>`pending`: the billing request is pending and can be used</li>
+  //  <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
+  //  <li>`fulfilling`: the billing request is currently undergoing
+  //  fulfilment</li>
+  //  <li>`fulfilled`: the billing request has been fulfilled and a payment
+  //  created</li>
+  //  <li>`cancelled`: the billing request has been cancelled and cannot be
+  //  used</li>
+  //  </ul>
 
   status?: Types.BillingRequestStatus;
 }
 
 interface BillingRequestNotifyRequest {
-  // Currently, can only be `email`.
+  //  Currently, can only be `email`.
 
   notification_type: Types.BillingRequestNotificationType;
 
-  // URL that the payer can be redirected to after authorising the payment.
+  //  URL that the payer can be redirected to after authorising the payment.
 
   redirect_uri?: string;
 }
 
 interface BillingRequestChooseCurrencyRequest {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
-  // supported.
+  //  [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  //  code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  //  are supported.
 
   currency: string;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 }
 
 interface BillingRequestSelectInstitutionRequest {
-  // [ISO
-  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-  // alpha-2 code. The country code of the institution. If nothing is provided,
-  // institutions with the country code 'GB' are returned by default.
+  //  [ISO
+  //  3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  //  alpha-2 code. The country code of the institution. If nothing is provided,
+  //  institutions with the country code 'GB' are returned by default.
 
   country_code: string;
 
-  // The unique identifier for this institution
+  //  The unique identifier for this institution
 
   institution: string;
 }

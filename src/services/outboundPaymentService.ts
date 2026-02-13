@@ -11,132 +11,132 @@ interface OutboundPaymentListResponse extends Types.APIResponse {
 }
 
 interface OutboundPaymentCreateRequest {
-  // Amount, in the lowest denomination for the currency (e.g. pence in GBP, cents
-  // in EUR).
+  //  Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  //  cents in EUR).
 
   amount: number;
 
-  // A human-readable description of the outbound payment
+  //  A human-readable description of the outbound payment
 
   description?: string;
 
-  // A future date on which the outbound payment should be sent.
-  // If not specified, the payment will be sent as soon as possible.
+  //  A future date on which the outbound payment should be sent.
+  //  If not specified, the payment will be sent as soon as possible.
 
   execution_date?: string;
 
   // Resources linked to this OutboundPayment.
   links: Types.OutboundPaymentCreateRequestLinks;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with
-  // key names up to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with
+  //  key names up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 
-  // An optional reference that will appear on your customer's bank statement.
-  // The character limit for this reference is dependent on the scheme.<br />
-  // <strong>Faster Payments</strong> - 18 characters, including:
-  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+  //  An optional reference that will appear on your customer's bank statement.
+  //  The character limit for this reference is dependent on the scheme.<br />
+  //  <strong>Faster Payments</strong> - 18 characters, including:
+  //  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
 
   reference?: string;
 
-  // Bank payment scheme to process the outbound payment. Currently only
-  // "faster_payments" (GBP) is supported.
+  //  Bank payment scheme to process the outbound payment. Currently only
+  //  "faster_payments" (GBP) is supported.
 
   scheme: Types.OutboundPaymentScheme;
 }
 
 interface OutboundPaymentWithdrawRequest {
-  // Amount, in the lowest denomination for the currency (e.g. pence in GBP, cents
-  // in EUR).
+  //  Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  //  cents in EUR).
 
   amount: number;
 
-  // A human-readable description of the outbound payment
+  //  A human-readable description of the outbound payment
 
   description?: string;
 
-  // A future date on which the outbound payment should be sent.
-  // If not specified, the payment will be sent as soon as possible.
+  //  A future date on which the outbound payment should be sent.
+  //  If not specified, the payment will be sent as soon as possible.
 
   execution_date?: string;
 
   // Resources linked to this OutboundPayment.
   links?: Types.OutboundPaymentWithdrawRequestLinks;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with
-  // key names up to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with
+  //  key names up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 
-  // An optional reference that will appear on your customer's bank statement.
-  // The character limit for this reference is dependent on the scheme.<br />
-  // <strong>Faster Payments</strong> - 18 characters, including:
-  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+  //  An optional reference that will appear on your customer's bank statement.
+  //  The character limit for this reference is dependent on the scheme.<br />
+  //  <strong>Faster Payments</strong> - 18 characters, including:
+  //  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
 
   reference?: string;
 
-  // Bank payment scheme to process the outbound payment. Currently only
-  // "faster_payments" (GBP) is supported.
+  //  Bank payment scheme to process the outbound payment. Currently only
+  //  "faster_payments" (GBP) is supported.
 
   scheme: Types.OutboundPaymentScheme;
 }
 
 interface OutboundPaymentCancelRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with
-  // key names up to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with
+  //  key names up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 }
 
 interface OutboundPaymentListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // The beginning of query period
+  //  The beginning of query period
 
   created_from?: string;
 
-  // The end of query period
+  //  The end of query period
 
   created_to?: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 
-  // One of:
-  // <ul>
-  // <li>`verifying`: The payment has been
-  // [created](#outbound-payments-create-an-outbound-payment) and the verification
-  // process has begun.</li>
-  // <li>`pending_approval`: The payment is awaiting
-  // [approval](#outbound-payments-approve-an-outbound-payment).</li>
-  // <li>`scheduled`: The payment has passed verification &
-  // [approval](#outbound-payments-approve-an-outbound-payment), but processing
-  // has not yet begun.</li>
-  // <li>`executing`: The execution date has arrived and the payment has been
-  // placed in queue for processing.</li>
-  // <li>`executed`: The payment has been accepted by the scheme and is now on its
-  // way to the recipient.</li>
-  // <li>`cancelled`: The payment has been
-  // [cancelled](#outbound-payments-cancel-an-outbound-payment) or was not
-  // [approved](#outbound-payments-approve-an-outbound-payment) on time.</li>
-  // <li>`failed`: The payment was not sent, usually due to an error while or
-  // after executing.</li>
-  // </ul>
+  //  One of:
+  //  <ul>
+  //  <li>`verifying`: The payment has been
+  //  [created](#outbound-payments-create-an-outbound-payment) and the
+  //  verification process has begun.</li>
+  //  <li>`pending_approval`: The payment is awaiting
+  //  [approval](#outbound-payments-approve-an-outbound-payment).</li>
+  //  <li>`scheduled`: The payment has passed verification &
+  //  [approval](#outbound-payments-approve-an-outbound-payment), but processing
+  //  has not yet begun.</li>
+  //  <li>`executing`: The execution date has arrived and the payment has been
+  //  placed in queue for processing.</li>
+  //  <li>`executed`: The payment has been accepted by the scheme and is now on
+  //  its way to the recipient.</li>
+  //  <li>`cancelled`: The payment has been
+  //  [cancelled](#outbound-payments-cancel-an-outbound-payment) or was not
+  //  [approved](#outbound-payments-approve-an-outbound-payment) on time.</li>
+  //  <li>`failed`: The payment was not sent, usually due to an error while or
+  //  after executing.</li>
+  //  </ul>
 
   status?: Types.OutboundPaymentStatus;
 }
 
 interface OutboundPaymentUpdateRequest {
-  // Key-value store of custom data. Up to 3 keys are permitted, with
-  // key names up to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with
+  //  key names up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 }

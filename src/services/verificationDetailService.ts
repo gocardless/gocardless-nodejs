@@ -11,60 +11,60 @@ interface VerificationDetailListResponse extends Types.APIResponse {
 }
 
 interface VerificationDetailCreateRequest {
-  // The first line of the company's address.
+  //  The first line of the company's address.
 
   address_line1: string;
 
-  // The second line of the company's address.
+  //  The second line of the company's address.
 
   address_line2?: string;
 
-  // The third line of the company's address.
+  //  The third line of the company's address.
 
   address_line3?: string;
 
-  // The city of the company's address.
+  //  The city of the company's address.
 
   city: string;
 
-  // The company's registration number.
+  //  The company's registration number.
 
   company_number: string;
 
-  // A summary describing what the company does.
+  //  A summary describing what the company does.
 
   description: string;
 
-  // The company's directors.
+  //  The company's directors.
 
   directors: Types.VerificationDetailDirector[];
 
   // Resources linked to this VerificationDetail.
   links: Types.VerificationDetailCreateRequestLinks;
 
-  // The company's legal name.
+  //  The company's legal name.
 
   name: string;
 
-  // The company's postal code.
+  //  The company's postal code.
 
   postal_code: string;
 }
 
 interface VerificationDetailListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // Unique identifier, beginning with "CR".
+  //  Unique identifier, beginning with "CR".
 
   creditor: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

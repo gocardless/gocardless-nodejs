@@ -11,19 +11,19 @@ interface TaxRateListResponse extends Types.APIResponse {
 }
 
 interface TaxRateListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // The jurisdiction this tax rate applies to
+  //  The jurisdiction this tax rate applies to
 
   jurisdiction?: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

@@ -11,15 +11,15 @@ interface PaymentAccountListResponse extends Types.APIResponse {
 }
 
 interface PaymentAccountListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

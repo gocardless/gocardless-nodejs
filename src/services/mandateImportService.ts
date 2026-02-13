@@ -14,9 +14,9 @@ interface MandateImportCreateRequest {
   // Resources linked to this MandateImport.
   links?: Types.MandateImportCreateRequestLinks;
 
-  // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
-  // "sepa_core" are supported.
+  //  A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
+  //  "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
+  //  "sepa_core" are supported.
 
   scheme: Types.MandateImportScheme;
 }

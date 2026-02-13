@@ -14,28 +14,28 @@ interface BankAuthorisationCreateRequest {
   // Resources linked to this BankAuthorisation.
   links: Types.BankAuthorisationCreateRequestLinks;
 
-  // URL that the payer can be redirected to after authorising the payment.
+  //  URL that the payer can be redirected to after authorising the payment.
   //
-  // On completion of bank authorisation, the query parameter of either
-  // `outcome=success` or `outcome=failure` will be
-  // appended to the `redirect_uri` to indicate the result of the bank
-  // authorisation. If the bank authorisation is
-  // expired, the query parameter `outcome=timeout` will be appended to the
-  // `redirect_uri`, in which case you should
-  // prompt the user to try the bank authorisation step again.
+  //  On completion of bank authorisation, the query parameter of either
+  //  `outcome=success` or `outcome=failure` will be
+  //  appended to the `redirect_uri` to indicate the result of the bank
+  //  authorisation. If the bank authorisation is
+  //  expired, the query parameter `outcome=timeout` will be appended to the
+  //  `redirect_uri`, in which case you should
+  //  prompt the user to try the bank authorisation step again.
   //
-  // Please note: bank authorisations can still fail despite an `outcome=success`
-  // on the `redirect_uri`. It is therefore recommended to wait for the relevant
-  // bank authorisation event, such as
-  // [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
-  // [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
-  // [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
-  // order to show the correct outcome to the user.
+  //  Please note: bank authorisations can still fail despite an `outcome=success`
+  //  on the `redirect_uri`. It is therefore recommended to wait for the relevant
+  //  bank authorisation event, such as
+  //  [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
+  //  [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
+  //  [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
+  //  order to show the correct outcome to the user.
   //
-  // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
-  // query parameter `id=BRF123`.
+  //  The BillingRequestFlow ID will also be appended to the `redirect_uri` as
+  //  query parameter `id=BRF123`.
   //
-  // Defaults to `https://pay.gocardless.com/billing/static/thankyou`.
+  //  Defaults to `https://pay.gocardless.com/billing/static/thankyou`.
 
   redirect_uri?: string;
 }

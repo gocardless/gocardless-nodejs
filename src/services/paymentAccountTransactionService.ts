@@ -11,29 +11,29 @@ interface PaymentAccountTransactionListResponse extends Types.APIResponse {
 }
 
 interface PaymentAccountTransactionListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // The direction of the transaction. Debits mean money leaving the account (e.g.
-  // outbound payment), while credits signify money coming in (e.g. manual
-  // top-up).
+  //  The direction of the transaction. Debits mean money leaving the account
+  //  (e.g. outbound payment), while credits signify money coming in (e.g. manual
+  //  top-up).
 
   direction?: Types.PaymentAccountTransactionDirection;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 
-  // The beginning of query period
+  //  The beginning of query period
 
   value_date_from: string;
 
-  // The end of query period
+  //  The end of query period
 
   value_date_to: string;
 }

@@ -14,9 +14,9 @@ interface BankAccountHolderVerificationCreateRequest {
   // Resources linked to this BankAccountHolderVerification.
   links: Types.BankAccountHolderVerificationCreateRequestLinks;
 
-  // Type of the verification that has been performed
-  // eg. [Confirmation of
-  // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
+  //  Type of the verification that has been performed
+  //  eg. [Confirmation of
+  //  Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
 
   type: Types.BankAccountHolderVerificationType;
 }
