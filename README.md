@@ -20,18 +20,31 @@ To initialise the client, you must provide:
 - The environment that this token is for (see [here](https://github.com/gocardless/gocardless-nodejs/blob/master/src/constants.ts) for a list of available environments).
 - Any additional options (see [here](#available-client-options) for a list of supported options).
 
-<!-- prettier-ignore -->
 ```js
-const gocardless = require('gocardless-nodejs/client');
-const constants = require('gocardless-nodejs/constants');
+import gocardless from 'gocardless-nodejs';
+import { Environments } from 'gocardless-nodejs/constants';
 
-
-// Initialise the client.
+// Initialize the client
 const client = gocardless(
   process.env.GC_ACCESS_TOKEN,
-  constants.Environments.Sandbox,
-  { raiseOnIdempotencyConflict: true },
+  Environments.Sandbox,
+  { raiseOnIdempotencyConflict: true }
 );
+```
+
+TypeScript:
+
+```typescript
+import gocardless, { GoCardlessClient } from 'gocardless-nodejs';
+import { Environments } from 'gocardless-nodejs/constants';
+import type { Payment } from 'gocardless-nodejs/types';
+
+const client: GoCardlessClient = gocardless(
+  process.env.GC_ACCESS_TOKEN,
+  Environments.Sandbox
+);
+
+const payment: Payment = await client.payments.find('PM123');
 ```
 
 ### The Basics
@@ -42,7 +55,7 @@ For a full list of available resources, visit the [GoCardless API reference](htt
 
 <!-- prettier-ignore -->
 ```js
-const uuidv4 = require('uuid/v4');
+import { v4 as uuidv4 } from 'uuid';
 
 // Create a new payment.
 const payment = await client.payments.create(
@@ -51,7 +64,7 @@ const payment = await client.payments.create(
     currency: "GBP",
     links: { mandate: "MD123" },
   },
-  { uuidv4() },
+  uuidv4(),
 );
 
 // List the first three payments past a certain date.
@@ -86,3 +99,13 @@ for await (const payment of client.payments.all()) {
 ### Available client options
 
 - `raiseOnIdempotencyConflict`: set to `true` to raise exceptions on [idempotency](https://developer.gocardless.com/api-reference/#making-requests-idempotency-keys) conflicts. Defaults to `false`.
+
+
+### CommonJS backwards compatibility
+
+We provide a CommonJS implementation for backwards compatibility. For CommonJS, change the imports to:
+
+```js
+const gocardless = require('gocardless-nodejs');
+const { Environments } = require('gocardless-nodejs/constants');
+```

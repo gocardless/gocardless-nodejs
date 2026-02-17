@@ -1,11 +1,9 @@
-'use strict';
-
 enum Environments {
   Live = 'LIVE',
   Sandbox = 'SANDBOX',
 }
 
-const CLIENT_VERSION = '7.1.0';
+const CLIENT_VERSION = '7.2.0-beta1';
 const API_VERSION = '2015-07-06';
 
 export { Environments, CLIENT_VERSION, API_VERSION };

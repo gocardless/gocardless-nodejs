@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import * as fs from 'node:fs';
 import { ApiRequestSignatureHelper, ApiRequestSigningOptionsInternal } from './apiRequestSigning';
 
 const privateKeyPem = fs.readFileSync('src/fixtures/private_key.pem', 'utf8');

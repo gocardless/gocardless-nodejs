@@ -10,7 +10,7 @@
  * JSON object into an `GoCardless.Event` class.
  */
 
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { Event } from './types/Types';
 
 function InvalidSignatureError() {
