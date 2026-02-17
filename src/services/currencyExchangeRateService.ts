@@ -1,7 +1,5 @@
-'use strict';
-
-import { Api } from '../api/api';
-import * as Types from '../types/Types';
+import { Api } from '../api/api.js';
+import * as Types from '../types/Types.js';
 
 interface CurrencyExchangeRateResponse extends Types.CurrencyExchangeRate, Types.APIResponse {}
 
