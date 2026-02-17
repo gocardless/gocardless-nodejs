@@ -79,10 +79,12 @@ jobs:
     - run: npm install
     - name: Publish the library (regular release)
       if: needs.check_version.outputs.is_prerelease == 'false'
-      run: npm publish $DIST_FOLDER --provenance
+      working-directory: ${{ env.DIST_FOLDER }}
+      run: npm publish --provenance
     - name: Publish the library (prerelease)
       if: needs.check_version.outputs.is_prerelease == 'true'
-      run: npm publish $DIST_FOLDER --tag ${{ needs.check_version.outputs.npm_tag }} --provenance
+      working-directory: ${{ env.DIST_FOLDER }}
+      run: npm publish --tag ${{ needs.check_version.outputs.npm_tag }} --provenance
 
   create_release:
     if: github.ref == 'refs/heads/master'
