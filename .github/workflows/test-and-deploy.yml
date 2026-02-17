@@ -60,35 +60,27 @@ jobs:
   publish_to_npm:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    container:
+      image: node:lts
     needs:
     - transpile
     - check_version
     env:
-      DIST_FOLDER: "dist/artifact"
+      DIST_FOLDER: "/dist/artifact"
     steps:
     - uses: actions/checkout@v3.3.0
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 'lts/*'
-        registry-url: 'https://registry.npmjs.org'
     - uses: actions/download-artifact@v4
       with:
-        path: "dist"
+        path: "/dist"
     - run: cp package.json $DIST_FOLDER
     - run: cp README.md $DIST_FOLDER
     - run: npm install
     - name: Publish the library (regular release)
       if: needs.check_version.outputs.is_prerelease == 'false'
-      working-directory: ${{ env.DIST_FOLDER }}
-      run: npm publish --provenance
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      run: npm publish $DIST_FOLDER --provenance
     - name: Publish the library (prerelease)
       if: needs.check_version.outputs.is_prerelease == 'true'
-      working-directory: ${{ env.DIST_FOLDER }}
-      run: npm publish --tag ${{ needs.check_version.outputs.npm_tag }} --provenance
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      run: npm publish $DIST_FOLDER --tag ${{ needs.check_version.outputs.npm_tag }} --provenance
 
   create_release:
     if: github.ref == 'refs/heads/master'
