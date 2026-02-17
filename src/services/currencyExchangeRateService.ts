@@ -11,23 +11,23 @@ interface CurrencyExchangeRateListResponse extends Types.APIResponse {
 }
 
 interface CurrencyExchangeRateListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 
-  // Source currency
+  //  Source currency
 
   source?: string;
 
-  // Target currency
+  //  Target currency
 
   target?: string;
 }

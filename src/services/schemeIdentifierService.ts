@@ -14,30 +14,30 @@ interface SchemeIdentifierCreateRequest {
   // Resources linked to this SchemeIdentifier.
   links?: Types.SchemeIdentifierCreateRequestLinks;
 
-  // The name which appears on customers' bank statements. This should usually be
-  // the merchant's trading name.
+  //  The name which appears on customers' bank statements. This should usually be
+  //  the merchant's trading name.
 
   name: string;
 
-  // The scheme which this scheme identifier applies to.
+  //  The scheme which this scheme identifier applies to.
 
   scheme: Types.SchemeIdentifierScheme;
 }
 
 interface SchemeIdentifierListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // Unique identifier, beginning with "CR".
+  //  Unique identifier, beginning with "CR".
 
   creditor?: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

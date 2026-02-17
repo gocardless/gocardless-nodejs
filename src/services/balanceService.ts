@@ -11,19 +11,19 @@ interface BalanceListResponse extends Types.APIResponse {
 }
 
 interface BalanceListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // ID of a [creditor](#core-endpoints-creditors).
+  //  ID of a [creditor](#core-endpoints-creditors).
 
   creditor: string;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

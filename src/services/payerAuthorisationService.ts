@@ -11,30 +11,30 @@ interface PayerAuthorisationListResponse extends Types.APIResponse {
 }
 
 interface PayerAuthorisationCreateRequest {
-  // All details required for the creation of a
-  // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
+  //  All details required for the creation of a
+  //  [Customer Bank Account](#core-endpoints-customer-bank-accounts).
   bank_account: Types.PayerAuthorisationBankAccount;
 
-  // All details required for the creation of a
-  // [Customer](#core-endpoints-customers).
+  //  All details required for the creation of a
+  //  [Customer](#core-endpoints-customers).
   customer: Types.PayerAuthorisationCustomer;
 
-  // All details required for the creation of a
-  // [Mandate](#core-endpoints-mandates).
+  //  All details required for the creation of a
+  //  [Mandate](#core-endpoints-mandates).
   mandate: Types.PayerAuthorisationMandate;
 }
 
 interface PayerAuthorisationUpdateRequest {
-  // All details required for the creation of a
-  // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
+  //  All details required for the creation of a
+  //  [Customer Bank Account](#core-endpoints-customer-bank-accounts).
   bank_account: Types.PayerAuthorisationBankAccount;
 
-  // All details required for the creation of a
-  // [Customer](#core-endpoints-customers).
+  //  All details required for the creation of a
+  //  [Customer](#core-endpoints-customers).
   customer: Types.PayerAuthorisationCustomer;
 
-  // All details required for the creation of a
-  // [Mandate](#core-endpoints-mandates).
+  //  All details required for the creation of a
+  //  [Mandate](#core-endpoints-mandates).
   mandate: Types.PayerAuthorisationMandate;
 }
 

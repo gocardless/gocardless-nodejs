@@ -11,57 +11,57 @@ interface RedirectFlowListResponse extends Types.APIResponse {
 }
 
 interface RedirectFlowCreateRequest {
-  // A description of the item the customer is paying for. This will be shown on
-  // the hosted payment pages.
+  //  A description of the item the customer is paying for. This will be shown on
+  //  the hosted payment pages.
 
   description?: string;
 
   // Resources linked to this RedirectFlow.
   links?: Types.RedirectFlowCreateRequestLinks;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters. _Note:_ This should not be
-  // used for storing PII data.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters. _Note:_ This should not
+  //  be used for storing PII data.
 
   metadata?: Types.JsonMap;
 
-  // Bank account information used to prefill the payment page so your customer
-  // doesn't have to re-type details you already hold about them. It will be
-  // stored unvalidated and the customer will be able to review and amend it
-  // before completing the form.
+  //  Bank account information used to prefill the payment page so your customer
+  //  doesn't have to re-type details you already hold about them. It will be
+  //  stored unvalidated and the customer will be able to review and amend it
+  //  before completing the form.
   prefilled_bank_account?: Types.RedirectFlowPrefilledBankAccount;
 
-  // Customer information used to prefill the payment page so your customer
-  // doesn't have to re-type details you already hold about them. It will be
-  // stored unvalidated and the customer will be able to review and amend it
-  // before completing the form.
+  //  Customer information used to prefill the payment page so your customer
+  //  doesn't have to re-type details you already hold about them. It will be
+  //  stored unvalidated and the customer will be able to review and amend it
+  //  before completing the form.
   prefilled_customer?: Types.RedirectFlowPrefilledCustomer;
 
-  // The Direct Debit scheme of the mandate. If specified, the payment pages will
-  // only allow the set-up of a mandate for the specified scheme. It is
-  // recommended that you leave this blank so the most appropriate scheme is
-  // picked based on the customer's bank account.
+  //  The Direct Debit scheme of the mandate. If specified, the payment pages will
+  //  only allow the set-up of a mandate for the specified scheme. It is
+  //  recommended that you leave this blank so the most appropriate scheme is
+  //  picked based on the customer's bank account.
 
   scheme?: Types.RedirectFlowScheme;
 
-  // The customer's session ID must be provided when the redirect flow is set up
-  // and again when it is completed. This allows integrators to ensure that the
-  // user who was originally sent to the GoCardless payment pages is the one who
-  // has completed them.
+  //  The customer's session ID must be provided when the redirect flow is set up
+  //  and again when it is completed. This allows integrators to ensure that the
+  //  user who was originally sent to the GoCardless payment pages is the one who
+  //  has completed them.
 
   session_token: string;
 
-  // The URL to redirect to upon successful mandate setup. You must use a URL
-  // beginning `https` in the live environment.
+  //  The URL to redirect to upon successful mandate setup. You must use a URL
+  //  beginning `https` in the live environment.
 
   success_redirect_url: string;
 }
 
 interface RedirectFlowCompleteRequest {
-  // The customer's session ID must be provided when the redirect flow is set up
-  // and again when it is completed. This allows integrators to ensure that the
-  // user who was originally sent to the GoCardless payment pages is the one who
-  // has completed them.
+  //  The customer's session ID must be provided when the redirect flow is set up
+  //  and again when it is completed. This allows integrators to ensure that the
+  //  user who was originally sent to the GoCardless payment pages is the one who
+  //  has completed them.
 
   session_token: string;
 }

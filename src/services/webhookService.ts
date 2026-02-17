@@ -11,26 +11,26 @@ interface WebhookListResponse extends Types.APIResponse {
 }
 
 interface WebhookListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
   // The creation date of this Webhook.
   created_at?: Types.CreatedAtFilter;
 
-  // Show only test/non test webhooks
+  //  Show only test/non test webhooks
 
   is_test?: boolean;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 
-  // Show only successful/failed webhooks
+  //  Show only successful/failed webhooks
 
   successful?: boolean;
 }

@@ -11,19 +11,19 @@ interface PayerThemeListResponse extends Types.APIResponse {
 }
 
 interface PayerThemeCreateForCreditorRequest {
-  // Colour for buttons background (hexcode)
+  //  Colour for buttons background (hexcode)
 
   button_background_colour?: string;
 
-  // Colour for content box border (hexcode)
+  //  Colour for content box border (hexcode)
 
   content_box_border_colour?: string;
 
-  // Colour for header background (hexcode)
+  //  Colour for header background (hexcode)
 
   header_background_colour?: string;
 
-  // Colour for text links (hexcode)
+  //  Colour for text links (hexcode)
 
   link_text_colour?: string;
 

@@ -11,89 +11,89 @@ interface CreditorBankAccountListResponse extends Types.APIResponse {
 }
 
 interface CreditorBankAccountCreateRequest {
-  // Name of the account holder, as known by the bank. Usually this is the same as
-  // the name stored with the linked [creditor](#core-endpoints-creditors). This
-  // field will be transliterated, upcased and truncated to 18 characters.
+  //  Name of the account holder, as known by the bank. Usually this is the same
+  //  as the name stored with the linked [creditor](#core-endpoints-creditors).
+  //  This field will be transliterated, upcased and truncated to 18 characters.
 
   account_holder_name: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  //  Bank account number - see [local details](#appendix-local-bank-details) for
+  //  more information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
-  // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  //  Bank account type. Required for USD-denominated bank accounts. Must not be
+  //  provided for bank accounts in other currencies. See [local
+  //  details](#local-bank-details-united-states) for more information.
 
   account_type?: Types.CreditorBankAccountAccountType;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  //  Bank code - see [local details](#appendix-local-bank-details) for more
+  //  information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  //  Branch code - see [local details](#appendix-local-bank-details) for more
+  //  information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
-  // Defaults to the country code of the `iban` if supplied, otherwise is
-  // required.
+  //  [ISO 3166-1 alpha-2
+  //  code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  //  Defaults to the country code of the `iban` if supplied, otherwise is
+  //  required.
 
   country_code?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
-  // supported.
+  //  [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  //  code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  //  are supported.
 
   currency?: string;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  //  International Bank Account Number. Alternatively you can provide [local
+  //  details](#appendix-local-bank-details). IBANs are not accepted for Swedish
+  //  bank accounts denominated in SEK - you must supply [local
+  //  details](#local-bank-details-sweden).
 
   iban?: string;
 
   // Resources linked to this CreditorBankAccount.
   links: Types.CreditorBankAccountCreateRequestLinks;
 
-  // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters.
+  //  Key-value store of custom data. Up to 3 keys are permitted, with key names
+  //  up to 50 characters and values up to 500 characters.
 
   metadata?: Types.JsonMap;
 
-  // Defaults to `true`. When this is set to `true`, it will cause this bank
-  // account to be set as the account that GoCardless will pay out to.
+  //  Defaults to `true`. When this is set to `true`, it will cause this bank
+  //  account to be set as the account that GoCardless will pay out to.
 
   set_as_default_payout_account?: boolean;
 }
 
 interface CreditorBankAccountListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
   // The creation date of this CreditorBankAccount.
   created_at?: Types.CreatedAtFilter;
 
-  // Unique identifier, beginning with "CR".
+  //  Unique identifier, beginning with "CR".
 
   creditor?: string;
 
-  // If `true`, only return enabled bank accounts. If `false`, only return
-  // disabled bank accounts.
+  //  If `true`, only return enabled bank accounts. If `false`, only return
+  //  disabled bank accounts.
 
   enabled?: boolean;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

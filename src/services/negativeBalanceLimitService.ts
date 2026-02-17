@@ -11,25 +11,25 @@ interface NegativeBalanceLimitListResponse extends Types.APIResponse {
 }
 
 interface NegativeBalanceLimitListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // Unique identifier, beginning with "CR".
+  //  Unique identifier, beginning with "CR".
 
   creditor?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
-  // supported.
+  //  [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  //  code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
+  //  are supported.
 
   currency?: Types.NegativeBalanceLimitCurrency;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 }

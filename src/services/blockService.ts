@@ -11,124 +11,129 @@ interface BlockListResponse extends Types.APIResponse {
 }
 
 interface BlockCreateRequest {
-  // Shows if the block is active or disabled. Only active blocks will be used
-  // when deciding
-  // if a mandate should be blocked.
+  //  Shows if the block is active or disabled. Only active blocks will be used
+  //  when deciding
+  //  if a mandate should be blocked.
 
   active?: boolean;
 
-  // Type of entity we will seek to match against when blocking the mandate. This
-  // can currently be one of 'email', 'email_domain', 'bank_account', or
-  // 'bank_name'.
+  //  Type of entity we will seek to match against when blocking the mandate. This
+  //  can currently be one of 'email', 'email_domain', 'bank_account', or
+  //  'bank_name'.
 
   block_type?: Types.BlockBlockType;
 
-  // This field is required if the reason_type is other. It should be a
-  // description of
-  // the reason for why you wish to block this payer and why it does not align
-  // with the
-  // given reason_types. This is intended to help us improve our knowledge of
-  // types of
-  // fraud.
+  //  This field is required if the reason_type is other. It should be a
+  //  description of
+  //  the reason for why you wish to block this payer and why it does not align
+  //  with the
+  //  given reason_types. This is intended to help us improve our knowledge of
+  //  types of
+  //  fraud.
 
   reason_description?: string;
 
-  // The reason you wish to block this payer, can currently be one of
-  // 'identity_fraud',
-  // 'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by one
-  // of the
-  // above then 'other' can be selected but you must provide a reason description.
+  //  The reason you wish to block this payer, can currently be one of
+  //  'identity_fraud',
+  //  'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by one
+  //  of the
+  //  above then 'other' can be selected but you must provide a reason
+  //  description.
 
   reason_type?: Types.BlockReasonType;
 
-  // This field is a reference to the value you wish to block. This may be the raw
-  // value
-  // (in the case of emails or email domains) or the ID of the resource (in the
-  // case of
-  // bank accounts and bank names). This means in order to block a specific bank
-  // account
-  // (even if you wish to block generically by name) it must already have been
-  // created as
-  // a resource.
+  //  This field is a reference to the value you wish to block. This may be the
+  //  raw value
+  //  (in the case of emails or email domains) or the ID of the resource (in the
+  //  case of
+  //  bank accounts and bank names). This means in order to block a specific bank
+  //  account
+  //  (even if you wish to block generically by name) it must already have been
+  //  created as
+  //  a resource.
 
   resource_reference?: string;
 }
 
 interface BlockListRequest {
-  // Cursor pointing to the start of the desired set.
+  //  Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  // Cursor pointing to the end of the desired set.
+  //  Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  // ID of a [Block](#core-endpoints-blocks).
+  //  ID of a [Block](#core-endpoints-blocks).
 
   block?: string;
 
-  // Type of entity we will seek to match against when blocking the mandate. This
-  // can currently be one of 'email', 'email_domain', 'bank_account', or
-  // 'bank_name'.
+  //  Type of entity we will seek to match against when blocking the mandate. This
+  //  can currently be one of 'email', 'email_domain', 'bank_account', or
+  //  'bank_name'.
 
   block_type?: Types.BlockBlockType;
 
   // The creation date of this Block.
   created_at?: Types.CreatedAtFilter;
 
-  // Number of records to return.
+  //  Number of records to return.
 
   limit?: string;
 
-  // The reason you wish to block this payer, can currently be one of
-  // 'identity_fraud',
-  // 'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by one
-  // of the
-  // above then 'other' can be selected but you must provide a reason description.
+  //  The reason you wish to block this payer, can currently be one of
+  //  'identity_fraud',
+  //  'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by one
+  //  of the
+  //  above then 'other' can be selected but you must provide a reason
+  //  description.
 
   reason_type?: Types.BlockReasonType;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
-  // resource was updated.
+  //  Fixed [timestamp](#api-usage-dates-and-times), recording when this
+  //  resource was updated.
 
   updated_at?: string;
 }
 
 interface BlockBlockByRefRequest {
-  // Shows if the block is active or disabled. Only active blocks will be used
-  // when deciding
-  // if a mandate should be blocked.
+  //  Shows if the block is active or disabled. Only active blocks will be used
+  //  when deciding
+  //  if a mandate should be blocked.
 
   active?: boolean;
 
-  // This field is required if the reason_type is other. It should be a
-  // description of
-  // the reason for why you wish to block this payer and why it does not align
-  // with the
-  // given reason_types. This is intended to help us improve our knowledge of
-  // types of
-  // fraud.
+  //  This field is required if the reason_type is other. It should be a
+  //  description of
+  //  the reason for why you wish to block this payer and why it does not align
+  //  with the
+  //  given reason_types. This is intended to help us improve our knowledge of
+  //  types of
+  //  fraud.
 
   reason_description?: string;
 
-  // The reason you wish to block this payer, can currently be one of
-  // 'identity_fraud',
-  // 'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by one
-  // of the
-  // above then 'other' can be selected but you must provide a reason description.
+  //  The reason you wish to block this payer, can currently be one of
+  //  'identity_fraud',
+  //  'no_intent_to_pay', 'unfair_chargeback'. If the reason isn't captured by one
+  //  of the
+  //  above then 'other' can be selected but you must provide a reason
+  //  description.
 
   reason_type?: Types.BlockReasonType;
 
-  // Type of entity we will seek to get the associated emails and bank accounts to
-  // create blocks from. This can currently be one of 'customer' or 'mandate'.
+  //  Type of entity we will seek to get the associated emails and bank accounts
+  //  to
+  //  create blocks from. This can currently be one of 'customer' or 'mandate'.
 
   reference_type?: Types.BlockReferenceType;
 
-  // This field is a reference to the entity you wish to block based on its emails
-  // and bank accounts. This may be the ID of a customer or a mandate. This means
-  // in
-  // order to block by reference the entity must have already been created as a
-  // resource.
+  //  This field is a reference to the entity you wish to block based on its
+  //  emails
+  //  and bank accounts. This may be the ID of a customer or a mandate. This means
+  //  in
+  //  order to block by reference the entity must have already been created as a
+  //  resource.
 
   reference_value?: string;
 }
