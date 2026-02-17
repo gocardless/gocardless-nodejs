@@ -75,8 +75,15 @@ jobs:
     - run: cp package.json $DIST_FOLDER
     - run: cp README.md $DIST_FOLDER
     - run: npm install
-    - name: Publish the library.
-      run: npm publish $DIST_FOLDER --tag ${{ needs.check_version.outputs.npm_tag }} --provenance --access public
+    - name: Configure npm authentication for prerelease
+      if: needs.check_version.outputs.is_prerelease == 'true'
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
+    - name: Publish the library (regular release)
+      if: needs.check_version.outputs.is_prerelease == 'false'
+      run: npm publish $DIST_FOLDER
+    - name: Publish the library (prerelease)
+      if: needs.check_version.outputs.is_prerelease == 'true'
+      run: npm publish $DIST_FOLDER --tag ${{ needs.check_version.outputs.npm_tag }}
 
   create_release:
     if: github.ref == 'refs/heads/master'
