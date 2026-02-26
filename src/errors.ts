@@ -49,12 +49,27 @@ class ApiError extends GoCardlessException {
 
   static buildFromResponse(response) {
     try {
-      const {
-        statusCode,
-        body: {
-          error: { type, errors },
-        },
-      } = response;
+      const { statusCode, body } = response;
+      const error = body?.error;
+
+      if (typeof error === 'string') {
+        const wrappedResponse = {
+          ...response,
+          body: {
+            error: {
+              message: error,
+              errors: [],
+              type: 'gocardless',
+              request_id: response?.headers?.['x-request-id'] ?? null,
+              code: statusCode,
+            },
+          },
+        };
+
+        return new GoCardlessInternalError(wrappedResponse);
+      }
+
+      const { type, errors } = error;
 
       // These statuses are for unique errors
       switch (statusCode) {

@@ -96,6 +96,10 @@ interface CustomerCreateRequest {
 }
 
 interface CustomerListRequest {
+  //  Boolean indicating whether the customer has any actions required.
+
+  action_required?: Types.CustomerActionRequired;
+
   //  Cursor pointing to the start of the desired set.
 
   after?: string;
