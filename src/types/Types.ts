@@ -4042,6 +4042,11 @@ export type Customer = {
   swedish_identity_number?: string | null;
 };
 
+export enum CustomerActionRequired {
+  True = 'true',
+  False = 'false',
+}
+
 export enum CustomerCurrency {
   AUD = 'AUD',
   CAD = 'CAD',
@@ -5040,12 +5045,6 @@ export type MandateImportCreateRequestLinks = {
   creditor?: string;
 };
 
-/** Type for a mandateimportlinks resource. */
-export type MandateImportLinks = {
-  //  ID of the associated creditor.
-  creditor?: string;
-};
-
 export enum MandateImportScheme {
   Ach = 'ach',
   Autogiro = 'autogiro',
@@ -5058,6 +5057,12 @@ export enum MandateImportScheme {
   PayTo = 'pay_to',
   SepaCore = 'sepa_core',
 }
+
+/** Type for a mandateimportlinks resource. */
+export type MandateImportLinks = {
+  //  ID of the associated creditor.
+  creditor?: string;
+};
 
 export enum MandateImportStatus {
   Created = 'created',
