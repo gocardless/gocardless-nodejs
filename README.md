@@ -4,6 +4,10 @@
 
 A Node.js client for the GoCardless API. For full details of the GoCardless API, see the [API docs](https://developer.gocardless.com/).
 
+PLEASE NOTE that this is intended only to be used in server-side code. Using it in client side code would expose your API key to your users.
+
+If you are using React, we offer bindings in our [react-dropin](https://github.com/gocardless/react-dropin) library.
+
 ## Installation
 
 ```bash
