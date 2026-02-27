@@ -9,7 +9,7 @@ interface FundsAvailabilityListResponse extends Types.APIResponse {
 }
 
 interface FundsAvailabilityCheckRequest {
-  //  The amount of the payment
+  // The amount of the payment
 
   amount?: string;
 }

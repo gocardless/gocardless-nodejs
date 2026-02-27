@@ -9,7 +9,7 @@ interface LogoListResponse extends Types.APIResponse {
 }
 
 interface LogoCreateForCreditorRequest {
-  //  Base64 encoded string.
+  // Base64 encoded string.
 
   image: string;
 
