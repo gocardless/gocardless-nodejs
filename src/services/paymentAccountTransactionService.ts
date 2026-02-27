@@ -9,29 +9,29 @@ interface PaymentAccountTransactionListResponse extends Types.APIResponse {
 }
 
 interface PaymentAccountTransactionListRequest {
-  //  Cursor pointing to the start of the desired set.
+  // Cursor pointing to the start of the desired set.
 
   after?: string;
 
-  //  Cursor pointing to the end of the desired set.
+  // Cursor pointing to the end of the desired set.
 
   before?: string;
 
-  //  The direction of the transaction. Debits mean money leaving the account
-  //  (e.g. outbound payment), while credits signify money coming in (e.g. manual
-  //  top-up).
+  // The direction of the transaction. Debits mean money leaving the account (e.g.
+  // outbound payment), while credits signify money coming in (e.g. manual
+  // top-up).
 
   direction?: Types.PaymentAccountTransactionDirection;
 
-  //  Number of records to return.
+  // Number of records to return.
 
   limit?: string;
 
-  //  The beginning of query period
+  // The beginning of query period
 
   value_date_from: string;
 
-  //  The end of query period
+  // The end of query period
 
   value_date_to: string;
 }
@@ -44,10 +44,11 @@ export class PaymentAccountTransactionService {
   }
 
   public async list(
+    identity: string,
     requestParameters: PaymentAccountTransactionListRequest,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentAccountTransactionListResponse> {
-    const urlParameters = [];
+    const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payment_accounts/:identity/transactions',
       method: 'get',
@@ -68,12 +69,13 @@ export class PaymentAccountTransactionService {
   }
 
   public async *all(
+    identity: string,
     requestParameters: PaymentAccountTransactionListRequest,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.PaymentAccountTransaction, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      const list = await this.list(identity, { ...requestParameters, after: cursor }, customHeaders);
 
       for (const paymentaccounttransaction of list.payment_account_transactions) {
         yield paymentaccounttransaction;
