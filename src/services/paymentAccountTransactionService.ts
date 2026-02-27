@@ -44,10 +44,11 @@ export class PaymentAccountTransactionService {
   }
 
   public async list(
+    identity: string,
     requestParameters: PaymentAccountTransactionListRequest,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentAccountTransactionListResponse> {
-    const urlParameters = [];
+    const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/payment_accounts/:identity/transactions',
       method: 'get',
@@ -68,12 +69,13 @@ export class PaymentAccountTransactionService {
   }
 
   public async *all(
+    identity: string,
     requestParameters: PaymentAccountTransactionListRequest,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.PaymentAccountTransaction, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      const list = await this.list(identity, { ...requestParameters, after: cursor }, customHeaders);
 
       for (const paymentaccounttransaction of list.payment_account_transactions) {
         yield paymentaccounttransaction;

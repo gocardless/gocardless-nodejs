@@ -94,10 +94,11 @@ export class InstitutionService {
   }
 
   public async list_for_billing_request(
+    identity: string,
     requestParameters: InstitutionListForBillingRequestRequest,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstitutionListResponse> {
-    const urlParameters = [];
+    const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
       path: '/billing_requests/:identity/institutions',
       method: 'get',
