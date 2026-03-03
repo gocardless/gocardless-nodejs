@@ -113,3 +113,7 @@ We provide a CommonJS implementation for backwards compatibility. For CommonJS, 
 const gocardless = require('gocardless-nodejs');
 const { Environments } = require('gocardless-nodejs/constants');
 ```
+
+## Upgrading from older versions
+
+If you're upgrading from v7 or earlier to v8 or later, see: MIGRATION_V8.md
