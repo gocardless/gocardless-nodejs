@@ -296,7 +296,7 @@ export type BillingRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Specifies the context or scenario in which the payment is being made.
   // Defines whether the payment is for advance/arrears billing, point of sale
@@ -459,7 +459,7 @@ export type BillingRequestCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -663,7 +663,7 @@ export type BillingRequestInstalmentScheduleRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
@@ -863,7 +863,7 @@ export type BillingRequestMandateRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // This attribute can be set to true if the payer has indicated that multiple
   // signatures are required for the mandate. As long as every other Billing
@@ -1052,7 +1052,7 @@ export type BillingRequestPaymentRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // A custom payment reference defined by the merchant. It is only available
   // for payments on the PayTo scheme or payments using the Direct Funds
@@ -1130,7 +1130,7 @@ export type BillingRequestResourcesCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -1188,7 +1188,7 @@ export type BillingRequestResourcesCustomerBankAccount = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 };
 
 export enum BillingRequestResourcesCustomerBankAccountAccountType {
@@ -1296,7 +1296,7 @@ export type BillingRequestSubscriptionRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
@@ -1561,7 +1561,7 @@ export type BillingRequestTemplate = {
   // Key-value store of custom data that will be applied to the mandate created
   // when this request is fulfilled. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  mandate_request_metadata?: JsonMap | null;
+  mandate_request_metadata?: { [key: string]: string } | null;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
@@ -1599,7 +1599,7 @@ export type BillingRequestTemplate = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name for the template. Provides a friendly human name for the template, as
   // it is shown in the dashboard. Must not exceed 255 characters.
@@ -1621,7 +1621,7 @@ export type BillingRequestTemplate = {
   // Key-value store of custom data that will be applied to the payment created
   // when this request is fulfilled. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  payment_request_metadata?: JsonMap | null;
+  payment_request_metadata?: { [key: string]: string } | null;
 
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
@@ -1828,7 +1828,7 @@ export type BillingRequestWithActionActionsCollectBankAccount = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // A unique record such as an email address, mobile number or company number,
   // that can be used to make and accept payments.
@@ -1880,7 +1880,7 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -1938,7 +1938,7 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomerBilling
 export type BillingRequestWithActionActionsConfirmPayerDetails = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // This attribute can be set to true if the payer has indicated that multiple
   // signatures are required for the mandate. As long as every other Billing
@@ -2019,7 +2019,7 @@ export type BillingRequestWithActionMandateRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a
@@ -2204,7 +2204,7 @@ export type BillingRequestWithActionPaymentRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // A custom payment reference defined by the merchant. It is only available
   // for payments on the PayTo scheme or payments using the Direct Funds
@@ -2413,7 +2413,7 @@ export type BillingRequestWithActionBillingRequests = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Specifies the context or scenario in which the payment is being made.
   // Defines whether the payment is for advance/arrears billing, point of sale
@@ -2576,7 +2576,7 @@ export type BillingRequestWithActionBillingRequestsCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -2780,7 +2780,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
@@ -2980,7 +2980,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // This attribute can be set to true if the payer has indicated that multiple
   // signatures are required for the mandate. As long as every other Billing
@@ -3169,7 +3169,7 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // A custom payment reference defined by the merchant. It is only available
   // for payments on the PayTo scheme or payments using the Direct Funds
@@ -3247,7 +3247,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -3305,7 +3305,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 };
 
 export enum BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType {
@@ -3413,7 +3413,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
@@ -3900,7 +3900,7 @@ export type CreditorBankAccount = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Verification status of the Bank Account. Can be one of `pending`,
   // `in_review` or `successful`
@@ -4007,7 +4007,7 @@ export type Customer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -4106,7 +4106,7 @@ export type CustomerBankAccount = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 };
 
 export enum CustomerBankAccountAccountType {
@@ -4581,7 +4581,7 @@ export type InstalmentSchedule = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name of the instalment schedule, up to 100 chars. This name will also be
   // copied to the payments of the instalment schedule if you use schedule-based
@@ -4838,7 +4838,7 @@ export type Mandate = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // The earliest date that can be used as a `charge_date` on any newly created
   // payment for this mandate. This value will change over time.
@@ -5130,7 +5130,7 @@ export type MandateImportEntryBankAccount = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 };
 
 export enum MandateImportEntryBankAccountAccountType {
@@ -5191,7 +5191,7 @@ export type MandateImportEntryCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
@@ -5237,7 +5237,7 @@ export type MandateImportEntryMandate = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a
@@ -5387,7 +5387,7 @@ export type OutboundPayment = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with
   // key names up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
   // The character limit for this reference is dependent on the scheme.<br />
@@ -5608,7 +5608,7 @@ export type PayerAuthorisationBankAccount = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 };
 
 export enum PayerAuthorisationBankAccountAccountType {
@@ -5664,7 +5664,7 @@ export type PayerAuthorisationCustomer = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // The customer's postal code.
   postal_code?: string | null;
@@ -5710,7 +5710,7 @@ export type PayerAuthorisationLinks = {
 export type PayerAuthorisationMandate = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // For ACH customers only. Required for ACH customers. A string containing the
   // IP address of the payer to whom the mandate belongs (i.e. as a result of
@@ -5815,7 +5815,7 @@ export type Payment = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
   // The character limit for this reference is dependent on the scheme.<br />
@@ -6144,7 +6144,7 @@ export type Payout = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters. _Note:_ This should
   // not be used for storing PII data.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Whether a payout contains merchant revenue or partner fees.
   payout_type?: PayoutPayoutType;
@@ -6412,7 +6412,7 @@ export type RedirectFlow = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters. _Note:_ This should
   // not be used for storing PII data.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // The URL of the hosted payment pages for this redirect flow. This is the URL
   // you should redirect your customer to.
@@ -6572,7 +6572,7 @@ export type Refund = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
   // The character limit for this reference is dependent on the scheme.<br />
@@ -7057,7 +7057,7 @@ export type Subscription = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: JsonMap;
+  metadata?: { [key: string]: string };
 
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
