@@ -25,7 +25,7 @@ jobs:
     - uses: actions/checkout@v3.3.0
     - run: npm install
     - run: npm install -g typescript
-    - run: tsc -p .
+    - run: npm run build
     - uses: actions/upload-artifact@v4
       with:
         path: "dist"
