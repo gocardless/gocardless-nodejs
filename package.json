@@ -84,7 +84,11 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint src/**/*.ts",
-    "format": "prettier src --check --write && eslint src/**/*.ts --fix"
+    "format": "prettier src --check --write && eslint src/**/*.ts --fix",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:package-markers",
+    "build:esm": "tsc -p tsconfig.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:package-markers": "cp dist-esm-package.json dist/esm/package.json && cp dist-cjs-package.json dist/cjs/package.json"
   },
   "dependencies": {
     "got": "^11.8.6",
