@@ -1,6 +1,6 @@
 {
   "name": "gocardless-nodejs",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "Node.js client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments",
   "author": "GoCardless Ltd <client-libraries@gocardless.com>",
   "repository": {
@@ -20,64 +20,78 @@
     "direct debit"
   ],
   "type": "module",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./esm/index.js",
+  "types": "./types/index.d.ts",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/index.js"
+        "types": "./types/index.d.ts",
+        "default": "./esm/index.js"
       },
       "require": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/cjs/index.js"
+        "types": "./types/index.d.ts",
+        "default": "./cjs/index.js"
       }
     },
     "./client": {
       "import": {
-        "types": "./dist/types/client.d.ts",
-        "default": "./dist/esm/client.js"
+        "types": "./types/client.d.ts",
+        "default": "./esm/client.js"
       },
       "require": {
-        "types": "./dist/types/client.d.ts",
-        "default": "./dist/cjs/client.js"
+        "types": "./types/client.d.ts",
+        "default": "./cjs/client.js"
       }
     },
     "./constants": {
       "import": {
-        "types": "./dist/types/constants.d.ts",
-        "default": "./dist/esm/constants.js"
+        "types": "./types/constants.d.ts",
+        "default": "./esm/constants.js"
       },
       "require": {
-        "types": "./dist/types/constants.d.ts",
-        "default": "./dist/cjs/constants.js"
+        "types": "./types/constants.d.ts",
+        "default": "./cjs/constants.js"
       }
     },
     "./webhooks": {
       "import": {
-        "types": "./dist/types/webhooks.d.ts",
-        "default": "./dist/esm/webhooks.js"
+        "types": "./types/webhooks.d.ts",
+        "default": "./esm/webhooks.js"
       },
       "require": {
-        "types": "./dist/types/webhooks.d.ts",
-        "default": "./dist/cjs/webhooks.js"
+        "types": "./types/webhooks.d.ts",
+        "default": "./cjs/webhooks.js"
       }
     },
     "./errors": {
       "import": {
-        "types": "./dist/types/errors.d.ts",
-        "default": "./dist/esm/errors.js"
+        "types": "./types/errors.d.ts",
+        "default": "./esm/errors.js"
       },
       "require": {
-        "types": "./dist/types/errors.d.ts",
-        "default": "./dist/cjs/errors.js"
+        "types": "./types/errors.d.ts",
+        "default": "./cjs/errors.js"
       }
     },
     "./types": {
-      "types": "./dist/types/types/Types.d.ts"
+      "import": {
+        "types": "./types/types/Types.d.ts",
+        "default": "./esm/types/Types.js"
+      },
+      "require": {
+        "types": "./types/types/Types.d.ts",
+        "default": "./cjs/types/Types.js"
+      }
     },
     "./types/Types": {
-      "types": "./dist/types/types/Types.d.ts"
+      "import": {
+        "types": "./types/types/Types.d.ts",
+        "default": "./esm/types/Types.js"
+      },
+      "require": {
+        "types": "./types/types/Types.d.ts",
+        "default": "./cjs/types/Types.js"
+      }
     },
     "./package.json": "./package.json"
   },
@@ -114,7 +128,9 @@
     "typescript": "^5.0.2"
   },
   "files": [
-    "dist/",
+    "esm/",
+    "cjs/",
+    "types/",
     "LICENSE.txt",
     "README.md"
   ],
