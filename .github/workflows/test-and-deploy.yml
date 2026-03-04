@@ -30,13 +30,37 @@ jobs:
       with:
         path: "dist"
 
-  publish_to_npm:
+  check_version:
     if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.check.outputs.should_publish }}
+      version: ${{ steps.check.outputs.version }}
+    steps:
+    - uses: actions/checkout@v3.3.0
+      with:
+        fetch-depth: 0
+    - name: Check if version tag exists
+      id: check
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        if git rev-parse "v${VERSION}" >/dev/null 2>&1; then
+          echo "Tag v${VERSION} already exists, skipping publish"
+          echo "should_publish=false" >> $GITHUB_OUTPUT
+        else
+          echo "Tag v${VERSION} does not exist, will publish"
+          echo "should_publish=true" >> $GITHUB_OUTPUT
+        fi
+
+  publish_to_npm:
+    if: github.ref == 'refs/heads/master' && needs.check_version.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     container:
       image: node:lts
     needs:
     - transpile
+    - check_version
     env:
       DIST_FOLDER: "/dist/artifact"
     steps:
@@ -51,21 +75,21 @@ jobs:
       run: npm publish $DIST_FOLDER
 
   create_release:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && needs.check_version.outputs.should_publish == 'true'
     runs-on: ubuntu-latest
     needs:
     - publish_to_npm
+    - check_version
     steps:
     - uses: actions/checkout@v3.3.0
-    - name: Get version from package.json
-      id: version
-      run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      with:
+        fetch-depth: 0
     - name: Create tag and release
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git tag v${{ steps.version.outputs.version }}
-        git push origin v${{ steps.version.outputs.version }}
-        gh release create v${{ steps.version.outputs.version }} --generate-notes
+        git tag v${{ needs.check_version.outputs.version }}
+        git push origin v${{ needs.check_version.outputs.version }}
+        gh release create v${{ needs.check_version.outputs.version }} --generate-notes
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
