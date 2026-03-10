@@ -43,6 +43,27 @@ export class PaymentAccountTransactionService {
     this.api = api;
   }
 
+  public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<PaymentAccountTransactionResponse> {
+    const urlParameters = [{ key: 'identity', value: identity }];
+    const requestParams = {
+      path: '/payment_account_transactions/:identity',
+      method: 'get',
+      urlParameters,
+
+      payloadKey: null,
+      fetch: null,
+      customHeaders,
+    };
+
+    const response = await this.api.request(requestParams);
+    const formattedResponse: PaymentAccountTransactionResponse = {
+      ...response.body['payment_account_transactions'],
+      __response__: response.__response__,
+    };
+
+    return formattedResponse;
+  }
+
   public async list(
     identity: string,
     requestParameters: PaymentAccountTransactionListRequest,
