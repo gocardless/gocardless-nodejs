@@ -4262,6 +4262,7 @@ export type Event = {
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
   // <li>`outbound_payments`</li>
+  // <li>`payment_account_transactions`</li>
   // </ul>
   resource_type?: EventResourceType;
 
@@ -4278,6 +4279,7 @@ export enum EventInclude {
   OutboundPayment = 'outbound_payment',
   PayerAuthorisation = 'payer_authorisation',
   Payment = 'payment',
+  PaymentAccountTransaction = 'payment_account_transaction',
   Payout = 'payout',
   Refund = 'refund',
   SchemeIdentifier = 'scheme_identifier',
@@ -4450,6 +4452,10 @@ export type EventLinks = {
   // [payment](#core-endpoints-payments) which has been updated.
   payment?: string;
 
+  // If `resource_type` is `payment_account_transaction`, this is the ID of a
+  // transaction which has been recorded on the payment account.
+  payment_account_transaction?: string;
+
   // If `resource_type` is `billing_requests`, this is the ID of the
   // [payment](#core-endpoints-payments) which has been created for Instant Bank
   // Payment.
@@ -4489,6 +4495,7 @@ export enum EventResourceType {
   OutboundPayments = 'outbound_payments',
   PayerAuthorisations = 'payer_authorisations',
   Payments = 'payments',
+  PaymentAccountTransactions = 'payment_account_transactions',
   Payouts = 'payouts',
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
@@ -5430,6 +5437,9 @@ export type OutboundPaymentCreateRequestLinks = {
   // ID of the creditor who sends the outbound payment.
   creditor?: string;
 
+  // ID of the outbound payment import that created this outbound payment.
+  outbound_payment_import?: string;
+
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account: string;
 };
@@ -5466,6 +5476,9 @@ export type OutboundPaymentLinks = {
   // ID of the [customer](#core-endpoints-customers) that receives this outbound
   // payment
   customer?: string;
+
+  // ID of the outbound payment import that created this outbound payment.
+  outbound_payment_import?: string;
 
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account?: string;
