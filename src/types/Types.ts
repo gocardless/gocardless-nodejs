@@ -584,7 +584,6 @@ export type BillingRequestActionBankAuthorisation = {
 
 export enum BillingRequestActionBankAuthorisationAdapter {
   OpenBankingGatewayPis = 'open_banking_gateway_pis',
-  PlaidAis = 'plaid_ais',
   OpenBankingGatewayAis = 'open_banking_gateway_ais',
   BankidAis = 'bankid_ais',
   BankPayRecurring = 'bank_pay_recurring',
@@ -2701,7 +2700,6 @@ export type BillingRequestWithActionBillingRequestsActionBankAuthorisation = {
 
 export enum BillingRequestWithActionBillingRequestsActionBankAuthorisationAdapter {
   OpenBankingGatewayPis = 'open_banking_gateway_pis',
-  PlaidAis = 'plaid_ais',
   OpenBankingGatewayAis = 'open_banking_gateway_ais',
   BankidAis = 'bankid_ais',
   BankPayRecurring = 'bank_pay_recurring',
@@ -4262,6 +4260,7 @@ export type Event = {
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
   // <li>`outbound_payments`</li>
+  // <li>`payment_account_transactions`</li>
   // </ul>
   resource_type?: EventResourceType;
 
@@ -4278,6 +4277,7 @@ export enum EventInclude {
   OutboundPayment = 'outbound_payment',
   PayerAuthorisation = 'payer_authorisation',
   Payment = 'payment',
+  PaymentAccountTransaction = 'payment_account_transaction',
   Payout = 'payout',
   Refund = 'refund',
   SchemeIdentifier = 'scheme_identifier',
@@ -4450,6 +4450,10 @@ export type EventLinks = {
   // [payment](#core-endpoints-payments) which has been updated.
   payment?: string;
 
+  // If `resource_type` is `payment_account_transaction`, this is the ID of a
+  // transaction which has been recorded on the payment account.
+  payment_account_transaction?: string;
+
   // If `resource_type` is `billing_requests`, this is the ID of the
   // [payment](#core-endpoints-payments) which has been created for Instant Bank
   // Payment.
@@ -4489,6 +4493,7 @@ export enum EventResourceType {
   OutboundPayments = 'outbound_payments',
   PayerAuthorisations = 'payer_authorisations',
   Payments = 'payments',
+  PaymentAccountTransactions = 'payment_account_transactions',
   Payouts = 'payouts',
   Refunds = 'refunds',
   SchemeIdentifiers = 'scheme_identifiers',
@@ -4522,6 +4527,9 @@ export type Export = {
 
   // Download url for the export file. Subject to expiry.
   download_url?: string | null;
+
+  // Error message if the export encountered an error during processing.
+  error_message?: string | null;
 
   // The type of the export
   export_type?: ExportExportType;
@@ -5430,6 +5438,9 @@ export type OutboundPaymentCreateRequestLinks = {
   // ID of the creditor who sends the outbound payment.
   creditor?: string;
 
+  // ID of the outbound payment import that created this outbound payment.
+  outbound_payment_import?: string;
+
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account: string;
 };
@@ -5466,6 +5477,9 @@ export type OutboundPaymentLinks = {
   // ID of the [customer](#core-endpoints-customers) that receives this outbound
   // payment
   customer?: string;
+
+  // ID of the outbound payment import that created this outbound payment.
+  outbound_payment_import?: string;
 
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account?: string;
@@ -5511,6 +5525,227 @@ export enum OutboundPaymentVerificationsRecipientBankAccountHolderVerificationRe
 
 export enum OutboundPaymentVerificationsRecipientBankAccountHolderVerificationType {
   ConfirmationOfPayee = 'confirmation_of_payee',
+}
+
+/** Type for a outboundpaymentimport resource. */
+export type OutboundPaymentImport = {
+  // The sum of all import entry amounts, in the lowest denomination for the
+  // currency (e.g. pence in GBP, cents in EUR).
+  amount_sum?: number;
+
+  // The link to the GoCardless dashboard to review and authorise the import
+  authorisation_url?: string;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
+  created_at?: string;
+
+  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // Currently only "GBP" is supported.
+  currency?: OutboundPaymentImportCurrency;
+
+  //
+  entry_counts?: OutboundPaymentImportEntryCounts;
+
+  // Unique identifier, beginning with "IM".
+  id: string;
+
+  // Resources linked to this OutboundPaymentImport.
+  links?: OutboundPaymentImportLinks;
+
+  // The status of the outbound payment import.
+  // <ul>
+  // <li>`created`: The initial state of a new import.</li>
+  // <li>`validating`: Import validation in progress.</li>
+  // <li>`invalid`: Import validation failed.</li>
+  // <li>`valid`: Import validation succeeded.</li>
+  // <li>`processing`: Authorisation received; payments are being
+  // generated.</li>
+  // <li>`processed`: All entries have been successfully converted into outbound
+  // payments.</li>
+  // <li>`cancelled`: The import was cancelled by a user or automatically
+  // expired by the system.</li>
+  // </ul>
+  status?: OutboundPaymentImportStatus;
+};
+
+/** Type for a outboundpaymentimportentryitem resource. */
+export type OutboundPaymentImportEntryItem = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount: number;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with
+  // key names up to 50 characters and values up to 500 characters.
+  metadata?: { [key: string]: string };
+
+  // ID of the customer bank account which receives the outbound payment.
+  recipient_bank_account_id: string;
+
+  // An optional reference that will appear on your customer's bank statement.
+  // The character limit for this reference is dependent on the scheme.<br />
+  // <strong>Faster Payments</strong> - 18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+  reference?: string;
+
+  // Bank payment scheme to process the outbound payment. Currently only
+  // "faster_payments" (GBP) is supported.
+  scheme: OutboundPaymentImportEntryItemScheme;
+};
+
+export enum OutboundPaymentImportEntryItemScheme {
+  FasterPayments = 'faster_payments',
+}
+
+/** Type for a outboundpaymentimportcreaterequestlinks resource. */
+export type OutboundPaymentImportCreateRequestLinks = {
+  // ID of the creditor who sends the outbound payments from the import.
+  creditor?: string;
+};
+
+export enum OutboundPaymentImportStatus {
+  Created = 'created',
+  Validating = 'validating',
+  Valid = 'valid',
+  Invalid = 'invalid',
+  Processing = 'processing',
+  Processed = 'processed',
+  Cancelled = 'cancelled',
+}
+
+export enum OutboundPaymentImportCurrency {
+  GBP = 'GBP',
+}
+
+/** Type for a outboundpaymentimportentrycounts resource. */
+export type OutboundPaymentImportEntryCounts = {
+  // Count of entries that encountered a terminal error during the outbound
+  // payment generation process.
+  failed_to_process?: number;
+
+  // Count of entries that failed validation checks.
+  invalid?: number;
+
+  // Count of entries successfully converted into outbound payments after the
+  // import was authorised.
+  processed?: number;
+
+  // The total number of entries included in the import.
+  total?: number;
+
+  // Count of entries that passed validation checks.
+  valid?: number;
+
+  // Total count of entries checked against bank account holder verification
+  // services (e.g., CoP).
+  verified?: number;
+
+  // Count of entries where the account holder name was a direct match.
+  verified_with_full_match?: number;
+
+  // Count of entries where the account holder name did not match the records.
+  verified_with_no_match?: number;
+
+  // Count of entries where the account holder name was a close match.
+  verified_with_partial_match?: number;
+
+  // Count of entries where the verification service could not return a
+  // definitive result.
+  verified_with_unable_to_match?: number;
+};
+
+/** Type for a outboundpaymentimportlinks resource. */
+export type OutboundPaymentImportLinks = {
+  // ID of the creditor who sends the outbound payments from the import.
+  creditor?: string;
+};
+
+/** Type for a outboundpaymentimportentry resource. */
+export type OutboundPaymentImportEntry = {
+  // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
+  // cents in EUR).
+  amount?: number | null;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
+  // was created.
+  created_at?: string;
+
+  // Unique identifier, beginning with "IE".
+  id?: string;
+
+  // Resources linked to this OutboundPaymentImportEntry.
+  links?: OutboundPaymentImportEntryLinks;
+
+  // Key-value store of custom data. Up to 3 keys are permitted, with
+  // key names up to 50 characters and values up to 500 characters.
+  metadata?: { [key: string]: string } | null;
+
+  // Fixed [timestamp](#api-usage-dates-and-times), recording when this entry
+  // was processed.
+  processed_at?: string | null;
+
+  // An optional reference for the outbound payment.
+  reference?: string | null;
+
+  // Bank payment scheme to process the outbound payment. Currently only
+  // "faster_payments" (GBP) is supported.
+  scheme?: OutboundPaymentImportEntryScheme;
+
+  // Per-field validation errors for this entry, keyed by resource type and then
+  // by field name.
+  validation_errors?: OutboundPaymentImportEntryValidationErrors | null;
+
+  // The result of bank account holder verification, if performed.
+  verification_result?: OutboundPaymentImportEntryVerificationResult | null;
+};
+
+/** Type for a outboundpaymentimportentrylinks resource. */
+export type OutboundPaymentImportEntryLinks = {
+  // ID of the associated outbound payment, once the entry has been processed.
+  outbound_payment?: string | null;
+
+  // ID of the associated import.
+  outbound_payment_import?: string;
+
+  // ID of the recipient bank account.
+  recipient_bank_account?: string | null;
+};
+
+export enum OutboundPaymentImportEntryScheme {
+  FasterPayments = 'faster_payments',
+}
+
+/** Type for a outboundpaymentimportentryvalidationerrors resource. */
+export type OutboundPaymentImportEntryValidationErrors = {
+  // Validation errors for the outbound payment fields.
+  outbound_payment?: OutboundPaymentImportEntryValidationErrorsOutboundPayment;
+};
+
+/** Type for a outboundpaymentimportentryvalidationerrorsoutboundpayment resource. */
+export type OutboundPaymentImportEntryValidationErrorsOutboundPayment = {
+  // Errors related to the amount field.
+  amount?: string[];
+
+  // Errors related to the recipient bank account.
+  recipient_bank_account?: string[];
+
+  // Errors related to the reference field.
+  reference?: string[];
+
+  // Bank payment scheme to process the outbound payment. Currently only
+  // "faster_payments" (GBP) is supported.
+  scheme?: OutboundPaymentImportEntryValidationErrorsOutboundPaymentScheme;
+};
+
+export enum OutboundPaymentImportEntryValidationErrorsOutboundPaymentScheme {
+  FasterPayments = 'faster_payments',
+}
+
+export enum OutboundPaymentImportEntryVerificationResult {
+  FullMatch = 'full_match',
+  PartialMatch = 'partial_match',
+  NoMatch = 'no_match',
+  UnableToMatch = 'unable_to_match',
 }
 
 /** Type for a payerauthorisation resource. */
