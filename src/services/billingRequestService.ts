@@ -39,7 +39,7 @@ interface BillingRequestCreateRequest {
   // processors understand the payment scenario and apply appropriate processing
   // rules and risk controls.
 
-  payment_context_code?: Types.BillingRequestPaymentContextCode;
+  payment_context_code?: `${Types.BillingRequestPaymentContextCode}`;
 
   // Specifies the underlying purpose of the payment. Defines the specific reason
   // or type of service/goods the payment relates to, improving straight-through
@@ -60,7 +60,7 @@ interface BillingRequestCreateRequest {
   // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
   // the complete list of valid codes.
 
-  purpose_code?: Types.BillingRequestPurposeCode;
+  purpose_code?: `${Types.BillingRequestPurposeCode}`;
 
   //
   subscription_request?: Types.BillingRequestSubscriptionRequest;
@@ -97,7 +97,7 @@ interface BillingRequestCollectBankAccountRequest {
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
 
-  account_type?: Types.BillingRequestAccountType;
+  account_type?: `${Types.BillingRequestAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -202,13 +202,13 @@ interface BillingRequestListRequest {
   // used</li>
   // </ul>
 
-  status?: Types.BillingRequestStatus;
+  status?: `${Types.BillingRequestStatus}`;
 }
 
 interface BillingRequestNotifyRequest {
   // Currently, can only be `email`.
 
-  notification_type: Types.BillingRequestNotificationType;
+  notification_type: `${Types.BillingRequestNotificationType}`;
 
   // URL that the payer can be redirected to after authorising the payment.
 

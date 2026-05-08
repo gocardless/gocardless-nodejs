@@ -89,7 +89,7 @@ interface BillingRequestTemplateCreateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
 
-  mandate_request_verify?: Types.BillingRequestTemplateMandateRequestVerify;
+  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -192,7 +192,7 @@ interface BillingRequestTemplateUpdateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
 
-  mandate_request_verify?: Types.BillingRequestTemplateMandateRequestVerify;
+  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.

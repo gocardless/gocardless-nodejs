@@ -41,7 +41,7 @@ interface OutboundPaymentCreateRequest {
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
 
-  scheme: Types.OutboundPaymentScheme;
+  scheme: `${Types.OutboundPaymentScheme}`;
 }
 
 interface OutboundPaymentWithdrawRequest {
@@ -77,7 +77,7 @@ interface OutboundPaymentWithdrawRequest {
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
 
-  scheme: Types.OutboundPaymentScheme;
+  scheme: `${Types.OutboundPaymentScheme}`;
 }
 
 interface OutboundPaymentCancelRequest {
@@ -129,7 +129,7 @@ interface OutboundPaymentListRequest {
   // after executing.</li>
   // </ul>
 
-  status?: Types.OutboundPaymentStatus;
+  status?: `${Types.OutboundPaymentStatus}`;
 }
 
 interface OutboundPaymentUpdateRequest {

@@ -55,7 +55,7 @@ interface SubscriptionCreateRequest {
   // The unit of time between customer charge dates. One of `weekly`, `monthly` or
   // `yearly`.
 
-  interval_unit: Types.SubscriptionIntervalUnit;
+  interval_unit: `${Types.SubscriptionIntervalUnit}`;
 
   // Resources linked to this Subscription.
   links: Types.SubscriptionCreateRequestLinks;
@@ -70,7 +70,7 @@ interface SubscriptionCreateRequest {
   // when the interval_unit is `yearly`.
   //
 
-  month?: Types.SubscriptionMonth;
+  month?: `${Types.SubscriptionMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
@@ -141,7 +141,7 @@ interface SubscriptionListRequest {
   // </ul>
   // Omit entirely to include subscriptions in all states.
 
-  status?: Types.SubscriptionStatus[];
+  status?: `${Types.SubscriptionStatus}`[];
 }
 
 interface SubscriptionUpdateRequest {

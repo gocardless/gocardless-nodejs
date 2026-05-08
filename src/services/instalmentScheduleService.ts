@@ -19,7 +19,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency: Types.InstalmentScheduleCurrency;
+  currency: `${Types.InstalmentScheduleCurrency}`;
 
   // An explicit array of instalment payments, each specifying at least an
   // `amount` and `charge_date`. See [create (with
@@ -90,7 +90,7 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency: Types.InstalmentScheduleCurrency;
+  currency: `${Types.InstalmentScheduleCurrency}`;
 
   // Frequency of the payments you want to create, together with an array of
   // payment
@@ -178,7 +178,7 @@ interface InstalmentScheduleListRequest {
 
   // At most five valid status values
 
-  status?: Types.InstalmentScheduleStatus[];
+  status?: `${Types.InstalmentScheduleStatus}`[];
 }
 
 interface InstalmentScheduleUpdateRequest {

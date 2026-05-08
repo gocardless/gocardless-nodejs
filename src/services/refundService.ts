@@ -87,7 +87,7 @@ interface RefundListRequest {
   //   <li>`mandate`: returns refunds created against mandates only</li>
   // </ul>
 
-  refund_type?: Types.RefundRefundType;
+  refund_type?: `${Types.RefundRefundType}`;
 }
 
 interface RefundUpdateRequest {

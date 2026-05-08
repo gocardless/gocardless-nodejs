@@ -21,12 +21,12 @@ export type Balance = {
   // pending_payouts will only be non-zero while we are generating and
   // submitting the payouts to our partner bank.</li>
   // </ul>
-  balance_type?: BalanceBalanceType;
+  balance_type?: `${BalanceBalanceType}`;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: BalanceCurrency;
+  currency?: `${BalanceCurrency}`;
 
   // Dynamic [timestamp](#api-usage-dates-and-times) recording when this
   // resource was last updated.
@@ -106,7 +106,7 @@ export type BankAccountHolderVerification = {
   //   <li>`unable_to_match`: The verification could not be performed due to
   // recipient bank issues or technical issues </li>
   // </ul>
-  result?: BankAccountHolderVerificationResult;
+  result?: `${BankAccountHolderVerificationResult}`;
 
   // The status of the bank account holder verification.
   // <ul>
@@ -116,12 +116,12 @@ export type BankAccountHolderVerification = {
   // used.</li>
   // </ul>
   //
-  status: BankAccountHolderVerificationStatus;
+  status: `${BankAccountHolderVerificationStatus}`;
 
   // Type of the verification that has been performed
   // eg. [Confirmation of
   // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
-  type: BankAccountHolderVerificationType;
+  type: `${BankAccountHolderVerificationType}`;
 };
 
 /** Type for a bankaccountholderverificationcreaterequestlinks resource. */
@@ -149,7 +149,7 @@ export enum BankAccountHolderVerificationStatus {
 /** Type for a bankauthorisation resource. */
 export type BankAuthorisation = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
-  authorisation_type?: BankAuthorisationAuthorisationType;
+  authorisation_type?: `${BankAuthorisationAuthorisationType}`;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when the user has
   // been authorised.
@@ -232,7 +232,7 @@ export type BankAuthorisationLinks = {
 export type BankDetailsLookup = {
   // Array of [schemes](#mandates_scheme) supported for this bank account. This
   // will be an empty array if the bank account is not reachable by any schemes.
-  available_debit_schemes?: BankDetailsLookupAvailableDebitScheme[];
+  available_debit_schemes?: `${BankDetailsLookupAvailableDebitScheme}`[];
 
   // The name of the bank with which the account is held (if available).
   bank_name?: string | null;
@@ -303,7 +303,7 @@ export type BillingRequest = {
   // transactions, ecommerce, or account transfers. This helps banks and payment
   // processors understand the payment scenario and apply appropriate processing
   // rules and risk controls.
-  payment_context_code?: BillingRequestPaymentContextCode;
+  payment_context_code?: `${BillingRequestPaymentContextCode}`;
 
   // Specifies the underlying purpose of the payment. Defines the specific
   // reason or type of service/goods the payment relates to, improving
@@ -322,7 +322,7 @@ export type BillingRequest = {
   // See [Billing Request Purpose
   // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
   // the complete list of valid codes.
-  purpose_code?: BillingRequestPurposeCode;
+  purpose_code?: `${BillingRequestPurposeCode}`;
 
   //
   resources?: BillingRequestResources;
@@ -338,7 +338,7 @@ export type BillingRequest = {
   // <li>`cancelled`: the billing request has been cancelled and cannot be
   // used</li>
   // </ul>
-  status?: BillingRequestStatus;
+  status?: `${BillingRequestStatus}`;
 
   // Request for a subscription
   subscription_request?: BillingRequestSubscriptionRequest | null;
@@ -556,7 +556,7 @@ export type BillingRequestAction = {
   // - `success`: we inferred the institution and added it to the resources of a
   // Billing Request
   //
-  institution_guess_status?: BillingRequestActionInstitutionGuessStatus;
+  institution_guess_status?: `${BillingRequestActionInstitutionGuessStatus}`;
 
   // Informs you whether the action is required to fulfil the billing request or
   // not.
@@ -566,20 +566,20 @@ export type BillingRequestAction = {
   requires_actions?: string[];
 
   // Status of the action
-  status?: BillingRequestActionStatus;
+  status?: `${BillingRequestActionStatus}`;
 
   // Unique identifier for the action.
-  type?: BillingRequestActionType;
+  type?: `${BillingRequestActionType}`;
 };
 
 /** Type for a billingrequestactionbankauthorisation resource. */
 export type BillingRequestActionBankAuthorisation = {
   // Which authorisation adapter will be used to power these authorisations
   // (GoCardless internal use only)
-  adapter?: BillingRequestActionBankAuthorisationAdapter;
+  adapter?: `${BillingRequestActionBankAuthorisationAdapter}`;
 
   // What type of bank authorisations are supported on this billing request
-  authorisation_type?: BillingRequestActionBankAuthorisationAuthorisationType;
+  authorisation_type?: `${BillingRequestActionBankAuthorisationAuthorisationType}`;
 };
 
 export enum BillingRequestActionBankAuthorisationAdapter {
@@ -727,7 +727,7 @@ export type BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule = {
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-  interval_unit: BillingRequestInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit;
+  interval_unit: `${BillingRequestInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit}`;
 
   // The date on which the first payment should be charged. Must be on or after
   // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
@@ -823,7 +823,7 @@ export type BillingRequestMandateRequest = {
   //   paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
   //
-  authorisation_source?: BillingRequestMandateRequestAuthorisationSource;
+  authorisation_source?: `${BillingRequestMandateRequestAuthorisationSource}`;
 
   // This attribute represents the authorisation type between the payer and
   // merchant. It can be set to `one_off`,
@@ -855,7 +855,7 @@ export type BillingRequestMandateRequest = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: BillingRequestMandateRequestFundsSettlement;
+  funds_settlement?: `${BillingRequestMandateRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestMandateRequest.
   links?: BillingRequestMandateRequestLinks;
@@ -909,7 +909,7 @@ export type BillingRequestMandateRequest = {
   // See [Billing Requests: Creating Verified
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
-  verify?: BillingRequestMandateRequestVerify;
+  verify?: `${BillingRequestMandateRequestVerify}`;
 };
 
 export enum BillingRequestMandateRequestAuthorisationSource {
@@ -965,7 +965,7 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
   // period. For example Monthly it will expire on the same day of the next
   // month, or yearly the same day of the next year.
   //
-  alignment?: BillingRequestMandateRequestConstraintsPeriodicLimitAlignment;
+  alignment?: `${BillingRequestMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // (Optional) The maximum number of payments that can be collected in this
   // periodic limit.
@@ -979,7 +979,7 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
 
   // The repeating period for this mandate. Defaults to flexible for PayTo if
   // not specified.
-  period?: BillingRequestMandateRequestConstraintsPeriodicLimitPeriod;
+  period?: `${BillingRequestMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
 export enum BillingRequestMandateRequestConstraintsPeriodicLimitAlignment {
@@ -1044,7 +1044,7 @@ export type BillingRequestPaymentRequest = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: BillingRequestPaymentRequestFundsSettlement;
+  funds_settlement?: `${BillingRequestPaymentRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestPaymentRequest.
   links?: BillingRequestPaymentRequestLinks;
@@ -1152,7 +1152,7 @@ export type BillingRequestResourcesCustomerBankAccount = {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: BillingRequestResourcesCustomerBankAccountAccountType;
+  account_type?: `${BillingRequestResourcesCustomerBankAccountAccountType}`;
 
   // A token to uniquely refer to a set of bank account details. This feature is
   // still in early access and is only available for certain organisations.
@@ -1288,7 +1288,7 @@ export type BillingRequestSubscriptionRequest = {
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-  interval_unit?: BillingRequestSubscriptionRequestIntervalUnit;
+  interval_unit?: `${BillingRequestSubscriptionRequestIntervalUnit}`;
 
   // Resources linked to this BillingRequestSubscriptionRequest.
   links?: BillingRequestSubscriptionRequestLinks;
@@ -1301,7 +1301,7 @@ export type BillingRequestSubscriptionRequest = {
   // applies
   // when the interval_unit is `yearly`.
   //
-  month?: BillingRequestSubscriptionRequestMonth;
+  month?: `${BillingRequestSubscriptionRequestMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
@@ -1477,7 +1477,7 @@ export type BillingRequestFlowPrefilledBankAccount = {
   // Bank account type for USD-denominated bank accounts. Must not be provided
   // for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: BillingRequestFlowPrefilledBankAccountAccountType;
+  account_type?: `${BillingRequestFlowPrefilledBankAccountAccountType}`;
 };
 
 export enum BillingRequestFlowPrefilledBankAccountAccountType {
@@ -1594,7 +1594,7 @@ export type BillingRequestTemplate = {
   // See [Billing Requests: Creating Verified
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
-  mandate_request_verify?: BillingRequestTemplateMandateRequestVerify;
+  mandate_request_verify?: `${BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -1699,7 +1699,7 @@ export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
   // period. For example Monthly it will expire on the same day of the next
   // month, or yearly the same day of the next year.
   //
-  alignment?: BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment;
+  alignment?: `${BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // (Optional) The maximum number of payments that can be collected in this
   // periodic limit.
@@ -1713,7 +1713,7 @@ export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
 
   // The repeating period for this mandate. Defaults to flexible for PayTo if
   // not specified.
-  period?: BillingRequestTemplateMandateRequestConstraintsPeriodicLimitPeriod;
+  period?: `${BillingRequestTemplateMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
 export enum BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment {
@@ -1798,7 +1798,7 @@ export type BillingRequestWithActionActionsCollectBankAccount = {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: BillingRequestWithActionActionsCollectBankAccountAccountType;
+  account_type?: `${BillingRequestWithActionActionsCollectBankAccountAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -1990,7 +1990,7 @@ export type BillingRequestWithActionMandateRequest = {
   //   paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
   //
-  authorisation_source?: BillingRequestWithActionMandateRequestAuthorisationSource;
+  authorisation_source?: `${BillingRequestWithActionMandateRequestAuthorisationSource}`;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // required for PayTo and VRP.
@@ -2014,7 +2014,7 @@ export type BillingRequestWithActionMandateRequest = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: BillingRequestWithActionMandateRequestFundsSettlement;
+  funds_settlement?: `${BillingRequestWithActionMandateRequestFundsSettlement}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -2063,7 +2063,7 @@ export type BillingRequestWithActionMandateRequest = {
   // See [Billing Requests: Creating Verified
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
-  verify?: BillingRequestWithActionMandateRequestVerify;
+  verify?: `${BillingRequestWithActionMandateRequestVerify}`;
 };
 
 export enum BillingRequestWithActionMandateRequestAuthorisationSource {
@@ -2119,7 +2119,7 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
   // period. For example Monthly it will expire on the same day of the next
   // month, or yearly the same day of the next year.
   //
-  alignment?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment;
+  alignment?: `${BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // (Optional) The maximum number of payments that can be collected in this
   // periodic limit.
@@ -2133,7 +2133,7 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
 
   // The repeating period for this mandate. Defaults to flexible for PayTo if
   // not specified.
-  period?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod;
+  period?: `${BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
 export enum BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment {
@@ -2199,7 +2199,7 @@ export type BillingRequestWithActionPaymentRequest = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: BillingRequestWithActionPaymentRequestFundsSettlement;
+  funds_settlement?: `${BillingRequestWithActionPaymentRequestFundsSettlement}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -2295,7 +2295,7 @@ export enum BillingRequestWithActionPurposeCode {
 /** Type for a billingrequestwithactionbankauthorisations resource. */
 export type BillingRequestWithActionBankAuthorisations = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
-  authorisation_type?: BillingRequestWithActionBankAuthorisationsAuthorisationType;
+  authorisation_type?: `${BillingRequestWithActionBankAuthorisationsAuthorisationType}`;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when the user has
   // been authorised.
@@ -2419,7 +2419,7 @@ export type BillingRequestWithActionBillingRequests = {
   // transactions, ecommerce, or account transfers. This helps banks and payment
   // processors understand the payment scenario and apply appropriate processing
   // rules and risk controls.
-  payment_context_code?: BillingRequestWithActionBillingRequestsPaymentContextCode;
+  payment_context_code?: `${BillingRequestWithActionBillingRequestsPaymentContextCode}`;
 
   // Specifies the underlying purpose of the payment. Defines the specific
   // reason or type of service/goods the payment relates to, improving
@@ -2438,7 +2438,7 @@ export type BillingRequestWithActionBillingRequests = {
   // See [Billing Request Purpose
   // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
   // the complete list of valid codes.
-  purpose_code?: BillingRequestWithActionBillingRequestsPurposeCode;
+  purpose_code?: `${BillingRequestWithActionBillingRequestsPurposeCode}`;
 
   //
   resources?: BillingRequestWithActionBillingRequestsResources;
@@ -2454,7 +2454,7 @@ export type BillingRequestWithActionBillingRequests = {
   // <li>`cancelled`: the billing request has been cancelled and cannot be
   // used</li>
   // </ul>
-  status?: BillingRequestWithActionBillingRequestsStatus;
+  status?: `${BillingRequestWithActionBillingRequestsStatus}`;
 
   // Request for a subscription
   subscription_request?: BillingRequestWithActionBillingRequestsSubscriptionRequest | null;
@@ -2672,7 +2672,7 @@ export type BillingRequestWithActionBillingRequestsAction = {
   // - `success`: we inferred the institution and added it to the resources of a
   // Billing Request
   //
-  institution_guess_status?: BillingRequestWithActionBillingRequestsActionInstitutionGuessStatus;
+  institution_guess_status?: `${BillingRequestWithActionBillingRequestsActionInstitutionGuessStatus}`;
 
   // Informs you whether the action is required to fulfil the billing request or
   // not.
@@ -2682,20 +2682,20 @@ export type BillingRequestWithActionBillingRequestsAction = {
   requires_actions?: string[];
 
   // Status of the action
-  status?: BillingRequestWithActionBillingRequestsActionStatus;
+  status?: `${BillingRequestWithActionBillingRequestsActionStatus}`;
 
   // Unique identifier for the action.
-  type?: BillingRequestWithActionBillingRequestsActionType;
+  type?: `${BillingRequestWithActionBillingRequestsActionType}`;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsactionbankauthorisation resource. */
 export type BillingRequestWithActionBillingRequestsActionBankAuthorisation = {
   // Which authorisation adapter will be used to power these authorisations
   // (GoCardless internal use only)
-  adapter?: BillingRequestWithActionBillingRequestsActionBankAuthorisationAdapter;
+  adapter?: `${BillingRequestWithActionBillingRequestsActionBankAuthorisationAdapter}`;
 
   // What type of bank authorisations are supported on this billing request
-  authorisation_type?: BillingRequestWithActionBillingRequestsActionBankAuthorisationAuthorisationType;
+  authorisation_type?: `${BillingRequestWithActionBillingRequestsActionBankAuthorisationAuthorisationType}`;
 };
 
 export enum BillingRequestWithActionBillingRequestsActionBankAuthorisationAdapter {
@@ -2843,7 +2843,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInst
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-  interval_unit: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit;
+  interval_unit: `${BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit}`;
 
   // The date on which the first payment should be charged. Must be on or after
   // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
@@ -2939,7 +2939,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   //   paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
   //
-  authorisation_source?: BillingRequestWithActionBillingRequestsMandateRequestAuthorisationSource;
+  authorisation_source?: `${BillingRequestWithActionBillingRequestsMandateRequestAuthorisationSource}`;
 
   // This attribute represents the authorisation type between the payer and
   // merchant. It can be set to `one_off`,
@@ -2971,7 +2971,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement;
+  funds_settlement?: `${BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestWithActionBillingRequestsMandateRequest.
   links?: BillingRequestWithActionBillingRequestsMandateRequestLinks;
@@ -3025,7 +3025,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   // See [Billing Requests: Creating Verified
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
-  verify?: BillingRequestWithActionBillingRequestsMandateRequestVerify;
+  verify?: `${BillingRequestWithActionBillingRequestsMandateRequestVerify}`;
 };
 
 export enum BillingRequestWithActionBillingRequestsMandateRequestAuthorisationSource {
@@ -3081,7 +3081,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   // period. For example Monthly it will expire on the same day of the next
   // month, or yearly the same day of the next year.
   //
-  alignment?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment;
+  alignment?: `${BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // (Optional) The maximum number of payments that can be collected in this
   // periodic limit.
@@ -3095,7 +3095,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
 
   // The repeating period for this mandate. Defaults to flexible for PayTo if
   // not specified.
-  period?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitPeriod;
+  period?: `${BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
 export enum BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment {
@@ -3160,7 +3160,7 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: BillingRequestWithActionBillingRequestsPaymentRequestFundsSettlement;
+  funds_settlement?: `${BillingRequestWithActionBillingRequestsPaymentRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestWithActionBillingRequestsPaymentRequest.
   links?: BillingRequestWithActionBillingRequestsPaymentRequestLinks;
@@ -3268,7 +3268,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType;
+  account_type?: `${BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType}`;
 
   // A token to uniquely refer to a set of bank account details. This feature is
   // still in early access and is only available for certain organisations.
@@ -3404,7 +3404,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-  interval_unit?: BillingRequestWithActionBillingRequestsSubscriptionRequestIntervalUnit;
+  interval_unit?: `${BillingRequestWithActionBillingRequestsSubscriptionRequestIntervalUnit}`;
 
   // Resources linked to this BillingRequestWithActionBillingRequestsSubscriptionRequest.
   links?: BillingRequestWithActionBillingRequestsSubscriptionRequestLinks;
@@ -3417,7 +3417,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // applies
   // when the interval_unit is `yearly`.
   //
-  month?: BillingRequestWithActionBillingRequestsSubscriptionRequestMonth;
+  month?: `${BillingRequestWithActionBillingRequestsSubscriptionRequestMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
@@ -3488,7 +3488,7 @@ export type Block = {
   // This
   // can currently be one of 'email', 'email_domain', 'bank_account', or
   // 'bank_name'.
-  block_type?: BlockBlockType;
+  block_type?: `${BlockBlockType}`;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this
   // resource was created.
@@ -3512,7 +3512,7 @@ export type Block = {
   // one of the
   // above then 'other' can be selected but you must provide a reason
   // description.
-  reason_type?: BlockReasonType;
+  reason_type?: `${BlockReasonType}`;
 
   // This field is a reference to the value you wish to block. This may be the
   // raw value
@@ -3586,7 +3586,7 @@ export type Creditor = {
 
   // The type of business of the creditor. Currently, `individual`, `company`,
   // `charity`, `partnership`, and `trust` are supported.
-  creditor_type?: CreditorCreditorType;
+  creditor_type?: `${CreditorCreditorType}`;
 
   // Boolean value indicating whether creditor has the [Custom Payment
   // Pages](https://hub.gocardless.com/s/article/Custom-payment-pages)
@@ -3598,7 +3598,7 @@ export type Creditor = {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-  fx_payout_currency?: CreditorFxPayoutCurrency;
+  fx_payout_currency?: `${CreditorFxPayoutCurrency}`;
 
   // Unique identifier, beginning with "CR".
   id?: string;
@@ -3656,7 +3656,7 @@ export type Creditor = {
   // verify their account so they can receive payouts, and should visit the
   // verification flow.</li>
   // </ul>
-  verification_status?: CreditorVerificationStatus;
+  verification_status?: `${CreditorVerificationStatus}`;
 };
 
 export enum CreditorCreditorType {
@@ -3775,7 +3775,7 @@ export type CreditorSchemeIdentifier = {
   created_at?: string;
 
   // The currency of the scheme identifier.
-  currency?: CreditorSchemeIdentifierCurrency;
+  currency?: `${CreditorSchemeIdentifierCurrency}`;
 
   // Scheme identifier's support email address.
   email?: string;
@@ -3809,11 +3809,11 @@ export type CreditorSchemeIdentifier = {
   region?: string | null;
 
   // The scheme which this scheme identifier applies to.
-  scheme?: CreditorSchemeIdentifierScheme;
+  scheme?: `${CreditorSchemeIdentifierScheme}`;
 
   // The status of the scheme identifier. Only `active` scheme identifiers will
   // be applied to a creditor and used against payments.
-  status?: CreditorSchemeIdentifierStatus;
+  status?: `${CreditorSchemeIdentifierStatus}`;
 };
 
 export enum CreditorSchemeIdentifierCurrency {
@@ -3867,7 +3867,7 @@ export type CreditorBankAccount = {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: CreditorBankAccountAccountType;
+  account_type?: `${CreditorBankAccountAccountType}`;
 
   // Name of bank, taken from the bank details.
   bank_name?: string;
@@ -3902,7 +3902,7 @@ export type CreditorBankAccount = {
 
   // Verification status of the Bank Account. Can be one of `pending`,
   // `in_review` or `successful`
-  verification_status?: CreditorBankAccountVerificationStatus;
+  verification_status?: `${CreditorBankAccountVerificationStatus}`;
 };
 
 export enum CreditorBankAccountAccountType {
@@ -4069,7 +4069,7 @@ export type CustomerBankAccount = {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: CustomerBankAccountAccountType;
+  account_type?: `${CustomerBankAccountAccountType}`;
 
   // A token to uniquely refer to a set of bank account details. This feature is
   // still in early access and is only available for certain organisations.
@@ -4137,7 +4137,7 @@ export type CustomerNotification = {
   // `handled`,
   // which means the integrator sent the notification themselves.
   //
-  action_taken?: CustomerNotificationActionTaken;
+  action_taken?: `${CustomerNotificationActionTaken}`;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this
   // action was taken.
@@ -4165,7 +4165,7 @@ export type CustomerNotification = {
   // <li>`instalment_schedule_created`</li>
   // <li>`instalment_schedule_cancelled`</li>
   // </ul>
-  type?: CustomerNotificationType;
+  type?: `${CustomerNotificationType}`;
 };
 
 export enum CustomerNotificationActionTaken {
@@ -4262,7 +4262,7 @@ export type Event = {
   // <li>`outbound_payments`</li>
   // <li>`payment_account_transactions`</li>
   // </ul>
-  resource_type?: EventResourceType;
+  resource_type?: `${EventResourceType}`;
 
   // Audit information about the source of the event.
   source?: EventSource;
@@ -4339,7 +4339,7 @@ export type EventDetails = {
   // <li>`customer`: this event was triggered by a Customer</li>
   // <li>`payer`: this event was triggered by a Payer</li>
   // </ul>
-  origin?: EventDetailsOrigin;
+  origin?: `${EventDetailsOrigin}`;
 
   // When we send a creditor `creditor_updated` webhook, this tells you which
   // property on the creditor has been updated
@@ -4354,7 +4354,7 @@ export type EventDetails = {
   reason_code?: string;
 
   // A bank payment scheme. Set when a bank is the origin of the event.
-  scheme?: EventDetailsScheme;
+  scheme?: `${EventDetailsScheme}`;
 
   // Whether the payment will be retried automatically. Set on a payment failed
   // event.
@@ -4506,7 +4506,7 @@ export type EventSource = {
   name?: string;
 
   // The type of the event's source.
-  type?: EventSourceType;
+  type?: `${EventSourceType}`;
 };
 
 export enum EventSourceType {
@@ -4532,7 +4532,7 @@ export type Export = {
   error_message?: string | null;
 
   // The type of the export
-  export_type?: ExportExportType;
+  export_type?: `${ExportExportType}`;
 
   // Unique identifier, beginning with "EX".
   id?: string;
@@ -4579,7 +4579,7 @@ export type InstalmentSchedule = {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: InstalmentScheduleCurrency;
+  currency?: `${InstalmentScheduleCurrency}`;
 
   // Unique identifier, beginning with "IS".
   id?: string;
@@ -4615,7 +4615,7 @@ export type InstalmentSchedule = {
   // <li>`cancelled`: the schedule has been cancelled</li>
   // <li>`errored`: one or more payments have failed</li>
   // </ul>
-  status?: InstalmentScheduleStatus;
+  status?: `${InstalmentScheduleStatus}`;
 
   // The total amount of the instalment schedule, defined as the sum of all
   // individual
@@ -4678,7 +4678,7 @@ export type InstalmentScheduleInstalments = {
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-  interval_unit: InstalmentScheduleInstalmentsIntervalUnit;
+  interval_unit: `${InstalmentScheduleInstalmentsIntervalUnit}`;
 
   // The date on which the first payment should be charged. Must be on or after
   // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
@@ -4752,7 +4752,7 @@ export type Institution = {
   name?: string;
 
   // The status of the institution
-  status?: InstitutionStatus;
+  status?: `${InstitutionStatus}`;
 };
 
 /** Type for a institutionbranchcode resource. */
@@ -4812,7 +4812,7 @@ export type Mandate = {
   //   paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
   //
-  authorisation_source?: MandateAuthorisationSource;
+  authorisation_source?: `${MandateAuthorisationSource}`;
 
   // (Optional) Payto and VRP Scheme specific information
   consent_parameters?: MandateConsentParameters | null;
@@ -4820,7 +4820,7 @@ export type Mandate = {
   // (Optional) Specifies the type of authorisation agreed between the payer and
   // merchant. It can be set to one-off, recurring or standing for ACH, or
   // single, recurring and sporadic for PAD.
-  consent_type?: MandateConsentType | null;
+  consent_type?: `${MandateConsentType}` | null;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
   // was created.
@@ -4835,7 +4835,7 @@ export type Mandate = {
   // merchant where
   //   invoicing will be handled separately.
   //
-  funds_settlement?: MandateFundsSettlement;
+  funds_settlement?: `${MandateFundsSettlement}`;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
@@ -4893,7 +4893,7 @@ export type Mandate = {
   // <li>`blocked`: the mandate has been blocked and payments cannot be
   // created</li>
   // </ul>
-  status?: MandateStatus;
+  status?: `${MandateStatus}`;
 
   // [Timestamp](#api-usage-dates-and-times) recording when this mandate was
   // verified.
@@ -4935,7 +4935,7 @@ export type MandateConsentParameters = {
   max_payments_per_period?: number;
 
   // The repeating period for this mandate
-  period?: MandateConsentParametersPeriod;
+  period?: `${MandateConsentParametersPeriod}`;
 
   // The date from which payments can be taken
   start_date?: string;
@@ -5007,7 +5007,7 @@ export type MandateImport = {
   // The scheme of the mandates to be imported.<br>All mandates in a single
   // mandate
   // import must be for the same scheme.
-  scheme?: MandateImportScheme;
+  scheme?: `${MandateImportScheme}`;
 
   // The status of the mandate import.
   // <ul>
@@ -5022,7 +5022,7 @@ export type MandateImport = {
   // team member it will be in this state while mandates are imported.</li>
   // <li>`processed`: When all mandates have been imported successfully.</li>
   // </ul>
-  status?: MandateImportStatus;
+  status?: `${MandateImportStatus}`;
 };
 
 /** Type for a mandateimportcreaterequestlinks resource. */
@@ -5114,7 +5114,7 @@ export type MandateImportEntryBankAccount = {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: MandateImportEntryBankAccountAccountType;
+  account_type?: `${MandateImportEntryBankAccountAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -5241,7 +5241,7 @@ export type MandateImportEntryMandate = {
   //   paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
   //
-  authorisation_source?: MandateImportEntryMandateAuthorisationSource;
+  authorisation_source?: `${MandateImportEntryMandateAuthorisationSource}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -5333,7 +5333,7 @@ export type NegativeBalanceLimit = {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: NegativeBalanceLimitCurrency;
+  currency?: `${NegativeBalanceLimitCurrency}`;
 
   // Unique identifier, beginning with "NBL".
   id?: string;
@@ -5374,7 +5374,7 @@ export type OutboundPayment = {
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
   // Currently only "GBP" is supported.
-  currency?: OutboundPaymentCurrency;
+  currency?: `${OutboundPaymentCurrency}`;
 
   // A human-readable description of the outbound payment
   description?: string;
@@ -5405,7 +5405,7 @@ export type OutboundPayment = {
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
-  scheme?: OutboundPaymentScheme;
+  scheme?: `${OutboundPaymentScheme}`;
 
   // One of:
   // <ul>
@@ -5427,7 +5427,7 @@ export type OutboundPayment = {
   // <li>`failed`: The payment was not sent, usually due to an error while or
   // after executing.</li>
   // </ul>
-  status?: OutboundPaymentStatus;
+  status?: `${OutboundPaymentStatus}`;
 
   // Contains details of the verifications performed for the outbound payment
   verifications?: OutboundPaymentVerifications | null;
@@ -5508,12 +5508,12 @@ export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification =
   //   <li>`unable_to_match`: The verification could not be performed due to
   // recipient bank issues or technical issues </li>
   // </ul>
-  result?: OutboundPaymentVerificationsRecipientBankAccountHolderVerificationResult;
+  result?: `${OutboundPaymentVerificationsRecipientBankAccountHolderVerificationResult}`;
 
   // Type of the verification that has been performed
   // eg. [Confirmation of
   // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
-  type?: OutboundPaymentVerificationsRecipientBankAccountHolderVerificationType;
+  type?: `${OutboundPaymentVerificationsRecipientBankAccountHolderVerificationType}`;
 };
 
 export enum OutboundPaymentVerificationsRecipientBankAccountHolderVerificationResult {
@@ -5542,7 +5542,7 @@ export type OutboundPaymentImport = {
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
   // Currently only "GBP" is supported.
-  currency?: OutboundPaymentImportCurrency;
+  currency?: `${OutboundPaymentImportCurrency}`;
 
   //
   entry_counts?: OutboundPaymentImportEntryCounts;
@@ -5566,7 +5566,7 @@ export type OutboundPaymentImport = {
   // <li>`cancelled`: The import was cancelled by a user or automatically
   // expired by the system.</li>
   // </ul>
-  status?: OutboundPaymentImportStatus;
+  status?: `${OutboundPaymentImportStatus}`;
 };
 
 /** Type for a outboundpaymentimportentryitem resource. */
@@ -5590,7 +5590,7 @@ export type OutboundPaymentImportEntryItem = {
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
-  scheme: OutboundPaymentImportEntryItemScheme;
+  scheme: `${OutboundPaymentImportEntryItemScheme}`;
 };
 
 export enum OutboundPaymentImportEntryItemScheme {
@@ -5689,14 +5689,14 @@ export type OutboundPaymentImportEntry = {
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
-  scheme?: OutboundPaymentImportEntryScheme;
+  scheme?: `${OutboundPaymentImportEntryScheme}`;
 
   // Per-field validation errors for this entry, keyed by resource type and then
   // by field name.
   validation_errors?: OutboundPaymentImportEntryValidationErrors | null;
 
   // The result of bank account holder verification, if performed.
-  verification_result?: OutboundPaymentImportEntryVerificationResult | null;
+  verification_result?: `${OutboundPaymentImportEntryVerificationResult}` | null;
 };
 
 /** Type for a outboundpaymentimportentrylinks resource. */
@@ -5734,7 +5734,7 @@ export type OutboundPaymentImportEntryValidationErrorsOutboundPayment = {
 
   // Bank payment scheme to process the outbound payment. Currently only
   // "faster_payments" (GBP) is supported.
-  scheme?: OutboundPaymentImportEntryValidationErrorsOutboundPaymentScheme;
+  scheme?: `${OutboundPaymentImportEntryValidationErrorsOutboundPaymentScheme}`;
 };
 
 export enum OutboundPaymentImportEntryValidationErrorsOutboundPaymentScheme {
@@ -5787,7 +5787,7 @@ export type PayerAuthorisation = {
   // <li>`failed`: The PayerAuthorisation has failed and customer, bank_account
   // and mandate is not created</li>
   // </ul>
-  status?: PayerAuthorisationStatus;
+  status?: `${PayerAuthorisationStatus}`;
 };
 
 /** Type for a payerauthorisationbankaccount resource. */
@@ -5814,7 +5814,7 @@ export type PayerAuthorisationBankAccount = {
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: PayerAuthorisationBankAccountAccountType;
+  account_type?: `${PayerAuthorisationBankAccountAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -5965,7 +5965,7 @@ export type PayerAuthorisationMandate = {
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
   // "sepa_core" are supported.
-  scheme?: PayerAuthorisationMandateScheme;
+  scheme?: `${PayerAuthorisationMandateScheme}`;
 };
 
 export enum PayerAuthorisationMandateScheme {
@@ -6025,7 +6025,7 @@ export type Payment = {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: PaymentCurrency;
+  currency?: `${PaymentCurrency}`;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
@@ -6101,7 +6101,7 @@ export type Payment = {
   // banks.</li>
   // <li>`charged_back`: the payment has been charged back</li>
   // </ul>
-  status?: PaymentStatus;
+  status?: `${PaymentStatus}`;
 };
 
 export enum PaymentCurrency {
@@ -6190,7 +6190,7 @@ export type PaymentFx = {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-  fx_currency?: PaymentFxFxCurrency;
+  fx_currency?: `${PaymentFxFxCurrency}`;
 };
 
 export enum PaymentFxFxCurrency {
@@ -6283,7 +6283,7 @@ export type PaymentAccountTransaction = {
   counterparty_name?: string;
 
   // The currency of the transaction.
-  currency?: PaymentAccountTransactionCurrency;
+  currency?: `${PaymentAccountTransactionCurrency}`;
 
   // The description of the transaction, if available
   description?: string;
@@ -6291,7 +6291,7 @@ export type PaymentAccountTransaction = {
   // The direction of the transaction. Debits mean money leaving the account
   // (e.g. outbound payment), while credits signify money coming in (e.g. manual
   // top-up).
-  direction?: PaymentAccountTransactionDirection;
+  direction?: `${PaymentAccountTransactionDirection}`;
 
   // The unique ID of the payment account transaction.
   id?: string;
@@ -6351,7 +6351,7 @@ export type Payout = {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: PayoutCurrency;
+  currency?: `${PayoutCurrency}`;
 
   // Fees that have already been deducted from the payout amount in minor unit
   // (e.g. pence in GBP, cents in EUR), inclusive of tax if applicable.
@@ -6382,7 +6382,7 @@ export type Payout = {
   metadata?: { [key: string]: string };
 
   // Whether a payout contains merchant revenue or partner fees.
-  payout_type?: PayoutPayoutType;
+  payout_type?: `${PayoutPayoutType}`;
 
   // Reference which appears on the creditor's bank statement.
   reference?: string;
@@ -6396,7 +6396,7 @@ export type Payout = {
   // <li>`bounced`: the payout bounced when sent, the payout can be
   // retried.</li>
   // </ul>
-  status?: PayoutStatus;
+  status?: `${PayoutStatus}`;
 
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
   // currency in which tax is paid out to the tax authorities of your tax
@@ -6449,7 +6449,7 @@ export type PayoutFx = {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-  fx_currency?: PayoutFxFxCurrency;
+  fx_currency?: `${PayoutFxFxCurrency}`;
 };
 
 export enum PayoutFxFxCurrency {
@@ -6525,7 +6525,7 @@ export type PayoutItem = {
   // for merchants.</li>
   // </ul>
   //
-  type?: PayoutItemType;
+  type?: `${PayoutItemType}`;
 };
 
 export enum PayoutItemInclude2020TaxCutover {
@@ -6558,7 +6558,7 @@ export type PayoutItemTaxis = {
   // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: PayoutItemTaxisCurrency;
+  currency?: `${PayoutItemTaxisCurrency}`;
 
   // The amount of tax to be paid out to the tax authorities in fractional
   // currency; the lowest denomination for the currency (e.g. pence in GBP,
@@ -6657,7 +6657,7 @@ export type RedirectFlow = {
   // will only allow the set-up of a mandate for the specified scheme. It is
   // recommended that you leave this blank so the most appropriate scheme is
   // picked based on the customer's bank account.
-  scheme?: RedirectFlowScheme;
+  scheme?: `${RedirectFlowScheme}`;
 
   // The customer's session ID must be provided when the redirect flow is set up
   // and again when it is completed. This allows integrators to ensure that the
@@ -6683,7 +6683,7 @@ export type RedirectFlowPrefilledBankAccount = {
   // Bank account type for USD-denominated bank accounts. Must not be provided
   // for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
-  account_type?: RedirectFlowPrefilledBankAccountAccountType;
+  account_type?: `${RedirectFlowPrefilledBankAccountAccountType}`;
 };
 
 export enum RedirectFlowPrefilledBankAccountAccountType {
@@ -6840,7 +6840,7 @@ export type Refund = {
   // <li>`bounced`: the refund has failed to be paid</li>
   // <li>`funds_returned`: the refund has had its funds returned</li>
   // </ul>
-  status?: RefundStatus;
+  status?: `${RefundStatus}`;
 };
 
 /** Type for a refundcreaterequestlinks resource. */
@@ -6884,7 +6884,7 @@ export type RefundFx = {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
-  fx_currency?: RefundFxFxCurrency;
+  fx_currency?: `${RefundFxFxCurrency}`;
 };
 
 export enum RefundFxFxCurrency {
@@ -7087,7 +7087,7 @@ export type SchemeIdentifier = {
   created_at?: string;
 
   // The currency of the scheme identifier.
-  currency?: SchemeIdentifierCurrency;
+  currency?: `${SchemeIdentifierCurrency}`;
 
   // Scheme identifier's support email address.
   email?: string;
@@ -7121,11 +7121,11 @@ export type SchemeIdentifier = {
   region?: string | null;
 
   // The scheme which this scheme identifier applies to.
-  scheme?: SchemeIdentifierScheme;
+  scheme?: `${SchemeIdentifierScheme}`;
 
   // The status of the scheme identifier. Only `active` scheme identifiers will
   // be applied to a creditor and used against payments.
-  status?: SchemeIdentifierStatus;
+  status?: `${SchemeIdentifierStatus}`;
 };
 
 /** Type for a schemeidentifiercreaterequestlinks resource. */
@@ -7285,7 +7285,7 @@ export type Subscription = {
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
-  interval_unit?: SubscriptionIntervalUnit;
+  interval_unit?: `${SubscriptionIntervalUnit}`;
 
   // Resources linked to this Subscription.
   links?: SubscriptionLinks;
@@ -7298,7 +7298,7 @@ export type Subscription = {
   // applies
   // when the interval_unit is `yearly`.
   //
-  month?: SubscriptionMonth;
+  month?: `${SubscriptionMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
   // each payment created. Must not exceed 255 characters.
@@ -7346,7 +7346,7 @@ export type Subscription = {
   // <li>`paused`: the subscription has been paused and will not create
   // payments</li>
   // </ul>
-  status?: SubscriptionStatus;
+  status?: `${SubscriptionStatus}`;
 
   // Up to 10 upcoming payments with their amounts and charge dates.
   upcoming_payments?: SubscriptionUpcomingPayment[];

@@ -19,7 +19,7 @@ interface BlockCreateRequest {
   // can currently be one of 'email', 'email_domain', 'bank_account', or
   // 'bank_name'.
 
-  block_type?: Types.BlockBlockType;
+  block_type?: `${Types.BlockBlockType}`;
 
   // This field is required if the reason_type is other. It should be a
   // description of
@@ -37,7 +37,7 @@ interface BlockCreateRequest {
   // of the
   // above then 'other' can be selected but you must provide a reason description.
 
-  reason_type?: Types.BlockReasonType;
+  reason_type?: `${Types.BlockReasonType}`;
 
   // This field is a reference to the value you wish to block. This may be the raw
   // value
@@ -69,7 +69,7 @@ interface BlockListRequest {
   // can currently be one of 'email', 'email_domain', 'bank_account', or
   // 'bank_name'.
 
-  block_type?: Types.BlockBlockType;
+  block_type?: `${Types.BlockBlockType}`;
 
   // The creation date of this Block.
   created_at?: Types.CreatedAtFilter;
@@ -84,7 +84,7 @@ interface BlockListRequest {
   // of the
   // above then 'other' can be selected but you must provide a reason description.
 
-  reason_type?: Types.BlockReasonType;
+  reason_type?: `${Types.BlockReasonType}`;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this
   // resource was updated.
@@ -115,12 +115,12 @@ interface BlockBlockByRefRequest {
   // of the
   // above then 'other' can be selected but you must provide a reason description.
 
-  reason_type?: Types.BlockReasonType;
+  reason_type?: `${Types.BlockReasonType}`;
 
   // Type of entity we will seek to get the associated emails and bank accounts to
   // create blocks from. This can currently be one of 'customer' or 'mandate'.
 
-  reference_type?: Types.BlockReferenceType;
+  reference_type?: `${Types.BlockReferenceType}`;
 
   // This field is a reference to the entity you wish to block based on its emails
   // and bank accounts. This may be the ID of a customer or a mandate. This means

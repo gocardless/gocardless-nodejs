@@ -16,7 +16,7 @@ interface MandateImportCreateRequest {
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
   // "sepa_core" are supported.
 
-  scheme: Types.MandateImportScheme;
+  scheme: `${Types.MandateImportScheme}`;
 }
 
 export class MandateImportService {

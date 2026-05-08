@@ -19,7 +19,7 @@ interface SchemeIdentifierCreateRequest {
 
   // The scheme which this scheme identifier applies to.
 
-  scheme: Types.SchemeIdentifierScheme;
+  scheme: `${Types.SchemeIdentifierScheme}`;
 }
 
 interface SchemeIdentifierListRequest {

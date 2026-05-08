@@ -59,7 +59,7 @@ interface MandateImportEntryListRequest {
   // error, see the 'processing_errors' value</li>
   // </ul>
 
-  status?: Types.MandateImportEntryStatus;
+  status?: `${Types.MandateImportEntryStatus}`;
 }
 
 export class MandateImportEntryService {

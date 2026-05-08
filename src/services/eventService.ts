@@ -56,7 +56,7 @@ interface EventListRequest {
   // <li>`payment_account_transaction`</li>
   // </ul>
 
-  include?: Types.EventInclude;
+  include?: `${Types.EventInclude}`;
 
   // ID of an [instalment schedule](#core-endpoints-instalment-schedules). If
   // specified, this endpoint will return all events for the given instalment
@@ -129,7 +129,7 @@ interface EventListRequest {
   // <li>`payment_account_transactions`</li>
   // </ul>
 
-  resource_type?: Types.EventResourceType;
+  resource_type?: `${Types.EventResourceType}`;
 
   // ID of a [scheme identifier](#core-endpoints-scheme-identifiers). If
   // specified, this endpoint will return all events for the given scheme

@@ -21,7 +21,7 @@ interface PaymentAccountTransactionListRequest {
   // outbound payment), while credits signify money coming in (e.g. manual
   // top-up).
 
-  direction?: Types.PaymentAccountTransactionDirection;
+  direction?: `${Types.PaymentAccountTransactionDirection}`;
 
   // Number of records to return.
 

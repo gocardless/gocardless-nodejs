@@ -46,7 +46,7 @@ interface OutboundPaymentImportListRequest {
   // by the system.</li>
   // </ul>
 
-  status?: Types.OutboundPaymentImportStatus;
+  status?: `${Types.OutboundPaymentImportStatus}`;
 }
 
 export class OutboundPaymentImportService {

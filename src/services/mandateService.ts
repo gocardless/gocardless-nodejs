@@ -21,7 +21,7 @@ interface MandateCreateRequest {
   // authenticated (maps to SEC code: PPD)
   //
 
-  authorisation_source?: Types.MandateAuthorisationSource;
+  authorisation_source?: `${Types.MandateAuthorisationSource}`;
 
   // Resources linked to this Mandate.
   links: Types.MandateCreateRequestLinks;
@@ -106,7 +106,7 @@ interface MandateListRequest {
 
   // One or more valid statuses
 
-  status?: Types.MandateStatus[];
+  status?: `${Types.MandateStatus}`[];
 }
 
 interface MandateUpdateRequest {

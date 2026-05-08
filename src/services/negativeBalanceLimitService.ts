@@ -25,7 +25,7 @@ interface NegativeBalanceLimitListRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: Types.NegativeBalanceLimitCurrency;
+  currency?: `${Types.NegativeBalanceLimitCurrency}`;
 
   // Number of records to return.
 

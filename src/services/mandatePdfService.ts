@@ -24,7 +24,7 @@ interface MandatePdfCreateRequest {
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
 
-  account_type?: Types.MandatePdfAccountType;
+  account_type?: `${Types.MandatePdfAccountType}`;
 
   // The first line of the customer's address.
 
@@ -140,7 +140,7 @@ interface MandatePdfCreateRequest {
   // by the mandate. One of `weekly`, `monthly` or `yearly`. Is required if
   // `subscription_amount` has been provided.
 
-  subscription_frequency?: Types.MandatePdfSubscriptionFrequency;
+  subscription_frequency?: `${Types.MandatePdfSubscriptionFrequency}`;
 
   // For Swedish customers only. The civic/company number (personnummer,
   // samordningsnummer, or organisationsnummer) of the customer. Should only be

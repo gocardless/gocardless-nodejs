@@ -31,7 +31,7 @@ interface PaymentCreateRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency: Types.PaymentCurrency;
+  currency: `${Types.PaymentCurrency}`;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
@@ -65,7 +65,7 @@ interface PaymentCreateRequest {
   // recurring subscription payment).</li>
   // </ul>
 
-  psu_interaction_type?: Types.PaymentPsuInteractionType;
+  psu_interaction_type?: `${Types.PaymentPsuInteractionType}`;
 
   // An optional reference that will appear on your customer's bank statement. The
   // character limit for this reference is dependent on the scheme.<br />
@@ -119,7 +119,7 @@ interface PaymentListRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: Types.PaymentCurrency;
+  currency?: `${Types.PaymentCurrency}`;
 
   // ID of a customer to filter payments by. If you pass this parameter, you
   // cannot also pass `creditor`.
@@ -148,7 +148,7 @@ interface PaymentListRequest {
   // <li>`desc`</li>
   // </ul>
 
-  sort_direction?: Types.PaymentSortDirection;
+  sort_direction?: `${Types.PaymentSortDirection}`;
 
   // Field by which to sort records.
   // One of:
@@ -157,7 +157,7 @@ interface PaymentListRequest {
   // <li>`amount`</li>
   // </ul>
 
-  sort_field?: Types.PaymentSortField;
+  sort_field?: `${Types.PaymentSortField}`;
 
   // One of:
   // <ul>
@@ -177,7 +177,7 @@ interface PaymentListRequest {
   // <li>`charged_back`: the payment has been charged back</li>
   // </ul>
 
-  status?: Types.PaymentStatus;
+  status?: `${Types.PaymentStatus}`;
 
   // Unique identifier, beginning with "SB".
 

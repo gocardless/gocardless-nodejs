@@ -28,7 +28,7 @@ interface CreditorCreateRequest {
   // The type of business of the creditor. Currently, `individual`, `company`,
   // `charity`, `partnership`, and `trust` are supported.
 
-  creditor_type: Types.CreditorCreditorType;
+  creditor_type: `${Types.CreditorCreditorType}`;
 
   // The creditor's trading name.
 

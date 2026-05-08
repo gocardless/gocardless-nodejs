@@ -98,7 +98,7 @@ interface CustomerCreateRequest {
 interface CustomerListRequest {
   // Boolean indicating whether the customer has any actions required.
 
-  action_required?: Types.CustomerActionRequired;
+  action_required?: `${Types.CustomerActionRequired}`;
 
   // Cursor pointing to the start of the desired set.
 
@@ -115,7 +115,7 @@ interface CustomerListRequest {
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: Types.CustomerCurrency;
+  currency?: `${Types.CustomerCurrency}`;
 
   // Number of records to return.
 
@@ -128,7 +128,7 @@ interface CustomerListRequest {
   // <li>`desc`</li>
   // </ul>
 
-  sort_direction?: Types.CustomerSortDirection;
+  sort_direction?: `${Types.CustomerSortDirection}`;
 
   // Field by which to sort records.
   // One of:
@@ -138,7 +138,7 @@ interface CustomerListRequest {
   // <li>`created_at`</li>
   // </ul>
 
-  sort_field?: Types.CustomerSortField;
+  sort_field?: `${Types.CustomerSortField}`;
 }
 
 interface CustomerUpdateRequest {

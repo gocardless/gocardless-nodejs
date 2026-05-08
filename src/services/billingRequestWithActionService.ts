@@ -39,7 +39,7 @@ interface BillingRequestWithActionCreateWithActionsRequest {
   // processors understand the payment scenario and apply appropriate processing
   // rules and risk controls.
 
-  payment_context_code?: Types.BillingRequestWithActionPaymentContextCode;
+  payment_context_code?: `${Types.BillingRequestWithActionPaymentContextCode}`;
 
   // Specifies the underlying purpose of the payment. Defines the specific reason
   // or type of service/goods the payment relates to, improving straight-through
@@ -60,7 +60,7 @@ interface BillingRequestWithActionCreateWithActionsRequest {
   // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
   // the complete list of valid codes.
 
-  purpose_code?: Types.BillingRequestWithActionPurposeCode;
+  purpose_code?: `${Types.BillingRequestWithActionPurposeCode}`;
 }
 
 export class BillingRequestWithActionService {

@@ -24,7 +24,7 @@ interface CreditorBankAccountCreateRequest {
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
 
-  account_type?: Types.CreditorBankAccountAccountType;
+  account_type?: `${Types.CreditorBankAccountAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
