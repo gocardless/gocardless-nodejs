@@ -351,7 +351,7 @@ export class PaymentService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'payments',
       fetch: null,
       customHeaders,
     };
@@ -376,7 +376,7 @@ export class PaymentService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'payments',
       fetch: null,
       customHeaders,
     };

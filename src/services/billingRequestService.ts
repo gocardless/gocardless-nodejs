@@ -285,7 +285,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -310,7 +310,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -335,7 +335,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -360,7 +360,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -385,7 +385,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -471,7 +471,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -492,7 +492,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -517,7 +517,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -542,7 +542,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };

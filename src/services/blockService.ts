@@ -232,7 +232,7 @@ export class BlockService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'blocks',
       fetch: null,
       customHeaders,
     };
@@ -253,7 +253,7 @@ export class BlockService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'blocks',
       fetch: null,
       customHeaders,
     };

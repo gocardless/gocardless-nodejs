@@ -348,7 +348,7 @@ export class SubscriptionService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'subscriptions',
       fetch: null,
       customHeaders,
     };
@@ -373,7 +373,7 @@ export class SubscriptionService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'subscriptions',
       fetch: null,
       customHeaders,
     };
@@ -398,7 +398,7 @@ export class SubscriptionService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'subscriptions',
       fetch: null,
       customHeaders,
     };

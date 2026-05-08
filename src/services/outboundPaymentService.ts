@@ -183,7 +183,7 @@ export class OutboundPaymentService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'outbound_payments',
       fetch: null,
       customHeaders,
     };
@@ -208,7 +208,7 @@ export class OutboundPaymentService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'outbound_payments',
       fetch: null,
       customHeaders,
     };
@@ -229,7 +229,7 @@ export class OutboundPaymentService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'outbound_payments',
       fetch: null,
       customHeaders,
     };

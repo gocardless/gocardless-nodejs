@@ -197,7 +197,7 @@ export class CreditorBankAccountService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'creditor_bank_accounts',
       fetch: null,
       customHeaders,
     };

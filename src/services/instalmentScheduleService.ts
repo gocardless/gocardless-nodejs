@@ -340,7 +340,7 @@ export class InstalmentScheduleService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'instalment_schedules',
       fetch: null,
       customHeaders,
     };

@@ -260,7 +260,7 @@ export class MandateService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'mandates',
       fetch: null,
       customHeaders,
     };
@@ -285,7 +285,7 @@ export class MandateService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'mandates',
       fetch: null,
       customHeaders,
     };

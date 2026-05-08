@@ -225,7 +225,7 @@ export class CustomerBankAccountService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'customer_bank_accounts',
       fetch: null,
       customHeaders,
     };

@@ -108,7 +108,7 @@ export class WebhookService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'webhooks',
       fetch: null,
       customHeaders,
     };
