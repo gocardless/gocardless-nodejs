@@ -1,14 +1,35 @@
 class GoCardlessException extends Error {}
 
 class MalformedResponseError extends GoCardlessException {
+  static BODY_PREVIEW_MAX_LENGTH = 500;
+
   public response: object;
   public requestId: string;
+  public statusCode: number | null;
 
   public constructor(message, response) {
-    super(message);
+    super(MalformedResponseError.buildMessage(message, response));
 
     this.response = response;
-    this.requestId = response.headers['x-request-id'];
+    this.statusCode = response?.statusCode ?? null;
+    this.requestId = response?.headers?.['x-request-id'] ?? null;
+  }
+
+  private static buildMessage(message, response): string {
+    let full = message;
+    const statusCode = response?.statusCode;
+    if (statusCode !== undefined && statusCode !== null) {
+      full += ` (HTTP ${statusCode})`;
+    }
+    const body = typeof response?.body === 'string' ? response.body : response?.rawBody?.toString?.();
+    if (body) {
+      const preview =
+        body.length > MalformedResponseError.BODY_PREVIEW_MAX_LENGTH
+          ? body.slice(0, MalformedResponseError.BODY_PREVIEW_MAX_LENGTH) + '...'
+          : body;
+      full += `: ${preview}`;
+    }
+    return full;
   }
 }
 
