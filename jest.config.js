@@ -15,5 +15,14 @@ export default {
         },
       },
     ],
+    '^.+\\.js$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!uuid)',
+  ],
 };
