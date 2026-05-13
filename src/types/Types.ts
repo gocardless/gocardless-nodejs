@@ -4105,6 +4105,11 @@ export type CustomerBankAccount = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
+
+  // Whether this customer bank account is registered as a trusted recipient for
+  // Outbound Payments. Only present when the feature is enabled for the
+  // organisation.
+  trusted_recipient?: boolean;
 };
 
 export enum CustomerBankAccountAccountType {
