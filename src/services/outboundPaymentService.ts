@@ -173,7 +173,6 @@ export class OutboundPaymentService {
   }
 
   public async withdraw(
-    identity: string,
     requestParameters?: Partial<OutboundPaymentWithdrawRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
@@ -329,7 +328,7 @@ export class OutboundPaymentService {
     return formattedResponse;
   }
 
-  public async stats(identity: string, customHeaders: Types.JsonMap = {}): Promise<OutboundPaymentResponse> {
+  public async stats(customHeaders: Types.JsonMap = {}): Promise<OutboundPaymentResponse> {
     const urlParameters = [];
     const requestParams = {
       path: '/outbound_payments/stats',
