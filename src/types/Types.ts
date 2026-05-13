@@ -292,7 +292,7 @@ export type BillingRequest = {
   links?: BillingRequestLinks;
 
   // Request for a mandate
-  mandate_request?: BillingRequestMandateRequest;
+  mandate_request?: BillingRequestMandateRequest | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -314,7 +314,7 @@ export type BillingRequest = {
   payment_purpose_code?: string;
 
   // Request for a one-off strongly authorised payment
-  payment_request?: BillingRequestPaymentRequest;
+  payment_request?: BillingRequestPaymentRequest | null;
 
   // Specifies the high-level purpose/category of a mandate and/or payment using
   // a set of pre-defined categories. Provides context on the nature and reason
@@ -2408,7 +2408,7 @@ export type BillingRequestWithActionBillingRequests = {
   links?: BillingRequestWithActionBillingRequestsLinks;
 
   // Request for a mandate
-  mandate_request?: BillingRequestWithActionBillingRequestsMandateRequest;
+  mandate_request?: BillingRequestWithActionBillingRequestsMandateRequest | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -2430,7 +2430,7 @@ export type BillingRequestWithActionBillingRequests = {
   payment_purpose_code?: string;
 
   // Request for a one-off strongly authorised payment
-  payment_request?: BillingRequestWithActionBillingRequestsPaymentRequest;
+  payment_request?: BillingRequestWithActionBillingRequestsPaymentRequest | null;
 
   // Specifies the high-level purpose/category of a mandate and/or payment using
   // a set of pre-defined categories. Provides context on the nature and reason
