@@ -34,7 +34,7 @@ export class BalanceService {
   }
 
   public async list(
-    requestParameters: BalanceListRequest,
+    requestParameters?: Partial<BalanceListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BalanceListResponse> {
     const urlParameters = [];
@@ -58,7 +58,7 @@ export class BalanceService {
   }
 
   public async *all(
-    requestParameters: BalanceListRequest,
+    requestParameters?: Partial<BalanceListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Balance, void, unknown> {
     let cursor = undefined;

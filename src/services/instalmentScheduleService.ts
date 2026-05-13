@@ -248,7 +248,7 @@ export class InstalmentScheduleService {
   }
 
   public async list(
-    requestParameters: InstalmentScheduleListRequest,
+    requestParameters?: Partial<InstalmentScheduleListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleListResponse> {
     const urlParameters = [];
@@ -272,7 +272,7 @@ export class InstalmentScheduleService {
   }
 
   public async *all(
-    requestParameters: InstalmentScheduleListRequest,
+    requestParameters?: Partial<InstalmentScheduleListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {
     let cursor = undefined;
@@ -310,7 +310,7 @@ export class InstalmentScheduleService {
 
   public async update(
     identity: string,
-    requestParameters: InstalmentScheduleUpdateRequest,
+    requestParameters?: Partial<InstalmentScheduleUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

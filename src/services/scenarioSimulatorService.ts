@@ -22,7 +22,7 @@ export class ScenarioSimulatorService {
 
   public async run(
     identity: string,
-    requestParameters: ScenarioSimulatorRunRequest,
+    requestParameters?: Partial<ScenarioSimulatorRunRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<ScenarioSimulatorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

@@ -164,7 +164,7 @@ export class MandateService {
   }
 
   public async list(
-    requestParameters: MandateListRequest,
+    requestParameters?: Partial<MandateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateListResponse> {
     const urlParameters = [];
@@ -188,7 +188,7 @@ export class MandateService {
   }
 
   public async *all(
-    requestParameters: MandateListRequest,
+    requestParameters?: Partial<MandateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Mandate, void, unknown> {
     let cursor = undefined;
@@ -226,7 +226,7 @@ export class MandateService {
 
   public async update(
     identity: string,
-    requestParameters: MandateUpdateRequest,
+    requestParameters?: Partial<MandateUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -251,7 +251,7 @@ export class MandateService {
 
   public async cancel(
     identity: string,
-    requestParameters: MandateCancelRequest,
+    requestParameters?: Partial<MandateCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -276,7 +276,7 @@ export class MandateService {
 
   public async reinstate(
     identity: string,
-    requestParameters: MandateReinstateRequest,
+    requestParameters?: Partial<MandateReinstateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

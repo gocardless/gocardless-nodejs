@@ -92,7 +92,7 @@ export class PayerAuthorisationService {
 
   public async update(
     identity: string,
-    requestParameters: PayerAuthorisationUpdateRequest,
+    requestParameters?: Partial<PayerAuthorisationUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

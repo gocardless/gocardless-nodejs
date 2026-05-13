@@ -133,7 +133,7 @@ export class CustomerBankAccountService {
   }
 
   public async list(
-    requestParameters: CustomerBankAccountListRequest,
+    requestParameters?: Partial<CustomerBankAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CustomerBankAccountListResponse> {
     const urlParameters = [];
@@ -157,7 +157,7 @@ export class CustomerBankAccountService {
   }
 
   public async *all(
-    requestParameters: CustomerBankAccountListRequest,
+    requestParameters?: Partial<CustomerBankAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CustomerBankAccount, void, unknown> {
     let cursor = undefined;
@@ -195,7 +195,7 @@ export class CustomerBankAccountService {
 
   public async update(
     identity: string,
-    requestParameters: CustomerBankAccountUpdateRequest,
+    requestParameters?: Partial<CustomerBankAccountUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CustomerBankAccountResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

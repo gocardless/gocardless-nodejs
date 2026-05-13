@@ -34,7 +34,7 @@ export class OutboundPaymentImportEntryService {
   }
 
   public async list(
-    requestParameters: OutboundPaymentImportEntryListRequest,
+    requestParameters?: Partial<OutboundPaymentImportEntryListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentImportEntryListResponse> {
     const urlParameters = [];
@@ -58,7 +58,7 @@ export class OutboundPaymentImportEntryService {
   }
 
   public async *all(
-    requestParameters: OutboundPaymentImportEntryListRequest,
+    requestParameters?: Partial<OutboundPaymentImportEntryListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.OutboundPaymentImportEntry, void, unknown> {
     let cursor = undefined;

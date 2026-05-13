@@ -276,7 +276,7 @@ export class BillingRequestService {
 
   public async collectCustomerDetails(
     identity: string,
-    requestParameters: BillingRequestCollectCustomerDetailsRequest,
+    requestParameters?: Partial<BillingRequestCollectCustomerDetailsRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -301,7 +301,7 @@ export class BillingRequestService {
 
   public async collectBankAccount(
     identity: string,
-    requestParameters: BillingRequestCollectBankAccountRequest,
+    requestParameters?: Partial<BillingRequestCollectBankAccountRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -326,7 +326,7 @@ export class BillingRequestService {
 
   public async confirmPayerDetails(
     identity: string,
-    requestParameters: BillingRequestConfirmPayerDetailsRequest,
+    requestParameters?: Partial<BillingRequestConfirmPayerDetailsRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -351,7 +351,7 @@ export class BillingRequestService {
 
   public async fulfil(
     identity: string,
-    requestParameters: BillingRequestFulfilRequest,
+    requestParameters?: Partial<BillingRequestFulfilRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -376,7 +376,7 @@ export class BillingRequestService {
 
   public async cancel(
     identity: string,
-    requestParameters: BillingRequestCancelRequest,
+    requestParameters?: Partial<BillingRequestCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -400,7 +400,7 @@ export class BillingRequestService {
   }
 
   public async list(
-    requestParameters: BillingRequestListRequest,
+    requestParameters?: Partial<BillingRequestListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestListResponse> {
     const urlParameters = [];
@@ -424,7 +424,7 @@ export class BillingRequestService {
   }
 
   public async *all(
-    requestParameters: BillingRequestListRequest,
+    requestParameters?: Partial<BillingRequestListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.BillingRequest, void, unknown> {
     let cursor = undefined;
@@ -462,7 +462,7 @@ export class BillingRequestService {
 
   public async notify(
     identity: string,
-    requestParameters: BillingRequestNotifyRequest,
+    requestParameters?: Partial<BillingRequestNotifyRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -508,7 +508,7 @@ export class BillingRequestService {
 
   public async chooseCurrency(
     identity: string,
-    requestParameters: BillingRequestChooseCurrencyRequest,
+    requestParameters?: Partial<BillingRequestChooseCurrencyRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -533,7 +533,7 @@ export class BillingRequestService {
 
   public async selectInstitution(
     identity: string,
-    requestParameters: BillingRequestSelectInstitutionRequest,
+    requestParameters?: Partial<BillingRequestSelectInstitutionRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

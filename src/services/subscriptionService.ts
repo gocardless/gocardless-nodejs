@@ -252,7 +252,7 @@ export class SubscriptionService {
   }
 
   public async list(
-    requestParameters: SubscriptionListRequest,
+    requestParameters?: Partial<SubscriptionListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<SubscriptionListResponse> {
     const urlParameters = [];
@@ -276,7 +276,7 @@ export class SubscriptionService {
   }
 
   public async *all(
-    requestParameters: SubscriptionListRequest,
+    requestParameters?: Partial<SubscriptionListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Subscription, void, unknown> {
     let cursor = undefined;
@@ -314,7 +314,7 @@ export class SubscriptionService {
 
   public async update(
     identity: string,
-    requestParameters: SubscriptionUpdateRequest,
+    requestParameters?: Partial<SubscriptionUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -339,7 +339,7 @@ export class SubscriptionService {
 
   public async pause(
     identity: string,
-    requestParameters: SubscriptionPauseRequest,
+    requestParameters?: Partial<SubscriptionPauseRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -364,7 +364,7 @@ export class SubscriptionService {
 
   public async resume(
     identity: string,
-    requestParameters: SubscriptionResumeRequest,
+    requestParameters?: Partial<SubscriptionResumeRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -389,7 +389,7 @@ export class SubscriptionService {
 
   public async cancel(
     identity: string,
-    requestParameters: SubscriptionCancelRequest,
+    requestParameters?: Partial<SubscriptionCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<SubscriptionResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

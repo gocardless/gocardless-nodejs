@@ -248,7 +248,7 @@ export class BillingRequestTemplateService {
   }
 
   public async list(
-    requestParameters: BillingRequestTemplateListRequest,
+    requestParameters?: Partial<BillingRequestTemplateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestTemplateListResponse> {
     const urlParameters = [];
@@ -272,7 +272,7 @@ export class BillingRequestTemplateService {
   }
 
   public async *all(
-    requestParameters: BillingRequestTemplateListRequest,
+    requestParameters?: Partial<BillingRequestTemplateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.BillingRequestTemplate, void, unknown> {
     let cursor = undefined;
@@ -336,7 +336,7 @@ export class BillingRequestTemplateService {
 
   public async update(
     identity: string,
-    requestParameters: BillingRequestTemplateUpdateRequest,
+    requestParameters?: Partial<BillingRequestTemplateUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

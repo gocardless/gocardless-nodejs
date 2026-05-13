@@ -135,7 +135,7 @@ export class CreditorService {
   }
 
   public async list(
-    requestParameters: CreditorListRequest,
+    requestParameters?: Partial<CreditorListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorListResponse> {
     const urlParameters = [];
@@ -159,7 +159,7 @@ export class CreditorService {
   }
 
   public async *all(
-    requestParameters: CreditorListRequest,
+    requestParameters?: Partial<CreditorListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Creditor, void, unknown> {
     let cursor = undefined;
@@ -197,7 +197,7 @@ export class CreditorService {
 
   public async update(
     identity: string,
-    requestParameters: CreditorUpdateRequest,
+    requestParameters?: Partial<CreditorUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

@@ -23,7 +23,7 @@ export class FundsAvailabilityService {
 
   public async check(
     identity: string,
-    requestParameters: FundsAvailabilityCheckRequest,
+    requestParameters?: Partial<FundsAvailabilityCheckRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<FundsAvailabilityResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

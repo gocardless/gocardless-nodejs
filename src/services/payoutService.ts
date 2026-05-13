@@ -79,7 +79,7 @@ export class PayoutService {
   }
 
   public async list(
-    requestParameters: PayoutListRequest,
+    requestParameters?: Partial<PayoutListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayoutListResponse> {
     const urlParameters = [];
@@ -103,7 +103,7 @@ export class PayoutService {
   }
 
   public async *all(
-    requestParameters: PayoutListRequest,
+    requestParameters?: Partial<PayoutListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Payout, void, unknown> {
     let cursor = undefined;
@@ -141,7 +141,7 @@ export class PayoutService {
 
   public async update(
     identity: string,
-    requestParameters: PayoutUpdateRequest,
+    requestParameters?: Partial<PayoutUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

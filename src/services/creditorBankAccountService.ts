@@ -130,7 +130,7 @@ export class CreditorBankAccountService {
   }
 
   public async list(
-    requestParameters: CreditorBankAccountListRequest,
+    requestParameters?: Partial<CreditorBankAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorBankAccountListResponse> {
     const urlParameters = [];
@@ -154,7 +154,7 @@ export class CreditorBankAccountService {
   }
 
   public async *all(
-    requestParameters: CreditorBankAccountListRequest,
+    requestParameters?: Partial<CreditorBankAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CreditorBankAccount, void, unknown> {
     let cursor = undefined;

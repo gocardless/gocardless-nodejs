@@ -39,7 +39,7 @@ export class PayoutItemService {
   }
 
   public async list(
-    requestParameters: PayoutItemListRequest,
+    requestParameters?: Partial<PayoutItemListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayoutItemListResponse> {
     const urlParameters = [];
@@ -63,7 +63,7 @@ export class PayoutItemService {
   }
 
   public async *all(
-    requestParameters: PayoutItemListRequest,
+    requestParameters?: Partial<PayoutItemListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.PayoutItem, void, unknown> {
     let cursor = undefined;

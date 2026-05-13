@@ -69,7 +69,7 @@ export class InstitutionService {
   }
 
   public async list(
-    requestParameters: InstitutionListRequest,
+    requestParameters?: Partial<InstitutionListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstitutionListResponse> {
     const urlParameters = [];
@@ -94,7 +94,7 @@ export class InstitutionService {
 
   public async list_for_billing_request(
     identity: string,
-    requestParameters: InstitutionListForBillingRequestRequest,
+    requestParameters?: Partial<InstitutionListForBillingRequestRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstitutionListResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

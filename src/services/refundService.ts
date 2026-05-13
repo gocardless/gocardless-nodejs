@@ -131,7 +131,7 @@ export class RefundService {
   }
 
   public async list(
-    requestParameters: RefundListRequest,
+    requestParameters?: Partial<RefundListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<RefundListResponse> {
     const urlParameters = [];
@@ -155,7 +155,7 @@ export class RefundService {
   }
 
   public async *all(
-    requestParameters: RefundListRequest,
+    requestParameters?: Partial<RefundListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Refund, void, unknown> {
     let cursor = undefined;
@@ -193,7 +193,7 @@ export class RefundService {
 
   public async update(
     identity: string,
-    requestParameters: RefundUpdateRequest,
+    requestParameters?: Partial<RefundUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<RefundResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

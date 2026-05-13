@@ -104,7 +104,7 @@ export class OutboundPaymentImportService {
   }
 
   public async list(
-    requestParameters: OutboundPaymentImportListRequest,
+    requestParameters?: Partial<OutboundPaymentImportListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentImportListResponse> {
     const urlParameters = [];
@@ -128,7 +128,7 @@ export class OutboundPaymentImportService {
   }
 
   public async *all(
-    requestParameters: OutboundPaymentImportListRequest,
+    requestParameters?: Partial<OutboundPaymentImportListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.OutboundPaymentImport, void, unknown> {
     let cursor = undefined;

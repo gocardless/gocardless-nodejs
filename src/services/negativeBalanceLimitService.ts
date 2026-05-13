@@ -40,7 +40,7 @@ export class NegativeBalanceLimitService {
   }
 
   public async list(
-    requestParameters: NegativeBalanceLimitListRequest,
+    requestParameters?: Partial<NegativeBalanceLimitListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<NegativeBalanceLimitListResponse> {
     const urlParameters = [];
@@ -64,7 +64,7 @@ export class NegativeBalanceLimitService {
   }
 
   public async *all(
-    requestParameters: NegativeBalanceLimitListRequest,
+    requestParameters?: Partial<NegativeBalanceLimitListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.NegativeBalanceLimit, void, unknown> {
     let cursor = undefined;

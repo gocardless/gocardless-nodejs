@@ -120,7 +120,7 @@ export class RedirectFlowService {
 
   public async complete(
     identity: string,
-    requestParameters: RedirectFlowCompleteRequest,
+    requestParameters?: Partial<RedirectFlowCompleteRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

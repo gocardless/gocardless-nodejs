@@ -38,7 +38,7 @@ export class CurrencyExchangeRateService {
   }
 
   public async list(
-    requestParameters: CurrencyExchangeRateListRequest,
+    requestParameters?: Partial<CurrencyExchangeRateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CurrencyExchangeRateListResponse> {
     const urlParameters = [];
@@ -62,7 +62,7 @@ export class CurrencyExchangeRateService {
   }
 
   public async *all(
-    requestParameters: CurrencyExchangeRateListRequest,
+    requestParameters?: Partial<CurrencyExchangeRateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CurrencyExchangeRate, void, unknown> {
     let cursor = undefined;

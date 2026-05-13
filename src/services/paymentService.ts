@@ -255,7 +255,7 @@ export class PaymentService {
   }
 
   public async list(
-    requestParameters: PaymentListRequest,
+    requestParameters?: Partial<PaymentListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentListResponse> {
     const urlParameters = [];
@@ -279,7 +279,7 @@ export class PaymentService {
   }
 
   public async *all(
-    requestParameters: PaymentListRequest,
+    requestParameters?: Partial<PaymentListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Payment, void, unknown> {
     let cursor = undefined;
@@ -317,7 +317,7 @@ export class PaymentService {
 
   public async update(
     identity: string,
-    requestParameters: PaymentUpdateRequest,
+    requestParameters?: Partial<PaymentUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -342,7 +342,7 @@ export class PaymentService {
 
   public async cancel(
     identity: string,
-    requestParameters: PaymentCancelRequest,
+    requestParameters?: Partial<PaymentCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -367,7 +367,7 @@ export class PaymentService {
 
   public async retry(
     identity: string,
-    requestParameters: PaymentRetryRequest,
+    requestParameters?: Partial<PaymentRetryRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

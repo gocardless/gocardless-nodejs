@@ -174,7 +174,7 @@ export class OutboundPaymentService {
 
   public async withdraw(
     identity: string,
-    requestParameters: OutboundPaymentWithdrawRequest,
+    requestParameters?: Partial<OutboundPaymentWithdrawRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
     const urlParameters = [];
@@ -199,7 +199,7 @@ export class OutboundPaymentService {
 
   public async cancel(
     identity: string,
-    requestParameters: OutboundPaymentCancelRequest,
+    requestParameters?: Partial<OutboundPaymentCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -265,7 +265,7 @@ export class OutboundPaymentService {
   }
 
   public async list(
-    requestParameters: OutboundPaymentListRequest,
+    requestParameters?: Partial<OutboundPaymentListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentListResponse> {
     const urlParameters = [];
@@ -289,7 +289,7 @@ export class OutboundPaymentService {
   }
 
   public async *all(
-    requestParameters: OutboundPaymentListRequest,
+    requestParameters?: Partial<OutboundPaymentListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.OutboundPayment, void, unknown> {
     let cursor = undefined;
@@ -306,7 +306,7 @@ export class OutboundPaymentService {
 
   public async update(
     identity: string,
-    requestParameters: OutboundPaymentUpdateRequest,
+    requestParameters?: Partial<OutboundPaymentUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

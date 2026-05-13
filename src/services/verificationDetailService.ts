@@ -101,7 +101,7 @@ export class VerificationDetailService {
   }
 
   public async list(
-    requestParameters: VerificationDetailListRequest,
+    requestParameters?: Partial<VerificationDetailListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<VerificationDetailListResponse> {
     const urlParameters = [];
@@ -125,7 +125,7 @@ export class VerificationDetailService {
   }
 
   public async *all(
-    requestParameters: VerificationDetailListRequest,
+    requestParameters?: Partial<VerificationDetailListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.VerificationDetail, void, unknown> {
     let cursor = undefined;

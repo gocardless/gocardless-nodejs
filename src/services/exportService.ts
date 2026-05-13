@@ -51,7 +51,7 @@ export class ExportService {
   }
 
   public async list(
-    requestParameters: ExportListRequest,
+    requestParameters?: Partial<ExportListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<ExportListResponse> {
     const urlParameters = [];
@@ -75,7 +75,7 @@ export class ExportService {
   }
 
   public async *all(
-    requestParameters: ExportListRequest,
+    requestParameters?: Partial<ExportListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Export, void, unknown> {
     let cursor = undefined;

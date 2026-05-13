@@ -262,7 +262,7 @@ export class CustomerService {
   }
 
   public async list(
-    requestParameters: CustomerListRequest,
+    requestParameters?: Partial<CustomerListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CustomerListResponse> {
     const urlParameters = [];
@@ -286,7 +286,7 @@ export class CustomerService {
   }
 
   public async *all(
-    requestParameters: CustomerListRequest,
+    requestParameters?: Partial<CustomerListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Customer, void, unknown> {
     let cursor = undefined;
@@ -324,7 +324,7 @@ export class CustomerService {
 
   public async update(
     identity: string,
-    requestParameters: CustomerUpdateRequest,
+    requestParameters?: Partial<CustomerUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

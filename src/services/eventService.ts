@@ -151,7 +151,7 @@ export class EventService {
   }
 
   public async list(
-    requestParameters: EventListRequest,
+    requestParameters?: Partial<EventListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<EventListResponse> {
     const urlParameters = [];
@@ -175,7 +175,7 @@ export class EventService {
   }
 
   public async *all(
-    requestParameters: EventListRequest,
+    requestParameters?: Partial<EventListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Event, void, unknown> {
     let cursor = undefined;

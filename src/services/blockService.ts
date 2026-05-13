@@ -186,7 +186,7 @@ export class BlockService {
   }
 
   public async list(
-    requestParameters: BlockListRequest,
+    requestParameters?: Partial<BlockListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BlockListResponse> {
     const urlParameters = [];
@@ -210,7 +210,7 @@ export class BlockService {
   }
 
   public async *all(
-    requestParameters: BlockListRequest,
+    requestParameters?: Partial<BlockListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Block, void, unknown> {
     let cursor = undefined;
@@ -268,7 +268,7 @@ export class BlockService {
   }
 
   public async block_by_ref(
-    requestParameters: BlockBlockByRefRequest,
+    requestParameters?: Partial<BlockBlockByRefRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BlockListResponse> {
     const urlParameters = [];
