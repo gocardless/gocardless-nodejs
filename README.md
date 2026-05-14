@@ -25,8 +25,7 @@ To initialise the client, you must provide:
 - Any additional options (see [here](#available-client-options) for a list of supported options).
 
 ```js
-import gocardless from 'gocardless-nodejs';
-import { Environments } from 'gocardless-nodejs/constants';
+import gocardless, { Environments } from 'gocardless-nodejs';
 
 // Initialize the client
 const client = gocardless(
@@ -39,9 +38,7 @@ const client = gocardless(
 TypeScript:
 
 ```typescript
-import gocardless, { GoCardlessClient } from 'gocardless-nodejs';
-import { Environments } from 'gocardless-nodejs/constants';
-import type { Payment } from 'gocardless-nodejs/types';
+import gocardless, { GoCardlessClient, Environments, Payment } from 'gocardless-nodejs';
 
 const client: GoCardlessClient = gocardless(
   process.env.GC_ACCESS_TOKEN,
@@ -111,7 +108,7 @@ We provide a CommonJS implementation for backwards compatibility. For CommonJS, 
 
 ```js
 const gocardless = require('gocardless-nodejs');
-const { Environments } = require('gocardless-nodejs/constants');
+const { Environments } = require('gocardless-nodejs');
 ```
 
 ## Upgrading from older versions
