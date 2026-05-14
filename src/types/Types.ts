@@ -23,7 +23,7 @@ export type Balance = {
   // </ul>
   balance_type?: `${BalanceBalanceType}`;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${BalanceCurrency}`;
@@ -447,7 +447,7 @@ export type BillingRequestCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  //  [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -481,7 +481,7 @@ export type BillingRequestCustomerBillingDetail = {
   city?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -641,7 +641,7 @@ export type BillingRequestInstalmentScheduleRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
@@ -837,7 +837,7 @@ export type BillingRequestMandateRequest = {
   // required for PayTo and VRP.
   constraints?: BillingRequestMandateRequestConstraints | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
 
@@ -967,8 +967,12 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
   //
   alignment?: `${BillingRequestMandateRequestConstraintsPeriodicLimitAlignment}`;
 
-  // (Optional) The maximum number of payments that can be collected in this
-  // periodic limit.
+  // The maximum number of payments that can be collected in this periodic
+  // limit.
+  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // Providing this field for other VRP schemes will result in a validation
+  // error.
+  //
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
@@ -1025,7 +1029,7 @@ export type BillingRequestPaymentRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
@@ -1118,7 +1122,7 @@ export type BillingRequestResourcesCustomer = {
   // Unique identifier, beginning with "CU".
   id?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -1162,7 +1166,7 @@ export type BillingRequestResourcesCustomerBankAccount = {
   bank_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
@@ -1171,7 +1175,7 @@ export type BillingRequestResourcesCustomerBankAccount = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -1217,7 +1221,7 @@ export type BillingRequestResourcesCustomerBillingDetail = {
   city?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -1273,7 +1277,7 @@ export type BillingRequestSubscriptionRequest = {
   // The total number of payments that should be taken by this subscription.
   count?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
@@ -1504,7 +1508,7 @@ export type BillingRequestFlowPrefilledCustomer = {
   company_name?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -1548,7 +1552,7 @@ export type BillingRequestTemplate = {
   // required for PayTo and VRP.
   mandate_request_constraints?: BillingRequestTemplateMandateRequestConstraints | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   mandate_request_currency?: string;
 
@@ -1607,7 +1611,7 @@ export type BillingRequestTemplate = {
   // Amount in full.
   payment_request_amount?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   payment_request_currency?: string;
@@ -1701,8 +1705,12 @@ export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
   //
   alignment?: `${BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment}`;
 
-  // (Optional) The maximum number of payments that can be collected in this
-  // periodic limit.
+  // The maximum number of payments that can be collected in this periodic
+  // limit.
+  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // Providing this field for other VRP schemes will result in a validation
+  // error.
+  //
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
@@ -1809,12 +1817,12 @@ export type BillingRequestWithActionActionsCollectBankAccount = {
   branch_code?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -1867,7 +1875,7 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  //  [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -1901,7 +1909,7 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomerBilling
   city?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -1951,7 +1959,7 @@ export type BillingRequestWithActionActionsConfirmPayerDetails = {
 /** Type for a billingrequestwithactionactionsselectinstitution resource. */
 export type BillingRequestWithActionActionsSelectInstitution = {
   // [ISO
-  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
   // institutions with the country code 'GB' are returned by default.
   country_code: string;
@@ -1996,7 +2004,7 @@ export type BillingRequestWithActionMandateRequest = {
   // required for PayTo and VRP.
   constraints?: BillingRequestWithActionMandateRequestConstraints | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
 
@@ -2121,8 +2129,12 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
   //
   alignment?: `${BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment}`;
 
-  // (Optional) The maximum number of payments that can be collected in this
-  // periodic limit.
+  // The maximum number of payments that can be collected in this periodic
+  // limit.
+  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // Providing this field for other VRP schemes will result in a validation
+  // error.
+  //
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
@@ -2180,7 +2192,7 @@ export type BillingRequestWithActionPaymentRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
@@ -2563,7 +2575,7 @@ export type BillingRequestWithActionBillingRequestsCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  //  [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  //  [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -2597,7 +2609,7 @@ export type BillingRequestWithActionBillingRequestsCustomerBillingDetail = {
   city?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -2757,7 +2769,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
@@ -2953,7 +2965,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   // required for PayTo and VRP.
   constraints?: BillingRequestWithActionBillingRequestsMandateRequestConstraints | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
 
@@ -3083,8 +3095,12 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   //
   alignment?: `${BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment}`;
 
-  // (Optional) The maximum number of payments that can be collected in this
-  // periodic limit.
+  // The maximum number of payments that can be collected in this periodic
+  // limit.
+  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // Providing this field for other VRP schemes will result in a validation
+  // error.
+  //
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
@@ -3141,7 +3157,7 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
@@ -3234,7 +3250,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
   // Unique identifier, beginning with "CU".
   id?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -3278,7 +3294,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   bank_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
@@ -3287,7 +3303,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -3333,7 +3349,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetai
   city?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -3389,7 +3405,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // The total number of payments that should be taken by this subscription.
   count?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
@@ -3577,7 +3593,7 @@ export type Creditor = {
   city?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -3593,8 +3609,8 @@ export type Creditor = {
   // functionality enabled.
   custom_payment_pages_enabled?: boolean;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
-  // currency in which amounts will be paid out (after foreign exchange).
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
+  // the currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -3767,7 +3783,7 @@ export type CreditorSchemeIdentifier = {
   city?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -3873,7 +3889,7 @@ export type CreditorBankAccount = {
   bank_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
@@ -3882,7 +3898,7 @@ export type CreditorBankAccount = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -3969,7 +3985,7 @@ export type Customer = {
   company_name?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -3994,7 +4010,7 @@ export type Customer = {
   // Unique identifier, beginning with "CU".
   id?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -4079,7 +4095,7 @@ export type CustomerBankAccount = {
   bank_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
@@ -4088,7 +4104,7 @@ export type CustomerBankAccount = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -4581,7 +4597,7 @@ export type InstalmentSchedule = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${InstalmentScheduleCurrency}`;
@@ -4736,7 +4752,7 @@ export type Institution = {
   autocompletes_collect_bank_account?: boolean;
 
   // [ISO
-  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
   // institutions with the country code 'GB' are returned by default.
   country_code?: string;
@@ -5130,7 +5146,7 @@ export type MandateImportEntryBankAccount = {
   branch_code?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
@@ -5175,7 +5191,7 @@ export type MandateImportEntryCustomer = {
   company_name?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -5193,7 +5209,7 @@ export type MandateImportEntryCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en",
@@ -5335,7 +5351,7 @@ export type NegativeBalanceLimit = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${NegativeBalanceLimitCurrency}`;
@@ -5377,7 +5393,7 @@ export type OutboundPayment = {
   // payment was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
   // Currently only "GBP" is supported.
   currency?: `${OutboundPaymentCurrency}`;
 
@@ -5545,7 +5561,7 @@ export type OutboundPaymentImport = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
   // Currently only "GBP" is supported.
   currency?: `${OutboundPaymentImportCurrency}`;
 
@@ -5830,12 +5846,12 @@ export type PayerAuthorisationBankAccount = {
   branch_code?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -5878,7 +5894,7 @@ export type PayerAuthorisationCustomer = {
   company_name?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -6027,7 +6043,7 @@ export type Payment = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${PaymentCurrency}`;
@@ -6190,8 +6206,8 @@ export type PaymentFx = {
   // Present only after the resource has been paid out.
   fx_amount?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
-  // currency in which amounts will be paid out (after foreign exchange).
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
+  // the currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -6254,7 +6270,7 @@ export type PaymentAccount = {
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -6353,7 +6369,7 @@ export type Payout = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${PayoutCurrency}`;
@@ -6403,8 +6419,8 @@ export type Payout = {
   // </ul>
   status?: `${PayoutStatus}`;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
-  // currency in which tax is paid out to the tax authorities of your tax
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
+  // the currency in which tax is paid out to the tax authorities of your tax
   // jurisdiction. Currently “EUR”, “GBP”, for French or British merchants, this
   // will be `null` if tax is not applicable <em>beta</em>
   tax_currency?: string | null;
@@ -6449,8 +6465,8 @@ export type PayoutFx = {
   // Present only after the resource has been paid out.
   fx_amount?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
-  // currency in which amounts will be paid out (after foreign exchange).
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
+  // the currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -6560,7 +6576,7 @@ export type PayoutItemTaxis = {
   // decimal place.
   amount?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${PayoutItemTaxisCurrency}`;
@@ -6573,8 +6589,8 @@ export type PayoutItemTaxis = {
   // until the `exchange_rate` has been finalised.
   destination_amount?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
-  // currency in which tax is paid out to the tax authorities of your tax
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
+  // the currency in which tax is paid out to the tax authorities of your tax
   // jurisdiction. Currently “EUR” for French merchants and “GBP” for British
   // merchants.
   destination_currency?: string;
@@ -6715,7 +6731,7 @@ export type RedirectFlowPrefilledCustomer = {
   company_name?: string | null;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -6731,7 +6747,7 @@ export type RedirectFlowPrefilledCustomer = {
   // Customer's first name.
   given_name?: string | null;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   language?: string | null;
 
   // For New Zealand customers only.
@@ -6796,7 +6812,7 @@ export type Refund = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. This is set to the currency of the refund's
   // [payment](#core-endpoints-payments).
   currency?: string;
@@ -6884,8 +6900,8 @@ export type RefundFx = {
   // Present only after the resource has been paid out.
   fx_amount?: string | null;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
-  // currency in which amounts will be paid out (after foreign exchange).
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
+  // the currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -7084,7 +7100,7 @@ export type SchemeIdentifier = {
   city?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
   // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
@@ -7255,7 +7271,7 @@ export type Subscription = {
   // was created.
   created_at?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string;
@@ -7507,7 +7523,7 @@ export type VerificationDetailDirector = {
   city: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code: string;
 
   // The person's date of birth.

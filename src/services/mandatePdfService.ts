@@ -63,7 +63,7 @@ interface MandatePdfCreateRequest {
   company_name?: string;
 
   // [ISO
-  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. Required if providing local details.
 
   country_code?: string;

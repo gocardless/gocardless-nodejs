@@ -34,7 +34,7 @@ interface CustomerCreateRequest {
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -57,7 +57,7 @@ interface CustomerCreateRequest {
 
   given_name?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
   // as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en", "fr",
@@ -111,8 +111,8 @@ interface CustomerListRequest {
   // The creation date of this Customer.
   created_at?: Types.CreatedAtFilter;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: `${Types.CustomerCurrency}`;
@@ -167,7 +167,7 @@ interface CustomerUpdateRequest {
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -190,7 +190,7 @@ interface CustomerUpdateRequest {
 
   given_name?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
   // as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en", "fr",

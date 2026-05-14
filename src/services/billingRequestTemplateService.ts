@@ -39,7 +39,8 @@ interface BillingRequestTemplateCreateRequest {
   // required for PayTo and VRP.
   mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
 
   mandate_request_currency?: string;
 
@@ -105,9 +106,9 @@ interface BillingRequestTemplateCreateRequest {
 
   payment_request_amount?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
-  // with your customers in supported Eurozone countries only.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and for
+  // `EUR` with your customers in supported Eurozone countries only.
 
   payment_request_currency?: string;
 
@@ -142,7 +143,8 @@ interface BillingRequestTemplateUpdateRequest {
   // required for PayTo and VRP.
   mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
 
   mandate_request_currency?: string;
 
@@ -208,9 +210,9 @@ interface BillingRequestTemplateUpdateRequest {
 
   payment_request_amount?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
-  // with your customers in supported Eurozone countries only.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and for
+  // `EUR` with your customers in supported Eurozone countries only.
 
   payment_request_currency?: string;
 
