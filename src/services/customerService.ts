@@ -34,7 +34,7 @@ interface CustomerCreateRequest {
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -57,7 +57,7 @@ interface CustomerCreateRequest {
 
   given_name?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
   // as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en", "fr",
@@ -98,7 +98,7 @@ interface CustomerCreateRequest {
 interface CustomerListRequest {
   // Boolean indicating whether the customer has any actions required.
 
-  action_required?: Types.CustomerActionRequired;
+  action_required?: `${Types.CustomerActionRequired}`;
 
   // Cursor pointing to the start of the desired set.
 
@@ -111,11 +111,11 @@ interface CustomerListRequest {
   // The creation date of this Customer.
   created_at?: Types.CreatedAtFilter;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: Types.CustomerCurrency;
+  currency?: `${Types.CustomerCurrency}`;
 
   // Number of records to return.
 
@@ -128,7 +128,7 @@ interface CustomerListRequest {
   // <li>`desc`</li>
   // </ul>
 
-  sort_direction?: Types.CustomerSortDirection;
+  sort_direction?: `${Types.CustomerSortDirection}`;
 
   // Field by which to sort records.
   // One of:
@@ -138,7 +138,7 @@ interface CustomerListRequest {
   // <li>`created_at`</li>
   // </ul>
 
-  sort_field?: Types.CustomerSortField;
+  sort_field?: `${Types.CustomerSortField}`;
 }
 
 interface CustomerUpdateRequest {
@@ -167,7 +167,7 @@ interface CustomerUpdateRequest {
   company_name?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -190,7 +190,7 @@ interface CustomerUpdateRequest {
 
   given_name?: string;
 
-  // [ISO 639-1](http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
+  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
   // as the language for notification emails sent by GoCardless if your
   // organisation does not send its own (see [compliance
   // requirements](#appendix-compliance-requirements)). Currently only "en", "fr",
@@ -262,7 +262,7 @@ export class CustomerService {
   }
 
   public async list(
-    requestParameters: CustomerListRequest,
+    requestParameters?: Partial<CustomerListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CustomerListResponse> {
     const urlParameters = [];
@@ -286,7 +286,7 @@ export class CustomerService {
   }
 
   public async *all(
-    requestParameters: CustomerListRequest,
+    requestParameters?: Partial<CustomerListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Customer, void, unknown> {
     let cursor = undefined;
@@ -324,7 +324,7 @@ export class CustomerService {
 
   public async update(
     identity: string,
-    requestParameters: CustomerUpdateRequest,
+    requestParameters?: Partial<CustomerUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CustomerResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

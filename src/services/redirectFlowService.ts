@@ -40,7 +40,7 @@ interface RedirectFlowCreateRequest {
   // recommended that you leave this blank so the most appropriate scheme is
   // picked based on the customer's bank account.
 
-  scheme?: Types.RedirectFlowScheme;
+  scheme?: `${Types.RedirectFlowScheme}`;
 
   // The customer's session ID must be provided when the redirect flow is set up
   // and again when it is completed. This allows integrators to ensure that the
@@ -120,7 +120,7 @@ export class RedirectFlowService {
 
   public async complete(
     identity: string,
-    requestParameters: RedirectFlowCompleteRequest,
+    requestParameters?: Partial<RedirectFlowCompleteRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -129,7 +129,7 @@ export class RedirectFlowService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'redirect_flows',
       fetch: null,
       customHeaders,
     };

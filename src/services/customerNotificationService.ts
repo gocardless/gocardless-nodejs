@@ -22,7 +22,7 @@ export class CustomerNotificationService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'customer_notifications',
       fetch: null,
       customHeaders,
     };

@@ -39,7 +39,7 @@ interface BillingRequestCreateRequest {
   // processors understand the payment scenario and apply appropriate processing
   // rules and risk controls.
 
-  payment_context_code?: Types.BillingRequestPaymentContextCode;
+  payment_context_code?: `${Types.BillingRequestPaymentContextCode}`;
 
   // Specifies the underlying purpose of the payment. Defines the specific reason
   // or type of service/goods the payment relates to, improving straight-through
@@ -60,7 +60,7 @@ interface BillingRequestCreateRequest {
   // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
   // the complete list of valid codes.
 
-  purpose_code?: Types.BillingRequestPurposeCode;
+  purpose_code?: `${Types.BillingRequestPurposeCode}`;
 
   //
   subscription_request?: Types.BillingRequestSubscriptionRequest;
@@ -97,7 +97,7 @@ interface BillingRequestCollectBankAccountRequest {
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
 
-  account_type?: Types.BillingRequestAccountType;
+  account_type?: `${Types.BillingRequestAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -110,14 +110,14 @@ interface BillingRequestCollectBankAccountRequest {
   branch_code?: string;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
 
   country_code?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: string;
@@ -202,13 +202,13 @@ interface BillingRequestListRequest {
   // used</li>
   // </ul>
 
-  status?: Types.BillingRequestStatus;
+  status?: `${Types.BillingRequestStatus}`;
 }
 
 interface BillingRequestNotifyRequest {
   // Currently, can only be `email`.
 
-  notification_type: Types.BillingRequestNotificationType;
+  notification_type: `${Types.BillingRequestNotificationType}`;
 
   // URL that the payer can be redirected to after authorising the payment.
 
@@ -216,8 +216,8 @@ interface BillingRequestNotifyRequest {
 }
 
 interface BillingRequestChooseCurrencyRequest {
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency: string;
@@ -230,7 +230,7 @@ interface BillingRequestChooseCurrencyRequest {
 
 interface BillingRequestSelectInstitutionRequest {
   // [ISO
-  // 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
   // institutions with the country code 'GB' are returned by default.
 
@@ -276,7 +276,7 @@ export class BillingRequestService {
 
   public async collectCustomerDetails(
     identity: string,
-    requestParameters: BillingRequestCollectCustomerDetailsRequest,
+    requestParameters?: Partial<BillingRequestCollectCustomerDetailsRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -285,7 +285,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -301,7 +301,7 @@ export class BillingRequestService {
 
   public async collectBankAccount(
     identity: string,
-    requestParameters: BillingRequestCollectBankAccountRequest,
+    requestParameters?: Partial<BillingRequestCollectBankAccountRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -310,7 +310,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -326,7 +326,7 @@ export class BillingRequestService {
 
   public async confirmPayerDetails(
     identity: string,
-    requestParameters: BillingRequestConfirmPayerDetailsRequest,
+    requestParameters?: Partial<BillingRequestConfirmPayerDetailsRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -335,7 +335,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -351,7 +351,7 @@ export class BillingRequestService {
 
   public async fulfil(
     identity: string,
-    requestParameters: BillingRequestFulfilRequest,
+    requestParameters?: Partial<BillingRequestFulfilRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -360,7 +360,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -376,7 +376,7 @@ export class BillingRequestService {
 
   public async cancel(
     identity: string,
-    requestParameters: BillingRequestCancelRequest,
+    requestParameters?: Partial<BillingRequestCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -385,7 +385,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -400,7 +400,7 @@ export class BillingRequestService {
   }
 
   public async list(
-    requestParameters: BillingRequestListRequest,
+    requestParameters?: Partial<BillingRequestListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestListResponse> {
     const urlParameters = [];
@@ -424,7 +424,7 @@ export class BillingRequestService {
   }
 
   public async *all(
-    requestParameters: BillingRequestListRequest,
+    requestParameters?: Partial<BillingRequestListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.BillingRequest, void, unknown> {
     let cursor = undefined;
@@ -462,7 +462,7 @@ export class BillingRequestService {
 
   public async notify(
     identity: string,
-    requestParameters: BillingRequestNotifyRequest,
+    requestParameters?: Partial<BillingRequestNotifyRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -471,7 +471,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -492,7 +492,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -508,7 +508,7 @@ export class BillingRequestService {
 
   public async chooseCurrency(
     identity: string,
-    requestParameters: BillingRequestChooseCurrencyRequest,
+    requestParameters?: Partial<BillingRequestChooseCurrencyRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -517,7 +517,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };
@@ -533,7 +533,7 @@ export class BillingRequestService {
 
   public async selectInstitution(
     identity: string,
-    requestParameters: BillingRequestSelectInstitutionRequest,
+    requestParameters?: Partial<BillingRequestSelectInstitutionRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -542,7 +542,7 @@ export class BillingRequestService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'billing_requests',
       fetch: null,
       customHeaders,
     };

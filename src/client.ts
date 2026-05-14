@@ -28,6 +28,8 @@ import { MandateImportEntryService } from './services/mandateImportEntryService.
 import { MandatePdfService } from './services/mandatePdfService.js';
 import { NegativeBalanceLimitService } from './services/negativeBalanceLimitService.js';
 import { OutboundPaymentService } from './services/outboundPaymentService.js';
+import { OutboundPaymentImportService } from './services/outboundPaymentImportService.js';
+import { OutboundPaymentImportEntryService } from './services/outboundPaymentImportEntryService.js';
 import { PayerAuthorisationService } from './services/payerAuthorisationService.js';
 import { PayerThemeService } from './services/payerThemeService.js';
 import { PaymentService } from './services/paymentService.js';
@@ -76,6 +78,8 @@ export class GoCardlessClient {
   private _mandatePdfs: MandatePdfService;
   private _negativeBalanceLimits: NegativeBalanceLimitService;
   private _outboundPayments: OutboundPaymentService;
+  private _outboundPaymentImports: OutboundPaymentImportService;
+  private _outboundPaymentImportEntries: OutboundPaymentImportEntryService;
   private _payerAuthorisations: PayerAuthorisationService;
   private _payerThemes: PayerThemeService;
   private _payments: PaymentService;
@@ -124,6 +128,8 @@ export class GoCardlessClient {
     this._mandatePdfs = undefined;
     this._negativeBalanceLimits = undefined;
     this._outboundPayments = undefined;
+    this._outboundPaymentImports = undefined;
+    this._outboundPaymentImportEntries = undefined;
     this._payerAuthorisations = undefined;
     this._payerThemes = undefined;
     this._payments = undefined;
@@ -364,6 +370,22 @@ export class GoCardlessClient {
     }
 
     return this._outboundPayments;
+  }
+
+  get outboundPaymentImports(): OutboundPaymentImportService {
+    if (!this._outboundPaymentImports) {
+      this._outboundPaymentImports = new OutboundPaymentImportService(this._api);
+    }
+
+    return this._outboundPaymentImports;
+  }
+
+  get outboundPaymentImportEntries(): OutboundPaymentImportEntryService {
+    if (!this._outboundPaymentImportEntries) {
+      this._outboundPaymentImportEntries = new OutboundPaymentImportEntryService(this._api);
+    }
+
+    return this._outboundPaymentImportEntries;
   }
 
   get payerAuthorisations(): PayerAuthorisationService {

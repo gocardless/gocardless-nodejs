@@ -24,7 +24,7 @@ interface CreditorBankAccountCreateRequest {
   // provided for bank accounts in other currencies. See [local
   // details](#local-bank-details-united-states) for more information.
 
-  account_type?: Types.CreditorBankAccountAccountType;
+  account_type?: `${Types.CreditorBankAccountAccountType}`;
 
   // Bank code - see [local details](#appendix-local-bank-details) for more
   // information. Alternatively you can provide an `iban`.
@@ -37,14 +37,14 @@ interface CreditorBankAccountCreateRequest {
   branch_code?: string;
 
   // [ISO 3166-1 alpha-2
-  // code](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
 
   country_code?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: string;
@@ -130,7 +130,7 @@ export class CreditorBankAccountService {
   }
 
   public async list(
-    requestParameters: CreditorBankAccountListRequest,
+    requestParameters?: Partial<CreditorBankAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorBankAccountListResponse> {
     const urlParameters = [];
@@ -154,7 +154,7 @@ export class CreditorBankAccountService {
   }
 
   public async *all(
-    requestParameters: CreditorBankAccountListRequest,
+    requestParameters?: Partial<CreditorBankAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.CreditorBankAccount, void, unknown> {
     let cursor = undefined;
@@ -197,7 +197,7 @@ export class CreditorBankAccountService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'creditor_bank_accounts',
       fetch: null,
       customHeaders,
     };

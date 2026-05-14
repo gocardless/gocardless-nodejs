@@ -21,7 +21,7 @@ interface MandateCreateRequest {
   // authenticated (maps to SEC code: PPD)
   //
 
-  authorisation_source?: Types.MandateAuthorisationSource;
+  authorisation_source?: `${Types.MandateAuthorisationSource}`;
 
   // Resources linked to this Mandate.
   links: Types.MandateCreateRequestLinks;
@@ -106,7 +106,7 @@ interface MandateListRequest {
 
   // One or more valid statuses
 
-  status?: Types.MandateStatus[];
+  status?: `${Types.MandateStatus}`[];
 }
 
 interface MandateUpdateRequest {
@@ -164,7 +164,7 @@ export class MandateService {
   }
 
   public async list(
-    requestParameters: MandateListRequest,
+    requestParameters?: Partial<MandateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateListResponse> {
     const urlParameters = [];
@@ -188,7 +188,7 @@ export class MandateService {
   }
 
   public async *all(
-    requestParameters: MandateListRequest,
+    requestParameters?: Partial<MandateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Mandate, void, unknown> {
     let cursor = undefined;
@@ -226,7 +226,7 @@ export class MandateService {
 
   public async update(
     identity: string,
-    requestParameters: MandateUpdateRequest,
+    requestParameters?: Partial<MandateUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -251,7 +251,7 @@ export class MandateService {
 
   public async cancel(
     identity: string,
-    requestParameters: MandateCancelRequest,
+    requestParameters?: Partial<MandateCancelRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -260,7 +260,7 @@ export class MandateService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'mandates',
       fetch: null,
       customHeaders,
     };
@@ -276,7 +276,7 @@ export class MandateService {
 
   public async reinstate(
     identity: string,
-    requestParameters: MandateReinstateRequest,
+    requestParameters?: Partial<MandateReinstateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -285,7 +285,7 @@ export class MandateService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: null,
+      payloadKey: 'mandates',
       fetch: null,
       customHeaders,
     };

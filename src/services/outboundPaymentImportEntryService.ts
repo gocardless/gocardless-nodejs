@@ -1,14 +1,14 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-interface CurrencyExchangeRateResponse extends Types.CurrencyExchangeRate, Types.APIResponse {}
+interface OutboundPaymentImportEntryResponse extends Types.OutboundPaymentImportEntry, Types.APIResponse {}
 
-interface CurrencyExchangeRateListResponse extends Types.APIResponse {
-  currency_exchange_rates: Array<Types.CurrencyExchangeRate>;
+interface OutboundPaymentImportEntryListResponse extends Types.APIResponse {
+  outbound_payment_import_entries: Array<Types.OutboundPaymentImportEntry>;
   meta: Types.ListMeta;
 }
 
-interface CurrencyExchangeRateListRequest {
+interface OutboundPaymentImportEntryListRequest {
   // Cursor pointing to the start of the desired set.
 
   after?: string;
@@ -21,16 +21,12 @@ interface CurrencyExchangeRateListRequest {
 
   limit?: string;
 
-  // Source currency
+  // Unique identifier, beginning with "IM".
 
-  source?: string;
-
-  // Target currency
-
-  target?: string;
+  outbound_payment_import: string;
 }
 
-export class CurrencyExchangeRateService {
+export class OutboundPaymentImportEntryService {
   private api: Api;
 
   constructor(api) {
@@ -38,12 +34,12 @@ export class CurrencyExchangeRateService {
   }
 
   public async list(
-    requestParameters?: Partial<CurrencyExchangeRateListRequest>,
+    requestParameters?: Partial<OutboundPaymentImportEntryListRequest>,
     customHeaders: Types.JsonMap = {},
-  ): Promise<CurrencyExchangeRateListResponse> {
+  ): Promise<OutboundPaymentImportEntryListResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/currency_exchange_rates',
+      path: '/outbound_payment_import_entries',
       method: 'get',
       urlParameters,
       requestParameters,
@@ -53,7 +49,7 @@ export class CurrencyExchangeRateService {
     };
 
     const response = await this.api.request(requestParams);
-    const formattedResponse: CurrencyExchangeRateListResponse = {
+    const formattedResponse: OutboundPaymentImportEntryListResponse = {
       ...response.body,
       __response__: response.__response__,
     };
@@ -62,15 +58,15 @@ export class CurrencyExchangeRateService {
   }
 
   public async *all(
-    requestParameters?: Partial<CurrencyExchangeRateListRequest>,
+    requestParameters?: Partial<OutboundPaymentImportEntryListRequest>,
     customHeaders: Types.JsonMap = {},
-  ): AsyncGenerator<Types.CurrencyExchangeRate, void, unknown> {
+  ): AsyncGenerator<Types.OutboundPaymentImportEntry, void, unknown> {
     let cursor = undefined;
     do {
       const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const currencyexchangerate of list.currency_exchange_rates) {
-        yield currencyexchangerate;
+      for (const outboundpaymentimportentry of list.outbound_payment_import_entries) {
+        yield outboundpaymentimportentry;
       }
 
       cursor = list.meta.cursors.after;

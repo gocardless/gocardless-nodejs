@@ -139,7 +139,7 @@ export class BillingRequestFlowService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'billing_request_flows',
       fetch: null,
       customHeaders,
     };

@@ -21,14 +21,14 @@ interface CreditorCreateRequest {
   bank_reference_prefix?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code: string;
 
   // The type of business of the creditor. Currently, `individual`, `company`,
   // `charity`, `partnership`, and `trust` are supported.
 
-  creditor_type: Types.CreditorCreditorType;
+  creditor_type: `${Types.CreditorCreditorType}`;
 
   // The creditor's trading name.
 
@@ -81,7 +81,7 @@ interface CreditorUpdateRequest {
   city?: string;
 
   // [ISO 3166-1 alpha-2
-  // code.](http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -135,7 +135,7 @@ export class CreditorService {
   }
 
   public async list(
-    requestParameters: CreditorListRequest,
+    requestParameters?: Partial<CreditorListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorListResponse> {
     const urlParameters = [];
@@ -159,7 +159,7 @@ export class CreditorService {
   }
 
   public async *all(
-    requestParameters: CreditorListRequest,
+    requestParameters?: Partial<CreditorListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Creditor, void, unknown> {
     let cursor = undefined;
@@ -197,7 +197,7 @@ export class CreditorService {
 
   public async update(
     identity: string,
-    requestParameters: CreditorUpdateRequest,
+    requestParameters?: Partial<CreditorUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

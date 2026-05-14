@@ -19,7 +19,7 @@ interface SchemeIdentifierCreateRequest {
 
   // The scheme which this scheme identifier applies to.
 
-  scheme: Types.SchemeIdentifierScheme;
+  scheme: `${Types.SchemeIdentifierScheme}`;
 }
 
 interface SchemeIdentifierListRequest {
@@ -74,7 +74,7 @@ export class SchemeIdentifierService {
   }
 
   public async list(
-    requestParameters: SchemeIdentifierListRequest,
+    requestParameters?: Partial<SchemeIdentifierListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<SchemeIdentifierListResponse> {
     const urlParameters = [];
@@ -98,7 +98,7 @@ export class SchemeIdentifierService {
   }
 
   public async *all(
-    requestParameters: SchemeIdentifierListRequest,
+    requestParameters?: Partial<SchemeIdentifierListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.SchemeIdentifier, void, unknown> {
     let cursor = undefined;

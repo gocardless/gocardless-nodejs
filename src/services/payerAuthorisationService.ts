@@ -92,7 +92,7 @@ export class PayerAuthorisationService {
 
   public async update(
     identity: string,
-    requestParameters: PayerAuthorisationUpdateRequest,
+    requestParameters?: Partial<PayerAuthorisationUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -122,7 +122,7 @@ export class PayerAuthorisationService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'payer_authorisations',
       fetch: null,
       customHeaders,
     };
@@ -143,7 +143,7 @@ export class PayerAuthorisationService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'payer_authorisations',
       fetch: null,
       customHeaders,
     };

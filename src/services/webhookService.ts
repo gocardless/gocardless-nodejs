@@ -41,7 +41,7 @@ export class WebhookService {
   }
 
   public async list(
-    requestParameters: WebhookListRequest,
+    requestParameters?: Partial<WebhookListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<WebhookListResponse> {
     const urlParameters = [];
@@ -65,7 +65,7 @@ export class WebhookService {
   }
 
   public async *all(
-    requestParameters: WebhookListRequest,
+    requestParameters?: Partial<WebhookListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Webhook, void, unknown> {
     let cursor = undefined;
@@ -108,7 +108,7 @@ export class WebhookService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'webhooks',
       fetch: null,
       customHeaders,
     };

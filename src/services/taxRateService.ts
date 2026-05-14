@@ -34,7 +34,7 @@ export class TaxRateService {
   }
 
   public async list(
-    requestParameters: TaxRateListRequest,
+    requestParameters?: Partial<TaxRateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<TaxRateListResponse> {
     const urlParameters = [];
@@ -58,7 +58,7 @@ export class TaxRateService {
   }
 
   public async *all(
-    requestParameters: TaxRateListRequest,
+    requestParameters?: Partial<TaxRateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.TaxRate, void, unknown> {
     let cursor = undefined;

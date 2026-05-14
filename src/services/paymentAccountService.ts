@@ -51,7 +51,7 @@ export class PaymentAccountService {
   }
 
   public async list(
-    requestParameters: PaymentAccountListRequest,
+    requestParameters?: Partial<PaymentAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PaymentAccountListResponse> {
     const urlParameters = [];
@@ -75,7 +75,7 @@ export class PaymentAccountService {
   }
 
   public async *all(
-    requestParameters: PaymentAccountListRequest,
+    requestParameters?: Partial<PaymentAccountListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.PaymentAccount, void, unknown> {
     let cursor = undefined;

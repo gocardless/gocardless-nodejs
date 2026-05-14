@@ -21,11 +21,11 @@ interface NegativeBalanceLimitListRequest {
 
   creditor?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: Types.NegativeBalanceLimitCurrency;
+  currency?: `${Types.NegativeBalanceLimitCurrency}`;
 
   // Number of records to return.
 
@@ -40,7 +40,7 @@ export class NegativeBalanceLimitService {
   }
 
   public async list(
-    requestParameters: NegativeBalanceLimitListRequest,
+    requestParameters?: Partial<NegativeBalanceLimitListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<NegativeBalanceLimitListResponse> {
     const urlParameters = [];
@@ -64,7 +64,7 @@ export class NegativeBalanceLimitService {
   }
 
   public async *all(
-    requestParameters: NegativeBalanceLimitListRequest,
+    requestParameters?: Partial<NegativeBalanceLimitListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.NegativeBalanceLimit, void, unknown> {
     let cursor = undefined;

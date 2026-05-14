@@ -39,7 +39,8 @@ interface BillingRequestTemplateCreateRequest {
   // required for PayTo and VRP.
   mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
 
   mandate_request_currency?: string;
 
@@ -89,7 +90,7 @@ interface BillingRequestTemplateCreateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
 
-  mandate_request_verify?: Types.BillingRequestTemplateMandateRequestVerify;
+  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -105,9 +106,9 @@ interface BillingRequestTemplateCreateRequest {
 
   payment_request_amount?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
-  // with your customers in supported Eurozone countries only.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and for
+  // `EUR` with your customers in supported Eurozone countries only.
 
   payment_request_currency?: string;
 
@@ -142,7 +143,8 @@ interface BillingRequestTemplateUpdateRequest {
   // required for PayTo and VRP.
   mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code.
 
   mandate_request_currency?: string;
 
@@ -192,7 +194,7 @@ interface BillingRequestTemplateUpdateRequest {
   // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
 
-  mandate_request_verify?: Types.BillingRequestTemplateMandateRequestVerify;
+  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -208,9 +210,9 @@ interface BillingRequestTemplateUpdateRequest {
 
   payment_request_amount?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
-  // with your customers in supported Eurozone countries only.
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and for
+  // `EUR` with your customers in supported Eurozone countries only.
 
   payment_request_currency?: string;
 
@@ -248,7 +250,7 @@ export class BillingRequestTemplateService {
   }
 
   public async list(
-    requestParameters: BillingRequestTemplateListRequest,
+    requestParameters?: Partial<BillingRequestTemplateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestTemplateListResponse> {
     const urlParameters = [];
@@ -272,7 +274,7 @@ export class BillingRequestTemplateService {
   }
 
   public async *all(
-    requestParameters: BillingRequestTemplateListRequest,
+    requestParameters?: Partial<BillingRequestTemplateListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.BillingRequestTemplate, void, unknown> {
     let cursor = undefined;
@@ -336,7 +338,7 @@ export class BillingRequestTemplateService {
 
   public async update(
     identity: string,
-    requestParameters: BillingRequestTemplateUpdateRequest,
+    requestParameters?: Partial<BillingRequestTemplateUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestTemplateResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];

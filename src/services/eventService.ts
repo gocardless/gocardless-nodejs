@@ -53,9 +53,10 @@ interface EventListRequest {
   // <li>`scheme_identifier`</li>
   // <li>`subscription`</li>
   // <li>`outbound_payment`</li>
+  // <li>`payment_account_transaction`</li>
   // </ul>
 
-  include?: Types.EventInclude;
+  include?: `${Types.EventInclude}`;
 
   // ID of an [instalment schedule](#core-endpoints-instalment-schedules). If
   // specified, this endpoint will return all events for the given instalment
@@ -91,6 +92,11 @@ interface EventListRequest {
 
   payment?: string;
 
+  // ID of a payment account transaction. If specified, this endpoint will return
+  // all events for the given transaction.
+
+  payment_account_transaction?: string;
+
   // ID of a [payout](#core-endpoints-payouts). If specified, this endpoint will
   // return all events for the given payout.
 
@@ -104,8 +110,8 @@ interface EventListRequest {
   // Type of resource that you'd like to get all events for.
   // Cannot be used together with the `billing_request`, `creditor`,
   // `export`,`instalment_schedule`, `mandate`, `payer_authorisation`, `payment`,
-  // `payout`, `refund`, `scheme_identifier`, `subscription` or `outbound_payment`
-  // parameters.
+  // `payout`, `refund`, `scheme_identifier`, `subscription`, `outbound_payment`
+  // or `payment_account_transaction` parameters.
   // The type can be one of:
   // <ul>
   // <li>`billing_requests`</li>
@@ -120,9 +126,10 @@ interface EventListRequest {
   // <li>`scheme_identifiers`</li>
   // <li>`subscriptions`</li>
   // <li>`outbound_payments`</li>
+  // <li>`payment_account_transactions`</li>
   // </ul>
 
-  resource_type?: Types.EventResourceType;
+  resource_type?: `${Types.EventResourceType}`;
 
   // ID of a [scheme identifier](#core-endpoints-scheme-identifiers). If
   // specified, this endpoint will return all events for the given scheme
@@ -144,7 +151,7 @@ export class EventService {
   }
 
   public async list(
-    requestParameters: EventListRequest,
+    requestParameters?: Partial<EventListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<EventListResponse> {
     const urlParameters = [];
@@ -168,7 +175,7 @@ export class EventService {
   }
 
   public async *all(
-    requestParameters: EventListRequest,
+    requestParameters?: Partial<EventListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Event, void, unknown> {
     let cursor = undefined;

@@ -59,7 +59,7 @@ interface MandateImportEntryListRequest {
   // error, see the 'processing_errors' value</li>
   // </ul>
 
-  status?: Types.MandateImportEntryStatus;
+  status?: `${Types.MandateImportEntryStatus}`;
 }
 
 export class MandateImportEntryService {
@@ -96,7 +96,7 @@ export class MandateImportEntryService {
   }
 
   public async list(
-    requestParameters: MandateImportEntryListRequest,
+    requestParameters?: Partial<MandateImportEntryListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateImportEntryListResponse> {
     const urlParameters = [];
@@ -120,7 +120,7 @@ export class MandateImportEntryService {
   }
 
   public async *all(
-    requestParameters: MandateImportEntryListRequest,
+    requestParameters?: Partial<MandateImportEntryListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.MandateImportEntry, void, unknown> {
     let cursor = undefined;

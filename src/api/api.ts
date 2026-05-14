@@ -1,6 +1,5 @@
 import * as os from 'os';
 import * as process from 'process';
-import * as _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
 import got, { Agents, OptionsOfJSONResponseBody } from 'got';

@@ -15,11 +15,11 @@ interface InstalmentScheduleCreateWithDatesRequest {
 
   app_fee?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency: Types.InstalmentScheduleCurrency;
+  currency: `${Types.InstalmentScheduleCurrency}`;
 
   // An explicit array of instalment payments, each specifying at least an
   // `amount` and `charge_date`. See [create (with
@@ -86,11 +86,11 @@ interface InstalmentScheduleCreateWithScheduleRequest {
 
   app_fee?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency: Types.InstalmentScheduleCurrency;
+  currency: `${Types.InstalmentScheduleCurrency}`;
 
   // Frequency of the payments you want to create, together with an array of
   // payment
@@ -178,7 +178,7 @@ interface InstalmentScheduleListRequest {
 
   // At most five valid status values
 
-  status?: Types.InstalmentScheduleStatus[];
+  status?: `${Types.InstalmentScheduleStatus}`[];
 }
 
 interface InstalmentScheduleUpdateRequest {
@@ -248,7 +248,7 @@ export class InstalmentScheduleService {
   }
 
   public async list(
-    requestParameters: InstalmentScheduleListRequest,
+    requestParameters?: Partial<InstalmentScheduleListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleListResponse> {
     const urlParameters = [];
@@ -272,7 +272,7 @@ export class InstalmentScheduleService {
   }
 
   public async *all(
-    requestParameters: InstalmentScheduleListRequest,
+    requestParameters?: Partial<InstalmentScheduleListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {
     let cursor = undefined;
@@ -310,7 +310,7 @@ export class InstalmentScheduleService {
 
   public async update(
     identity: string,
-    requestParameters: InstalmentScheduleUpdateRequest,
+    requestParameters?: Partial<InstalmentScheduleUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
@@ -340,7 +340,7 @@ export class InstalmentScheduleService {
       method: 'post',
       urlParameters,
 
-      payloadKey: null,
+      payloadKey: 'instalment_schedules',
       fetch: null,
       customHeaders,
     };

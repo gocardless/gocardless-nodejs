@@ -28,11 +28,11 @@ interface PayoutListRequest {
 
   creditor_bank_account?: string;
 
-  // [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
-  currency?: Types.PayoutCurrency;
+  currency?: `${Types.PayoutCurrency}`;
 
   // Number of records to return.
 
@@ -46,7 +46,7 @@ interface PayoutListRequest {
 
   // Whether a payout contains merchant revenue or partner fees.
 
-  payout_type?: Types.PayoutPayoutType;
+  payout_type?: `${Types.PayoutPayoutType}`;
 
   // Reference which appears on the creditor's bank statement.
 
@@ -61,7 +61,7 @@ interface PayoutListRequest {
   // <li>`bounced`: the payout bounced when sent, the payout can be retried.</li>
   // </ul>
 
-  status?: Types.PayoutStatus;
+  status?: `${Types.PayoutStatus}`;
 }
 
 interface PayoutUpdateRequest {
@@ -79,7 +79,7 @@ export class PayoutService {
   }
 
   public async list(
-    requestParameters: PayoutListRequest,
+    requestParameters?: Partial<PayoutListRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayoutListResponse> {
     const urlParameters = [];
@@ -103,7 +103,7 @@ export class PayoutService {
   }
 
   public async *all(
-    requestParameters: PayoutListRequest,
+    requestParameters?: Partial<PayoutListRequest>,
     customHeaders: Types.JsonMap = {},
   ): AsyncGenerator<Types.Payout, void, unknown> {
     let cursor = undefined;
@@ -141,7 +141,7 @@ export class PayoutService {
 
   public async update(
     identity: string,
-    requestParameters: PayoutUpdateRequest,
+    requestParameters?: Partial<PayoutUpdateRequest>,
     customHeaders: Types.JsonMap = {},
   ): Promise<PayoutResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
