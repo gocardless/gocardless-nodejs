@@ -969,7 +969,7 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
   max_payments?: number;
 
@@ -1705,7 +1705,7 @@ export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
   max_payments?: number;
 
@@ -2127,7 +2127,7 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
   max_payments?: number;
 
@@ -3091,7 +3091,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ Only supported for the PayTo scheme, where it is required.
+  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
   max_payments?: number;
 
