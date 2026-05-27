@@ -18,6 +18,11 @@ function InvalidSignatureError() {
   this.name = 'InvalidSignatureError';
 }
 
+interface WebhookParseResult {
+  events: Event[];
+  webhookId: string | null;
+}
+
 /**
  * Validates that a webhook was genuinely sent by GoCardless, then parses each `event`
  * object into an array of `GoCardless.Event` classes.
@@ -34,6 +39,27 @@ function parse(body: crypto.BinaryLike, webhookSecret: string, signatureHeader: 
   const bodyString = typeof body === 'string' ? body : body.toString();
   const eventsData = JSON.parse(bodyString) as { events: Event[] };
   return eventsData.events;
+}
+
+/**
+ * Validates that a webhook was genuinely sent by GoCardless, then parses it into
+ * a result object containing both the events and the webhook ID from the meta field.
+ *
+ * @body The raw webhook body.
+ * @webhookSecret The webhook endpoint secret for your webhook endpoint, as
+ *   configured in your GoCardless Dashboard.
+ * @signatureHeader The signature included in the webhook request, as specified
+ *   by the `Webhook-Signature` header.
+ */
+function parseWithMeta(body: crypto.BinaryLike, webhookSecret: string, signatureHeader: string): WebhookParseResult {
+  verifySignature(body, webhookSecret, signatureHeader);
+
+  const bodyString = typeof body === 'string' ? body : body.toString();
+  const parsed = JSON.parse(bodyString) as { events: Event[]; meta?: { webhook_id?: string } };
+  return {
+    events: parsed.events,
+    webhookId: parsed.meta?.webhook_id ?? null,
+  };
 }
 
 /**
@@ -58,4 +84,4 @@ function verifySignature(body: crypto.BinaryLike, webhookSecret: string, signatu
   }
 }
 
-export { parse, verifySignature, InvalidSignatureError };
+export { parse, parseWithMeta, verifySignature, InvalidSignatureError, WebhookParseResult };

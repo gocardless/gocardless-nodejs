@@ -31,7 +31,7 @@ export class ScenarioSimulatorService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: 'scenario_simulators',
+      payloadKey: null,
       fetch: null,
       customHeaders,
     };

@@ -111,6 +111,67 @@ const gocardless = require('gocardless-nodejs');
 const { Environments } = require('gocardless-nodejs');
 ```
 
+### Handling webhooks
+
+GoCardless supports webhooks, allowing you to receive real-time notifications when things happen in your account, so you can take automatic actions in response, for example:
+
+* When a customer cancels their mandate with the bank, suspend their club membership
+* When a payment fails due to lack of funds, mark their invoice as unpaid
+* When a customer's subscription generates a new payment, log it in their "past payments" list
+
+The client allows you to validate that a webhook you receive is genuinely from GoCardless, and to parse it into `Event` objects which are easy to work with:
+
+```typescript
+import { webhooks } from 'gocardless-nodejs';
+
+// When you create a webhook endpoint, you can specify a secret. When GoCardless sends
+// you a webhook, it will sign the body using that secret. Since only you and GoCardless
+// know the secret, you can check the signature and ensure that the webhook is truly
+// from GoCardless.
+const webhookEndpointSecret = process.env.GOCARDLESS_WEBHOOK_ENDPOINT_SECRET;
+
+// In your webhook handler (e.g. Express route)
+app.post('/webhooks', (req, res) => {
+  try {
+    const events = webhooks.parse(
+      req.body,
+      webhookEndpointSecret,
+      req.headers['webhook-signature']
+    );
+
+    events.forEach((event) => {
+      console.log(event.id);
+    });
+
+    res.status(200).end();
+  } catch (e) {
+    if (e.name === 'InvalidSignatureError') {
+      // The webhook doesn't appear to be genuinely from GoCardless
+      res.status(498).end();
+    }
+    throw e;
+  }
+});
+```
+
+#### Accessing the webhook ID
+
+If you need to access the webhook ID for debugging purposes, you can use `parseWithMeta` instead:
+
+```typescript
+const result = webhooks.parseWithMeta(
+  req.body,
+  webhookEndpointSecret,
+  req.headers['webhook-signature']
+);
+const events = result.events;
+const webhookId = result.webhookId;  // e.g. "WB123" - useful for debugging
+```
+
+Note: The webhook ID is intended for debugging and logging purposes only. It should not be used for deduplication - instead, use the event IDs to deduplicate, as each event has a unique ID that remains consistent if the same event is sent multiple times.
+
+For more details on working with webhooks, see our ["Getting started" guide](https://developer.gocardless.com/getting-started/api/introduction/?lang=node).
+
 ## Upgrading from older versions
 
 If you're upgrading from v7 or earlier to v8 or later, see: MIGRATION_V8.md
