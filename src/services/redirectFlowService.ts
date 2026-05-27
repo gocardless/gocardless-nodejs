@@ -129,7 +129,7 @@ export class RedirectFlowService {
       method: 'post',
       urlParameters,
       requestParameters,
-      payloadKey: 'redirect_flows',
+      payloadKey: null,
       fetch: null,
       customHeaders,
     };

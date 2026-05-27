@@ -80,7 +80,7 @@ export class MandateImportService {
       method: 'post',
       urlParameters,
 
-      payloadKey: 'mandate_imports',
+      payloadKey: null,
       fetch: null,
       customHeaders,
     };
@@ -101,7 +101,7 @@ export class MandateImportService {
       method: 'post',
       urlParameters,
 
-      payloadKey: 'mandate_imports',
+      payloadKey: null,
       fetch: null,
       customHeaders,
     };

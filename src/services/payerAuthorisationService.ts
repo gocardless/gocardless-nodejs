@@ -122,7 +122,7 @@ export class PayerAuthorisationService {
       method: 'post',
       urlParameters,
 
-      payloadKey: 'payer_authorisations',
+      payloadKey: null,
       fetch: null,
       customHeaders,
     };
@@ -143,7 +143,7 @@ export class PayerAuthorisationService {
       method: 'post',
       urlParameters,
 
-      payloadKey: 'payer_authorisations',
+      payloadKey: null,
       fetch: null,
       customHeaders,
     };
