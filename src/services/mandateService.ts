@@ -91,7 +91,7 @@ interface MandateListRequest {
 
   // Mandate type
 
-  mandate_type?: string;
+  mandate_type?: `${Types.MandateMandateType}`;
 
   // Unique reference. Different schemes have different length and [character
   // set](#appendix-character-sets) requirements. GoCardless will generate a

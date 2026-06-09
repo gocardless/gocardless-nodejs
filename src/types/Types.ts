@@ -2222,8 +2222,8 @@ export type BillingRequestWithActionPaymentRequest = {
   // class="notice"><strong>Important</strong>: To be able to use intelligent
   // retries, Success+ needs to be enabled in [GoCardless
   // dashboard](https://manage.gocardless.com/success-plus). </p> <p
-  // class="notice"><strong>Important</strong>: This is not applicable to IBP
-  // and VRP payments. </p>
+  // class="notice"><strong>Important</strong>: This is not applicable to Pay by
+  // Bank and VRP payments. </p>
   retry_if_possible?: boolean;
 
   // (Optional) A scheme used for Open Banking payments. Currently
@@ -4468,8 +4468,7 @@ export type EventLinks = {
   payment_account_transaction?: string;
 
   // If `resource_type` is `billing_requests`, this is the ID of the
-  // [payment](#core-endpoints-payments) which has been created for Instant Bank
-  // Payment.
+  // [payment](#core-endpoints-payments) which has been created for Pay by Bank.
   payment_request_payment?: string;
 
   // If `resource_type` is `payouts`, this is the ID of the
@@ -4857,6 +4856,9 @@ export type Mandate = {
   // Resources linked to this Mandate.
   links?: MandateLinks;
 
+  // Mandate type
+  mandate_type?: `${MandateMandateType}` | null;
+
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
@@ -4930,6 +4932,14 @@ export type MandateCreateRequestLinks = {
   // created and submits payments against.
   customer_bank_account: string;
 };
+
+export enum MandateMandateType {
+  BankDebit = 'bank_debit',
+  Instant = 'instant',
+  Recurring = 'recurring',
+  VrpCommercial = 'vrp_commercial',
+  VrpSweeping = 'vrp_sweeping',
+}
 
 /** Type for a mandateconsentparameters resource. */
 export type MandateConsentParameters = {
@@ -6092,8 +6102,9 @@ export type Payment = {
   retry_if_possible?: boolean;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
-  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
-  // "sepa_core" are supported.
+  // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to",
+  // "sepa_core", "sepa_credit_transfer" and "sepa_instant_credit_transfer" are
+  // supported.
   scheme?: string | null;
 
   // One of:
