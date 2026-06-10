@@ -282,4 +282,56 @@ describe('BillingRequests Code Samples', () => {
       console.log = originalLog;
     }
   });
+
+  test('fallback code sample executes without error', async () => {
+    // Convert :param placeholders to regex wildcards for flexible matching
+    const stubUrl = '/billing_requests/:identity/actions/fallback';
+    const pathPattern = new RegExp('^' + stubUrl.replace(/:[\w]+/g, '[^/?]+') + '(?:\\?.*)?$');
+
+    // Mock response - repeat multiple times to handle code samples with multiple API calls
+    const responseBody = { billing_requests: {} };
+    for (let i = 0; i < 5; i++) {
+      nock('https://api.gocardless.com').post(pathPattern).query(true).reply(200, responseBody);
+    }
+
+    // Suppress console.log from code samples
+    const originalLog = console.log;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    console.log = () => {};
+
+    try {
+      /* eslint-disable @typescript-eslint/no-unused-vars */
+      const resp = await client.billingRequests.fallback('BR123');
+      /* eslint-enable @typescript-eslint/no-unused-vars */
+    } finally {
+      console.log = originalLog;
+    }
+  });
+
+  test('choose_currency code sample executes without error', async () => {
+    // Convert :param placeholders to regex wildcards for flexible matching
+    const stubUrl = '/billing_requests/:identity/actions/choose_currency';
+    const pathPattern = new RegExp('^' + stubUrl.replace(/:[\w]+/g, '[^/?]+') + '(?:\\?.*)?$');
+
+    // Mock response - repeat multiple times to handle code samples with multiple API calls
+    const responseBody = { billing_requests: {} };
+    for (let i = 0; i < 5; i++) {
+      nock('https://api.gocardless.com').post(pathPattern).query(true).reply(200, responseBody);
+    }
+
+    // Suppress console.log from code samples
+    const originalLog = console.log;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    console.log = () => {};
+
+    try {
+      /* eslint-disable @typescript-eslint/no-unused-vars */
+      const resp = await client.billingRequests.chooseCurrency('BR123', {
+        currency: 'GBP',
+      });
+      /* eslint-enable @typescript-eslint/no-unused-vars */
+    } finally {
+      console.log = originalLog;
+    }
+  });
 });
