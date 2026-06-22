@@ -4543,6 +4543,7 @@ export enum ExportExportType {
   PartnerFees = 'partner_fees',
   PaymentsImportTemplate = 'payments_import_template',
   PaymentAccountStatement = 'payment_account_statement',
+  OutboundPaymentsIndex = 'outbound_payments_index',
 }
 
 /** Type for a fundsavailability resource. */
