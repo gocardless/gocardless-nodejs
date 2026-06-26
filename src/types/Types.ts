@@ -7468,6 +7468,9 @@ export type VerificationDetail = {
   // The company's registration number.
   company_number?: string;
 
+  // The country code of the company's address.
+  country_code?: string;
+
   // A summary describing what the company does.
   description?: string;
 
@@ -7482,6 +7485,9 @@ export type VerificationDetail = {
 
   // The company's postal code.
   postal_code?: string;
+
+  // The region of the company's address.
+  region?: string | null;
 };
 
 /** Type for a verificationdetailcreaterequestlinks resource. */
