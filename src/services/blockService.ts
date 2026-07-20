@@ -61,7 +61,8 @@ interface BlockListRequest {
 
   before?: string;
 
-  // ID of a [Block](#core-endpoints-blocks).
+  // ID of a Block
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-blocks).
 
   block?: string;
 
@@ -86,7 +87,9 @@ interface BlockListRequest {
 
   reason_type?: `${Types.BlockReasonType}`;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this
   // resource was updated.
 
   updated_at?: string;

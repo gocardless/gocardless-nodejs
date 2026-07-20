@@ -12,49 +12,56 @@ interface CustomerBankAccountCreateRequest {
   // Name of the account holder, as known by the bank. The full name provided when
   // the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank submissions.
-  // This field is required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // This field is required unless the request includes a customer bank account
+  // token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
 
   account_holder_name?: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  // Bank account number - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
 
   account_type?: `${Types.CustomerBankAccountAccountType}`;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Bank code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Branch code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
 
   country_code?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: string;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  // International Bank Account Number. Alternatively you can provide local
+  // details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
+  // must supply local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
 
   iban?: string;
 

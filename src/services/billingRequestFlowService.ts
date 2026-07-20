@@ -24,8 +24,8 @@ interface BillingRequestFlowCreateRequest {
 
   exit_uri?: string;
 
-  // Sets the default language of the Billing Request Flow and the customer. [ISO
-  // 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Sets the default language of the Billing Request Flow and the customer. ISO
+  // 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
 
   language?: string;
 
@@ -38,7 +38,6 @@ interface BillingRequestFlowCreateRequest {
   //
   // You can only lock bank account if these have already been completed as a part
   // of the billing request.
-  //
 
   lock_bank_account?: boolean;
 
@@ -55,7 +54,6 @@ interface BillingRequestFlowCreateRequest {
   //
   // You can only lock customer details if these have already been completed as a
   // part of the billing request.
-  //
 
   lock_customer_details?: boolean;
 

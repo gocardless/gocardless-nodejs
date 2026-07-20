@@ -9,17 +9,16 @@ interface MandateListResponse extends Types.APIResponse {
 }
 
 interface MandateCreateRequest {
-  // This field is ACH specific, sometimes referred to as [SEC
-  // code](https://www.moderntreasury.com/learn/sec-codes).
+  // This field is ACH specific, sometimes referred to as SEC code
+  // (https://www.moderntreasury.com/learn/sec-codes).
   //
   // This is the way that the payer gives authorisation to the merchant.
-  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
   // code: WEB)
-  //   telephone: Authorisation is provided orally over telephone (maps to SEC
-  // code: TEL)
-  //   paper: Authorisation is provided in writing and signed, or similarly
+  // telephone: Authorisation is provided orally over telephone (maps to SEC code:
+  // TEL)
+  // paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
-  //
 
   authorisation_source?: `${Types.MandateAuthorisationSource}`;
 
@@ -37,20 +36,19 @@ interface MandateCreateRequest {
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
 
   payer_ip_address?: string;
 
-  // Unique reference. Different schemes have different length and [character
-  // set](#appendix-character-sets) requirements. GoCardless will generate a
-  // unique reference satisfying the different scheme requirements if this field
-  // is left blank.
+  // Unique reference. Different schemes have different length and character set
+  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
 
   reference?: string;
 
-  // <a name="mandates_scheme"></a>Bank payment scheme to which this mandate and
-  // associated payments are submitted. Can be supplied or automatically detected
-  // from the customer's bank account.
+  // Bank payment scheme to which this mandate and associated payments are
+  // submitted. Can be supplied or automatically detected from the customer's bank
+  // account.
 
   scheme?: string;
 }
@@ -67,21 +65,24 @@ interface MandateListRequest {
   // The creation date of this Mandate.
   created_at?: Types.CreatedAtFilter;
 
-  // ID of a [creditor](#core-endpoints-creditors). If specified, this endpoint
-  // will return all mandates for the given creditor. Cannot be used in
-  // conjunction with `customer` or `customer_bank_account`
+  // ID of a creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // If specified, this endpoint will return all mandates for the given creditor.
+  // Cannot be used in conjunction with `customer` or `customer_bank_account`
 
   creditor?: string;
 
-  // ID of a [customer](#core-endpoints-customers). If specified, this endpoint
-  // will return all mandates for the given customer. Cannot be used in
-  // conjunction with `customer_bank_account` or `creditor`
+  // ID of a customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // If specified, this endpoint will return all mandates for the given customer.
+  // Cannot be used in conjunction with `customer_bank_account` or `creditor`
 
   customer?: string;
 
-  // ID of a [customer bank account](#core-endpoints-customer-bank-accounts). If
-  // specified, this endpoint will return all mandates for the given bank account.
-  // Cannot be used in conjunction with `customer` or `creditor`
+  // ID of a customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
+  // If specified, this endpoint will return all mandates for the given bank
+  // account. Cannot be used in conjunction with `customer` or `creditor`
 
   customer_bank_account?: string;
 
@@ -93,10 +94,10 @@ interface MandateListRequest {
 
   mandate_type?: `${Types.MandateMandateType}`;
 
-  // Unique reference. Different schemes have different length and [character
-  // set](#appendix-character-sets) requirements. GoCardless will generate a
-  // unique reference satisfying the different scheme requirements if this field
-  // is left blank.
+  // Unique reference. Different schemes have different length and character set
+  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
 
   reference?: string;
 

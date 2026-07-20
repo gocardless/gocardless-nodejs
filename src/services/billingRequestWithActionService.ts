@@ -16,8 +16,8 @@ interface BillingRequestWithActionCreateWithActionsRequest {
   // direct debit.
   // Should not be set if GoCardless payment intelligence feature is used.
   //
-  // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  // See Billing Requests: Retain customers with Fallbacks
+  // (https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
   // for more information.
 
   fallback_enabled?: boolean;
@@ -44,9 +44,9 @@ interface BillingRequestWithActionCreateWithActionsRequest {
   // Specifies the underlying purpose of the payment. Defines the specific reason
   // or type of service/goods the payment relates to, improving straight-through
   // processing and compliance.
-  // See [VRP Commercial Payment Purpose
-  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
-  // for the complete list of valid codes.
+  // See VRP Commercial Payment Purpose Codes
+  // (https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/) for
+  // the complete list of valid codes.
 
   payment_purpose_code?: string;
 
@@ -56,9 +56,9 @@ interface BillingRequestWithActionCreateWithActionsRequest {
   // Specifies the high-level purpose/category of a mandate and/or payment using a
   // set of pre-defined categories. Provides context on the nature and reason for
   // the payment to facilitate processing and compliance.
-  // See [Billing Request Purpose
-  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
-  // the complete list of valid codes.
+  // See Billing Request Purpose Codes
+  // (https://developer.gocardless.com/billing-request-purpose-codes/) for the
+  // complete list of valid codes.
 
   purpose_code?: `${Types.BillingRequestWithActionPurposeCode}`;
 }

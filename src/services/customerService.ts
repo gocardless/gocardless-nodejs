@@ -33,8 +33,8 @@ interface CustomerCreateRequest {
 
   company_name?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -57,13 +57,13 @@ interface CustomerCreateRequest {
 
   given_name?: string;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
   // as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en", "fr",
-  // "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported. If this
-  // is not provided, the language will be chosen based on the `country_code` (if
-  // supplied) or default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided, the language will be chosen
+  // based on the `country_code` (if supplied) or default to "en".
 
   language?: string;
 
@@ -72,7 +72,7 @@ interface CustomerCreateRequest {
 
   metadata?: Types.JsonMap;
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
 
   phone_number?: string;
@@ -82,7 +82,7 @@ interface CustomerCreateRequest {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
   // is required (e.g. `CA` for California).
 
   region?: string;
@@ -111,8 +111,8 @@ interface CustomerListRequest {
   // The creation date of this Customer.
   created_at?: Types.CreatedAtFilter;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: `${Types.CustomerCurrency}`;
@@ -123,20 +123,18 @@ interface CustomerListRequest {
 
   // The direction to sort in.
   // One of:
-  // <ul>
-  // <li>`asc`</li>
-  // <li>`desc`</li>
-  // </ul>
+  //
+  // - `asc`
+  // - `desc`
 
   sort_direction?: `${Types.CustomerSortDirection}`;
 
   // Field by which to sort records.
   // One of:
-  // <ul>
-  // <li>`name`</li>
-  // <li>`company_name`</li>
-  // <li>`created_at`</li>
-  // </ul>
+  //
+  // - `name`
+  // - `company_name`
+  // - `created_at`
 
   sort_field?: `${Types.CustomerSortField}`;
 }
@@ -166,8 +164,8 @@ interface CustomerUpdateRequest {
 
   company_name?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 
@@ -190,13 +188,13 @@ interface CustomerUpdateRequest {
 
   given_name?: string;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code. Used
   // as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en", "fr",
-  // "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported. If this
-  // is not provided, the language will be chosen based on the `country_code` (if
-  // supplied) or default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided, the language will be chosen
+  // based on the `country_code` (if supplied) or default to "en".
 
   language?: string;
 
@@ -205,7 +203,7 @@ interface CustomerUpdateRequest {
 
   metadata?: Types.JsonMap;
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
 
   phone_number?: string;
@@ -215,7 +213,7 @@ interface CustomerUpdateRequest {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
   // is required (e.g. `CA` for California).
 
   region?: string;

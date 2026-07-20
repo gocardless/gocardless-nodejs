@@ -22,21 +22,43 @@ interface RefundCreateRequest {
   metadata?: Types.JsonMap;
 
   // An optional reference that will appear on your customer's bank statement. The
-  // character limit for this reference is dependent on the scheme.<br />
-  // <strong>ACH</strong> - 10 characters<br /> <strong>Autogiro</strong> - 11
-  // characters<br /> <strong>Bacs</strong> - 10 characters<br />
-  // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
-  // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong> -
-  // scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
-  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that this
-  // reference must be unique (for each merchant) for the BECS scheme as it is a
-  // scheme requirement. <p class='restricted-notice'><strong>Restricted</strong>:
-  // You can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p> <p class='restricted-notice'><strong>Restricted</strong>:
-  // You can not specify a payment reference for Faster Payments.</p>
+  // character limit for this reference is dependent on the scheme.
+  //  ACH <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  Autogiro <ul>
+  // <li>11 characters</li>
+  // </ul>
+  //  Bacs <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  BECS <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  BECS NZ <ul>
+  // <li>12 characters</li>
+  // </ul>
+  //  Betalingsservice <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  Faster Payments <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  PAD <ul>
+  // <li>scheme doesn't offer references</li>
+  // </ul>
+  //  PayTo <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  SEPA <ul>
+  // <li>140 characters</li>
+  // </ul>
+  //  Note that this reference must be unique (for each merchant) for the BECS
+  // scheme as it is a scheme requirement. Restricted: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK) if
+  // you're on the GoCardless Plus, Pro or Enterprise packages
+  // (https://gocardless.com/pricing).
+  //  Restricted: You can not specify a payment reference for Faster Payments.
 
   reference?: string;
 
@@ -45,12 +67,12 @@ interface RefundCreateRequest {
   // other partial refunds against this payment, this value should be the sum of
   // the
   // existing refunds plus the amount of the refund being created.
-  // <br />
+  //
   // Must be supplied if `links[payment]` is present.
-  // <p class="notice">It is possible to opt out of requiring
-  // `total_amount_confirmation`, please contact <a
-  // href="mailto:support@gocardless.com">our support team</a> for more
-  // information.</p>
+  //
+  // It is possible to opt out of requiring `total_amount_confirmation`, please
+  // contact our support team (mailto:support@gocardless.com) for more
+  // information.
 
   total_amount_confirmation?: string;
 }
@@ -81,11 +103,9 @@ interface RefundListRequest {
   payment?: string;
 
   // Whether a refund was issued against a mandate or a payment. One of:
-  // <ul>
-  //   <li>`payment`: <em>default</em> returns refunds created against payments
-  // only</li>
-  //   <li>`mandate`: returns refunds created against mandates only</li>
-  // </ul>
+  //
+  // - `payment`: default returns refunds created against payments only
+  // - `mandate`: returns refunds created against mandates only
 
   refund_type?: `${Types.RefundRefundType}`;
 }

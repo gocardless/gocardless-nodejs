@@ -16,12 +16,11 @@ interface CreditorCreateRequest {
   // sent to that creditor could be `ACME-8G7Q8`.
   //
   // This prefix is also used for refunds in EUR and GBP.
-  //
 
   bank_reference_prefix?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code: string;
 
@@ -72,7 +71,6 @@ interface CreditorUpdateRequest {
   // sent to that creditor could be `ACME-8G7Q8`.
   //
   // This prefix is also used for refunds in EUR and GBP.
-  //
 
   bank_reference_prefix?: string;
 
@@ -80,8 +78,8 @@ interface CreditorUpdateRequest {
 
   city?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
 
   country_code?: string;
 

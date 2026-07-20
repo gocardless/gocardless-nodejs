@@ -13,8 +13,8 @@ interface BillingRequestCreateRequest {
   // direct debit.
   // Should not be set if GoCardless payment intelligence feature is used.
   //
-  // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  // See Billing Requests: Retain customers with Fallbacks
+  // (https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
   // for more information.
 
   fallback_enabled?: boolean;
@@ -44,9 +44,9 @@ interface BillingRequestCreateRequest {
   // Specifies the underlying purpose of the payment. Defines the specific reason
   // or type of service/goods the payment relates to, improving straight-through
   // processing and compliance.
-  // See [VRP Commercial Payment Purpose
-  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
-  // for the complete list of valid codes.
+  // See VRP Commercial Payment Purpose Codes
+  // (https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/) for
+  // the complete list of valid codes.
 
   payment_purpose_code?: string;
 
@@ -56,9 +56,9 @@ interface BillingRequestCreateRequest {
   // Specifies the high-level purpose/category of a mandate and/or payment using a
   // set of pre-defined categories. Provides context on the nature and reason for
   // the payment to facilitate processing and compliance.
-  // See [Billing Request Purpose
-  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
-  // the complete list of valid codes.
+  // See Billing Request Purpose Codes
+  // (https://developer.gocardless.com/billing-request-purpose-codes/) for the
+  // complete list of valid codes.
 
   purpose_code?: `${Types.BillingRequestPurposeCode}`;
 
@@ -78,54 +78,63 @@ interface BillingRequestCollectBankAccountRequest {
   // Name of the account holder, as known by the bank. The full name provided when
   // the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank submissions.
-  // This field is required unless the request includes a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens).
+  // This field is required unless the request includes a customer bank account
+  // token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
 
   account_holder_name?: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  // Bank account number - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
-  // Account number suffix (only for bank accounts denominated in NZD) - see
-  // [local details](#local-bank-details-new-zealand) for more information.
+  // Account number suffix (only for bank accounts denominated in NZD) - see local
+  // details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-new-zealand)
+  // for more information.
 
   account_number_suffix?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
 
   account_type?: `${Types.BillingRequestAccountType}`;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Bank code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Branch code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
 
   country_code?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: string;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  // International Bank Account Number. Alternatively you can provide local
+  // details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
+  // must supply local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
 
   iban?: string;
 
@@ -182,8 +191,9 @@ interface BillingRequestListRequest {
   // The creation date of this BillingRequest.
   created_at?: Types.CreatedAtFilter;
 
-  // ID of a [customer](#core-endpoints-customers). If specified, this endpoint
-  // will return all requests for the given customer.
+  // ID of a customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // If specified, this endpoint will return all requests for the given customer.
 
   customer?: string;
 
@@ -192,15 +202,12 @@ interface BillingRequestListRequest {
   limit?: string;
 
   // One of:
-  // <ul>
-  // <li>`pending`: the billing request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
-  // <li>`fulfilling`: the billing request is currently undergoing fulfilment</li>
-  // <li>`fulfilled`: the billing request has been fulfilled and a payment
-  // created</li>
-  // <li>`cancelled`: the billing request has been cancelled and cannot be
-  // used</li>
-  // </ul>
+  //
+  // - `pending`: the billing request is pending and can be used
+  // - `ready_to_fulfil`: the billing request is ready to fulfil
+  // - `fulfilling`: the billing request is currently undergoing fulfilment
+  // - `fulfilled`: the billing request has been fulfilled and a payment created
+  // - `cancelled`: the billing request has been cancelled and cannot be used
 
   status?: `${Types.BillingRequestStatus}`;
 }
@@ -216,8 +223,8 @@ interface BillingRequestNotifyRequest {
 }
 
 interface BillingRequestChooseCurrencyRequest {
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency: string;
@@ -229,8 +236,8 @@ interface BillingRequestChooseCurrencyRequest {
 }
 
 interface BillingRequestSelectInstitutionRequest {
-  // [ISO
-  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
   // institutions with the country code 'GB' are returned by default.
 

@@ -28,8 +28,8 @@ interface PayoutListRequest {
 
   creditor_bank_account?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency?: `${Types.PayoutCurrency}`;
@@ -39,7 +39,7 @@ interface PayoutListRequest {
   limit?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
-  // to 50 characters and values up to 500 characters. _Note:_ This should not be
+  // to 50 characters and values up to 500 characters. Note: This should not be
   // used for storing PII data.
 
   metadata?: Types.JsonMap;
@@ -53,13 +53,12 @@ interface PayoutListRequest {
   reference?: string;
 
   // One of:
-  // <ul>
-  // <li>`pending`: the payout has been created, but not yet sent to your bank or
-  // it is in the process of being exchanged through our FX provider.</li>
-  // <li>`paid`: the payout has been sent to the your bank. FX payouts will become
-  // `paid` after we emit the `fx_rate_confirmed` webhook.</li>
-  // <li>`bounced`: the payout bounced when sent, the payout can be retried.</li>
-  // </ul>
+  //
+  // - `pending`: the payout has been created, but not yet sent to your bank or it
+  // is in the process of being exchanged through our FX provider.
+  // - `paid`: the payout has been sent to the your bank. FX payouts will become
+  // `paid` after we emit the `fx_rate_confirmed` webhook.
+  // - `bounced`: the payout bounced when sent, the payout can be retried.
 
   status?: `${Types.PayoutStatus}`;
 }

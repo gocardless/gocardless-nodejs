@@ -10,29 +10,31 @@ interface PayerAuthorisationListResponse extends Types.APIResponse {
 
 interface PayerAuthorisationCreateRequest {
   // All details required for the creation of a
-  // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
+  // Customer Bank Account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
   bank_account: Types.PayerAuthorisationBankAccount;
 
-  // All details required for the creation of a
-  // [Customer](#core-endpoints-customers).
+  // All details required for the creation of a Customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
   customer: Types.PayerAuthorisationCustomer;
 
-  // All details required for the creation of a
-  // [Mandate](#core-endpoints-mandates).
+  // All details required for the creation of a Mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates).
   mandate: Types.PayerAuthorisationMandate;
 }
 
 interface PayerAuthorisationUpdateRequest {
   // All details required for the creation of a
-  // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
+  // Customer Bank Account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
   bank_account: Types.PayerAuthorisationBankAccount;
 
-  // All details required for the creation of a
-  // [Customer](#core-endpoints-customers).
+  // All details required for the creation of a Customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
   customer: Types.PayerAuthorisationCustomer;
 
-  // All details required for the creation of a
-  // [Mandate](#core-endpoints-mandates).
+  // All details required for the creation of a Mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates).
   mandate: Types.PayerAuthorisationMandate;
 }
 

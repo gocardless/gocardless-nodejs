@@ -10,19 +10,22 @@ interface MandatePdfListResponse extends Types.APIResponse {
 
 interface MandatePdfCreateRequest {
   // Name of the account holder, as known by the bank. Usually this matches the
-  // name of the [customer](#core-endpoints-customers). This field cannot exceed
-  // 18 characters.
+  // name of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // This field cannot exceed 18 characters.
 
   account_holder_name?: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  // Bank account number - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
 
   account_type?: `${Types.MandatePdfAccountType}`;
 
@@ -38,18 +41,21 @@ interface MandatePdfCreateRequest {
 
   address_line3?: string;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Bank code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
-  // SWIFT BIC. Will be derived automatically if a valid `iban` or [local
-  // details](#appendix-local-bank-details) are provided.
+  // SWIFT BIC. Will be derived automatically if a valid `iban` or local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // are provided.
 
   bic?: string;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Branch code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
@@ -62,8 +68,8 @@ interface MandatePdfCreateRequest {
 
   company_name?: string;
 
-  // [ISO
-  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. Required if providing local details.
 
   country_code?: string;
@@ -85,9 +91,10 @@ interface MandatePdfCreateRequest {
 
   given_name?: string;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs cannot be provided for Autogiro
-  // mandates.
+  // International Bank Account Number. Alternatively you can provide local
+  // details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // IBANs cannot be provided for Autogiro mandates.
 
   iban?: string;
 
@@ -114,14 +121,15 @@ interface MandatePdfCreateRequest {
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state code
   // is required (e.g. `CA` for California).
 
   region?: string;
 
   // Direct Debit scheme. Can be supplied or automatically detected from the bank
   // account details provided. If you do not provide a scheme, you must provide
-  // either a mandate, an `iban`, or [local details](#appendix-local-bank-details)
+  // either a mandate, an `iban`, or local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
   // including a `country_code`.
 
   scheme?: string;

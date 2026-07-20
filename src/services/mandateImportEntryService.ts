@@ -29,7 +29,6 @@ interface MandateImportEntryCreateRequest {
   // processed by GoCardless) to identify the records that have been created.
   // Limited
   // to 255 characters.
-  //
 
   record_identifier?: string;
 }
@@ -52,12 +51,11 @@ interface MandateImportEntryListRequest {
   mandate_import: string;
 
   // One of:
-  // <ul>
-  // <li>`sucessfully_processed`: the entry has been imported and the associated
-  // records created.</li>
-  // <li>`unsuccessfully_processed`: the entry could not be processed due to an
-  // error, see the 'processing_errors' value</li>
-  // </ul>
+  //
+  // - `sucessfully_processed`: the entry has been imported and the associated
+  // records created.
+  // - `unsuccessfully_processed`: the entry could not be processed due to an
+  // error, see the 'processing_errors' value
 
   status?: `${Types.MandateImportEntryStatus}`;
 }
