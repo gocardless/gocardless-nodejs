@@ -50,7 +50,7 @@ describe('CustomerNotifications Code Samples', () => {
 
     try {
       /* eslint-disable @typescript-eslint/no-unused-vars */
-      const customerNotification = await client.customerNotifications.handle('PCN123');
+      const customerNotification = await client.customerNotifications.handle('EV1D18JEXAMPLE');
       /* eslint-enable @typescript-eslint/no-unused-vars */
     } finally {
       console.log = originalLog;
