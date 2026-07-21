@@ -4973,6 +4973,10 @@ export type Institution = {
   // A human readable name for this institution
   name?: string;
 
+  // The roles assigned to this institution, representing the open banking
+  // features it supports.
+  roles?: string[];
+
   // The status of the institution
   status?: `${InstitutionStatus}`;
 };
