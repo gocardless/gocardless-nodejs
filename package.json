@@ -122,7 +122,7 @@
     "prettier": "^2.8.8",
     "prettier-eslint": "^15.0.1",
     "prettier-eslint-cli": "^7.1.0",
-    "ts-jest": "29.4.1",
+    "ts-jest": "29.4.12",
     "typescript": "^5.0.2"
   },
   "files": [
