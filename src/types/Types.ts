@@ -8,17 +8,17 @@ export type Balance = {
 
   // Type of the balance. Could be one of
   //
-  // - pending_payments_submitted: Payments we have submitted to the scheme but
-  // not yet confirmed. This does not exactly correspond to Pending payments in
-  // the dashboard, because this balance does not include payments that are
+  // - `pending_payments_submitted`: Payments we have submitted to the scheme
+  // but not yet confirmed. This does not exactly correspond to Pending payments
+  // in the dashboard, because this balance does not include payments that are
   // pending submission.
-  // - confirmed_funds: Payments that have been confirmed minus fees and
+  // - `confirmed_funds`: Payments that have been confirmed minus fees and
   // unclaimed debits for refunds, failures and chargebacks. These funds have
   // not yet been moved into a payout.
-  // - pending_payouts: Confirmed payments that have been moved into a payout.
+  // - `pending_payouts`: Confirmed payments that have been moved into a payout.
   // This is the total due to be paid into your bank account in the next payout
   // run (payouts happen once every business day).
-  // pending_payouts will only be non-zero while we are generating and
+  // `pending_payouts` will only be non-zero while we are generating and
   // submitting the payouts to our partner bank.
   balance_type?: `${BalanceBalanceType}`;
 
@@ -100,7 +100,7 @@ export type BankAccountHolderVerification = {
   //
   // - `full_match`: The verification has confirmed that the account name
   // exactly matches the details provided.
-  // - `partial_match`:  The verification has confirmed that the account name is
+  // - `partial_match`: The verification has confirmed that the account name is
   // similar but does not match to the details provided.
   // - `no_match`: The verification concludes the provided name does not match
   // the account details.
@@ -247,8 +247,8 @@ export type BankDetailsLookup = {
   // ISO 9362 SWIFT BIC of the bank with which the account is held.
   //
   // Even if no BIC is returned for an account, GoCardless may still be able to
-  // collect payments from it - you should refer to the
-  // `available_debit_schemes` attribute to determine reachability.
+  // collect payments from it - you should refer to the available_debit_schemes
+  // attribute to determine reachability.
   bic?: string | null;
 };
 
@@ -5763,7 +5763,7 @@ export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification =
   //
   // - `full_match`: The verification has confirmed that the account name
   // exactly matches the details provided.
-  // - `partial_match`:  The verification has confirmed that the account name is
+  // - `partial_match`: The verification has confirmed that the account name is
   // similar but does not match to the details provided.
   // - `no_match`: The verification concludes the provided name does not match
   // the account details.
@@ -6398,7 +6398,7 @@ export type Payment = {
   // to the banks
   // - `submitted`: the payment has been submitted to the banks
   // - `confirmed`: the payment has been confirmed as collected
-  // - `paid_out`:  the payment has been included in a payout
+  // - `paid_out`: the payment has been included in a payout
   // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
   // - `cancelled`: the payment has been cancelled
   // - `customer_approval_denied`: the customer has denied approval for the
@@ -6656,8 +6656,7 @@ export type Payout = {
   // One of:
   //
   // - `yyyy-mm-dd`: the payout has been paid and is due to arrive in the
-  // creditor's bank
-  // account on this day
+  // creditor's bank account on this day
   // - `null`: the payout hasn't been paid yet
   arrival_date?: string | null;
 
@@ -7623,7 +7622,7 @@ export type Subscription = {
   // If this field is blank and `count` is not specified, the subscription will
   // continue forever.
   //
-  // Deprecated: This field will be removed in a future API version. Use `count`
+  // Deprecated: This field will be removed in a future API version. Use count
   // to specify a number of payments instead.
   end_date?: string | null;
 

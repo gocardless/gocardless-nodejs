@@ -70,7 +70,7 @@ interface RefundCreateRequest {
   //
   // Must be supplied if `links[payment]` is present.
   //
-  // It is possible to opt out of requiring `total_amount_confirmation`, please
+  // It is possible to opt out of requiring total_amount_confirmation, please
   // contact our support team (mailto:support@gocardless.com) for more
   // information.
 

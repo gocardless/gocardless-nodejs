@@ -40,8 +40,8 @@ interface SubscriptionCreateRequest {
   // If this field is blank and `count` is not specified, the subscription will
   // continue forever.
   //
-  // Deprecated: This field will be removed in a future API version. Use `count`
-  // to specify a number of payments instead.
+  // Deprecated: This field will be removed in a future API version. Use count to
+  // specify a number of payments instead.
 
   end_date?: string;
 
