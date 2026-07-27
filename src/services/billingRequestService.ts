@@ -188,8 +188,11 @@ interface BillingRequestListRequest {
 
   before?: string;
 
-  // The creation date of this BillingRequest.
-  created_at?: Types.CreatedAtFilter;
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
+
+  created_at?: string;
 
   // ID of a customer
   // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).

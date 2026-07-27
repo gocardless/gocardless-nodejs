@@ -72,8 +72,12 @@ interface BlockListRequest {
 
   block_type?: `${Types.BlockBlockType}`;
 
-  // The creation date of this Block.
-  created_at?: Types.CreatedAtFilter;
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this
+  // resource was created.
+
+  created_at?: string;
 
   // Number of records to return.
 
