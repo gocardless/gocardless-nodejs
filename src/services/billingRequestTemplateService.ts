@@ -39,14 +39,12 @@ interface BillingRequestTemplateCreateRequest {
   // required for PayTo and VRP.
   mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
 
   mandate_request_currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
 
   mandate_request_description?: string;
 
@@ -64,33 +62,9 @@ interface BillingRequestTemplateCreateRequest {
 
   mandate_request_scheme?: string;
 
-  // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
-  // intelligence solution to decide if a payer should be verified</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
-  //
-  // By default, all Billing Requests use the `recommended` verification
-  // preference. It uses GoCardless payment intelligence solution to determine if
-  // a payer is fraudulent or not. The verification mechanism is based on the
-  // response and the payer may be asked to verify themselves. If the feature is
-  // not available, `recommended` behaves like `minimum`.
-  //
-  // If you never wish to take advantage of our reduced risk products and Verified
-  // Mandates as they are released in new schemes, please use the `minimum`
-  // verification preference.
-  //
-  // See [Billing Requests: Creating Verified
-  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
-  // for more information.
+  // Verification preference for the mandate.
 
-  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
+  mandate_request_verify?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -106,15 +80,14 @@ interface BillingRequestTemplateCreateRequest {
 
   payment_request_amount?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and for
-  // `EUR` with your customers in supported Eurozone countries only.
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
+  // with your customers in supported Eurozone countries only.
 
   payment_request_currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
 
   payment_request_description?: string;
 
@@ -143,14 +116,12 @@ interface BillingRequestTemplateUpdateRequest {
   // required for PayTo and VRP.
   mandate_request_constraints?: Types.BillingRequestTemplateMandateRequestConstraints;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code.
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
 
   mandate_request_currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
 
   mandate_request_description?: string;
 
@@ -168,33 +139,9 @@ interface BillingRequestTemplateUpdateRequest {
 
   mandate_request_scheme?: string;
 
-  // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
-  // intelligence solution to decide if a payer should be verified</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
-  //
-  // By default, all Billing Requests use the `recommended` verification
-  // preference. It uses GoCardless payment intelligence solution to determine if
-  // a payer is fraudulent or not. The verification mechanism is based on the
-  // response and the payer may be asked to verify themselves. If the feature is
-  // not available, `recommended` behaves like `minimum`.
-  //
-  // If you never wish to take advantage of our reduced risk products and Verified
-  // Mandates as they are released in new schemes, please use the `minimum`
-  // verification preference.
-  //
-  // See [Billing Requests: Creating Verified
-  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
-  // for more information.
+  // Verification preference for the mandate.
 
-  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
+  mandate_request_verify?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -210,15 +157,14 @@ interface BillingRequestTemplateUpdateRequest {
 
   payment_request_amount?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and for
-  // `EUR` with your customers in supported Eurozone countries only.
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // `GBP` and `EUR` supported; `GBP` with your customers in the UK and for `EUR`
+  // with your customers in supported Eurozone countries only.
 
   payment_request_currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
 
   payment_request_description?: string;
 

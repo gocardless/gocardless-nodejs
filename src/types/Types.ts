@@ -7,29 +7,29 @@ export type Balance = {
   amount?: number;
 
   // Type of the balance. Could be one of
-  // <ul>
-  // <li>pending_payments_submitted: Payments we have submitted to the scheme
-  // but not yet confirmed. This does not exactly correspond to <i>Pending
-  // payments</i> in the dashboard, because this balance does not include
-  // payments that are pending submission.</li>
-  // <li>confirmed_funds: Payments that have been confirmed minus fees and
+  //
+  // - `pending_payments_submitted`: Payments we have submitted to the scheme
+  // but not yet confirmed. This does not exactly correspond to Pending payments
+  // in the dashboard, because this balance does not include payments that are
+  // pending submission.
+  // - `confirmed_funds`: Payments that have been confirmed minus fees and
   // unclaimed debits for refunds, failures and chargebacks. These funds have
-  // not yet been moved into a payout.</li>
-  // <li>pending_payouts: Confirmed payments that have been moved into a payout.
+  // not yet been moved into a payout.
+  // - `pending_payouts`: Confirmed payments that have been moved into a payout.
   // This is the total due to be paid into your bank account in the next payout
   // run (payouts happen once every business day).
-  // pending_payouts will only be non-zero while we are generating and
-  // submitting the payouts to our partner bank.</li>
-  // </ul>
+  // `pending_payouts` will only be non-zero while we are generating and
+  // submitting the payouts to our partner bank.
   balance_type?: `${BalanceBalanceType}`;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${BalanceCurrency}`;
 
-  // Dynamic [timestamp](#api-usage-dates-and-times) recording when this
-  // resource was last updated.
+  // Dynamic timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times)
+  // recording when this resource was last updated.
   last_updated_at?: string;
 
   // Resources linked to this Balance.
@@ -55,7 +55,8 @@ export enum BalanceCurrency {
 
 /** Type for a balancelinks resource. */
 export type BalanceLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors).
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   creditor?: string;
 };
 
@@ -73,11 +74,11 @@ export type BankAccountDetail = {
 
   // Base64 URL encoded JWE header values, containing the following keys:
   //
-  //   - `alg`: the asymmetric encryption type used to encrypt symmetric key,
-  // e.g: `RSA-OAEP`.
-  //   - `enc`: the content encryption type, e.g: `A256GCM`.
-  //   - `kid`: the ID of an RSA-2048 public key, from your JWKS, used to
-  // encrypt the AES key.
+  // - `alg`: the asymmetric encryption type used to encrypt symmetric key, e.g:
+  // `RSA-OAEP`.
+  // - `enc`: the content encryption type, e.g: `A256GCM`.
+  // - `kid`: the ID of an RSA-2048 public key, from your JWKS, used to encrypt
+  // the AES key.
   protected?: string;
 
   // Base64 URL encoded authentication tag, used to verify payload integrity
@@ -96,31 +97,27 @@ export type BankAccountHolderVerification = {
   id: string;
 
   // Result of the verification, could be one of
-  // <ul>
-  //   <li>`full_match`: The verification has confirmed that the account name
-  // exactly matches the details provided.</li>
-  //   <li>`partial_match`:  The verification has confirmed that the account
-  // name is similar but does not match to the details provided. </li>
-  //   <li>`no_match`: The verification concludes the provided name does not
-  // match the account details.</li>
-  //   <li>`unable_to_match`: The verification could not be performed due to
-  // recipient bank issues or technical issues </li>
-  // </ul>
+  //
+  // - `full_match`: The verification has confirmed that the account name
+  // exactly matches the details provided.
+  // - `partial_match`: The verification has confirmed that the account name is
+  // similar but does not match to the details provided.
+  // - `no_match`: The verification concludes the provided name does not match
+  // the account details.
+  // - `unable_to_match`: The verification could not be performed due to
+  // recipient bank issues or technical issues
   result?: `${BankAccountHolderVerificationResult}`;
 
   // The status of the bank account holder verification.
-  // <ul>
-  //   <li>`pending`: We have triggered the verification, but the result has not
-  // come back yet.</li>
-  //   <li>`completed`: The verification is complete and is ready to be
-  // used.</li>
-  // </ul>
   //
+  // - `pending`: We have triggered the verification, but the result has not
+  // come back yet.
+  // - `completed`: The verification is complete and is ready to be used.
   status: `${BankAccountHolderVerificationStatus}`;
 
   // Type of the verification that has been performed
-  // eg. [Confirmation of
-  // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
+  // eg. Confirmation of Payee
+  // (https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
   type: `${BankAccountHolderVerificationType}`;
 };
 
@@ -151,8 +148,9 @@ export type BankAuthorisation = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
   authorisation_type?: `${BankAuthorisationAuthorisationType}`;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when the user has
-  // been authorised.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when the user has been authorised.
   authorised_at?: string | null;
 
   // Timestamp when the flow was created
@@ -165,8 +163,9 @@ export type BankAuthorisation = {
   // Unique identifier, beginning with "BAU".
   id: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when the
-  // authorisation URL has been visited.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when the authorisation URL has been visited.
   last_visited_at?: string | null;
 
   // Resources linked to this BankAuthorisation.
@@ -190,10 +189,13 @@ export type BankAuthorisation = {
   // Please note: bank authorisations can still fail despite an
   // `outcome=success` on the `redirect_uri`. It is therefore recommended to
   // wait for the relevant bank authorisation event, such as
-  // [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
-  // [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
-  // [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
-  // order to show the correct outcome to the user.
+  // `BANK_AUTHORISATION_AUTHORISED`
+  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationauthorised),
+  // `BANK_AUTHORISATION_DENIED`
+  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationdenied),
+  // or `BANK_AUTHORISATION_FAILED`
+  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationfailed)
+  // in order to show the correct outcome to the user.
   //
   // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
   // query parameter `id=BRF123`.
@@ -207,8 +209,9 @@ export type BankAuthorisation = {
 
 /** Type for a bankauthorisationcreaterequestlinks resource. */
 export type BankAuthorisationCreateRequestLinks = {
-  // ID of the [billing request](#billing-requests-billing-requests) against
-  // which this authorisation was created.
+  // ID of the billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // against which this authorisation was created.
   billing_request?: string;
 };
 
@@ -219,19 +222,23 @@ export enum BankAuthorisationAuthorisationType {
 
 /** Type for a bankauthorisationlinks resource. */
 export type BankAuthorisationLinks = {
-  // ID of the [billing request](#billing-requests-billing-requests) against
-  // which this authorisation was created.
+  // ID of the billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // against which this authorisation was created.
   billing_request?: string;
 
-  // ID of the [institution](#billing-requests-institutions) against which this
-  // authorisation was created.
+  // ID of the institution
+  // (https://developer.gocardless.com/api-reference/#billing-requests-institutions)
+  // against which this authorisation was created.
   institution?: string;
 };
 
 /** Type for a bankdetailslookup resource. */
 export type BankDetailsLookup = {
-  // Array of [schemes](#mandates_scheme) supported for this bank account. This
-  // will be an empty array if the bank account is not reachable by any schemes.
+  // Array of schemes
+  // (https://developer.gocardless.com/api-reference/#mandates_scheme) supported
+  // for this bank account. This will be an empty array if the bank account is
+  // not reachable by any schemes.
   available_debit_schemes?: `${BankDetailsLookupAvailableDebitScheme}`[];
 
   // The name of the bank with which the account is held (if available).
@@ -239,9 +246,9 @@ export type BankDetailsLookup = {
 
   // ISO 9362 SWIFT BIC of the bank with which the account is held.
   //
-  // <p class="notice">Even if no BIC is returned for an account, GoCardless may
-  // still be able to collect payments from it - you should refer to the
-  // `available_debit_schemes` attribute to determine reachability.</p>
+  // Even if no BIC is returned for an account, GoCardless may still be able to
+  // collect payments from it - you should refer to the available_debit_schemes
+  // attribute to determine reachability.
   bic?: string | null;
 };
 
@@ -264,16 +271,17 @@ export type BillingRequest = {
   // fulfilled.
   actions?: BillingRequestAction[];
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // (Optional) If true, this billing request can fallback from instant payment
   // to direct debit.
   // Should not be set if GoCardless payment intelligence feature is used.
   //
-  // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  // See Billing Requests: Retain customers with Fallbacks
+  // (https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
   // for more information.
   fallback_enabled?: boolean;
 
@@ -308,8 +316,8 @@ export type BillingRequest = {
   // Specifies the underlying purpose of the payment. Defines the specific
   // reason or type of service/goods the payment relates to, improving
   // straight-through processing and compliance.
-  // See [VRP Commercial Payment Purpose
-  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
+  // See VRP Commercial Payment Purpose Codes
+  // (https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
   // for the complete list of valid codes.
   payment_purpose_code?: string;
 
@@ -319,25 +327,21 @@ export type BillingRequest = {
   // Specifies the high-level purpose/category of a mandate and/or payment using
   // a set of pre-defined categories. Provides context on the nature and reason
   // for the payment to facilitate processing and compliance.
-  // See [Billing Request Purpose
-  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
-  // the complete list of valid codes.
+  // See Billing Request Purpose Codes
+  // (https://developer.gocardless.com/billing-request-purpose-codes/) for the
+  // complete list of valid codes.
   purpose_code?: `${BillingRequestPurposeCode}`;
 
   //
   resources?: BillingRequestResources;
 
   // One of:
-  // <ul>
-  // <li>`pending`: the billing request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
-  // <li>`fulfilling`: the billing request is currently undergoing
-  // fulfilment</li>
-  // <li>`fulfilled`: the billing request has been fulfilled and a payment
-  // created</li>
-  // <li>`cancelled`: the billing request has been cancelled and cannot be
-  // used</li>
-  // </ul>
+  //
+  // - `pending`: the billing request is pending and can be used
+  // - `ready_to_fulfil`: the billing request is ready to fulfil
+  // - `fulfilling`: the billing request is currently undergoing fulfilment
+  // - `fulfilled`: the billing request has been fulfilled and a payment created
+  // - `cancelled`: the billing request has been cancelled and cannot be used
   status?: `${BillingRequestStatus}`;
 
   // Request for a subscription
@@ -346,18 +350,19 @@ export type BillingRequest = {
 
 /** Type for a billingrequestcreaterequestlinks resource. */
 export type BillingRequestCreateRequestLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors). Only required
-  // if your account manages multiple creditors.
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // Only required if your account manages multiple creditors.
   creditor?: string;
 
-  // ID of the [customer](#core-endpoints-customers) against which this request
-  // should be made.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // against which this request should be made.
   customer?: string;
 
-  // (Optional) ID of the
-  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
-  // which this request should be made.
-  //
+  // (Optional) ID of the customer_bank_account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // against which this request should be made.
   customer_bank_account?: string;
 };
 
@@ -447,21 +452,21 @@ export type BillingRequestCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  //  [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided and a customer was linked during billing request
-  // creation, the linked customer language will be used. Otherwise, the
-  // language is default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided and a customer was linked
+  // during billing request creation, the linked customer language will be used.
+  // Otherwise, the language is default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 };
@@ -480,8 +485,8 @@ export type BillingRequestCustomerBillingDetail = {
   // The city of the customer's address.
   city?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -495,14 +500,13 @@ export type BillingRequestCustomerBillingDetail = {
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
   ip_address?: string | null;
 
   // The customer's postal code.
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -547,6 +551,7 @@ export type BillingRequestAction = {
 
   // Describes whether we inferred the institution from the provided bank
   // account details. One of:
+  //
   // - `not_needed`: we won't attempt to infer the institution as it is not
   // needed. Either because it was manually selected or the billing request does
   // not support this feature
@@ -555,7 +560,6 @@ export type BillingRequestAction = {
   // - `failed`: we weren't able to infer the institution
   // - `success`: we inferred the institution and added it to the resources of a
   // Billing Request
-  //
   institution_guess_status?: `${BillingRequestActionInstitutionGuessStatus}`;
 
   // Informs you whether the action is required to fulfil the billing request or
@@ -641,20 +645,20 @@ export type BillingRequestInstalmentScheduleRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
   // An explicit array of instalment payments, each specifying at least an
-  // `amount` and `charge_date`. See [create (with
-  // dates)](#instalment-schedules-create-with-dates)
+  // `amount` and `charge_date`. See create (with dates)
+  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-dates)
   instalments_with_dates?: BillingRequestInstalmentScheduleRequestInstalmentsWithDate[] | null;
 
   // Frequency of the payments you want to create, together with an array of
   // payment
   // amounts to be collected, with a specified start date for the first payment.
-  // See [create (with schedule)](#instalment-schedules-create-with-schedule)
-  //
+  // See create (with schedule)
+  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-schedule)
   instalments_with_schedule?: BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule | null;
 
   // Resources linked to this BillingRequestInstalmentScheduleRequest.
@@ -673,15 +677,16 @@ export type BillingRequestInstalmentScheduleRequest = {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
   payment_reference?: string | null;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
   retry_if_possible?: boolean;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -698,18 +703,28 @@ export type BillingRequestInstalmentScheduleRequest = {
 export type BillingRequestInstalmentScheduleRequestInstalmentsWithDate = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
+  //
+  // Minimum and maximum amounts vary by payment scheme. For more information,
+  // see Transaction limits
+  // (https://support.gocardless.com/hc/en-gb/articles/115000309245-Transaction-limits)
+  //
+  // For Variable Recurring Payments (VRP), this must not exceed the mandate's
+  // `max_amount_per_payment`
+  // constraint.
   amount: string;
 
   // A future date on which the payment should be collected. If the date
   // is before the next_possible_charge_date on the
-  // [mandate](#core-endpoints-mandates), it will be automatically rolled
+  // mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates),
+  // it will be automatically rolled
   // forwards to that date.
   charge_date: string | null;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
-  // does not send its own notifications (see [compliance
-  // requirements](#appendix-compliance-requirements)).
+  // does not send its own notifications (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
   description?: string | null;
 };
 
@@ -717,12 +732,10 @@ export type BillingRequestInstalmentScheduleRequestInstalmentsWithDate = {
 export type BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. cents in USD).
-  //
   amounts: string[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
-  //
   interval: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
@@ -730,10 +743,12 @@ export type BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule = {
   interval_unit: `${BillingRequestInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit}`;
 
   // The date on which the first payment should be charged. Must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
-  // left blank and `month` or `day_of_month` are provided, this will be set to
-  // the date of the first payment. If created without `month` or `day_of_month`
-  // this will be set as the mandate's `next_possible_charge_date`
+  // the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // `next_possible_charge_date`. When left blank and `month` or `day_of_month`
+  // are provided, this will be set to the date of the first payment. If created
+  // without `month` or `day_of_month` this will be set as the mandate's
+  // `next_possible_charge_date`
   start_date?: string | null;
 };
 
@@ -745,30 +760,31 @@ export enum BillingRequestInstalmentScheduleRequestInstalmentsWithScheduleInterv
 
 /** Type for a billingrequestinstalmentschedulerequestlinks resource. */
 export type BillingRequestInstalmentScheduleRequestLinks = {
-  // (Optional) ID of the
-  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
-  // created from this instalment schedule request.
-  //
+  // (Optional) ID of the instalment_schedule
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules)
+  // that was created from this instalment schedule request.
   instalment_schedule?: string;
 };
 
 /** Type for a billingrequestlinks resource. */
 export type BillingRequestLinks = {
-  // (Optional) ID of the [bank
-  // authorisation](#billing-requests-bank-authorisations) that was used to
-  // verify this request.
+  // (Optional) ID of the bank authorisation
+  // (https://developer.gocardless.com/api-reference/#billing-requests-bank-authorisations)
+  // that was used to verify this request.
   bank_authorisation?: string;
 
-  // ID of the associated [creditor](#core-endpoints-creditors).
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   creditor?: string;
 
-  // ID of the [customer](#core-endpoints-customers) that will be used for this
-  // request
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that will be used for this request
   customer?: string;
 
-  // (Optional) ID of the
-  // [customer_bank_account](#core-endpoints-customer-bank-accounts) that will
-  // be used for this request
+  // (Optional) ID of the customer_bank_account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // that will be used for this request
   customer_bank_account?: string;
 
   // ID of the customer billing detail that will be used for this request
@@ -777,16 +793,17 @@ export type BillingRequestLinks = {
   // (Optional) ID of the associated instalment schedule request
   instalment_schedule_request?: string;
 
-  // (Optional) ID of the
-  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
-  // created from this instalment schedule request.
+  // (Optional) ID of the instalment_schedule
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules)
+  // that was created from this instalment schedule request.
   instalment_schedule_request_instalment_schedule?: string;
 
   // (Optional) ID of the associated mandate request
   mandate_request?: string;
 
-  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
-  // from this mandate request. this mandate request.
+  // (Optional) ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // that was created from this mandate request. this mandate request.
   mandate_request_mandate?: string;
 
   // ID of the associated organisation.
@@ -798,52 +815,51 @@ export type BillingRequestLinks = {
   // (Optional) ID of the associated payment request
   payment_request?: string;
 
-  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
-  // from this payment request.
+  // (Optional) ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // that was created from this payment request.
   payment_request_payment?: string;
 
   // (Optional) ID of the associated subscription request
   subscription_request?: string;
 
-  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
-  // created from this subscription request.
+  // (Optional) ID of the subscription
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions)
+  // that was created from this subscription request.
   subscription_request_subscription?: string;
 };
 
 /** Type for a billingrequestmandaterequest resource. */
 export type BillingRequestMandateRequest = {
-  // This field is ACH specific, sometimes referred to as [SEC
-  // code](https://www.moderntreasury.com/learn/sec-codes).
+  // This field is ACH specific, sometimes referred to as SEC code
+  // (https://www.moderntreasury.com/learn/sec-codes).
   //
   // This is the way that the payer gives authorisation to the merchant.
-  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
   // code: WEB)
-  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // telephone: Authorisation is provided orally over telephone (maps to SEC
   // code: TEL)
-  //   paper: Authorisation is provided in writing and signed, or similarly
+  // paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
-  //
   authorisation_source?: `${BillingRequestMandateRequestAuthorisationSource}`;
 
   // This attribute represents the authorisation type between the payer and
   // merchant. It can be set to `one_off`,
   // `recurring` or `standing` for ACH scheme. And `single`, `recurring` and
-  // `sporadic` for PAD scheme. _Note:_ This is only supported for ACH and PAD
+  // `sporadic` for PAD scheme. Note: This is only supported for ACH and PAD
   // schemes.
-  //
   consent_type?: string | null;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // required for PayTo and VRP.
   constraints?: BillingRequestMandateRequestConstraints | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   description?: string | null;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -853,8 +869,7 @@ export type BillingRequestMandateRequest = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${BillingRequestMandateRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestMandateRequest.
@@ -885,16 +900,14 @@ export type BillingRequestMandateRequest = {
   sweeping?: boolean;
 
   // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
-  // intelligence solution to decide if a payer should be verified</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
+  //
+  // - `minimum`: only verify if absolutely required, such as when part of
+  // scheme rules
+  // - `recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified
+  // - `when_available`: if verification mechanisms are available, use them
+  // - `always`: as `when_available`, but fail to create the Billing Request if
+  // a mechanism isn't available
   //
   // By default, all Billing Requests use the `recommended` verification
   // preference. It uses GoCardless payment intelligence solution to determine
@@ -906,8 +919,8 @@ export type BillingRequestMandateRequest = {
   // Verified Mandates as they are released in new schemes, please use the
   // `minimum` verification preference.
   //
-  // See [Billing Requests: Creating Verified
-  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // See Billing Requests: Creating Verified Mandates
+  // (https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
   verify?: `${BillingRequestMandateRequestVerify}`;
 };
@@ -928,20 +941,27 @@ export type BillingRequestMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  //
   end_date?: string;
 
-  // The maximum amount that can be charged for a single payment. Required for
-  // PayTo and VRP.
+  // The maximum amount that can be charged for a single payment in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
+  // Required for PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
-  // payments are calculated. _Note:_ This is only supported for ACH and PAD
-  // schemes.
-  //
+  // payments are calculated. For use when payments vary and cannot be expressed
+  // as a fixed amount and frequency. Note: This is only supported for ACH and
+  // PAD schemes.
   payment_method?: string;
 
-  // List of periodic limits and constraints which apply to them
+  // Caps on the total amount and/or number of payments that can be collected
+  // within a
+  // repeating period (e.g. no more than a set amount per month), as opposed to
+  // `max_amount_per_payment` which caps a single payment.
+  //
+  // Note: Required for VRP, where exactly one periodic limit must be provided.
+  // Optional for
+  // PayTo.
   periodic_limits?: BillingRequestMandateRequestConstraintsPeriodicLimit[];
 
   // The date from which payments can be taken.
@@ -949,38 +969,55 @@ export type BillingRequestMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  //
   start_date?: string;
 };
 
 /** Type for a billingrequestmandaterequestconstraintsperiodiclimit resource. */
 export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
-  // The alignment of the period.
+  // The alignment of the period. Defaults to `creation_date` if not specified.
   //
-  // `calendar` - this will finish on the end of the current period. For example
-  // this will expire on the Monday for the current week or the January for the
-  // next year.
+  // `calendar` - the period follows fixed calendar boundaries, the same for
+  // every mandate:
+  // `week` runs Monday to Sunday, `month` runs from the 1st to the last day of
+  // the calendar
+  // month, and `year` runs from 1 January to 31 December. If the mandate starts
+  // partway
+  // through a period, the limit for that first period is reduced proportionally
+  // to the days
+  // remaining (e.g. a monthly limit starting on the 15th gives roughly half the
+  // limit for
+  // that first month).
   //
-  // `creation_date` - this will finish on the next instance of the current
-  // period. For example Monthly it will expire on the same day of the next
-  // month, or yearly the same day of the next year.
+  // `creation_date` - the period follows the mandate's own start date rather
+  // than the
+  // calendar. For example, if the mandate starts on the 15th, each monthly
+  // period runs from
+  // the 15th to the 14th of the following month. The first period is a full
+  // period, not
+  // reduced proportionally.
   //
+  // Note: Has no effect when period is `flexible`.
   alignment?: `${BillingRequestMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
+  // Note: Only supported for the PayTo scheme, where it is optional.
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
-  // periodic limit.
-  // Required for VRP.
+  // periodic limit,
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
   //
+  // Note: Required for VRP. This is not permitted for the PayTo scheme.
   max_total_amount?: number;
 
-  // The repeating period for this mandate. Defaults to flexible for PayTo if
-  // not specified.
+  // The repeating period for this mandate. Required whenever a periodic limit
+  // is provided
+  // (for both VRP and PayTo). If periodic_limits is omitted entirely for PayTo,
+  // this
+  // defaults to flexible.
   period?: `${BillingRequestMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
@@ -1004,9 +1041,9 @@ export enum BillingRequestMandateRequestFundsSettlement {
 
 /** Type for a billingrequestmandaterequestlinks resource. */
 export type BillingRequestMandateRequestLinks = {
-  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
-  // from this mandate request. this mandate request.
-  //
+  // (Optional) ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // that was created from this mandate request. this mandate request.
   mandate?: string;
 };
 
@@ -1027,14 +1064,13 @@ export type BillingRequestPaymentRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   description?: string | null;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -1044,8 +1080,7 @@ export type BillingRequestPaymentRequest = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${BillingRequestPaymentRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestPaymentRequest.
@@ -1058,7 +1093,6 @@ export type BillingRequestPaymentRequest = {
   // A custom payment reference defined by the merchant. It is only available
   // for payments on the PayTo scheme or payments using the Direct Funds
   // settlement model on the Faster Payments scheme.
-  //
   reference?: string | null;
 
   // (Optional) A scheme used for Open Banking payments. Currently
@@ -1077,8 +1111,9 @@ export enum BillingRequestPaymentRequestFundsSettlement {
 
 /** Type for a billingrequestpaymentrequestlinks resource. */
 export type BillingRequestPaymentRequestLinks = {
-  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
-  // from this payment request.
+  // (Optional) ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // that was created from this payment request.
   payment?: string;
 };
 
@@ -1103,8 +1138,9 @@ export type BillingRequestResourcesCustomer = {
   // "Personal PAD").
   company_name?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Customer's email address. Required in most cases, as this allows GoCardless
@@ -1120,20 +1156,20 @@ export type BillingRequestResourcesCustomer = {
   // Unique identifier, beginning with "CU".
   id?: string;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided, the language will be chosen based on the
-  // `country_code` (if supplied) or default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided, the language will be chosen
+  // based on the `country_code` (if supplied) or default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 };
@@ -1143,8 +1179,9 @@ export type BillingRequestResourcesCustomerBankAccount = {
   // Name of the account holder, as known by the bank. The full name provided
   // when the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank
-  // submissions. This field is required unless the request includes a [customer
-  // bank account token](#javascript-flow-customer-bank-account-tokens).
+  // submissions. This field is required unless the request includes a customer
+  // bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -1152,8 +1189,9 @@ export type BillingRequestResourcesCustomerBankAccount = {
   account_number_ending?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${BillingRequestResourcesCustomerBankAccountAccountType}`;
 
   // A token to uniquely refer to a set of bank account details. This feature is
@@ -1163,17 +1201,18 @@ export type BillingRequestResourcesCustomerBankAccount = {
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -1190,6 +1229,19 @@ export type BillingRequestResourcesCustomerBankAccount = {
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
+
+  // The result of the payer name verification check performed when the bank
+  // account was created. Only present if a check was performed.
+  //
+  // - `full`: The name provided matches the name held by the bank.
+  // - `close`: The name provided is a close but not exact match to the name
+  // held by the bank.
+  // - `cannot_perform_verification`: A verification was attempted but could not
+  // be completed. This can happen for a number of reasons, including the
+  // account holder's bank not participating in the verification scheme, the
+  // account not being eligible for verification (e.g. the account holder has
+  // opted out), or the bank details not being resolvable, among others.
+  payer_name_verification_result?: `${BillingRequestResourcesCustomerBankAccountPayerNameVerificationResult}`;
 };
 
 export enum BillingRequestResourcesCustomerBankAccountAccountType {
@@ -1199,10 +1251,17 @@ export enum BillingRequestResourcesCustomerBankAccountAccountType {
 
 /** Type for a billingrequestresourcescustomerbankaccountlinks resource. */
 export type BillingRequestResourcesCustomerBankAccountLinks = {
-  // ID of the [customer](#core-endpoints-customers) that owns this bank
-  // account.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that owns this bank account.
   customer?: string;
 };
+
+export enum BillingRequestResourcesCustomerBankAccountPayerNameVerificationResult {
+  Full = 'full',
+  Close = 'close',
+  CannotPerformVerification = 'cannot_perform_verification',
+}
 
 /** Type for a billingrequestresourcescustomerbillingdetail resource. */
 export type BillingRequestResourcesCustomerBillingDetail = {
@@ -1218,12 +1277,13 @@ export type BillingRequestResourcesCustomerBillingDetail = {
   // The city of the customer's address.
   city?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -1240,14 +1300,13 @@ export type BillingRequestResourcesCustomerBillingDetail = {
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
   ip_address?: string | null;
 
   // The customer's postal code.
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -1275,7 +1334,7 @@ export type BillingRequestSubscriptionRequest = {
   // The total number of payments that should be taken by this subscription.
   count?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
@@ -1302,7 +1361,6 @@ export type BillingRequestSubscriptionRequest = {
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
   // when the interval_unit is `yearly`.
-  //
   month?: `${BillingRequestSubscriptionRequestMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
@@ -1313,15 +1371,16 @@ export type BillingRequestSubscriptionRequest = {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
   payment_reference?: string | null;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. If fulfilled after
@@ -1330,7 +1389,6 @@ export type BillingRequestSubscriptionRequest = {
   // set to the date of the first payment.
   // If created without `month` or `day_of_month` this will be set as the
   // mandate's `next_possible_charge_date`.
-  //
   start_date?: string | null;
 };
 
@@ -1342,9 +1400,9 @@ export enum BillingRequestSubscriptionRequestIntervalUnit {
 
 /** Type for a billingrequestsubscriptionrequestlinks resource. */
 export type BillingRequestSubscriptionRequestLinks = {
-  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
-  // created from this subscription request.
-  //
+  // (Optional) ID of the subscription
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions)
+  // that was created from this subscription request.
   subscription?: string;
 };
 
@@ -1390,8 +1448,8 @@ export type BillingRequestFlow = {
   // Unique identifier, beginning with "BRF".
   id: string;
 
-  // Sets the default language of the Billing Request Flow and the customer.
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Sets the default language of the Billing Request Flow and the customer. ISO
+  // 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   language?: string | null;
 
   // Resources linked to this BillingRequestFlow.
@@ -1403,7 +1461,6 @@ export type BillingRequestFlow = {
   //
   // You can only lock bank account if these have already been completed as a
   // part of the billing request.
-  //
   lock_bank_account?: boolean;
 
   // If true, the payer will not be able to change their currency/scheme
@@ -1418,7 +1475,6 @@ export type BillingRequestFlow = {
   //
   // You can only lock customer details if these have already been completed as
   // a part of the billing request.
-  //
   lock_customer_details?: boolean;
 
   // Bank account information used to prefill the payment page so your customer
@@ -1462,23 +1518,26 @@ export type BillingRequestFlow = {
 
 /** Type for a billingrequestflowcreaterequestlinks resource. */
 export type BillingRequestFlowCreateRequestLinks = {
-  // ID of the [billing request](#billing-requests-billing-requests) against
-  // which this flow was created.
+  // ID of the billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // against which this flow was created.
   billing_request: string;
 };
 
 /** Type for a billingrequestflowlinks resource. */
 export type BillingRequestFlowLinks = {
-  // ID of the [billing request](#billing-requests-billing-requests) against
-  // which this flow was created.
+  // ID of the billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // against which this flow was created.
   billing_request: string;
 };
 
 /** Type for a billingrequestflowprefilledbankaccount resource. */
 export type BillingRequestFlowPrefilledBankAccount = {
   // Bank account type for USD-denominated bank accounts. Must not be provided
-  // for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${BillingRequestFlowPrefilledBankAccountAccountType}`;
 };
 
@@ -1505,8 +1564,8 @@ export type BillingRequestFlowPrefilledCustomer = {
   // `given_name` and `family_name` are null.
   company_name?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -1539,8 +1598,9 @@ export type BillingRequestTemplate = {
   // based on this template, before being returned to the `redirect_uri`.
   authorisation_url?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Unique identifier, beginning with "BRT".
@@ -1550,13 +1610,12 @@ export type BillingRequestTemplate = {
   // required for PayTo and VRP.
   mandate_request_constraints?: BillingRequestTemplateMandateRequestConstraints | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
-  mandate_request_currency?: string;
+  mandate_request_currency?: string | null;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   mandate_request_description?: string | null;
 
   // Key-value store of custom data that will be applied to the mandate created
@@ -1571,32 +1630,8 @@ export type BillingRequestTemplate = {
   // from a list of your available schemes.
   mandate_request_scheme?: string | null;
 
-  // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
-  // intelligence solution to decide if a payer should be verified</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
-  //
-  // By default, all Billing Requests use the `recommended` verification
-  // preference. It uses GoCardless payment intelligence solution to determine
-  // if a payer is fraudulent or not. The verification mechanism is based on the
-  // response and the payer may be asked to verify themselves. If the feature is
-  // not available, `recommended` behaves like `minimum`.
-  //
-  // If you never wish to take advantage of our reduced risk products and
-  // Verified Mandates as they are released in new schemes, please use the
-  // `minimum` verification preference.
-  //
-  // See [Billing Requests: Creating Verified
-  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
-  // for more information.
-  mandate_request_verify?: `${BillingRequestTemplateMandateRequestVerify}`;
+  // Verification preference for the mandate.
+  mandate_request_verify?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -1607,16 +1642,15 @@ export type BillingRequestTemplate = {
   name?: string;
 
   // Amount in full.
-  payment_request_amount?: string;
+  payment_request_amount?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
-  payment_request_currency?: string;
+  payment_request_currency?: string | null;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   payment_request_description?: string | null;
 
   // Key-value store of custom data that will be applied to the payment created
@@ -1635,24 +1669,19 @@ export type BillingRequestTemplate = {
   // URL that the payer can be redirected to after completing the request flow.
   redirect_uri?: string | null;
 
-  // Dynamic [timestamp](#api-usage-dates-and-times) recording when this
-  // resource was last updated.
+  // Dynamic timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times)
+  // recording when this resource was last updated.
   updated_at?: string;
 };
 
 /** Type for a billingrequesttemplatecreaterequestlinks resource. */
 export type BillingRequestTemplateCreateRequestLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors). Only required
-  // if your account manages multiple creditors.
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // Only required if your account manages multiple creditors.
   creditor?: string;
 };
-
-export enum BillingRequestTemplateMandateRequestVerify {
-  Minimum = 'minimum',
-  Recommended = 'recommended',
-  WhenAvailable = 'when_available',
-  Always = 'always',
-}
 
 /** Type for a billingrequesttemplatemandaterequestconstraints resource. */
 export type BillingRequestTemplateMandateRequestConstraints = {
@@ -1664,20 +1693,27 @@ export type BillingRequestTemplateMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  //
   end_date?: string;
 
-  // The maximum amount that can be charged for a single payment. Required for
-  // PayTo and VRP.
+  // The maximum amount that can be charged for a single payment in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
+  // Required for PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
-  // payments are calculated. _Note:_ This is only supported for ACH and PAD
-  // schemes.
-  //
+  // payments are calculated. For use when payments vary and cannot be expressed
+  // as a fixed amount and frequency. Note: This is only supported for ACH and
+  // PAD schemes.
   payment_method?: string;
 
-  // List of periodic limits and constraints which apply to them
+  // Caps on the total amount and/or number of payments that can be collected
+  // within a
+  // repeating period (e.g. no more than a set amount per month), as opposed to
+  // `max_amount_per_payment` which caps a single payment.
+  //
+  // Note: Required for VRP, where exactly one periodic limit must be provided.
+  // Optional for
+  // PayTo.
   periodic_limits?: BillingRequestTemplateMandateRequestConstraintsPeriodicLimit[];
 
   // The date from which payments can be taken.
@@ -1685,38 +1721,55 @@ export type BillingRequestTemplateMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  //
   start_date?: string;
 };
 
 /** Type for a billingrequesttemplatemandaterequestconstraintsperiodiclimit resource. */
 export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
-  // The alignment of the period.
+  // The alignment of the period. Defaults to `creation_date` if not specified.
   //
-  // `calendar` - this will finish on the end of the current period. For example
-  // this will expire on the Monday for the current week or the January for the
-  // next year.
+  // `calendar` - the period follows fixed calendar boundaries, the same for
+  // every mandate:
+  // `week` runs Monday to Sunday, `month` runs from the 1st to the last day of
+  // the calendar
+  // month, and `year` runs from 1 January to 31 December. If the mandate starts
+  // partway
+  // through a period, the limit for that first period is reduced proportionally
+  // to the days
+  // remaining (e.g. a monthly limit starting on the 15th gives roughly half the
+  // limit for
+  // that first month).
   //
-  // `creation_date` - this will finish on the next instance of the current
-  // period. For example Monthly it will expire on the same day of the next
-  // month, or yearly the same day of the next year.
+  // `creation_date` - the period follows the mandate's own start date rather
+  // than the
+  // calendar. For example, if the mandate starts on the 15th, each monthly
+  // period runs from
+  // the 15th to the 14th of the following month. The first period is a full
+  // period, not
+  // reduced proportionally.
   //
+  // Note: Has no effect when period is `flexible`.
   alignment?: `${BillingRequestTemplateMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
+  // Note: Only supported for the PayTo scheme, where it is optional.
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
-  // periodic limit.
-  // Required for VRP.
+  // periodic limit,
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
   //
+  // Note: Required for VRP. This is not permitted for the PayTo scheme.
   max_total_amount?: number;
 
-  // The repeating period for this mandate. Defaults to flexible for PayTo if
-  // not specified.
+  // The repeating period for this mandate. Required whenever a periodic limit
+  // is provided
+  // (for both VRP and PayTo). If periodic_limits is omitted entirely for PayTo,
+  // this
+  // defaults to flexible.
   period?: `${BillingRequestTemplateMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
@@ -1747,17 +1800,16 @@ export type BillingRequestWithAction = {
   // checkout flows.
   bank_authorisations?: BillingRequestWithActionBankAuthorisations;
 
-  //  Billing Requests help create resources that require input or action from a
+  // Billing Requests help create resources that require input or action from a
   // customer. An example of required input might be additional customer billing
   // details, while an action would be asking a customer to authorise a payment
   // using their mobile banking app.
   //
-  // See [Billing Requests:
-  // Overview](https://developer.gocardless.com/getting-started/billing-requests/overview/)
-  // for how-to's, explanations and tutorials. <p
-  // class="notice"><strong>Important</strong>: All properties associated with
-  // `subscription_request` and `instalment_schedule_request` are only supported
-  // for ACH and PAD schemes.</p>
+  // See Billing Requests: Overview
+  // (https://developer.gocardless.com/getting-started/billing-requests/overview/)
+  // for how-to's, explanations and tutorials. Important: All properties
+  // associated with `subscription_request` and `instalment_schedule_request`
+  // are only supported for ACH and PAD schemes.
   billing_requests: BillingRequestWithActionBillingRequests;
 };
 
@@ -1787,46 +1839,55 @@ export type BillingRequestWithActionActionsCollectBankAccount = {
   // Name of the account holder, as known by the bank. The full name provided
   // when the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank
-  // submissions. This field is required unless the request includes a [customer
-  // bank account token](#javascript-flow-customer-bank-account-tokens).
+  // submissions. This field is required unless the request includes a customer
+  // bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  // Bank account number - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   account_number?: string | null;
 
   // Account number suffix (only for bank accounts denominated in NZD) - see
-  // [local details](#local-bank-details-new-zealand) for more information.
+  // local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-new-zealand)
+  // for more information.
   account_number_suffix?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${BillingRequestWithActionActionsCollectBankAccountAccountType}`;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Bank code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   bank_code?: string | null;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Branch code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   branch_code?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  // International Bank Account Number. Alternatively you can provide local
+  // details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
+  // must supply local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
   iban?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -1871,21 +1932,21 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  //  [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided and a customer was linked during billing request
-  // creation, the linked customer language will be used. Otherwise, the
-  // language is default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided and a customer was linked
+  // during billing request creation, the linked customer language will be used.
+  // Otherwise, the language is default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 };
@@ -1904,8 +1965,8 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomerBilling
   // The city of the customer's address.
   city?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -1919,14 +1980,13 @@ export type BillingRequestWithActionActionsCollectCustomerDetailsCustomerBilling
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
   ip_address?: string | null;
 
   // The customer's postal code.
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -1954,8 +2014,8 @@ export type BillingRequestWithActionActionsConfirmPayerDetails = {
 
 /** Type for a billingrequestwithactionactionsselectinstitution resource. */
 export type BillingRequestWithActionActionsSelectInstitution = {
-  // [ISO
-  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
   // institutions with the country code 'GB' are returned by default.
   country_code: string;
@@ -1966,47 +2026,46 @@ export type BillingRequestWithActionActionsSelectInstitution = {
 
 /** Type for a billingrequestwithactioncreatewithactionsrequestlinks resource. */
 export type BillingRequestWithActionCreateWithActionsRequestLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors). Only required
-  // if your account manages multiple creditors.
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // Only required if your account manages multiple creditors.
   creditor?: string;
 
-  // ID of the [customer](#core-endpoints-customers) against which this request
-  // should be made.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // against which this request should be made.
   customer?: string;
 
-  // (Optional) ID of the
-  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
-  // which this request should be made.
-  //
+  // (Optional) ID of the customer_bank_account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // against which this request should be made.
   customer_bank_account?: string;
 };
 
 /** Type for a billingrequestwithactionmandaterequest resource. */
 export type BillingRequestWithActionMandateRequest = {
-  // This field is ACH specific, sometimes referred to as [SEC
-  // code](https://www.moderntreasury.com/learn/sec-codes).
+  // This field is ACH specific, sometimes referred to as SEC code
+  // (https://www.moderntreasury.com/learn/sec-codes).
   //
   // This is the way that the payer gives authorisation to the merchant.
-  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
   // code: WEB)
-  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // telephone: Authorisation is provided orally over telephone (maps to SEC
   // code: TEL)
-  //   paper: Authorisation is provided in writing and signed, or similarly
+  // paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
-  //
   authorisation_source?: `${BillingRequestWithActionMandateRequestAuthorisationSource}`;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // required for PayTo and VRP.
   constraints?: BillingRequestWithActionMandateRequestConstraints | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   description?: string | null;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -2016,18 +2075,17 @@ export type BillingRequestWithActionMandateRequest = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${BillingRequestWithActionMandateRequestFundsSettlement}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // Unique reference. Different schemes have different length and [character
-  // set](#appendix-character-sets) requirements. GoCardless will generate a
-  // unique reference satisfying the different scheme requirements if this field
-  // is left blank.
+  // Unique reference. Different schemes have different length and character set
+  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
   reference?: string | null;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
@@ -2043,16 +2101,14 @@ export type BillingRequestWithActionMandateRequest = {
   sweeping?: boolean;
 
   // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
-  // intelligence solution to decide if a payer should be verified</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
+  //
+  // - `minimum`: only verify if absolutely required, such as when part of
+  // scheme rules
+  // - `recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified
+  // - `when_available`: if verification mechanisms are available, use them
+  // - `always`: as `when_available`, but fail to create the Billing Request if
+  // a mechanism isn't available
   //
   // By default, all Billing Requests use the `recommended` verification
   // preference. It uses GoCardless payment intelligence solution to determine
@@ -2064,8 +2120,8 @@ export type BillingRequestWithActionMandateRequest = {
   // Verified Mandates as they are released in new schemes, please use the
   // `minimum` verification preference.
   //
-  // See [Billing Requests: Creating Verified
-  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // See Billing Requests: Creating Verified Mandates
+  // (https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
   verify?: `${BillingRequestWithActionMandateRequestVerify}`;
 };
@@ -2086,20 +2142,27 @@ export type BillingRequestWithActionMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  //
   end_date?: string;
 
-  // The maximum amount that can be charged for a single payment. Required for
-  // PayTo and VRP.
+  // The maximum amount that can be charged for a single payment in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
+  // Required for PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
-  // payments are calculated. _Note:_ This is only supported for ACH and PAD
-  // schemes.
-  //
+  // payments are calculated. For use when payments vary and cannot be expressed
+  // as a fixed amount and frequency. Note: This is only supported for ACH and
+  // PAD schemes.
   payment_method?: string;
 
-  // List of periodic limits and constraints which apply to them
+  // Caps on the total amount and/or number of payments that can be collected
+  // within a
+  // repeating period (e.g. no more than a set amount per month), as opposed to
+  // `max_amount_per_payment` which caps a single payment.
+  //
+  // Note: Required for VRP, where exactly one periodic limit must be provided.
+  // Optional for
+  // PayTo.
   periodic_limits?: BillingRequestWithActionMandateRequestConstraintsPeriodicLimit[];
 
   // The date from which payments can be taken.
@@ -2107,38 +2170,55 @@ export type BillingRequestWithActionMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  //
   start_date?: string;
 };
 
 /** Type for a billingrequestwithactionmandaterequestconstraintsperiodiclimit resource. */
 export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
-  // The alignment of the period.
+  // The alignment of the period. Defaults to `creation_date` if not specified.
   //
-  // `calendar` - this will finish on the end of the current period. For example
-  // this will expire on the Monday for the current week or the January for the
-  // next year.
+  // `calendar` - the period follows fixed calendar boundaries, the same for
+  // every mandate:
+  // `week` runs Monday to Sunday, `month` runs from the 1st to the last day of
+  // the calendar
+  // month, and `year` runs from 1 January to 31 December. If the mandate starts
+  // partway
+  // through a period, the limit for that first period is reduced proportionally
+  // to the days
+  // remaining (e.g. a monthly limit starting on the 15th gives roughly half the
+  // limit for
+  // that first month).
   //
-  // `creation_date` - this will finish on the next instance of the current
-  // period. For example Monthly it will expire on the same day of the next
-  // month, or yearly the same day of the next year.
+  // `creation_date` - the period follows the mandate's own start date rather
+  // than the
+  // calendar. For example, if the mandate starts on the 15th, each monthly
+  // period runs from
+  // the 15th to the 14th of the following month. The first period is a full
+  // period, not
+  // reduced proportionally.
   //
+  // Note: Has no effect when period is `flexible`.
   alignment?: `${BillingRequestWithActionMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
+  // Note: Only supported for the PayTo scheme, where it is optional.
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
-  // periodic limit.
-  // Required for VRP.
+  // periodic limit,
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
   //
+  // Note: Required for VRP. This is not permitted for the PayTo scheme.
   max_total_amount?: number;
 
-  // The repeating period for this mandate. Defaults to flexible for PayTo if
-  // not specified.
+  // The repeating period for this mandate. Required whenever a periodic limit
+  // is provided
+  // (for both VRP and PayTo). If periodic_limits is omitted entirely for PayTo,
+  // this
+  // defaults to flexible.
   period?: `${BillingRequestWithActionMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
@@ -2186,14 +2266,13 @@ export type BillingRequestWithActionPaymentRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   description?: string | null;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -2203,8 +2282,7 @@ export type BillingRequestWithActionPaymentRequest = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${BillingRequestWithActionPaymentRequestFundsSettlement}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -2214,16 +2292,14 @@ export type BillingRequestWithActionPaymentRequest = {
   // A custom payment reference defined by the merchant. It is only available
   // for payments on the PayTo scheme or payments using the Direct Funds
   // settlement model on the Faster Payments scheme.
-  //
   reference?: string | null;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p> <p
-  // class="notice"><strong>Important</strong>: This is not applicable to Pay by
-  // Bank and VRP payments. </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
+  //  Important: This is not applicable to Pay by Bank and VRP payments.
   retry_if_possible?: boolean;
 
   // (Optional) A scheme used for Open Banking payments. Currently
@@ -2303,8 +2379,9 @@ export type BillingRequestWithActionBankAuthorisations = {
   // Type of authorisation, can be either 'mandate' or 'payment'.
   authorisation_type?: `${BillingRequestWithActionBankAuthorisationsAuthorisationType}`;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when the user has
-  // been authorised.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when the user has been authorised.
   authorised_at?: string | null;
 
   // Timestamp when the flow was created
@@ -2317,8 +2394,9 @@ export type BillingRequestWithActionBankAuthorisations = {
   // Unique identifier, beginning with "BAU".
   id: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when the
-  // authorisation URL has been visited.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when the authorisation URL has been visited.
   last_visited_at?: string | null;
 
   // Resources linked to this BillingRequestWithActionBankAuthorisations.
@@ -2342,10 +2420,13 @@ export type BillingRequestWithActionBankAuthorisations = {
   // Please note: bank authorisations can still fail despite an
   // `outcome=success` on the `redirect_uri`. It is therefore recommended to
   // wait for the relevant bank authorisation event, such as
-  // [`BANK_AUTHORISATION_AUTHORISED`](#billing-request-bankauthorisationauthorised),
-  // [`BANK_AUTHORISATION_DENIED`](#billing-request-bankauthorisationdenied), or
-  // [`BANK_AUTHORISATION_FAILED`](#billing-request-bankauthorisationfailed) in
-  // order to show the correct outcome to the user.
+  // `BANK_AUTHORISATION_AUTHORISED`
+  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationauthorised),
+  // `BANK_AUTHORISATION_DENIED`
+  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationdenied),
+  // or `BANK_AUTHORISATION_FAILED`
+  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationfailed)
+  // in order to show the correct outcome to the user.
   //
   // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
   // query parameter `id=BRF123`.
@@ -2359,8 +2440,9 @@ export type BillingRequestWithActionBankAuthorisations = {
 
 /** Type for a billingrequestwithactionbankauthorisationscreaterequestlinks resource. */
 export type BillingRequestWithActionBankAuthorisationsCreateRequestLinks = {
-  // ID of the [billing request](#billing-requests-billing-requests) against
-  // which this authorisation was created.
+  // ID of the billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // against which this authorisation was created.
   billing_request?: string;
 };
 
@@ -2371,12 +2453,14 @@ export enum BillingRequestWithActionBankAuthorisationsAuthorisationType {
 
 /** Type for a billingrequestwithactionbankauthorisationslinks resource. */
 export type BillingRequestWithActionBankAuthorisationsLinks = {
-  // ID of the [billing request](#billing-requests-billing-requests) against
-  // which this authorisation was created.
+  // ID of the billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // against which this authorisation was created.
   billing_request?: string;
 
-  // ID of the [institution](#billing-requests-institutions) against which this
-  // authorisation was created.
+  // ID of the institution
+  // (https://developer.gocardless.com/api-reference/#billing-requests-institutions)
+  // against which this authorisation was created.
   institution?: string;
 };
 
@@ -2386,16 +2470,17 @@ export type BillingRequestWithActionBillingRequests = {
   // fulfilled.
   actions?: BillingRequestWithActionBillingRequestsAction[];
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // (Optional) If true, this billing request can fallback from instant payment
   // to direct debit.
   // Should not be set if GoCardless payment intelligence feature is used.
   //
-  // See [Billing Requests: Retain customers with
-  // Fallbacks](https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  // See Billing Requests: Retain customers with Fallbacks
+  // (https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
   // for more information.
   fallback_enabled?: boolean;
 
@@ -2430,8 +2515,8 @@ export type BillingRequestWithActionBillingRequests = {
   // Specifies the underlying purpose of the payment. Defines the specific
   // reason or type of service/goods the payment relates to, improving
   // straight-through processing and compliance.
-  // See [VRP Commercial Payment Purpose
-  // Codes](https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
+  // See VRP Commercial Payment Purpose Codes
+  // (https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/)
   // for the complete list of valid codes.
   payment_purpose_code?: string;
 
@@ -2441,25 +2526,21 @@ export type BillingRequestWithActionBillingRequests = {
   // Specifies the high-level purpose/category of a mandate and/or payment using
   // a set of pre-defined categories. Provides context on the nature and reason
   // for the payment to facilitate processing and compliance.
-  // See [Billing Request Purpose
-  // Codes](https://developer.gocardless.com/billing-request-purpose-codes/) for
-  // the complete list of valid codes.
+  // See Billing Request Purpose Codes
+  // (https://developer.gocardless.com/billing-request-purpose-codes/) for the
+  // complete list of valid codes.
   purpose_code?: `${BillingRequestWithActionBillingRequestsPurposeCode}`;
 
   //
   resources?: BillingRequestWithActionBillingRequestsResources;
 
   // One of:
-  // <ul>
-  // <li>`pending`: the billing request is pending and can be used</li>
-  // <li>`ready_to_fulfil`: the billing request is ready to fulfil</li>
-  // <li>`fulfilling`: the billing request is currently undergoing
-  // fulfilment</li>
-  // <li>`fulfilled`: the billing request has been fulfilled and a payment
-  // created</li>
-  // <li>`cancelled`: the billing request has been cancelled and cannot be
-  // used</li>
-  // </ul>
+  //
+  // - `pending`: the billing request is pending and can be used
+  // - `ready_to_fulfil`: the billing request is ready to fulfil
+  // - `fulfilling`: the billing request is currently undergoing fulfilment
+  // - `fulfilled`: the billing request has been fulfilled and a payment created
+  // - `cancelled`: the billing request has been cancelled and cannot be used
   status?: `${BillingRequestWithActionBillingRequestsStatus}`;
 
   // Request for a subscription
@@ -2468,18 +2549,19 @@ export type BillingRequestWithActionBillingRequests = {
 
 /** Type for a billingrequestwithactionbillingrequestscreaterequestlinks resource. */
 export type BillingRequestWithActionBillingRequestsCreateRequestLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors). Only required
-  // if your account manages multiple creditors.
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // Only required if your account manages multiple creditors.
   creditor?: string;
 
-  // ID of the [customer](#core-endpoints-customers) against which this request
-  // should be made.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // against which this request should be made.
   customer?: string;
 
-  // (Optional) ID of the
-  // [customer_bank_account](#core-endpoints-customer-bank-accounts) against
-  // which this request should be made.
-  //
+  // (Optional) ID of the customer_bank_account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // against which this request should be made.
   customer_bank_account?: string;
 };
 
@@ -2569,21 +2651,21 @@ export type BillingRequestWithActionBillingRequestsCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  //  [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided and a customer was linked during billing request
-  // creation, the linked customer language will be used. Otherwise, the
-  // language is default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided and a customer was linked
+  // during billing request creation, the linked customer language will be used.
+  // Otherwise, the language is default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 };
@@ -2602,8 +2684,8 @@ export type BillingRequestWithActionBillingRequestsCustomerBillingDetail = {
   // The city of the customer's address.
   city?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -2617,14 +2699,13 @@ export type BillingRequestWithActionBillingRequestsCustomerBillingDetail = {
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
   ip_address?: string | null;
 
   // The customer's postal code.
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -2669,6 +2750,7 @@ export type BillingRequestWithActionBillingRequestsAction = {
 
   // Describes whether we inferred the institution from the provided bank
   // account details. One of:
+  //
   // - `not_needed`: we won't attempt to infer the institution as it is not
   // needed. Either because it was manually selected or the billing request does
   // not support this feature
@@ -2677,7 +2759,6 @@ export type BillingRequestWithActionBillingRequestsAction = {
   // - `failed`: we weren't able to infer the institution
   // - `success`: we inferred the institution and added it to the resources of a
   // Billing Request
-  //
   institution_guess_status?: `${BillingRequestWithActionBillingRequestsActionInstitutionGuessStatus}`;
 
   // Informs you whether the action is required to fulfil the billing request or
@@ -2763,20 +2844,20 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
   // An explicit array of instalment payments, each specifying at least an
-  // `amount` and `charge_date`. See [create (with
-  // dates)](#instalment-schedules-create-with-dates)
+  // `amount` and `charge_date`. See create (with dates)
+  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-dates)
   instalments_with_dates?: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithDate[] | null;
 
   // Frequency of the payments you want to create, together with an array of
   // payment
   // amounts to be collected, with a specified start date for the first payment.
-  // See [create (with schedule)](#instalment-schedules-create-with-schedule)
-  //
+  // See create (with schedule)
+  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-schedule)
   instalments_with_schedule?: BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithSchedule | null;
 
   // Resources linked to this BillingRequestWithActionBillingRequestsInstalmentScheduleRequest.
@@ -2795,15 +2876,16 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
   payment_reference?: string | null;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
   retry_if_possible?: boolean;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -2820,18 +2902,28 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
 export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithDate = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
+  //
+  // Minimum and maximum amounts vary by payment scheme. For more information,
+  // see Transaction limits
+  // (https://support.gocardless.com/hc/en-gb/articles/115000309245-Transaction-limits)
+  //
+  // For Variable Recurring Payments (VRP), this must not exceed the mandate's
+  // `max_amount_per_payment`
+  // constraint.
   amount: string;
 
   // A future date on which the payment should be collected. If the date
   // is before the next_possible_charge_date on the
-  // [mandate](#core-endpoints-mandates), it will be automatically rolled
+  // mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates),
+  // it will be automatically rolled
   // forwards to that date.
   charge_date: string | null;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
-  // does not send its own notifications (see [compliance
-  // requirements](#appendix-compliance-requirements)).
+  // does not send its own notifications (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
   description?: string | null;
 };
 
@@ -2839,12 +2931,10 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInst
 export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithSchedule = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. cents in USD).
-  //
   amounts: string[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
-  //
   interval: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
@@ -2852,10 +2942,12 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInst
   interval_unit: `${BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithScheduleIntervalUnit}`;
 
   // The date on which the first payment should be charged. Must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
-  // left blank and `month` or `day_of_month` are provided, this will be set to
-  // the date of the first payment. If created without `month` or `day_of_month`
-  // this will be set as the mandate's `next_possible_charge_date`
+  // the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // `next_possible_charge_date`. When left blank and `month` or `day_of_month`
+  // are provided, this will be set to the date of the first payment. If created
+  // without `month` or `day_of_month` this will be set as the mandate's
+  // `next_possible_charge_date`
   start_date?: string | null;
 };
 
@@ -2867,30 +2959,31 @@ export enum BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInst
 
 /** Type for a billingrequestwithactionbillingrequestsinstalmentschedulerequestlinks resource. */
 export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestLinks = {
-  // (Optional) ID of the
-  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
-  // created from this instalment schedule request.
-  //
+  // (Optional) ID of the instalment_schedule
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules)
+  // that was created from this instalment schedule request.
   instalment_schedule?: string;
 };
 
 /** Type for a billingrequestwithactionbillingrequestslinks resource. */
 export type BillingRequestWithActionBillingRequestsLinks = {
-  // (Optional) ID of the [bank
-  // authorisation](#billing-requests-bank-authorisations) that was used to
-  // verify this request.
+  // (Optional) ID of the bank authorisation
+  // (https://developer.gocardless.com/api-reference/#billing-requests-bank-authorisations)
+  // that was used to verify this request.
   bank_authorisation?: string;
 
-  // ID of the associated [creditor](#core-endpoints-creditors).
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   creditor?: string;
 
-  // ID of the [customer](#core-endpoints-customers) that will be used for this
-  // request
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that will be used for this request
   customer?: string;
 
-  // (Optional) ID of the
-  // [customer_bank_account](#core-endpoints-customer-bank-accounts) that will
-  // be used for this request
+  // (Optional) ID of the customer_bank_account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // that will be used for this request
   customer_bank_account?: string;
 
   // ID of the customer billing detail that will be used for this request
@@ -2899,16 +2992,17 @@ export type BillingRequestWithActionBillingRequestsLinks = {
   // (Optional) ID of the associated instalment schedule request
   instalment_schedule_request?: string;
 
-  // (Optional) ID of the
-  // [instalment_schedule](#core-endpoints-instalment-schedules) that was
-  // created from this instalment schedule request.
+  // (Optional) ID of the instalment_schedule
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules)
+  // that was created from this instalment schedule request.
   instalment_schedule_request_instalment_schedule?: string;
 
   // (Optional) ID of the associated mandate request
   mandate_request?: string;
 
-  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
-  // from this mandate request. this mandate request.
+  // (Optional) ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // that was created from this mandate request. this mandate request.
   mandate_request_mandate?: string;
 
   // ID of the associated organisation.
@@ -2920,52 +3014,51 @@ export type BillingRequestWithActionBillingRequestsLinks = {
   // (Optional) ID of the associated payment request
   payment_request?: string;
 
-  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
-  // from this payment request.
+  // (Optional) ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // that was created from this payment request.
   payment_request_payment?: string;
 
   // (Optional) ID of the associated subscription request
   subscription_request?: string;
 
-  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
-  // created from this subscription request.
+  // (Optional) ID of the subscription
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions)
+  // that was created from this subscription request.
   subscription_request_subscription?: string;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsmandaterequest resource. */
 export type BillingRequestWithActionBillingRequestsMandateRequest = {
-  // This field is ACH specific, sometimes referred to as [SEC
-  // code](https://www.moderntreasury.com/learn/sec-codes).
+  // This field is ACH specific, sometimes referred to as SEC code
+  // (https://www.moderntreasury.com/learn/sec-codes).
   //
   // This is the way that the payer gives authorisation to the merchant.
-  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
   // code: WEB)
-  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // telephone: Authorisation is provided orally over telephone (maps to SEC
   // code: TEL)
-  //   paper: Authorisation is provided in writing and signed, or similarly
+  // paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
-  //
   authorisation_source?: `${BillingRequestWithActionBillingRequestsMandateRequestAuthorisationSource}`;
 
   // This attribute represents the authorisation type between the payer and
   // merchant. It can be set to `one_off`,
   // `recurring` or `standing` for ACH scheme. And `single`, `recurring` and
-  // `sporadic` for PAD scheme. _Note:_ This is only supported for ACH and PAD
+  // `sporadic` for PAD scheme. Note: This is only supported for ACH and PAD
   // schemes.
-  //
   consent_type?: string | null;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // required for PayTo and VRP.
   constraints?: BillingRequestWithActionBillingRequestsMandateRequestConstraints | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   description?: string | null;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -2975,8 +3068,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestWithActionBillingRequestsMandateRequest.
@@ -3007,16 +3099,14 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   sweeping?: boolean;
 
   // Verification preference for the mandate. One of:
-  // <ul>
-  //   <li>`minimum`: only verify if absolutely required, such as when part of
-  // scheme rules</li>
-  //   <li>`recommended`: in addition to `minimum`, use the GoCardless payment
-  // intelligence solution to decide if a payer should be verified</li>
-  //   <li>`when_available`: if verification mechanisms are available, use
-  // them</li>
-  //   <li>`always`: as `when_available`, but fail to create the Billing Request
-  // if a mechanism isn't available</li>
-  // </ul>
+  //
+  // - `minimum`: only verify if absolutely required, such as when part of
+  // scheme rules
+  // - `recommended`: in addition to `minimum`, use the GoCardless payment
+  // intelligence solution to decide if a payer should be verified
+  // - `when_available`: if verification mechanisms are available, use them
+  // - `always`: as `when_available`, but fail to create the Billing Request if
+  // a mechanism isn't available
   //
   // By default, all Billing Requests use the `recommended` verification
   // preference. It uses GoCardless payment intelligence solution to determine
@@ -3028,8 +3118,8 @@ export type BillingRequestWithActionBillingRequestsMandateRequest = {
   // Verified Mandates as they are released in new schemes, please use the
   // `minimum` verification preference.
   //
-  // See [Billing Requests: Creating Verified
-  // Mandates](https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
+  // See Billing Requests: Creating Verified Mandates
+  // (https://developer.gocardless.com/getting-started/billing-requests/verified-mandates/)
   // for more information.
   verify?: `${BillingRequestWithActionBillingRequestsMandateRequestVerify}`;
 };
@@ -3050,20 +3140,27 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  //
   end_date?: string;
 
-  // The maximum amount that can be charged for a single payment. Required for
-  // PayTo and VRP.
+  // The maximum amount that can be charged for a single payment in the lowest
+  // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
+  // Required for PayTo and VRP.
   max_amount_per_payment?: number;
 
   // A constraint where you can specify info (free text string) about how
-  // payments are calculated. _Note:_ This is only supported for ACH and PAD
-  // schemes.
-  //
+  // payments are calculated. For use when payments vary and cannot be expressed
+  // as a fixed amount and frequency. Note: This is only supported for ACH and
+  // PAD schemes.
   payment_method?: string;
 
-  // List of periodic limits and constraints which apply to them
+  // Caps on the total amount and/or number of payments that can be collected
+  // within a
+  // repeating period (e.g. no more than a set amount per month), as opposed to
+  // `max_amount_per_payment` which caps a single payment.
+  //
+  // Note: Required for VRP, where exactly one periodic limit must be provided.
+  // Optional for
+  // PayTo.
   periodic_limits?: BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimit[];
 
   // The date from which payments can be taken.
@@ -3071,38 +3168,55 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  //
   start_date?: string;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsmandaterequestconstraintsperiodiclimit resource. */
 export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimit = {
-  // The alignment of the period.
+  // The alignment of the period. Defaults to `creation_date` if not specified.
   //
-  // `calendar` - this will finish on the end of the current period. For example
-  // this will expire on the Monday for the current week or the January for the
-  // next year.
+  // `calendar` - the period follows fixed calendar boundaries, the same for
+  // every mandate:
+  // `week` runs Monday to Sunday, `month` runs from the 1st to the last day of
+  // the calendar
+  // month, and `year` runs from 1 January to 31 December. If the mandate starts
+  // partway
+  // through a period, the limit for that first period is reduced proportionally
+  // to the days
+  // remaining (e.g. a monthly limit starting on the 15th gives roughly half the
+  // limit for
+  // that first month).
   //
-  // `creation_date` - this will finish on the next instance of the current
-  // period. For example Monthly it will expire on the same day of the next
-  // month, or yearly the same day of the next year.
+  // `creation_date` - the period follows the mandate's own start date rather
+  // than the
+  // calendar. For example, if the mandate starts on the 15th, each monthly
+  // period runs from
+  // the 15th to the 14th of the following month. The first period is a full
+  // period, not
+  // reduced proportionally.
   //
+  // Note: Has no effect when period is `flexible`.
   alignment?: `${BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitAlignment}`;
 
   // The maximum number of payments that can be collected in this periodic
   // limit.
-  // _Note:_ This is only supported for the PayTo scheme, where it is required.
   //
+  // Note: Only supported for the PayTo scheme, where it is optional.
   max_payments?: number;
 
   // The maximum total amount that can be charged for all payments in this
-  // periodic limit.
-  // Required for VRP.
+  // periodic limit,
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
   //
+  // Note: Required for VRP. This is not permitted for the PayTo scheme.
   max_total_amount?: number;
 
-  // The repeating period for this mandate. Defaults to flexible for PayTo if
-  // not specified.
+  // The repeating period for this mandate. Required whenever a periodic limit
+  // is provided
+  // (for both VRP and PayTo). If periodic_limits is omitted entirely for PayTo,
+  // this
+  // defaults to flexible.
   period?: `${BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeriodicLimitPeriod}`;
 };
 
@@ -3126,9 +3240,9 @@ export enum BillingRequestWithActionBillingRequestsMandateRequestFundsSettlement
 
 /** Type for a billingrequestwithactionbillingrequestsmandaterequestlinks resource. */
 export type BillingRequestWithActionBillingRequestsMandateRequestLinks = {
-  // (Optional) ID of the [mandate](#core-endpoints-mandates) that was created
-  // from this mandate request. this mandate request.
-  //
+  // (Optional) ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // that was created from this mandate request. this mandate request.
   mandate?: string;
 };
 
@@ -3149,14 +3263,13 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
   app_fee?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
   currency?: string;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  //
   description?: string | null;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -3166,8 +3279,7 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${BillingRequestWithActionBillingRequestsPaymentRequestFundsSettlement}`;
 
   // Resources linked to this BillingRequestWithActionBillingRequestsPaymentRequest.
@@ -3180,7 +3292,6 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // A custom payment reference defined by the merchant. It is only available
   // for payments on the PayTo scheme or payments using the Direct Funds
   // settlement model on the Faster Payments scheme.
-  //
   reference?: string | null;
 
   // (Optional) A scheme used for Open Banking payments. Currently
@@ -3199,8 +3310,9 @@ export enum BillingRequestWithActionBillingRequestsPaymentRequestFundsSettlement
 
 /** Type for a billingrequestwithactionbillingrequestspaymentrequestlinks resource. */
 export type BillingRequestWithActionBillingRequestsPaymentRequestLinks = {
-  // (Optional) ID of the [payment](#core-endpoints-payments) that was created
-  // from this payment request.
+  // (Optional) ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // that was created from this payment request.
   payment?: string;
 };
 
@@ -3225,8 +3337,9 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
   // "Personal PAD").
   company_name?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Customer's email address. Required in most cases, as this allows GoCardless
@@ -3242,20 +3355,20 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomer = {
   // Unique identifier, beginning with "CU".
   id?: string;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided, the language will be chosen based on the
-  // `country_code` (if supplied) or default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided, the language will be chosen
+  // based on the `country_code` (if supplied) or default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 };
@@ -3265,8 +3378,9 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   // Name of the account holder, as known by the bank. The full name provided
   // when the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank
-  // submissions. This field is required unless the request includes a [customer
-  // bank account token](#javascript-flow-customer-bank-account-tokens).
+  // submissions. This field is required unless the request includes a customer
+  // bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -3274,8 +3388,9 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   account_number_ending?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType}`;
 
   // A token to uniquely refer to a set of bank account details. This feature is
@@ -3285,17 +3400,18 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -3312,6 +3428,19 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
+
+  // The result of the payer name verification check performed when the bank
+  // account was created. Only present if a check was performed.
+  //
+  // - `full`: The name provided matches the name held by the bank.
+  // - `close`: The name provided is a close but not exact match to the name
+  // held by the bank.
+  // - `cannot_perform_verification`: A verification was attempted but could not
+  // be completed. This can happen for a number of reasons, including the
+  // account holder's bank not participating in the verification scheme, the
+  // account not being eligible for verification (e.g. the account holder has
+  // opted out), or the bank details not being resolvable, among others.
+  payer_name_verification_result?: `${BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountPayerNameVerificationResult}`;
 };
 
 export enum BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountAccountType {
@@ -3321,10 +3450,17 @@ export enum BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountA
 
 /** Type for a billingrequestwithactionbillingrequestsresourcescustomerbankaccountlinks resource. */
 export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountLinks = {
-  // ID of the [customer](#core-endpoints-customers) that owns this bank
-  // account.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that owns this bank account.
   customer?: string;
 };
+
+export enum BillingRequestWithActionBillingRequestsResourcesCustomerBankAccountPayerNameVerificationResult {
+  Full = 'full',
+  Close = 'close',
+  CannotPerformVerification = 'cannot_perform_verification',
+}
 
 /** Type for a billingrequestwithactionbillingrequestsresourcescustomerbillingdetail resource. */
 export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetail = {
@@ -3340,12 +3476,13 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetai
   // The city of the customer's address.
   city?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -3362,14 +3499,13 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetai
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
   ip_address?: string | null;
 
   // The customer's postal code.
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -3397,7 +3533,7 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // The total number of payments that should be taken by this subscription.
   count?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
   currency?: string;
 
@@ -3424,7 +3560,6 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
   // when the interval_unit is `yearly`.
-  //
   month?: `${BillingRequestWithActionBillingRequestsSubscriptionRequestMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
@@ -3435,15 +3570,16 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
   payment_reference?: string | null;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. If fulfilled after
@@ -3452,7 +3588,6 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // set to the date of the first payment.
   // If created without `month` or `day_of_month` this will be set as the
   // mandate's `next_possible_charge_date`.
-  //
   start_date?: string | null;
 };
 
@@ -3464,9 +3599,9 @@ export enum BillingRequestWithActionBillingRequestsSubscriptionRequestIntervalUn
 
 /** Type for a billingrequestwithactionbillingrequestssubscriptionrequestlinks resource. */
 export type BillingRequestWithActionBillingRequestsSubscriptionRequestLinks = {
-  // (Optional) ID of the [subscription](#core-endpoints-subscriptions) that was
-  // created from this subscription request.
-  //
+  // (Optional) ID of the subscription
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions)
+  // that was created from this subscription request.
   subscription?: string;
 };
 
@@ -3498,7 +3633,9 @@ export type Block = {
   // 'bank_name'.
   block_type?: `${BlockBlockType}`;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this
   // resource was created.
   created_at?: string;
 
@@ -3533,7 +3670,9 @@ export type Block = {
   // a resource.
   resource_reference?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this
   // resource was updated.
   updated_at?: string;
 };
@@ -3575,7 +3714,6 @@ export type Creditor = {
   // sent to that creditor could be `ACME-8G7Q8`.
   //
   // This prefix is also used for refunds in EUR and GBP.
-  //
   bank_reference_prefix?: string;
 
   // Boolean indicating whether the creditor is permitted to create refunds.
@@ -3584,25 +3722,26 @@ export type Creditor = {
   // The city of the creditor's address.
   city?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // The type of business of the creditor. Currently, `individual`, `company`,
   // `charity`, `partnership`, and `trust` are supported.
   creditor_type?: `${CreditorCreditorType}`;
 
-  // Boolean value indicating whether creditor has the [Custom Payment
-  // Pages](https://hub.gocardless.com/s/article/Custom-payment-pages)
-  // functionality enabled.
+  // Boolean value indicating whether creditor has the Custom Payment Pages
+  // (https://hub.gocardless.com/s/article/Custom-payment-pages) functionality
+  // enabled.
   custom_payment_pages_enabled?: boolean;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
-  // the currency in which amounts will be paid out (after foreign exchange).
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -3617,16 +3756,17 @@ export type Creditor = {
   // URL for the creditor's logo, which may be shown on their payment pages.
   logo_url?: string | null;
 
-  // Boolean value indicating whether creditor has the [Mandate
-  // Imports](#core-endpoints-mandate-imports) functionality enabled.
+  // Boolean value indicating whether creditor has the Mandate Imports
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandate-imports)
+  // functionality enabled.
   mandate_imports_enabled?: boolean;
 
   // Boolean value indicating whether the organisation is responsible for
   // sending all customer notifications (note this is separate from the
-  // functionality described
-  // [here](/getting-started/api/handling-customer-notifications/)). If you are
-  // a partner app, and this value is true, you should not send notifications on
-  // behalf of this organisation.
+  // functionality described here
+  // (https://developer.gocardless.com/getting-started/api/handling-customer-notifications/)).
+  // If you are a partner app, and this value is true, you should not send
+  // notifications on behalf of this organisation.
   merchant_responsible_for_notifications?: boolean;
 
   // The creditor's trading name.
@@ -3643,27 +3783,28 @@ export type Creditor = {
   //
   // The support address, `phone_number` and `email` fields are for customers to
   // contact the merchant for support purposes. They must be displayed on the
-  // payment page, please see our [compliance
-  // requirements](#appendix-compliance-requirements) for more details.
+  // payment page, please see our compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)
+  // for more details.
   scheme_identifiers?: CreditorSchemeIdentifier[];
 
   // The creditor's verification status, indicating whether they can yet receive
   // payouts. For more details on handling verification as a partner, see our
-  // ["Helping your users get verified"
-  // guide](/getting-started/partners/helping-your-users-get-verified/). One of:
-  // <ul>
-  // <li>`successful`: The creditor's account is fully verified, and they can
+  // "Helping your users get verified" guide
+  // (https://developer.gocardless.com/getting-started/partners/helping-your-users-get-verified/).
+  // One of:
+  //
+  // - `successful`: The creditor's account is fully verified, and they can
   // receive payouts. Once a creditor has been successfully verified, they may
   // in the future require further verification - for example, if they change
   // their payout bank account, we will have to check that they own the new bank
-  // account before they can receive payouts again.</li>
-  // <li>`in_review`: The creditor has provided all of the information currently
+  // account before they can receive payouts again.
+  // - `in_review`: The creditor has provided all of the information currently
   // requested, and it is awaiting review by GoCardless before they can be
-  // verified and receive payouts.</li>
-  // <li>`action_required`: The creditor needs to provide further information to
+  // verified and receive payouts.
+  // - `action_required`: The creditor needs to provide further information to
   // verify their account so they can receive payouts, and should visit the
-  // verification flow.</li>
-  // </ul>
+  // verification flow.
   verification_status?: `${CreditorVerificationStatus}`;
 };
 
@@ -3677,36 +3818,44 @@ export enum CreditorCreditorType {
 
 /** Type for a creditorupdaterequestlinks resource. */
 export type CreditorUpdateRequestLinks = {
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in AUD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in AUD.
   default_aud_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in CAD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in CAD.
   default_cad_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in DKK.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in DKK.
   default_dkk_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in EUR.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in EUR.
   default_eur_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in GBP.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in GBP.
   default_gbp_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in NZD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in NZD.
   default_nzd_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in SEK.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in SEK.
   default_sek_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in USD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
 };
 
@@ -3723,36 +3872,44 @@ export enum CreditorFxPayoutCurrency {
 
 /** Type for a creditorlinks resource. */
 export type CreditorLinks = {
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in AUD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in AUD.
   default_aud_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in CAD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in CAD.
   default_cad_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in DKK.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in DKK.
   default_dkk_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in EUR.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in EUR.
   default_eur_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in GBP.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in GBP.
   default_gbp_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in NZD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in NZD.
   default_nzd_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in SEK.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in SEK.
   default_sek_payout_account?: string | null;
 
-  // ID of the [bank account](#core-endpoints-creditor-bank-accounts) which is
-  // set up to receive payouts in USD.
+  // ID of the bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which is set up to receive payouts in USD.
   default_usd_payout_account?: string | null;
 };
 
@@ -3774,12 +3931,13 @@ export type CreditorSchemeIdentifier = {
   // The city of the scheme identifier's support address.
   city?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // The currency of the scheme identifier.
@@ -3796,8 +3954,9 @@ export type CreditorSchemeIdentifier = {
   // this scheme identifier.
   //
   // By default, GoCardless sends these notifications automatically. Please see
-  // our [compliance requirements](#appendix-compliance-requirements) for more
-  // details.
+  // our compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)
+  // for more details.
   minimum_advance_notice?: number;
 
   // The name which appears on customers' bank statements. This should usually
@@ -3864,7 +4023,8 @@ export enum CreditorVerificationStatus {
 /** Type for a creditorbankaccount resource. */
 export type CreditorBankAccount = {
   // Name of the account holder, as known by the bank. Usually this is the same
-  // as the name stored with the linked [creditor](#core-endpoints-creditors).
+  // as the name stored with the linked creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
   account_holder_name?: string;
 
@@ -3873,24 +4033,26 @@ export type CreditorBankAccount = {
   account_number_ending?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${CreditorBankAccountAccountType}`;
 
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -3920,15 +4082,17 @@ export enum CreditorBankAccountAccountType {
 
 /** Type for a creditorbankaccountcreaterequestlinks resource. */
 export type CreditorBankAccountCreateRequestLinks = {
-  // ID of the [creditor](#core-endpoints-creditors) that owns this bank
-  // account.
+  // ID of the creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // that owns this bank account.
   creditor: string;
 };
 
 /** Type for a creditorbankaccountlinks resource. */
 export type CreditorBankAccountLinks = {
-  // ID of the [creditor](#core-endpoints-creditors) that owns this bank
-  // account.
+  // ID of the creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // that owns this bank account.
   creditor?: string;
 };
 
@@ -3976,12 +4140,13 @@ export type Customer = {
   // "Personal PAD").
   company_name?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -4002,20 +4167,20 @@ export type Customer = {
   // Unique identifier, beginning with "CU".
   id?: string;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided, the language will be chosen based on the
-  // `country_code` (if supplied) or default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided, the language will be chosen
+  // based on the `country_code` (if supplied) or default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 
@@ -4023,7 +4188,7 @@ export type Customer = {
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -4066,8 +4231,9 @@ export type CustomerBankAccount = {
   // Name of the account holder, as known by the bank. The full name provided
   // when the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank
-  // submissions. This field is required unless the request includes a [customer
-  // bank account token](#javascript-flow-customer-bank-account-tokens).
+  // submissions. This field is required unless the request includes a customer
+  // bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -4075,8 +4241,9 @@ export type CustomerBankAccount = {
   account_number_ending?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${CustomerBankAccountAccountType}`;
 
   // A token to uniquely refer to a set of bank account details. This feature is
@@ -4086,17 +4253,18 @@ export type CustomerBankAccount = {
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -4114,6 +4282,19 @@ export type CustomerBankAccount = {
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
+  // The result of the payer name verification check performed when the bank
+  // account was created. Only present if a check was performed.
+  //
+  // - `full`: The name provided matches the name held by the bank.
+  // - `close`: The name provided is a close but not exact match to the name
+  // held by the bank.
+  // - `cannot_perform_verification`: A verification was attempted but could not
+  // be completed. This can happen for a number of reasons, including the
+  // account holder's bank not participating in the verification scheme, the
+  // account not being eligible for verification (e.g. the account holder has
+  // opted out), or the bank details not being resolvable, among others.
+  payer_name_verification_result?: `${CustomerBankAccountPayerNameVerificationResult}`;
+
   // Whether this customer bank account is registered as a trusted recipient for
   // Outbound Payments. Only present when the feature is enabled for the
   // organisation.
@@ -4127,32 +4308,41 @@ export enum CustomerBankAccountAccountType {
 
 /** Type for a customerbankaccountcreaterequestlinks resource. */
 export type CustomerBankAccountCreateRequestLinks = {
-  // ID of the [customer](#core-endpoints-customers) that owns this bank
-  // account.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that owns this bank account.
   customer: string;
 
-  // ID of a [customer bank account
-  // token](#javascript-flow-customer-bank-account-tokens) to use in place of
-  // bank account parameters.
+  // ID of a customer bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens)
+  // to use in place of bank account parameters.
   customer_bank_account_token?: string;
 };
 
 /** Type for a customerbankaccountlinks resource. */
 export type CustomerBankAccountLinks = {
-  // ID of the [customer](#core-endpoints-customers) that owns this bank
-  // account.
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that owns this bank account.
   customer?: string;
 };
+
+export enum CustomerBankAccountPayerNameVerificationResult {
+  Full = 'full',
+  Close = 'close',
+  CannotPerformVerification = 'cannot_perform_verification',
+}
 
 /** Type for a customernotification resource. */
 export type CustomerNotification = {
   // The action that was taken on the notification. Currently this can only be
   // `handled`,
   // which means the integrator sent the notification themselves.
-  //
   action_taken?: `${CustomerNotificationActionTaken}`;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this
   // action was taken.
   action_taken_at?: string | null;
 
@@ -4168,16 +4358,15 @@ export type CustomerNotification = {
 
   // The type of notification the customer shall receive.
   // One of:
-  // <ul>
-  // <li>`payment_created`</li>
-  // <li>`payment_cancelled`</li>
-  // <li>`mandate_created`</li>
-  // <li>`mandate_blocked`</li>
-  // <li>`subscription_created`</li>
-  // <li>`subscription_cancelled`</li>
-  // <li>`instalment_schedule_created`</li>
-  // <li>`instalment_schedule_cancelled`</li>
-  // </ul>
+  //
+  // - `payment_created`
+  // - `payment_cancelled`
+  // - `mandate_created`
+  // - `mandate_blocked`
+  // - `subscription_created`
+  // - `subscription_cancelled`
+  // - `instalment_schedule_created`
+  // - `instalment_schedule_cancelled`
   type?: `${CustomerNotificationType}`;
 };
 
@@ -4219,19 +4408,20 @@ export enum CustomerNotificationType {
 
 /** Type for a event resource. */
 export type Event = {
-  // What has happened to the resource. See [Event Types](#event-types) for the
+  // What has happened to the resource. See Event Types
+  // (https://developer.gocardless.com/api-reference/#event-types) for the
   // possible actions.
   action?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Present only in webhooks when an integrator is authorised to send their own
-  // notifications. See
-  // [here](/getting-started/api/handling-customer-notifications/)
+  // notifications. See here
+  // (https://developer.gocardless.com/getting-started/api/handling-customer-notifications/)
   // for further information.
-  //
   customer_notifications?: EventCustomerNotification[] | null;
 
   //
@@ -4249,32 +4439,29 @@ export type Event = {
   //
   // This field will only be populated if the `details[origin]` field is `api`
   // otherwise it will be an empty object.
-  //
   metadata?: JsonMap;
 
   // The metadata of the resource that the event is for. For example, this field
   // will have the same
   // value of the `mandate[metadata]` field on the response you would receive
   // from performing a GET request on a mandate.
-  //
   resource_metadata?: JsonMap;
 
   // The resource type for this event. One of:
-  // <ul>
-  // <li>`billing_requests`</li>
-  // <li>`creditors`</li>
-  // <li>`exports`</li>
-  // <li>`instalment_schedules`</li>
-  // <li>`mandates`</li>
-  // <li>`payer_authorisations`</li>
-  // <li>`payments`</li>
-  // <li>`payouts`</li>
-  // <li>`refunds`</li>
-  // <li>`scheme_identifiers`</li>
-  // <li>`subscriptions`</li>
-  // <li>`outbound_payments`</li>
-  // <li>`payment_account_transactions`</li>
-  // </ul>
+  //
+  // - `billing_requests`
+  // - `creditors`
+  // - `exports`
+  // - `instalment_schedules`
+  // - `mandates`
+  // - `payer_authorisations`
+  // - `payments`
+  // - `payouts`
+  // - `refunds`
+  // - `scheme_identifiers`
+  // - `subscriptions`
+  // - `outbound_payments`
+  // - `payment_account_transactions`
   resource_type?: `${EventResourceType}`;
 
   // Audit information about the source of the event.
@@ -4308,8 +4495,9 @@ export type EventCustomerNotification = {
   // Whether or not the notification must be sent.
   mandatory?: boolean;
 
-  // See [here](#core-endpoints-customer-notifications) for a complete list of
-  // customer notification types.
+  // See here
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-notifications)
+  // for a complete list of customer notification types.
   type?: string;
 };
 
@@ -4319,7 +4507,7 @@ export type EventDetails = {
   // the bank account id of the new account
   bank_account_id?: string;
 
-  // What triggered the event. _Note:_ `cause` is our simplified and predictable
+  // What triggered the event. Note: `cause` is our simplified and predictable
   // key indicating what triggered the event.
   cause?: string;
 
@@ -4327,7 +4515,7 @@ export type EventDetails = {
   // the currency of the new account
   currency?: string;
 
-  // Human readable description of the cause. _Note:_ Changes to event
+  // Human readable description of the cause. Note: Changes to event
   // descriptions are not considered breaking.
   description?: string;
 
@@ -4336,22 +4524,20 @@ export type EventDetails = {
 
   // When will_attempt_retry is set to false, this field will contain
   // the reason the payment was not retried. This can be one of:
-  // <ul>
-  // <li>`failure_filter_applied`: The payment won't be intelligently retried as
-  //   there is a high likelihood of failure on retry.</li>
-  // <li>`other`: The payment won't be intelligently retried due to any other
-  //   reason.</li>
-  // </ul>
+  //
+  // - `failure_filter_applied`: The payment won't be intelligently retried as
+  // there is a high likelihood of failure on retry.
+  // - `other`: The payment won't be intelligently retried due to any other
+  // reason.
   not_retried_reason?: string;
 
   // Who initiated the event. One of:
-  // <ul>
-  // <li>`bank`: this event was triggered by a report from the banks</li>
-  // <li>`gocardless`: this event was performed by GoCardless automatically</li>
-  // <li>`api`: this event was triggered by an API endpoint</li>
-  // <li>`customer`: this event was triggered by a Customer</li>
-  // <li>`payer`: this event was triggered by a Payer</li>
-  // </ul>
+  //
+  // - `bank`: this event was triggered by a report from the banks
+  // - `gocardless`: this event was performed by GoCardless automatically
+  // - `api`: this event was triggered by an API endpoint
+  // - `customer`: this event was triggered by a Customer
+  // - `payer`: this event was triggered by a Payer
   origin?: `${EventDetailsOrigin}`;
 
   // When we send a creditor `creditor_updated` webhook, this tells you which
@@ -4359,11 +4545,10 @@ export type EventDetails = {
   property?: string;
 
   // Set when a `bank` is the origin of the event. This is the reason code
-  // received in the report from the customer's bank. See the [GoCardless Direct
-  // Debit guide](https://gocardless.com/direct-debit/receiving-messages) for
-  // information on the meanings of different reason codes. _Note:_
-  // `reason_code` is payment scheme-specific and can be inconsistent between
-  // banks.
+  // received in the report from the customer's bank. See the GoCardless Direct
+  // Debit guide (https://gocardless.com/direct-debit/receiving-messages) for
+  // information on the meanings of different reason codes. Note: `reason_code`
+  // is payment scheme-specific and can be inconsistent between banks.
   reason_code?: string;
 
   // A bank payment scheme. Set when a bank is the origin of the event.
@@ -4398,52 +4583,66 @@ export enum EventDetailsScheme {
 
 /** Type for a eventlinks resource. */
 export type EventLinks = {
-  // ID of a [bank authorisation](#billing-requests-bank-authorisations).
+  // ID of a bank authorisation
+  // (https://developer.gocardless.com/api-reference/#billing-requests-bank-authorisations).
   bank_authorisation?: string;
 
-  // ID of a [billing request](#billing-requests-billing-requests).
+  // ID of a billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests).
   billing_request?: string;
 
-  // ID of a [billing request flow](#billing-requests-billing-request-flows).
+  // ID of a billing request flow
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-request-flows).
   billing_request_flow?: string;
 
-  // If `resource_type` is `creditor`, this is the ID of the
-  // [creditor](#core-endpoints-creditors) which has been updated.
+  // If `resource_type` is `creditor`, this is the ID of the creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // which has been updated.
   creditor?: string;
 
-  // ID of a [customer](#core-endpoints-customers).
+  // ID of a customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
   customer?: string;
 
-  // ID of a [customer bank account](#core-endpoints-customer-bank-accounts).
+  // ID of a customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
   customer_bank_account?: string;
 
   // If `resource_type` is `instalment_schedule`, this is the ID of the
-  // [instalment schedule](#core-endpoints-instalment-schedules) which has been
-  // updated.
+  // instalment schedule
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules)
+  // which has been updated.
   instalment_schedule?: string;
 
-  // If `resource_type` is `mandates`, this is the ID of the
-  // [mandate](#core-endpoints-mandates) which has been updated.
+  // If `resource_type` is `mandates`, this is the ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which has been updated.
   mandate?: string;
 
   // This is the id of the mandate request associated to this event
   mandate_request?: string;
 
-  // If `resource_type` is `billing_requests`, this is the ID of the
-  // [mandate](#core-endpoints-mandates) which has been created.
+  // If `resource_type` is `billing_requests`, this is the ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which has been created.
   mandate_request_mandate?: string;
 
   // This is only included for mandate transfer events, when it is the ID of the
-  // [customer bank account](#core-endpoints-customer-bank-accounts) which the
-  // mandate is being transferred to.
+  // customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // which the mandate is being transferred to.
   new_customer_bank_account?: string;
 
   // This is only included for mandate replaced events, when it is the ID of the
-  // new [mandate](#core-endpoints-mandates) that replaces the existing mandate.
+  // new mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // that replaces the existing mandate.
   new_mandate?: string;
 
-  // If the event is included in a [webhook](#webhooks-overview) to an [OAuth
-  // app](#appendix-oauth), this is the ID of the account to which it belongs.
+  // If the event is included in a webhook
+  // (https://developer.gocardless.com/api-reference/#webhooks-overview) to an
+  // OAuth app (https://developer.gocardless.com/api-reference/#appendix-oauth),
+  // this is the ID of the account to which it belongs.
   organisation?: string;
 
   // If `resource_type` is `outbound_payments`, this is the ID of the
@@ -4456,41 +4655,49 @@ export type EventLinks = {
   // would have the ID of the mandate cancellation event in this field.
   parent_event?: string;
 
-  // ID of a [payer authorisation](#core-endpoints-payer-authorisations).
+  // ID of a payer authorisation
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payer-authorisations).
   payer_authorisation?: string;
 
-  // If `resource_type` is `payments`, this is the ID of the
-  // [payment](#core-endpoints-payments) which has been updated.
+  // If `resource_type` is `payments`, this is the ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // which has been updated.
   payment?: string;
 
   // If `resource_type` is `payment_account_transaction`, this is the ID of a
   // transaction which has been recorded on the payment account.
   payment_account_transaction?: string;
 
-  // If `resource_type` is `billing_requests`, this is the ID of the
-  // [payment](#core-endpoints-payments) which has been created for Pay by Bank.
+  // If `resource_type` is `billing_requests`, this is the ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // which has been created for Pay by Bank.
   payment_request_payment?: string;
 
-  // If `resource_type` is `payouts`, this is the ID of the
-  // [payout](#core-endpoints-payouts) which has been updated.
+  // If `resource_type` is `payouts`, this is the ID of the payout
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
+  // which has been updated.
   payout?: string;
 
   // This is only included for mandate transfer events, when it is the ID of the
-  // [customer bank account](#core-endpoints-customer-bank-accounts) which the
-  // mandate is being transferred from.
+  // customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // which the mandate is being transferred from.
   previous_customer_bank_account?: string;
 
-  // If `resource_type` is `refunds`, this is the ID of the
-  // [refund](#core-endpoints-refunds) which has been updated.
+  // If `resource_type` is `refunds`, this is the ID of the refund
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-refunds)
+  // which has been updated.
   refund?: string;
 
   // If `resource_type` is `scheme_identifiers`, this is the ID of the
-  // [scheme_identifier](#core-endpoints-scheme-identifiers) which has been
-  // updated.
+  // scheme_identifier
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-scheme-identifiers)
+  // which has been updated.
   scheme_identifier?: string;
 
-  // If `resource_type` is `subscription`, this is the ID of the
-  // [subscription](#core-endpoints-subscriptions) which has been updated.
+  // If `resource_type` is `subscription`, this is the ID of the subscription
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions)
+  // which has been updated.
   subscription?: string;
 };
 
@@ -4530,8 +4737,9 @@ export enum EventSourceType {
 
 /** Type for a export resource. */
 export type Export = {
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // The currency of the export (if applicable)
@@ -4574,6 +4782,7 @@ export enum ExportExportType {
   PartnerFees = 'partner_fees',
   PaymentsImportTemplate = 'payments_import_template',
   PaymentAccountStatement = 'payment_account_statement',
+  OutboundPaymentsIndex = 'outbound_payments_index',
 }
 
 /** Type for a fundsavailability resource. */
@@ -4584,11 +4793,12 @@ export type FundsAvailability = {
 
 /** Type for a instalmentschedule resource. */
 export type InstalmentSchedule = {
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${InstalmentScheduleCurrency}`;
@@ -4613,20 +4823,17 @@ export type InstalmentSchedule = {
   // failures from the individual payments, arranged by the index of the payment
   // that
   // failed.
-  //
   payment_errors?: JsonMap;
 
   // One of:
-  // <ul>
-  // <li>`pending`: we're waiting for GC to create the payments</li>
-  // <li>`active`: the payments have been created, and the schedule is
-  // active</li>
-  // <li>`creation_failed`: payment creation failed</li>
-  // <li>`completed`: we have passed the date of the final payment and all
-  // payments have been collected</li>
-  // <li>`cancelled`: the schedule has been cancelled</li>
-  // <li>`errored`: one or more payments have failed</li>
-  // </ul>
+  //
+  // - `pending`: we're waiting for GC to create the payments
+  // - `active`: the payments have been created, and the schedule is active
+  // - `creation_failed`: payment creation failed
+  // - `completed`: we have passed the date of the final payment and all
+  // payments have been collected
+  // - `cancelled`: the schedule has been cancelled
+  // - `errored`: one or more payments have failed
   status?: `${InstalmentScheduleStatus}`;
 
   // The total amount of the instalment schedule, defined as the sum of all
@@ -4654,25 +4861,36 @@ export enum InstalmentScheduleCurrency {
 export type InstalmentScheduleInstalment = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
+  //
+  // Minimum and maximum amounts vary by payment scheme. For more information,
+  // see Transaction limits
+  // (https://support.gocardless.com/hc/en-gb/articles/115000309245-Transaction-limits)
+  //
+  // For Variable Recurring Payments (VRP), this must not exceed the mandate's
+  // `max_amount_per_payment`
+  // constraint.
   amount: string;
 
   // A future date on which the payment should be collected. If the date
   // is before the next_possible_charge_date on the
-  // [mandate](#core-endpoints-mandates), it will be automatically rolled
+  // mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates),
+  // it will be automatically rolled
   // forwards to that date.
   charge_date: string | null;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
-  // does not send its own notifications (see [compliance
-  // requirements](#appendix-compliance-requirements)).
+  // does not send its own notifications (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
   description?: string | null;
 };
 
 /** Type for a instalmentschedulecreatewithdatesrequestlinks resource. */
 export type InstalmentScheduleCreateWithDatesRequestLinks = {
-  // ID of the associated [mandate](#core-endpoints-mandates) which the
-  // instalment schedule will create payments against.
+  // ID of the associated mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which the instalment schedule will create payments against.
   mandate: string;
 };
 
@@ -4680,12 +4898,10 @@ export type InstalmentScheduleCreateWithDatesRequestLinks = {
 export type InstalmentScheduleInstalments = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. pence in GBP, cents in EUR).
-  //
   amounts: string[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
-  //
   interval: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
@@ -4693,10 +4909,12 @@ export type InstalmentScheduleInstalments = {
   interval_unit: `${InstalmentScheduleInstalmentsIntervalUnit}`;
 
   // The date on which the first payment should be charged. Must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
-  // left blank and `month` or `day_of_month` are provided, this will be set to
-  // the date of the first payment. If created without `month` or `day_of_month`
-  // this will be set as the mandate's `next_possible_charge_date`
+  // the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // `next_possible_charge_date`. When left blank and `month` or `day_of_month`
+  // are provided, this will be set to the date of the first payment. If created
+  // without `month` or `day_of_month` this will be set as the mandate's
+  // `next_possible_charge_date`
   start_date?: string | null;
 };
 
@@ -4708,21 +4926,25 @@ export enum InstalmentScheduleInstalmentsIntervalUnit {
 
 /** Type for a instalmentschedulecreatewithschedulerequestlinks resource. */
 export type InstalmentScheduleCreateWithScheduleRequestLinks = {
-  // ID of the associated [mandate](#core-endpoints-mandates) which the
-  // instalment schedule will create payments against.
+  // ID of the associated mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which the instalment schedule will create payments against.
   mandate: string;
 };
 
 /** Type for a instalmentschedulelinks resource. */
 export type InstalmentScheduleLinks = {
-  // ID of the associated [customer](#core-endpoints-customers).
+  // ID of the associated customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
   customer: string;
 
-  // ID of the associated [mandate](#core-endpoints-mandates) which the
-  // instalment schedule will create payments against.
+  // ID of the associated mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which the instalment schedule will create payments against.
   mandate: string;
 
-  // Array of IDs of the associated [payments](#core-endpoints-payments)
+  // Array of IDs of the associated payments
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
   payments?: string[];
 };
 
@@ -4742,8 +4964,8 @@ export type Institution = {
   // payer's bank account details to GoCardless.
   autocompletes_collect_bank_account?: boolean;
 
-  // [ISO
-  // 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
   // institutions with the country code 'GB' are returned by default.
   country_code?: string;
@@ -4762,6 +4984,10 @@ export type Institution = {
 
   // A human readable name for this institution
   name?: string;
+
+  // The roles assigned to this institution, representing the open banking
+  // features it supports.
+  roles?: string[];
 
   // The status of the institution
   status?: `${InstitutionStatus}`;
@@ -4813,17 +5039,16 @@ export type LogoCreateForCreditorRequestLinks = {
 
 /** Type for a mandate resource. */
 export type Mandate = {
-  // This field is ACH specific, sometimes referred to as [SEC
-  // code](https://www.moderntreasury.com/learn/sec-codes).
+  // This field is ACH specific, sometimes referred to as SEC code
+  // (https://www.moderntreasury.com/learn/sec-codes).
   //
   // This is the way that the payer gives authorisation to the merchant.
-  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
   // code: WEB)
-  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // telephone: Authorisation is provided orally over telephone (maps to SEC
   // code: TEL)
-  //   paper: Authorisation is provided in writing and signed, or similarly
+  // paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
-  //
   authorisation_source?: `${MandateAuthorisationSource}`;
 
   // (Optional) Payto and VRP Scheme specific information
@@ -4834,8 +5059,9 @@ export type Mandate = {
   // single, recurring and sporadic for PAD.
   consent_type?: `${MandateConsentType}` | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // This field will decide how GoCardless handles settlement of funds from the
@@ -4845,8 +5071,7 @@ export type Mandate = {
   // out.
   // - `direct` will be a direct transfer from the payer's account to the
   // merchant where
-  //   invoicing will be handled separately.
-  //
+  // invoicing will be handled separately.
   funds_settlement?: `${MandateFundsSettlement}`;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
@@ -4878,40 +5103,38 @@ export type Mandate = {
   // require approval via an automated email before being processed.
   payments_require_approval?: boolean;
 
-  // Unique reference. Different schemes have different length and [character
-  // set](#appendix-character-sets) requirements. GoCardless will generate a
-  // unique reference satisfying the different scheme requirements if this field
-  // is left blank.
+  // Unique reference. Different schemes have different length and character set
+  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
   reference?: string | null;
 
-  // <a name="mandates_scheme"></a>Bank payment scheme to which this mandate and
-  // associated payments are submitted. Can be supplied or automatically
-  // detected from the customer's bank account.
+  // Bank payment scheme to which this mandate and associated payments are
+  // submitted. Can be supplied or automatically detected from the customer's
+  // bank account.
   scheme?: string | null;
 
   // One of:
-  // <ul>
-  // <li>`pending_customer_approval`: the mandate has not yet been signed by the
-  // second customer</li>
-  // <li>`pending_submission`: the mandate has not yet been submitted to the
-  // customer's bank</li>
-  // <li>`submitted`: the mandate has been submitted to the customer's bank but
-  // has not been processed yet</li>
-  // <li>`active`: the mandate has been successfully set up by the customer's
-  // bank</li>
-  // <li>`suspended_by_payer`: the mandate has been suspended by payer</li>
-  // <li>`failed`: the mandate could not be created</li>
-  // <li>`cancelled`: the mandate has been cancelled</li>
-  // <li>`expired`: the mandate has expired due to dormancy</li>
-  // <li>`consumed`: the mandate has been consumed and cannot be reused (note
-  // that this only applies to schemes that are per-payment authorised)</li>
-  // <li>`blocked`: the mandate has been blocked and payments cannot be
-  // created</li>
-  // </ul>
+  //
+  // - `pending_customer_approval`: the mandate has not yet been signed by the
+  // second customer
+  // - `pending_submission`: the mandate has not yet been submitted to the
+  // customer's bank
+  // - `submitted`: the mandate has been submitted to the customer's bank but
+  // has not been processed yet
+  // - `active`: the mandate has been successfully set up by the customer's bank
+  // - `suspended_by_payer`: the mandate has been suspended by payer
+  // - `failed`: the mandate could not be created
+  // - `cancelled`: the mandate has been cancelled
+  // - `expired`: the mandate has expired due to dormancy
+  // - `consumed`: the mandate has been consumed and cannot be reused (note that
+  // this only applies to schemes that are per-payment authorised)
+  // - `blocked`: the mandate has been blocked and payments cannot be created
   status?: `${MandateStatus}`;
 
-  // [Timestamp](#api-usage-dates-and-times) recording when this mandate was
-  // verified.
+  // Timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times)
+  // recording when this mandate was verified.
   verified_at?: string | null;
 };
 
@@ -4923,13 +5146,14 @@ export enum MandateAuthorisationSource {
 
 /** Type for a mandatecreaterequestlinks resource. */
 export type MandateCreateRequestLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors). Only required
-  // if your account manages multiple creditors.
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // Only required if your account manages multiple creditors.
   creditor?: string;
 
-  // ID of the associated [customer bank
-  // account](#core-endpoints-customer-bank-accounts) which the mandate is
-  // created and submits payments against.
+  // ID of the associated customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // which the mandate is created and submits payments against.
   customer_bank_account: string;
 };
 
@@ -4987,15 +5211,17 @@ export enum MandateFundsSettlement {
 
 /** Type for a mandatelinks resource. */
 export type MandateLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors).
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   creditor?: string;
 
-  // ID of the associated [customer](#core-endpoints-customers)
+  // ID of the associated customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
   customer?: string;
 
-  // ID of the associated [customer bank
-  // account](#core-endpoints-customer-bank-accounts) which the mandate is
-  // created and submits payments against.
+  // ID of the associated customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // which the mandate is created and submits payments against.
   customer_bank_account?: string;
 
   // ID of the new mandate if this mandate has been replaced.
@@ -5017,8 +5243,9 @@ export enum MandateStatus {
 
 /** Type for a mandateimport resource. */
 export type MandateImport = {
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Unique identifier, beginning with "IM".
@@ -5027,24 +5254,24 @@ export type MandateImport = {
   // Resources linked to this MandateImport.
   links?: MandateImportLinks;
 
-  // The scheme of the mandates to be imported.<br>All mandates in a single
-  // mandate
+  // The scheme of the mandates to be imported.
+  // All mandates in a single mandate
   // import must be for the same scheme.
   scheme?: `${MandateImportScheme}`;
 
   // The status of the mandate import.
-  // <ul>
-  // <li>`created`: A new mandate import.</li>
-  // <li>`submitted`: After the integrator has finished adding mandates and <a
-  // href="#mandate-imports-submit-a-mandate-import">submitted</a> the
-  // import.</li>
-  // <li>`cancelled`: If the integrator <a
-  // href="#mandate-imports-cancel-a-mandate-import">cancelled</a> the mandate
-  // import.</li>
-  // <li>`processing`: Once a mandate import has been approved by a GoCardless
-  // team member it will be in this state while mandates are imported.</li>
-  // <li>`processed`: When all mandates have been imported successfully.</li>
-  // </ul>
+  //
+  // - `created`: A new mandate import.
+  // - `submitted`: After the integrator has finished adding mandates and
+  // submitted
+  // (https://developer.gocardless.com/api-reference/#mandate-imports-submit-a-mandate-import)
+  // the import.
+  // - `cancelled`: If the integrator cancelled
+  // (https://developer.gocardless.com/api-reference/#mandate-imports-cancel-a-mandate-import)
+  // the mandate import.
+  // - `processing`: Once a mandate import has been approved by a GoCardless
+  // team member it will be in this state while mandates are imported.
+  // - `processed`: When all mandates have been imported successfully.
   status?: `${MandateImportStatus}`;
 };
 
@@ -5084,8 +5311,9 @@ export enum MandateImportStatus {
 
 /** Type for a mandateimportentry resource. */
 export type MandateImportEntry = {
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Resources linked to this MandateImportEntry.
@@ -5099,7 +5327,6 @@ export type MandateImportEntry = {
   // processed by GoCardless) to identify the records that have been created.
   // Limited
   // to 255 characters.
-  //
   record_identifier?: string | null;
 };
 
@@ -5107,17 +5334,14 @@ export type MandateImportEntry = {
 export type MandateImportEntryAmendment = {
   // The creditor identifier of the direct debit originator. Required if mandate
   // import scheme is `sepa`.
-  //
   original_creditor_id: string;
 
   // Data about the original mandate to be moved or modified.
-  //
   original_creditor_name: string;
 
   // The unique SEPA reference for the mandate being amended. Required if
   // mandate
   // import scheme is `sepa`.
-  //
   original_mandate_reference: string;
 };
 
@@ -5126,37 +5350,44 @@ export type MandateImportEntryBankAccount = {
   // Name of the account holder, as known by the bank. The full name provided
   // when the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank
-  // submissions. This field is required unless the request includes a [customer
-  // bank account token](#javascript-flow-customer-bank-account-tokens).
+  // submissions. This field is required unless the request includes a customer
+  // bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
   account_holder_name: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  // Bank account number - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   account_number?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${MandateImportEntryBankAccountAccountType}`;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Bank code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   bank_code?: string | null;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Branch code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   branch_code?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  // International Bank Account Number. Alternatively you can provide local
+  // details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
+  // must supply local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
   iban?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -5173,7 +5404,6 @@ export enum MandateImportEntryBankAccountAccountType {
 export type MandateImportEntryCustomer = {
   // The first line of the customer's address. Required if mandate import scheme
   // is either `bacs` or `sepa`.
-  //
   address_line1?: string;
 
   // The second line of the customer's address.
@@ -5192,8 +5422,8 @@ export type MandateImportEntryCustomer = {
   // "Personal PAD").
   company_name?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -5211,30 +5441,29 @@ export type MandateImportEntryCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   // Used as the language for notification emails sent by GoCardless if your
-  // organisation does not send its own (see [compliance
-  // requirements](#appendix-compliance-requirements)). Currently only "en",
-  // "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl", "sv" are supported.
-  // If this is not provided, the language will be chosen based on the
-  // `country_code` (if supplied) or default to "en".
+  // organisation does not send its own (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // Currently only "en", "fr", "de", "pt", "es", "it", "nl", "da", "nb", "sl",
+  // "sv" are supported. If this is not provided, the language will be chosen
+  // based on the `country_code` (if supplied) or default to "en".
   language?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // [ITU E.123](https://en.wikipedia.org/wiki/E.123) formatted phone number,
+  // ITU E.123 (https://en.wikipedia.org/wiki/E.123) formatted phone number,
   // including country code.
   phone_number?: string | null;
 
   // The customer's postal code. Required if mandate import scheme is either
   // `bacs` or `sepa`.
-  //
   postal_code?: string;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -5253,27 +5482,26 @@ export type MandateImportEntryCreateRequestLinks = {
 
 /** Type for a mandateimportentrymandate resource. */
 export type MandateImportEntryMandate = {
-  // This field is ACH specific, sometimes referred to as [SEC
-  // code](https://www.moderntreasury.com/learn/sec-codes).
+  // This field is ACH specific, sometimes referred to as SEC code
+  // (https://www.moderntreasury.com/learn/sec-codes).
   //
   // This is the way that the payer gives authorisation to the merchant.
-  //   web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
+  // web: Authorisation is Internet Initiated or via Mobile Entry (maps to SEC
   // code: WEB)
-  //   telephone: Authorisation is provided orally over telephone (maps to SEC
+  // telephone: Authorisation is provided orally over telephone (maps to SEC
   // code: TEL)
-  //   paper: Authorisation is provided in writing and signed, or similarly
+  // paper: Authorisation is provided in writing and signed, or similarly
   // authenticated (maps to SEC code: PPD)
-  //
   authorisation_source?: `${MandateImportEntryMandateAuthorisationSource}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string };
 
-  // Unique reference. Different schemes have different length and [character
-  // set](#appendix-character-sets) requirements. GoCardless will generate a
-  // unique reference satisfying the different scheme requirements if this field
-  // is left blank.
+  // Unique reference. Different schemes have different length and character set
+  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
   reference?: string | null;
 };
 
@@ -5304,8 +5532,8 @@ export type MandateImportEntryLinks = {
   mandate?: string;
 
   // The ID of the mandate import. This is returned when you
-  // [create a Mandate Import](#mandate-imports-create-a-new-mandate-import).
-  //
+  // create a Mandate Import
+  // (https://developer.gocardless.com/api-reference/#mandate-imports-create-a-new-mandate-import).
   mandate_import: string;
 };
 
@@ -5328,13 +5556,15 @@ export enum MandatePdfAccountType {
 
 /** Type for a mandatepdfcreaterequestlinks resource. */
 export type MandatePdfCreateRequestLinks = {
-  // ID of an existing [creditor](#core-endpoints-creditors). Only required if
-  // your account manages multiple creditors.
+  // ID of an existing creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // Only required if your account manages multiple creditors.
   creditor?: string;
 
-  // ID of an existing [mandate](#core-endpoints-mandates) to build the PDF
-  // from. The customer's bank details will be censored in the generated PDF. No
-  // other parameters may be provided alongside this.
+  // ID of an existing mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // to build the PDF from. The customer's bank details will be censored in the
+  // generated PDF. No other parameters may be provided alongside this.
   mandate?: string;
 };
 
@@ -5349,11 +5579,12 @@ export type NegativeBalanceLimit = {
   // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
   balance_limit?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this limit
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this limit was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${NegativeBalanceLimitCurrency}`;
@@ -5381,7 +5612,9 @@ export type NegativeBalanceLimitLinks = {
   // ID of the creator_user who created this limit
   creator_user?: string;
 
-  // ID of [creditor](#core-endpoints-creditors) which this limit relates to
+  // ID of creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // which this limit relates to
   creditor?: string;
 };
 
@@ -5391,11 +5624,12 @@ export type OutboundPayment = {
   // cents in EUR).
   amount?: number;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when the outbound
-  // payment was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when the outbound payment was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
   // Currently only "GBP" is supported.
   currency?: `${OutboundPaymentCurrency}`;
 
@@ -5421,9 +5655,12 @@ export type OutboundPayment = {
   metadata?: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
-  // The character limit for this reference is dependent on the scheme.<br />
-  // <strong>Faster Payments</strong> - 18 characters, including:
-  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+  // The character limit for this reference is dependent on the scheme.
+  //
+  // Faster Payments <ul>
+  // <li>18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"</li>
+  // </ul>
   reference?: string;
 
   // Bank payment scheme to process the outbound payment. Currently only
@@ -5431,25 +5668,26 @@ export type OutboundPayment = {
   scheme?: `${OutboundPaymentScheme}`;
 
   // One of:
-  // <ul>
-  // <li>`verifying`: The payment has been
-  // [created](#outbound-payments-create-an-outbound-payment) and the
-  // verification process has begun.</li>
-  // <li>`pending_approval`: The payment is awaiting
-  // [approval](#outbound-payments-approve-an-outbound-payment).</li>
-  // <li>`scheduled`: The payment has passed verification &
-  // [approval](#outbound-payments-approve-an-outbound-payment), but processing
-  // has not yet begun.</li>
-  // <li>`executing`: The execution date has arrived and the payment has been
-  // placed in queue for processing.</li>
-  // <li>`executed`: The payment has been accepted by the scheme and is now on
-  // its way to the recipient.</li>
-  // <li>`cancelled`: The payment has been
-  // [cancelled](#outbound-payments-cancel-an-outbound-payment) or was not
-  // [approved](#outbound-payments-approve-an-outbound-payment) on time.</li>
-  // <li>`failed`: The payment was not sent, usually due to an error while or
-  // after executing.</li>
-  // </ul>
+  //
+  // - `verifying`: The payment has been created
+  // (https://developer.gocardless.com/api-reference/#outbound-payments-create-an-outbound-payment)
+  // and the verification process has begun.
+  // - `pending_approval`: The payment is awaiting approval
+  // (https://developer.gocardless.com/api-reference/#outbound-payments-approve-an-outbound-payment).
+  // - `scheduled`: The payment has passed verification & approval
+  // (https://developer.gocardless.com/api-reference/#outbound-payments-approve-an-outbound-payment),
+  // but processing has not yet begun.
+  // - `executing`: The execution date has arrived and the payment has been
+  // placed in queue for processing.
+  // - `executed`: The payment has been accepted by the scheme and is now on its
+  // way to the recipient.
+  // - `cancelled`: The payment has been cancelled
+  // (https://developer.gocardless.com/api-reference/#outbound-payments-cancel-an-outbound-payment)
+  // or was not approved
+  // (https://developer.gocardless.com/api-reference/#outbound-payments-approve-an-outbound-payment)
+  // on time.
+  // - `failed`: The payment was not sent, usually due to an error while or
+  // after executing.
   status?: `${OutboundPaymentStatus}`;
 
   // Contains details of the verifications performed for the outbound payment
@@ -5497,8 +5735,9 @@ export type OutboundPaymentLinks = {
   // ID of the creditor who sends the outbound payment.
   creditor?: string;
 
-  // ID of the [customer](#core-endpoints-customers) that receives this outbound
-  // payment
+  // ID of the customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // that receives this outbound payment
   customer?: string;
 
   // ID of the outbound payment import that created this outbound payment.
@@ -5521,21 +5760,20 @@ export type OutboundPaymentVerificationsRecipientBankAccountHolderVerification =
   actual_account_name?: string | null;
 
   // Result of the verification, could be one of
-  // <ul>
-  //   <li>`full_match`: The verification has confirmed that the account name
-  // exactly matches the details provided.</li>
-  //   <li>`partial_match`:  The verification has confirmed that the account
-  // name is similar but does not match to the details provided. </li>
-  //   <li>`no_match`: The verification concludes the provided name does not
-  // match the account details.</li>
-  //   <li>`unable_to_match`: The verification could not be performed due to
-  // recipient bank issues or technical issues </li>
-  // </ul>
+  //
+  // - `full_match`: The verification has confirmed that the account name
+  // exactly matches the details provided.
+  // - `partial_match`: The verification has confirmed that the account name is
+  // similar but does not match to the details provided.
+  // - `no_match`: The verification concludes the provided name does not match
+  // the account details.
+  // - `unable_to_match`: The verification could not be performed due to
+  // recipient bank issues or technical issues
   result?: `${OutboundPaymentVerificationsRecipientBankAccountHolderVerificationResult}`;
 
   // Type of the verification that has been performed
-  // eg. [Confirmation of
-  // Payee](https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
+  // eg. Confirmation of Payee
+  // (https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)
   type?: `${OutboundPaymentVerificationsRecipientBankAccountHolderVerificationType}`;
 };
 
@@ -5559,11 +5797,12 @@ export type OutboundPaymentImport = {
   // The link to the GoCardless dashboard to review and authorise the import
   authorisation_url?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency.
   // Currently only "GBP" is supported.
   currency?: `${OutboundPaymentImportCurrency}`;
 
@@ -5577,18 +5816,16 @@ export type OutboundPaymentImport = {
   links?: OutboundPaymentImportLinks;
 
   // The status of the outbound payment import.
-  // <ul>
-  // <li>`created`: The initial state of a new import.</li>
-  // <li>`validating`: Import validation in progress.</li>
-  // <li>`invalid`: Import validation failed.</li>
-  // <li>`valid`: Import validation succeeded.</li>
-  // <li>`processing`: Authorisation received; payments are being
-  // generated.</li>
-  // <li>`processed`: All entries have been successfully converted into outbound
-  // payments.</li>
-  // <li>`cancelled`: The import was cancelled by a user or automatically
-  // expired by the system.</li>
-  // </ul>
+  //
+  // - `created`: The initial state of a new import.
+  // - `validating`: Import validation in progress.
+  // - `invalid`: Import validation failed.
+  // - `valid`: Import validation succeeded.
+  // - `processing`: Authorisation received; payments are being generated.
+  // - `processed`: All entries have been successfully converted into outbound
+  // payments.
+  // - `cancelled`: The import was cancelled by a user or automatically expired
+  // by the system.
   status?: `${OutboundPaymentImportStatus}`;
 };
 
@@ -5606,9 +5843,12 @@ export type OutboundPaymentImportEntryItem = {
   recipient_bank_account_id: string;
 
   // An optional reference that will appear on your customer's bank statement.
-  // The character limit for this reference is dependent on the scheme.<br />
-  // <strong>Faster Payments</strong> - 18 characters, including:
-  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"<br />
+  // The character limit for this reference is dependent on the scheme.
+  //
+  // Faster Payments <ul>
+  // <li>18 characters, including:
+  // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 &-./"</li>
+  // </ul>
   reference?: string;
 
   // Bank payment scheme to process the outbound payment. Currently only
@@ -5689,8 +5929,9 @@ export type OutboundPaymentImportEntry = {
   // cents in EUR).
   amount?: number | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Unique identifier, beginning with "IE".
@@ -5703,8 +5944,9 @@ export type OutboundPaymentImportEntry = {
   // key names up to 50 characters and values up to 500 characters.
   metadata?: { [key: string]: string } | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this entry
-  // was processed.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this entry was processed.
   processed_at?: string | null;
 
   // An optional reference for the outbound payment.
@@ -5774,15 +6016,17 @@ export enum OutboundPaymentImportEntryVerificationResult {
 /** Type for a payerauthorisation resource. */
 export type PayerAuthorisation = {
   // All details required for the creation of a
-  // [Customer Bank Account](#core-endpoints-customer-bank-accounts).
+  // Customer Bank Account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
   bank_account?: PayerAuthorisationBankAccount;
 
-  // [Timestamp](#api-usage-dates-and-times), recording when this Payer
-  // Authorisation was created.
+  // Timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this Payer Authorisation was created.
   created_at?: string | null;
 
-  // All details required for the creation of a
-  // [Customer](#core-endpoints-customers).
+  // All details required for the creation of a Customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
   customer?: PayerAuthorisationCustomer;
 
   // Unique identifier, beginning with "PA".
@@ -5794,22 +6038,21 @@ export type PayerAuthorisation = {
   // Resources linked to this PayerAuthorisation.
   links?: PayerAuthorisationLinks;
 
-  // All details required for the creation of a
-  // [Mandate](#core-endpoints-mandates).
+  // All details required for the creation of a Mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates).
   mandate?: PayerAuthorisationMandate;
 
   // One of:
-  // <ul>
-  // <li>`created`: The PayerAuthorisation has been created, and not been
-  // confirmed yet</li>
-  // <li>`submitted`: The payer information has been submitted</li>
-  // <li>`confirmed`: PayerAuthorisation is confirmed and resources are ready to
-  // be created</li>
-  // <li>`completed`: The PayerAuthorisation has been completed and customer,
-  // bank_account and mandate has been created</li>
-  // <li>`failed`: The PayerAuthorisation has failed and customer, bank_account
-  // and mandate is not created</li>
-  // </ul>
+  //
+  // - `created`: The PayerAuthorisation has been created, and not been
+  // confirmed yet
+  // - `submitted`: The payer information has been submitted
+  // - `confirmed`: PayerAuthorisation is confirmed and resources are ready to
+  // be created
+  // - `completed`: The PayerAuthorisation has been completed and customer,
+  // bank_account and mandate has been created
+  // - `failed`: The PayerAuthorisation has failed and customer, bank_account
+  // and mandate is not created
   status?: `${PayerAuthorisationStatus}`;
 };
 
@@ -5818,12 +6061,14 @@ export type PayerAuthorisationBankAccount = {
   // Name of the account holder, as known by the bank. The full name provided
   // when the customer is created is stored and is available via the API, but is
   // transliterated, upcased, and truncated to 18 characters in bank
-  // submissions. This field is required unless the request includes a [customer
-  // bank account token](#javascript-flow-customer-bank-account-tokens).
+  // submissions. This field is required unless the request includes a customer
+  // bank account token
+  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
   account_holder_name?: string;
 
-  // Bank account number - see [local details](#appendix-local-bank-details) for
-  // more information. Alternatively you can provide an `iban`.
+  // Bank account number - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   account_number?: string | null;
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
@@ -5831,37 +6076,44 @@ export type PayerAuthorisationBankAccount = {
   account_number_ending?: string;
 
   // Account number suffix (only for bank accounts denominated in NZD) - see
-  // [local details](#local-bank-details-new-zealand) for more information.
+  // local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-new-zealand)
+  // for more information.
   account_number_suffix?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
-  // provided for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // provided for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${PayerAuthorisationBankAccountAccountType}`;
 
-  // Bank code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Bank code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   bank_code?: string | null;
 
-  // Branch code - see [local details](#appendix-local-bank-details) for more
-  // information. Alternatively you can provide an `iban`.
+  // Branch code - see local details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
+  // for more information. Alternatively you can provide an `iban`.
   branch_code?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+  // ISO 3166-1 alpha-2 code
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
   // Defaults to the country code of the `iban` if supplied, otherwise is
   // required.
   country_code?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
 
-  // International Bank Account Number. Alternatively you can provide [local
-  // details](#appendix-local-bank-details). IBANs are not accepted for Swedish
-  // bank accounts denominated in SEK - you must supply [local
-  // details](#local-bank-details-sweden).
+  // International Bank Account Number. Alternatively you can provide local
+  // details
+  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
+  // must supply local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
   iban?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -5895,8 +6147,8 @@ export type PayerAuthorisationCustomer = {
   // "Personal PAD").
   company_name?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -5914,10 +6166,9 @@ export type PayerAuthorisationCustomer = {
   // Customer's first name. Required unless a `company_name` is provided.
   given_name?: string | null;
 
-  // An [IETF Language Tag](https://tools.ietf.org/html/rfc5646), used for both
+  // An IETF Language Tag (https://tools.ietf.org/html/rfc5646), used for both
   // language
   // and regional variations of our product.
-  //
   locale?: string | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
@@ -5928,7 +6179,7 @@ export type PayerAuthorisationCustomer = {
   postal_code?: string | null;
 
   // The customer's address region, county or department. For US customers a 2
-  // letter [ISO3166-2:US](https://en.wikipedia.org/wiki/ISO_3166-2:US) state
+  // letter ISO3166-2:US (https://en.wikipedia.org/wiki/ISO_3166-2:US) state
   // code is required (e.g. `CA` for California).
   region?: string | null;
 
@@ -5976,13 +6227,12 @@ export type PayerAuthorisationMandate = {
   //
   // Not required for creating offline mandates where `authorisation_source` is
   // set to telephone or paper.
-  //
   payer_ip_address?: string | null;
 
-  // Unique reference. Different schemes have different length and [character
-  // set](#appendix-character-sets) requirements. GoCardless will generate a
-  // unique reference satisfying the different scheme requirements if this field
-  // is left blank.
+  // Unique reference. Different schemes have different length and character set
+  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
   reference?: string | null;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
@@ -6028,32 +6278,44 @@ export type PayerThemeCreateForCreditorRequestLinks = {
 export type Payment = {
   // Amount, in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
+  //
+  // Minimum and maximum amounts vary by payment scheme. For more information,
+  // see Transaction limits
+  // (https://support.gocardless.com/hc/en-gb/articles/115000309245-Transaction-limits)
+  //
+  // For Variable Recurring Payments (VRP), this must not exceed the mandate's
+  // `max_amount_per_payment`
+  // constraint.
   amount?: string;
 
-  // Amount [refunded](#core-endpoints-refunds), in the lowest denomination for
-  // the currency (e.g. pence in GBP, cents in EUR).
+  // Amount refunded
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-refunds),
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
   amount_refunded?: string;
 
   // A future date on which the payment should be collected. If not specified,
   // the payment will be collected as soon as possible. If the value is before
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`
-  // creation will fail. If the value is not a working day it will be rolled
-  // forwards to the next available one.
+  // the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // `next_possible_charge_date` creation will fail. If the value is not a
+  // working day it will be rolled forwards to the next available one.
   charge_date?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${PaymentCurrency}`;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
-  // does not send its own notifications (see [compliance
-  // requirements](#appendix-compliance-requirements)).
+  // does not send its own notifications (see compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
   description?: string | null;
 
   // This field indicates whether the ACH payment is processed through Faster
@@ -6076,29 +6338,50 @@ export type Payment = {
   metadata?: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
-  // The character limit for this reference is dependent on the scheme.<br />
-  // <strong>ACH</strong> - 10 characters<br /> <strong>Autogiro</strong> - 11
-  // characters<br /> <strong>Bacs</strong> - 10 characters<br />
-  // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
-  // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong>
-  // - scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
-  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that
-  // this reference must be unique (for each merchant) for the BECS scheme as it
-  // is a scheme requirement. <p
-  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
-  // a payment reference for Bacs payments (that is, when collecting from the
-  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
-  // Plus, Pro or Enterprise packages</a>.</p> <p
-  // class='restricted-notice'><strong>Restricted</strong>: You can not specify
-  // a payment reference for Faster Payments.</p>
+  // The character limit for this reference is dependent on the scheme.
+  //  ACH <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  Autogiro <ul>
+  // <li>11 characters</li>
+  // </ul>
+  //  Bacs <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  BECS <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  BECS NZ <ul>
+  // <li>12 characters</li>
+  // </ul>
+  //  Betalingsservice <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  Faster Payments <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  PAD <ul>
+  // <li>scheme doesn't offer references</li>
+  // </ul>
+  //  PayTo <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  SEPA <ul>
+  // <li>140 characters</li>
+  // </ul>
+  //  Note that this reference must be unique (for each merchant) for the BECS
+  // scheme as it is a scheme requirement. Restricted: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK)
+  // if you're on the GoCardless Plus, Pro or Enterprise packages
+  // (https://gocardless.com/pricing).
+  //  Restricted: You can not specify a payment reference for Faster Payments.
   reference?: string | null;
 
-  // On failure, automatically retry the payment using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry the payment using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
   retry_if_possible?: boolean;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
@@ -6108,23 +6391,21 @@ export type Payment = {
   scheme?: string | null;
 
   // One of:
-  // <ul>
-  // <li>`pending_customer_approval`: we're waiting for the customer to approve
-  // this payment</li>
-  // <li>`pending_submission`: the payment has been created, but not yet
-  // submitted to the banks</li>
-  // <li>`submitted`: the payment has been submitted to the banks</li>
-  // <li>`confirmed`: the payment has been confirmed as collected</li>
-  // <li>`paid_out`:  the payment has been included in a
-  // [payout](#core-endpoints-payouts)</li>
-  // <li>`cancelled`: the payment has been cancelled</li>
-  // <li>`customer_approval_denied`: the customer has denied approval for the
-  // payment. You should contact the customer directly</li>
-  // <li>`failed`: the payment failed to be processed. Note that payments can
-  // fail after being confirmed if the failure message is sent late by the
-  // banks.</li>
-  // <li>`charged_back`: the payment has been charged back</li>
-  // </ul>
+  //
+  // - `pending_customer_approval`: we're waiting for the customer to approve
+  // this payment
+  // - `pending_submission`: the payment has been created, but not yet submitted
+  // to the banks
+  // - `submitted`: the payment has been submitted to the banks
+  // - `confirmed`: the payment has been confirmed as collected
+  // - `paid_out`: the payment has been included in a payout
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
+  // - `cancelled`: the payment has been cancelled
+  // - `customer_approval_denied`: the customer has denied approval for the
+  // payment. You should contact the customer directly
+  // - `failed`: the payment failed to be processed. Note that payments can fail
+  // after being confirmed if the failure message is sent late by the banks.
+  // - `charged_back`: the payment has been charged back
   status?: `${PaymentStatus}`;
 };
 
@@ -6141,8 +6422,9 @@ export enum PaymentCurrency {
 
 /** Type for a paymentcreaterequestlinks resource. */
 export type PaymentCreateRequestLinks = {
-  // ID of the [mandate](#core-endpoints-mandates) against which this payment
-  // should be collected.
+  // ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // against which this payment should be collected.
   mandate: string;
 };
 
@@ -6209,8 +6491,8 @@ export type PaymentFx = {
   // Present only after the resource has been paid out.
   fx_amount?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
-  // the currency in which amounts will be paid out (after foreign exchange).
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -6230,27 +6512,35 @@ export enum PaymentFxFxCurrency {
 
 /** Type for a paymentlinks resource. */
 export type PaymentLinks = {
-  // ID of [creditor](#core-endpoints-creditors) to which the collected payment
-  // will be sent.
+  // ID of creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // to which the collected payment will be sent.
   creditor?: string;
 
-  // ID of [instalment_schedule](#core-endpoints-instalment-schedules) from
-  // which this payment was created.<br/>**Note**: this property will only be
-  // present if this payment is part of an instalment schedule.
+  // ID of instalment_schedule
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules)
+  // from which this payment was created.
+  // Note: this property will only be present if this payment is part of an
+  // instalment schedule.
   instalment_schedule?: string;
 
-  // ID of the [mandate](#core-endpoints-mandates) against which this payment
-  // should be collected.
+  // ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // against which this payment should be collected.
   mandate?: string;
 
-  // ID of [payout](#core-endpoints-payouts) which contains the funds from this
-  // payment.<br/>_Note_: this property will not be present until the payment
-  // has been successfully collected.
+  // ID of payout
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
+  // which contains the funds from this payment.
+  // Note: this property will not be present until the payment has been
+  // successfully collected.
   payout?: string;
 
-  // ID of [subscription](#core-endpoints-subscriptions) from which this payment
-  // was created.<br/>_Note_: this property will only be present if this payment
-  // is part of a subscription.
+  // ID of subscription
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions)
+  // from which this payment was created.
+  // Note: this property will only be present if this payment is part of a
+  // subscription.
   subscription?: string;
 };
 
@@ -6262,7 +6552,8 @@ export type PaymentAccount = {
   account_balance?: number;
 
   // Name of the account holder, as known by the bank. Usually this is the same
-  // as the name stored with the linked [creditor](#core-endpoints-creditors).
+  // as the name stored with the linked creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   // This field will be transliterated, upcased and truncated to 18 characters.
   account_holder_name?: string;
 
@@ -6273,7 +6564,7 @@ export type PaymentAccount = {
   // Name of bank, taken from the bank details.
   bank_name?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string | null;
@@ -6287,8 +6578,9 @@ export type PaymentAccount = {
 
 /** Type for a paymentaccountlinks resource. */
 export type PaymentAccountLinks = {
-  // ID of the [creditor](#core-endpoints-creditors) that owns this bank
-  // account.
+  // ID of the creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // that owns this bank account.
   creditor?: string;
 };
 
@@ -6341,14 +6633,17 @@ export enum PaymentAccountTransactionCurrency {
 
 /** Type for a paymentaccounttransactionlinks resource. */
 export type PaymentAccountTransactionLinks = {
-  // ID of the [outbound_payment](#core-endpoints-outbound-payments) linked to
-  // the transaction
+  // ID of the outbound_payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-outbound-payments)
+  // linked to the transaction
   outbound_payment?: string;
 
   // ID of the payment bank account.
   payment_bank_account?: string;
 
-  // ID of the [payout](#core-endpoints-payouts) linked to the transaction.
+  // ID of the payout
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
+  // linked to the transaction.
   payout?: string;
 };
 
@@ -6359,34 +6654,32 @@ export type Payout = {
 
   // Date the payout is due to arrive in the creditor's bank account.
   // One of:
-  // <ul>
-  //   <li>`yyyy-mm-dd`: the payout has been paid and is due to arrive in the
-  // creditor's bank
-  //   account on this day</li>
-  //   <li>`null`: the payout hasn't been paid yet</li>
-  // </ul>
   //
+  // - `yyyy-mm-dd`: the payout has been paid and is due to arrive in the
+  // creditor's bank account on this day
+  // - `null`: the payout hasn't been paid yet
   arrival_date?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${PayoutCurrency}`;
 
   // Fees that have already been deducted from the payout amount in minor unit
   // (e.g. pence in GBP, cents in EUR), inclusive of tax if applicable.
-  // <br />
+  //
   // For each `late_failure_settled` or `chargeback_settled` action, we refund
   // the transaction fees in a payout. This means that a payout can have a
   // negative `deducted_fees` value.
-  // <br />
+  //
   // This field is calculated as `(GoCardless fees + app fees + surcharge fees)
   // - (refunded fees)`
-  // <br />
+  //
   // If the merchant is invoiced for fees separately from the payout, then
   // `deducted_fees` will be 0.
   deducted_fees?: string;
@@ -6401,8 +6694,8 @@ export type Payout = {
   links?: PayoutLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
-  // up to 50 characters and values up to 500 characters. _Note:_ This should
-  // not be used for storing PII data.
+  // up to 50 characters and values up to 500 characters. Note: This should not
+  // be used for storing PII data.
   metadata?: { [key: string]: string };
 
   // Whether a payout contains merchant revenue or partner fees.
@@ -6412,20 +6705,18 @@ export type Payout = {
   reference?: string;
 
   // One of:
-  // <ul>
-  // <li>`pending`: the payout has been created, but not yet sent to your bank
-  // or it is in the process of being exchanged through our FX provider.</li>
-  // <li>`paid`: the payout has been sent to the your bank. FX payouts will
-  // become `paid` after we emit the `fx_rate_confirmed` webhook.</li>
-  // <li>`bounced`: the payout bounced when sent, the payout can be
-  // retried.</li>
-  // </ul>
+  //
+  // - `pending`: the payout has been created, but not yet sent to your bank or
+  // it is in the process of being exchanged through our FX provider.
+  // - `paid`: the payout has been sent to the your bank. FX payouts will become
+  // `paid` after we emit the `fx_rate_confirmed` webhook.
+  // - `bounced`: the payout bounced when sent, the payout can be retried.
   status?: `${PayoutStatus}`;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
-  // the currency in which tax is paid out to the tax authorities of your tax
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which tax is paid out to the tax authorities of your tax
   // jurisdiction. Currently “EUR”, “GBP”, for French or British merchants, this
-  // will be `null` if tax is not applicable <em>beta</em>
+  // will be `null` if tax is not applicable beta
   tax_currency?: string | null;
 };
 
@@ -6468,8 +6759,8 @@ export type PayoutFx = {
   // Present only after the resource has been paid out.
   fx_amount?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
-  // the currency in which amounts will be paid out (after foreign exchange).
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -6489,12 +6780,15 @@ export enum PayoutFxFxCurrency {
 
 /** Type for a payoutlinks resource. */
 export type PayoutLinks = {
-  // ID of [creditor](#core-endpoints-creditors) who will receive this payout,
-  // i.e. the owner of the `creditor_bank_account`.
+  // ID of creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // who will receive this payout, i.e. the owner of the
+  // `creditor_bank_account`.
   creditor?: string;
 
-  // ID of [bank account](#core-endpoints-creditor-bank-accounts) which this
-  // will be sent to.
+  // ID of bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditor-bank-accounts)
+  // which this will be sent to.
   creditor_bank_account?: string;
 };
 
@@ -6504,51 +6798,50 @@ export type PayoutItem = {
   // currency;
   // the lowest denomination for the currency (e.g. pence in GBP, cents in EUR),
   // to one decimal place.
-  // <p class="notice">For accuracy, we store some of our fees to greater
-  // precision than we can actually pay out (for example, a GoCardless fee we
-  // record might come to 0.5 pence, but it is not possible to send a payout via
-  // bank transfer including a half penny).<br><br>To calculate the final amount
-  // of the payout, we sum all of the items and then round to the nearest
-  // currency unit.</p>
+  //
+  // For accuracy, we store some of our fees to greater precision than we can
+  // actually pay out (for example, a GoCardless fee we record might come to 0.5
+  // pence, but it is not possible to send a payout via bank transfer including
+  // a half penny).
+  //
+  // To calculate the final amount of the payout, we sum all of the items and
+  // then round to the nearest currency unit.
   amount?: string;
 
   // Resources linked to this PayoutItem.
   links?: PayoutItemLinks;
 
-  // An array of tax items <em>beta</em>
+  // An array of tax items beta
   //
-  // _Note_: VAT applies to transaction and surcharge fees for merchants
-  // operating in the UK and France.
+  // Note: VAT applies to transaction and surcharge fees for merchants operating
+  // in the UK and France.
   taxes?: PayoutItemTaxis[];
 
   // The type of the credit (positive) or debit (negative) item in the payout
   // (inclusive of VAT if applicable). One of:
-  // <ul>
-  // <li>`payment_paid_out` (credit)</li>
-  // <li>`payment_failed` (debit): The payment failed to be processed.</li>
-  // <li>`payment_charged_back` (debit): The payment has been charged back.</li>
-  // <li>`payment_refunded` (debit): The payment has been refunded to the
-  // customer.</li>
-  // <li>`refund` (debit): A refund sent to a customer, not linked to a
-  // payment.</li>
-  // <li>`refund_funds_returned` (credit): The refund could not be sent to the
-  // customer, and the funds have been returned to you.</li>
-  // <li>`gocardless_fee` (credit/debit): The fees that GoCardless charged for a
+  //
+  // - `payment_paid_out` (credit)
+  // - `payment_failed` (debit): The payment failed to be processed.
+  // - `payment_charged_back` (debit): The payment has been charged back.
+  // - `payment_refunded` (debit): The payment has been refunded to the
+  // customer.
+  // - `refund` (debit): A refund sent to a customer, not linked to a payment.
+  // - `refund_funds_returned` (credit): The refund could not be sent to the
+  // customer, and the funds have been returned to you.
+  // - `gocardless_fee` (credit/debit): The fees that GoCardless charged for a
   // payment. In the case of a payment failure or chargeback, these will appear
-  // as credits. Will include taxes if applicable for merchants.</li>
-  // <li>`app_fee` (credit/debit): The optional fees that a partner may have
-  // taken for a payment. In the case of a payment failure or chargeback, these
-  // will appear as credits.</li>
-  // <li>`revenue_share` (credit/debit): A share of the fees that GoCardless
+  // as credits. Will include taxes if applicable for merchants.
+  // - `app_fee` (credit/debit): The optional fees that a partner may have taken
+  // for a payment. In the case of a payment failure or chargeback, these will
+  // appear as credits.
+  // - `revenue_share` (credit/debit): A share of the fees that GoCardless
   // collected which some partner integrations receive when their users take
   // payments. Only shown in partner payouts. In the case of a payment failure
-  // or chargeback, these will appear as credits.</li>
-  // <li>`surcharge_fee` (credit/debit): GoCardless deducted a surcharge fee as
+  // or chargeback, these will appear as credits.
+  // - `surcharge_fee` (credit/debit): GoCardless deducted a surcharge fee as
   // the payment failed or was charged back, or refunded a surcharge fee as the
   // bank or customer cancelled the chargeback. Will include taxes if applicable
-  // for merchants.</li>
-  // </ul>
-  //
+  // for merchants.
   type?: `${PayoutItemType}`;
 };
 
@@ -6579,7 +6872,7 @@ export type PayoutItemTaxis = {
   // decimal place.
   amount?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: `${PayoutItemTaxisCurrency}`;
@@ -6592,8 +6885,8 @@ export type PayoutItemTaxis = {
   // until the `exchange_rate` has been finalised.
   destination_amount?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
-  // the currency in which tax is paid out to the tax authorities of your tax
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which tax is paid out to the tax authorities of your tax
   // jurisdiction. Currently “EUR” for French merchants and “GBP” for British
   // merchants.
   destination_currency?: string;
@@ -6604,10 +6897,9 @@ export type PayoutItemTaxis = {
   // Present only if the currency and the destination currency don't match and
   // the exchange rate has been finalised.
   //
-  // You can listen for the payout's [`tax_exchange_rates_confirmed`
-  // webhook](https://developer.gocardless.com/api-reference/#event-types-payout)
-  // to know when the exchange rate has been finalised for all fees in the
-  // payout.
+  // You can listen for the payout's `tax_exchange_rates_confirmed` webhook
+  // (https://developer.gocardless.com/api-reference/#event-types-payout) to
+  // know when the exchange rate has been finalised for all fees in the payout.
   exchange_rate?: string | null;
 
   // The unique identifier created by the jurisdiction, tax type and version
@@ -6644,15 +6936,16 @@ export type RedirectFlow = {
   // customer to rather than use your own page, that confirms in their chosen
   // language that their Direct Debit has been set up successfully. Only
   // returned once the customer has set up their mandate via the payment pages
-  // and the redirect flow has been
-  // [completed](#redirect-flows-complete-a-redirect-flow), and only available
-  // for 15 minutes from when you complete the redirect flow. The structure of
-  // this URL may change at any time, so you should read it directly from the
-  // API response.
+  // and the redirect flow has been completed
+  // (https://developer.gocardless.com/api-reference/#redirect-flows-complete-a-redirect-flow),
+  // and only available for 15 minutes from when you complete the redirect flow.
+  // The structure of this URL may change at any time, so you should read it
+  // directly from the API response.
   confirmation_url?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // A description of the item the customer is paying for. This will be shown on
@@ -6669,8 +6962,8 @@ export type RedirectFlow = {
   mandate_reference?: string;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
-  // up to 50 characters and values up to 500 characters. _Note:_ This should
-  // not be used for storing PII data.
+  // up to 50 characters and values up to 500 characters. Note: This should not
+  // be used for storing PII data.
   metadata?: { [key: string]: string };
 
   // The URL of the hosted payment pages for this redirect flow. This is the URL
@@ -6696,17 +6989,20 @@ export type RedirectFlow = {
 
 /** Type for a redirectflowcreaterequestlinks resource. */
 export type RedirectFlowCreateRequestLinks = {
-  // The [creditor](#core-endpoints-creditors) for whom the mandate will be
-  // created. The `name` of the creditor will be displayed on the payment page.
-  // Required if your account manages multiple creditors.
+  // The creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // for whom the mandate will be created. The `name` of the creditor will be
+  // displayed on the payment page. Required if your account manages multiple
+  // creditors.
   creditor?: string;
 };
 
 /** Type for a redirectflowprefilledbankaccount resource. */
 export type RedirectFlowPrefilledBankAccount = {
   // Bank account type for USD-denominated bank accounts. Must not be provided
-  // for bank accounts in other currencies. See [local
-  // details](#local-bank-details-united-states) for more information.
+  // for bank accounts in other currencies. See local details
+  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // for more information.
   account_type?: `${RedirectFlowPrefilledBankAccountAccountType}`;
 };
 
@@ -6733,8 +7029,8 @@ export type RedirectFlowPrefilledCustomer = {
   // `given_name` and `family_name` are null.
   company_name?: string | null;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string | null;
 
   // For Danish customers only. The civic/company number (CPR or CVR) of the
@@ -6750,7 +7046,7 @@ export type RedirectFlowPrefilledCustomer = {
   // Customer's first name.
   given_name?: string | null;
 
-  // [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
   language?: string | null;
 
   // For New Zealand customers only.
@@ -6780,29 +7076,38 @@ export enum RedirectFlowScheme {
 
 /** Type for a redirectflowlinks resource. */
 export type RedirectFlowLinks = {
-  // ID of [billing request](#billing-requests-billing-requests) that a redirect
-  // flow can create.<br />**Note**: The redirect flow will only create a
-  // billing request in the event the redirect flow is eligible to send the
-  // payer down this new and improved flow
+  // ID of billing request
+  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
+  // that a redirect flow can create.
+  // Note: The redirect flow will only create a billing request in the event the
+  // redirect flow is eligible to send the payer down this new and improved flow
   billing_request?: string;
 
-  // The [creditor](#core-endpoints-creditors) for whom the mandate will be
-  // created. The `name` of the creditor will be displayed on the payment page.
+  // The creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
+  // for whom the mandate will be created. The `name` of the creditor will be
+  // displayed on the payment page.
   creditor?: string;
 
-  // ID of [customer](#core-endpoints-customers) created by this redirect
-  // flow.<br/>**Note**: this property will not be present until the redirect
-  // flow has been successfully completed.
+  // ID of customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers)
+  // created by this redirect flow.
+  // Note: this property will not be present until the redirect flow has been
+  // successfully completed.
   customer?: string;
 
-  // ID of [customer bank account](#core-endpoints-customer-bank-accounts)
-  // created by this redirect flow.<br/>**Note**: this property will not be
-  // present until the redirect flow has been successfully completed.
+  // ID of customer bank account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
+  // created by this redirect flow.
+  // Note: this property will not be present until the redirect flow has been
+  // successfully completed.
   customer_bank_account?: string;
 
-  // ID of [mandate](#core-endpoints-mandates) created by this redirect
-  // flow.<br/>**Note**: this property will not be present until the redirect
-  // flow has been successfully completed.
+  // ID of mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // created by this redirect flow.
+  // Note: this property will not be present until the redirect flow has been
+  // successfully completed.
   mandate?: string;
 };
 
@@ -6811,13 +7116,14 @@ export type Refund = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
   amount?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. This is set to the currency of the refund's
-  // [payment](#core-endpoints-payments).
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. This is set to the currency of the refund's payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments).
   currency?: string;
 
   //
@@ -6834,50 +7140,71 @@ export type Refund = {
   metadata?: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
-  // The character limit for this reference is dependent on the scheme.<br />
-  // <strong>ACH</strong> - 10 characters<br /> <strong>Autogiro</strong> - 11
-  // characters<br /> <strong>Bacs</strong> - 10 characters<br />
-  // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
-  // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong>
-  // - scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
-  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that
-  // this reference must be unique (for each merchant) for the BECS scheme as it
-  // is a scheme requirement. <p
-  // class='restricted-notice'><strong>Restricted</strong>: You can only specify
-  // a payment reference for Bacs payments (that is, when collecting from the
-  // UK) if you're on the <a href='https://gocardless.com/pricing'>GoCardless
-  // Plus, Pro or Enterprise packages</a>.</p> <p
-  // class='restricted-notice'><strong>Restricted</strong>: You can not specify
-  // a payment reference for Faster Payments.</p>
+  // The character limit for this reference is dependent on the scheme.
+  //  ACH <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  Autogiro <ul>
+  // <li>11 characters</li>
+  // </ul>
+  //  Bacs <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  BECS <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  BECS NZ <ul>
+  // <li>12 characters</li>
+  // </ul>
+  //  Betalingsservice <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  Faster Payments <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  PAD <ul>
+  // <li>scheme doesn't offer references</li>
+  // </ul>
+  //  PayTo <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  SEPA <ul>
+  // <li>140 characters</li>
+  // </ul>
+  //  Note that this reference must be unique (for each merchant) for the BECS
+  // scheme as it is a scheme requirement. Restricted: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK)
+  // if you're on the GoCardless Plus, Pro or Enterprise packages
+  // (https://gocardless.com/pricing).
+  //  Restricted: You can not specify a payment reference for Faster Payments.
   reference?: string | null;
 
   // One of:
-  // <ul>
-  // <li>`created`: the refund has been created</li>
-  // <li>`pending_submission`: the refund has been created, but not yet
-  // submitted to the banks</li>
-  // <li>`submitted`: the refund has been submitted to the banks</li>
-  // <li>`paid`:  the refund has been included in a
-  // [payout](#core-endpoints-payouts)</li>
-  // <li>`cancelled`: the refund has been cancelled</li>
-  // <li>`bounced`: the refund has failed to be paid</li>
-  // <li>`funds_returned`: the refund has had its funds returned</li>
-  // </ul>
+  //
+  // - `created`: the refund has been created
+  // - `pending_submission`: the refund has been created, but not yet submitted
+  // to the banks
+  // - `submitted`: the refund has been submitted to the banks
+  // - `paid`:  the refund has been included in a payout
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
+  // - `cancelled`: the refund has been cancelled
+  // - `bounced`: the refund has failed to be paid
+  // - `funds_returned`: the refund has had its funds returned
   status?: `${RefundStatus}`;
 };
 
 /** Type for a refundcreaterequestlinks resource. */
 export type RefundCreateRequestLinks = {
-  //  ID of the [mandate](#core-endpoints-mandates) against which the refund is
-  // being made. <br /> <p
-  // class="restricted-notice"><strong>Restricted</strong>: You must request
-  // access to Mandate Refunds by contacting <a
-  // href="mailto:support@gocardless.com">our support team</a>.</p>
+  // ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // against which the refund is being made.
+  //  Restricted: You must request access to Mandate Refunds by contacting our
+  // support team (mailto:support@gocardless.com).
   mandate?: string;
 
-  // ID of the [payment](#core-endpoints-payments) against which the refund is
-  // being made.
+  // ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // against which the refund is being made.
   payment?: string;
 };
 
@@ -6903,8 +7230,8 @@ export type RefundFx = {
   // Present only after the resource has been paid out.
   fx_amount?: string | null;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for
-  // the currency in which amounts will be paid out (after foreign exchange).
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
+  // currency in which amounts will be paid out (after foreign exchange).
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported. Present only if payouts will be (or were) made via foreign
   // exchange.
@@ -6924,12 +7251,14 @@ export enum RefundFxFxCurrency {
 
 /** Type for a refundlinks resource. */
 export type RefundLinks = {
-  // ID of the [mandate](#core-endpoints-mandates) against which the refund is
-  // being made.
+  // ID of the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // against which the refund is being made.
   mandate?: string;
 
-  // ID of the [payment](#core-endpoints-payments) against which the refund is
-  // being made.
+  // ID of the payment
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments)
+  // against which the refund is being made.
   payment?: string;
 };
 
@@ -6947,132 +7276,129 @@ export enum RefundStatus {
 export type ScenarioSimulator = {
   // The unique identifier of the simulator, used to initiate simulations. One
   // of:
-  // <ul>
-  // <li>`creditor_verification_status_action_required`: Sets a creditor's
+  //
+  // - `creditor_verification_status_action_required`: Sets a creditor's
   // `verification status` to `action required`, meaning that the creditor must
   // provide further information to GoCardless in order to verify their account
-  // to receive payouts.</li>
-  // <li>`creditor_verification_status_in_review`: Sets a creditor's
-  // `verification status` to `in review`, meaning that the creditor has
-  // provided all of the information requested by GoCardless to verify their
-  // account, and is now awaiting review.</li>
-  // <li>`creditor_verification_status_successful`: Sets a creditor's
+  // to receive payouts.
+  // - `creditor_verification_status_in_review`: Sets a creditor's `verification
+  // status` to `in review`, meaning that the creditor has provided all of the
+  // information requested by GoCardless to verify their account, and is now
+  // awaiting review.
+  // - `creditor_verification_status_successful`: Sets a creditor's
   // `verification status` to `successful`, meaning that the creditor is fully
-  // verified and can receive payouts.</li>
-  // <li>`payment_confirmed`: Transitions a payment through to `confirmed`. It
+  // verified and can receive payouts.
+  // - `payment_confirmed`: Transitions a payment through to `confirmed`. It
   // must start in the `pending_submission` state, and its mandate must be in
   // the `activated` state (unless it is a payment for ACH, BECS, BECS_NZ or
   // SEPA, in which cases the mandate may be `pending_submission`, since their
-  // mandates are submitted with their first payment).</li>
-  // <li>`payment_paid_out`: Transitions a payment through to `paid_out`, having
+  // mandates are submitted with their first payment).
+  // - `payment_paid_out`: Transitions a payment through to `paid_out`, having
   // been collected successfully and paid out to you. It must start in the
   // `pending_submission` state, and its mandate must be in the `activated`
   // state (unless it is a payment for ACH, BECS, BECS_NZ or SEPA, in which
   // cases the mandate may be `pending_submission`, since their mandates are
-  // submitted with their first payment).</li>
-  // <li>`payment_failed`: Transitions a payment through to `failed`. It must
+  // submitted with their first payment).
+  // - `payment_failed`: Transitions a payment through to `failed`. It must
   // start in the `pending_submission` state, and its mandate must be in the
   // `activated` state (unless it is a payment for ACH, BECS, BECS_NZ or SEPA,
   // in which cases the mandate may be `pending_submission`, since their
-  // mandates are submitted with their first payment).</li>
-  // <li>`payment_charged_back`: Behaves the same as the `payout_paid_out`
+  // mandates are submitted with their first payment).
+  // - `payment_charged_back`: Behaves the same as the `payout_paid_out`
   // simulator, except that the payment is transitioned to `charged_back` after
-  // it is paid out, having been charged back by the customer.</li>
-  // <li>`payment_chargeback_settled`: Behaves the same as the
+  // it is paid out, having been charged back by the customer.
+  // - `payment_chargeback_settled`: Behaves the same as the
   // `payment_charged_back` simulator, except that the charged back payment is
   // additionally included as a debit item in a payout, thereby settling the
-  // charged back payment.</li>
-  // <li>`payment_late_failure`: Transitions a payment through to
-  // `late_failure`, having been apparently collected successfully beforehand.
-  // It must start in either the `pending_submission` or `paid_out` state, and
-  // its mandate must be in the `activated` state (unless it is a payment for
-  // ACH, BECS, BECS_NZ or SEPA, in which cases the mandate may be
-  // `pending_submission`, since their mandates are submitted with their first
-  // payment). Not compatible with Autogiro mandates.</li>
-  // <li>`payment_late_failure_settled`: Behaves the same as the
+  // charged back payment.
+  // - `payment_late_failure`: Transitions a payment through to `late_failure`,
+  // having been apparently collected successfully beforehand. It must start in
+  // either the `pending_submission` or `paid_out` state, and its mandate must
+  // be in the `activated` state (unless it is a payment for ACH, BECS, BECS_NZ
+  // or SEPA, in which cases the mandate may be `pending_submission`, since
+  // their mandates are submitted with their first payment). Not compatible with
+  // Autogiro mandates.
+  // - `payment_late_failure_settled`: Behaves the same as the
   // `payment_late_failure` simulator, except that the late failure is
   // additionally included as a debit item in a payout, thereby settling the
-  // late failure.</li>
-  // <li>`payment_submitted`: Transitions a payment to `submitted`, without
-  // proceeding any further. It must start in the `pending_submission`
-  // state.</li>
-  // <li>`mandate_activated`: Transitions a mandate through to `activated`,
-  // having been submitted to the banks and set up successfully. It must start
-  // in the `pending_submission` state. Not compatible with ACH, BECS, BECS_NZ
-  // and SEPA mandates, which are submitted and activated with their first
-  // payment.</li>
-  // <li>`mandate_customer_approval_granted`: Transitions a mandate through to
+  // late failure.
+  // - `payment_submitted`: Transitions a payment to `submitted`, without
+  // proceeding any further. It must start in the `pending_submission` state.
+  // - `mandate_activated`: Transitions a mandate through to `activated`, having
+  // been submitted to the banks and set up successfully. It must start in the
+  // `pending_submission` state. Not compatible with ACH, BECS, BECS_NZ and SEPA
+  // mandates, which are submitted and activated with their first payment.
+  // - `mandate_customer_approval_granted`: Transitions a mandate through to
   // `pending_submission`, as if the customer approved the mandate creation. It
   // must start in the `pending_customer_approval` state. Compatible only with
   // Bacs and SEPA mandates, which support customer signatures on the mandate.
   // All payments associated with the mandate will be transitioned to
   // `pending_submission`. All subscriptions associated with the mandate will
-  // become `active`.</li>
-  // <li>`mandate_customer_approval_skipped`: Transitions a mandate through to
+  // become `active`.
+  // - `mandate_customer_approval_skipped`: Transitions a mandate through to
   // `pending_submission`, as if the customer skipped the mandate approval
   // during the mandate creation process. It must start in the
   // `pending_customer_approval` state. Compatible only with Bacs and SEPA
   // mandates, which support customer signatures on the mandate. All payments
   // associated with the mandate will be transitioned to `pending_submission`.
-  // All subscriptions associated with the mandate will become `active`.</li>
-  // <li>`mandate_failed`: Transitions a mandate through to `failed`, having
-  // been submitted to the banks but found to be invalid (for example due to
-  // invalid bank details). It must start in the `pending_submission` or
-  // `submitted` states. Not compatible with SEPA mandates, which are submitted
-  // with their first payment.</li>
-  // <li>`mandate_expired`: Transitions a mandate through to `expired`, having
+  // All subscriptions associated with the mandate will become `active`.
+  // - `mandate_failed`: Transitions a mandate through to `failed`, having been
+  // submitted to the banks but found to be invalid (for example due to invalid
+  // bank details). It must start in the `pending_submission` or `submitted`
+  // states. Not compatible with SEPA mandates, which are submitted with their
+  // first payment.
+  // - `mandate_expired`: Transitions a mandate through to `expired`, having
   // been submitted to the banks, set up successfully and then expired because
   // no collection attempts were made against it for longer than the scheme's
   // dormancy period (13 months for Bacs, 3 years for SEPA, 15 months for ACH,
   // Betalingsservice, and BECS). It must start in the `pending_submission`
   // state. Not compatible with Autogiro, BECS NZ, and PAD mandates, which do
-  // not expire.</li>
-  // <li>`mandate_transferred`: Transitions a mandate through to `transferred`,
+  // not expire.
+  // - `mandate_transferred`: Transitions a mandate through to `transferred`,
   // having been submitted to the banks, set up successfully and then moved to a
   // new bank account due. It must start in the `pending_submission` state. Only
-  // compatible with Bacs and SEPA mandates.</li>
-  // <li>`mandate_transferred_with_resubmission`: Transitions a mandate through
+  // compatible with Bacs and SEPA mandates.
+  // - `mandate_transferred_with_resubmission`: Transitions a mandate through
   // `transferred` and resubmits it to the banks, can be caused be the UK's
   // Current Account Switching Service (CASS) or when a customer contacts
   // GoCardless to change their bank details. It must start in the
-  // `pending_submission` state. Only compatible with Bacs mandates.</li>
-  // <li>`mandate_suspended_by_payer`: Transitions a mandate to
+  // `pending_submission` state. Only compatible with Bacs mandates.
+  // - `mandate_suspended_by_payer`: Transitions a mandate to
   // `suspended_by_payer`, as if payer has suspended the mandate after it has
   // been setup successfully. It must start in the `activated` state. Only
-  // compatible with PAY_TO mandates.</li>
-  // <li>`refund_paid`: Transitions a refund to `paid`. It must start in either
-  // the `pending_submission` or `submitted` state.</li>
-  // <li>`refund_settled`: Transitions a refund to `paid`, if it's not already,
+  // compatible with PAY_TO mandates.
+  // - `refund_paid`: Transitions a refund to `paid`. It must start in either
+  // the `pending_submission` or `submitted` state.
+  // - `refund_settled`: Transitions a refund to `paid`, if it's not already,
   // then generates a payout that includes the refund, thereby settling the
   // funds. It must start in one of `pending_submission`, `submitted` or `paid`
-  // states.</li>
-  // <li>`refund_bounced`: Transitions a refund to `bounced`. It must start in
-  // either the `pending_submission`, `submitted`, or `paid` state.</li>
-  // <li>`refund_returned`: Transitions a refund to `refund_returned`. The
-  // refund must start in `pending_submission`.</li>
-  // <li>`payout_bounced`: Transitions a payout to `bounced`. It must start in
-  // the `paid` state.</li>
-  // <li>`billing_request_fulfilled`: Authorises the billing request, and then
+  // states.
+  // - `refund_bounced`: Transitions a refund to `bounced`. It must start in
+  // either the `pending_submission`, `submitted`, or `paid` state.
+  // - `refund_returned`: Transitions a refund to `refund_returned`. The refund
+  // must start in `pending_submission`.
+  // - `payout_bounced`: Transitions a payout to `bounced`. It must start in the
+  // `paid` state.
+  // - `billing_request_fulfilled`: Authorises the billing request, and then
   // fulfils it. The billing request must be in the `pending` state, with all
   // actions completed except for `bank_authorisation`. Only billing requests
-  // with a `payment_request` are supported.</li>
-  // <li>`billing_request_fulfilled_and_payment_failed`: Authorises the billing
+  // with a `payment_request` are supported.
+  // - `billing_request_fulfilled_and_payment_failed`: Authorises the billing
   // request, fulfils it, and moves the associated payment to `failed`. The
   // billing request must be in the `pending` state, with all actions completed
   // except for `bank_authorisation`. Only billing requests with a
-  // `payment_request` are supported.</li>
-  // <li>`billing_request_fulfilled_and_payment_confirmed_to_failed`: Authorises
+  // `payment_request` are supported.
+  // - `billing_request_fulfilled_and_payment_confirmed_to_failed`: Authorises
   // the billing request, fulfils it, moves the associated payment to
   // `confirmed` and then moves it to `failed`. The billing request must be in
   // the `pending` state, with all actions completed except for
   // `bank_authorisation`. Only billing requests with a `payment_request` are
-  // supported.</li>
-  // <li>`billing_request_fulfilled_and_payment_paid_out`: Authorises the
-  // billing request, fulfils it, and moves the associated payment to
-  // `paid_out`. The billing request must be in the `pending` state, with all
-  // actions completed except for `bank_authorisation`. Only billing requests
-  // with a `payment_request` are supported.</li>
-  // </ul>
+  // supported.
+  // - `billing_request_fulfilled_and_payment_paid_out`: Authorises the billing
+  // request, fulfils it, and moves the associated payment to `paid_out`. The
+  // billing request must be in the `pending` state, with all actions completed
+  // except for `bank_authorisation`. Only billing requests with a
+  // `payment_request` are supported.
   id?: string;
 };
 
@@ -7102,12 +7428,13 @@ export type SchemeIdentifier = {
   // The city of the scheme identifier's support address.
   city?: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code?: string;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // The currency of the scheme identifier.
@@ -7124,8 +7451,9 @@ export type SchemeIdentifier = {
   // this scheme identifier.
   //
   // By default, GoCardless sends these notifications automatically. Please see
-  // our [compliance requirements](#appendix-compliance-requirements) for more
-  // details.
+  // our compliance requirements
+  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)
+  // for more details.
   minimum_advance_notice?: number;
 
   // The name which appears on customers' bank statements. This should usually
@@ -7154,9 +7482,8 @@ export type SchemeIdentifier = {
 
 /** Type for a schemeidentifiercreaterequestlinks resource. */
 export type SchemeIdentifierCreateRequestLinks = {
-  // <em>required</em> ID of the associated
-  // [creditor](#core-endpoints-creditors).
-  //
+  // required ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   creditor?: string;
 };
 
@@ -7270,11 +7597,12 @@ export type Subscription = {
   // The total number of payments that should be taken by this subscription.
   count?: string | null;
 
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
   currency?: string;
@@ -7290,13 +7618,12 @@ export type Subscription = {
   earliest_charge_date_after_resume?: string | null;
 
   // Date on or after which no further payments should be created.
-  // <br />
+  //
   // If this field is blank and `count` is not specified, the subscription will
   // continue forever.
-  // <br />
-  // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will
-  // be removed in a future API version. Use `count` to specify a number of
-  // payments instead.</p>
+  //
+  // Deprecated: This field will be removed in a future API version. Use count
+  // to specify a number of payments instead.
   end_date?: string | null;
 
   // Unique identifier, beginning with "SB".
@@ -7321,7 +7648,6 @@ export type Subscription = {
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
   // when the interval_unit is `yearly`.
-  //
   month?: `${SubscriptionMonth}`;
 
   // Optional name for the subscription. This will be set as the description on
@@ -7335,41 +7661,42 @@ export type Subscription = {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
-  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
-  // Service User Number to specify a payment reference for Bacs payments.</p>
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
+  //
+  // Restricted: You need your own Service User Number to specify a payment
+  // reference for Bacs payments.
   payment_reference?: string | null;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. Must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
-  // left blank and `month` or `day_of_month` are provided, this will be set to
-  // the date of the first payment. If created without `month` or `day_of_month`
-  // this will be set as the mandate's `next_possible_charge_date`
+  // the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // `next_possible_charge_date`. When left blank and `month` or `day_of_month`
+  // are provided, this will be set to the date of the first payment. If created
+  // without `month` or `day_of_month` this will be set as the mandate's
+  // `next_possible_charge_date`
   start_date?: string | null;
 
   // One of:
-  // <ul>
-  // <li>`pending_customer_approval`: the subscription is waiting for customer
-  // approval before becoming active</li>
-  // <li>`customer_approval_denied`: the customer did not approve the
-  // subscription</li>
-  // <li>`active`: the subscription is currently active and will continue to
-  // create payments</li>
-  // <li>`finished`: all of the payments scheduled for creation under this
-  // subscription have been created</li>
-  // <li>`cancelled`: the subscription has been cancelled and will no longer
-  // create payments</li>
-  // <li>`paused`: the subscription has been paused and will not create
-  // payments</li>
-  // </ul>
+  //
+  // - `pending_customer_approval`: the subscription is waiting for customer
+  // approval before becoming active
+  // - `customer_approval_denied`: the customer did not approve the subscription
+  // - `active`: the subscription is currently active and will continue to
+  // create payments
+  // - `finished`: all of the payments scheduled for creation under this
+  // subscription have been created
+  // - `cancelled`: the subscription has been cancelled and will no longer
+  // create payments
+  // - `paused`: the subscription has been paused and will not create payments
   status?: `${SubscriptionStatus}`;
 
   // Up to 10 upcoming payments with their amounts and charge dates.
@@ -7384,8 +7711,9 @@ export enum SubscriptionIntervalUnit {
 
 /** Type for a subscriptioncreaterequestlinks resource. */
 export type SubscriptionCreateRequestLinks = {
-  // ID of the associated [mandate](#core-endpoints-mandates) which the
-  // subscription will create payments against.
+  // ID of the associated mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which the subscription will create payments against.
   mandate: string;
 };
 
@@ -7406,8 +7734,9 @@ export enum SubscriptionMonth {
 
 /** Type for a subscriptionlinks resource. */
 export type SubscriptionLinks = {
-  // ID of the associated [mandate](#core-endpoints-mandates) which the
-  // subscription will create payments against.
+  // ID of the associated mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which the subscription will create payments against.
   mandate?: string;
 };
 
@@ -7473,8 +7802,8 @@ export type TransferredMandate = {
 
 /** Type for a transferredmandatelinks resource. */
 export type TransferredMandateLinks = {
-  // The ID of the updated
-  // [customer_bank_account](#core-endpoints-customer-bank-accounts)
+  // The ID of the updated customer_bank_account
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts)
   customer_bank_account?: string;
 
   // The ID of the transferred mandate
@@ -7498,6 +7827,9 @@ export type VerificationDetail = {
   // The company's registration number.
   company_number?: string;
 
+  // The country code of the company's address.
+  country_code?: string;
+
   // A summary describing what the company does.
   description?: string;
 
@@ -7512,11 +7844,15 @@ export type VerificationDetail = {
 
   // The company's postal code.
   postal_code?: string;
+
+  // The region of the company's address.
+  region?: string | null;
 };
 
 /** Type for a verificationdetailcreaterequestlinks resource. */
 export type VerificationDetailCreateRequestLinks = {
-  // ID of the associated [creditor](#core-endpoints-creditors).
+  // ID of the associated creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
   creditor: string;
 };
 
@@ -7525,8 +7861,8 @@ export type VerificationDetailDirector = {
   // The city of the person's address.
   city: string;
 
-  // [ISO 3166-1 alpha-2
-  // code.](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   country_code: string;
 
   // The person's date of birth.
@@ -7547,14 +7883,16 @@ export type VerificationDetailDirector = {
 
 /** Type for a verificationdetaillinks resource. */
 export type VerificationDetailLinks = {
-  // ID of the [creditor](#core-endpoints-creditors)
+  // ID of the creditor
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors)
   creditor?: string;
 };
 
 /** Type for a webhook resource. */
 export type Webhook = {
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this resource
-  // was created.
+  // Fixed timestamp
+  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
+  // recording when this resource was created.
   created_at?: string;
 
   // Unique identifier, beginning with "WB".

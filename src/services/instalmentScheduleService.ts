@@ -15,15 +15,15 @@ interface InstalmentScheduleCreateWithDatesRequest {
 
   app_fee?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency: `${Types.InstalmentScheduleCurrency}`;
 
   // An explicit array of instalment payments, each specifying at least an
-  // `amount` and `charge_date`. See [create (with
-  // dates)](#instalment-schedules-create-with-dates)
+  // `amount` and `charge_date`. See create (with dates)
+  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-dates)
 
   instalments: Types.InstalmentScheduleInstalment[];
 
@@ -42,29 +42,51 @@ interface InstalmentScheduleCreateWithDatesRequest {
   name: string;
 
   // An optional reference that will appear on your customer's bank statement. The
-  // character limit for this reference is dependent on the scheme.<br />
-  // <strong>ACH</strong> - 10 characters<br /> <strong>Autogiro</strong> - 11
-  // characters<br /> <strong>Bacs</strong> - 10 characters<br />
-  // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
-  // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong> -
-  // scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
-  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that this
-  // reference must be unique (for each merchant) for the BECS scheme as it is a
-  // scheme requirement. <p class='restricted-notice'><strong>Restricted</strong>:
-  // You can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p> <p class='restricted-notice'><strong>Restricted</strong>:
-  // You can not specify a payment reference for Faster Payments.</p>
+  // character limit for this reference is dependent on the scheme.
+  //  ACH <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  Autogiro <ul>
+  // <li>11 characters</li>
+  // </ul>
+  //  Bacs <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  BECS <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  BECS NZ <ul>
+  // <li>12 characters</li>
+  // </ul>
+  //  Betalingsservice <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  Faster Payments <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  PAD <ul>
+  // <li>scheme doesn't offer references</li>
+  // </ul>
+  //  PayTo <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  SEPA <ul>
+  // <li>140 characters</li>
+  // </ul>
+  //  Note that this reference must be unique (for each merchant) for the BECS
+  // scheme as it is a scheme requirement. Restricted: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK) if
+  // you're on the GoCardless Plus, Pro or Enterprise packages
+  // (https://gocardless.com/pricing).
+  //  Restricted: You can not specify a payment reference for Faster Payments.
 
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
+  // Important: To be able to use intelligent retries, Success+ needs to be
+  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
+  //
 
   retry_if_possible?: boolean;
 
@@ -86,8 +108,8 @@ interface InstalmentScheduleCreateWithScheduleRequest {
 
   app_fee?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency: `${Types.InstalmentScheduleCurrency}`;
@@ -95,8 +117,8 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // Frequency of the payments you want to create, together with an array of
   // payment
   // amounts to be collected, with a specified start date for the first payment.
-  // See [create (with schedule)](#instalment-schedules-create-with-schedule)
-  //
+  // See create (with schedule)
+  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-schedule)
   instalments: Types.InstalmentScheduleInstalments;
 
   // Resources linked to this InstalmentSchedule.
@@ -114,29 +136,51 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   name: string;
 
   // An optional reference that will appear on your customer's bank statement. The
-  // character limit for this reference is dependent on the scheme.<br />
-  // <strong>ACH</strong> - 10 characters<br /> <strong>Autogiro</strong> - 11
-  // characters<br /> <strong>Bacs</strong> - 10 characters<br />
-  // <strong>BECS</strong> - 30 characters<br /> <strong>BECS NZ</strong> - 12
-  // characters<br /> <strong>Betalingsservice</strong> - 30 characters<br />
-  // <strong>Faster Payments</strong> - 18 characters<br /> <strong>PAD</strong> -
-  // scheme doesn't offer references<br /> <strong>PayTo</strong> - 18
-  // characters<br /> <strong>SEPA</strong> - 140 characters<br /> Note that this
-  // reference must be unique (for each merchant) for the BECS scheme as it is a
-  // scheme requirement. <p class='restricted-notice'><strong>Restricted</strong>:
-  // You can only specify a payment reference for Bacs payments (that is, when
-  // collecting from the UK) if you're on the <a
-  // href='https://gocardless.com/pricing'>GoCardless Plus, Pro or Enterprise
-  // packages</a>.</p> <p class='restricted-notice'><strong>Restricted</strong>:
-  // You can not specify a payment reference for Faster Payments.</p>
+  // character limit for this reference is dependent on the scheme.
+  //  ACH <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  Autogiro <ul>
+  // <li>11 characters</li>
+  // </ul>
+  //  Bacs <ul>
+  // <li>10 characters</li>
+  // </ul>
+  //  BECS <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  BECS NZ <ul>
+  // <li>12 characters</li>
+  // </ul>
+  //  Betalingsservice <ul>
+  // <li>30 characters</li>
+  // </ul>
+  //  Faster Payments <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  PAD <ul>
+  // <li>scheme doesn't offer references</li>
+  // </ul>
+  //  PayTo <ul>
+  // <li>18 characters</li>
+  // </ul>
+  //  SEPA <ul>
+  // <li>140 characters</li>
+  // </ul>
+  //  Note that this reference must be unique (for each merchant) for the BECS
+  // scheme as it is a scheme requirement. Restricted: You can only specify a
+  // payment reference for Bacs payments (that is, when collecting from the UK) if
+  // you're on the GoCardless Plus, Pro or Enterprise packages
+  // (https://gocardless.com/pricing).
+  //  Restricted: You can not specify a payment reference for Faster Payments.
 
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
+  // Important: To be able to use intelligent retries, Success+ needs to be
+  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
+  //
 
   retry_if_possible?: boolean;
 
@@ -163,7 +207,8 @@ interface InstalmentScheduleListRequest {
   // The creation date of this InstalmentSchedule.
   created_at?: Types.CreatedAtFilter;
 
-  // ID of the associated [customer](#core-endpoints-customers).
+  // ID of the associated customer
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
 
   customer?: string;
 
@@ -171,8 +216,9 @@ interface InstalmentScheduleListRequest {
 
   limit?: string;
 
-  // ID of the associated [mandate](#core-endpoints-mandates) which the instalment
-  // schedule will create payments against.
+  // ID of the associated mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
+  // which the instalment schedule will create payments against.
 
   mandate?: string;
 

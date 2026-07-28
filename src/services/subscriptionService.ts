@@ -24,8 +24,8 @@ interface SubscriptionCreateRequest {
 
   count?: string;
 
-  // [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
-  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
+  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
 
   currency: string;
@@ -36,13 +36,12 @@ interface SubscriptionCreateRequest {
   day_of_month?: string;
 
   // Date on or after which no further payments should be created.
-  // <br />
+  //
   // If this field is blank and `count` is not specified, the subscription will
   // continue forever.
-  // <br />
-  // <p class="deprecated-notice"><strong>Deprecated</strong>: This field will be
-  // removed in a future API version. Use `count` to specify a number of payments
-  // instead.</p>
+  //
+  // Deprecated: This field will be removed in a future API version. Use count to
+  // specify a number of payments instead.
 
   end_date?: string;
 
@@ -68,7 +67,6 @@ interface SubscriptionCreateRequest {
   // Name of the month on which to charge a customer. Must be lowercase. Only
   // applies
   // when the interval_unit is `yearly`.
-  //
 
   month?: `${Types.SubscriptionMonth}`;
 
@@ -81,26 +79,30 @@ interface SubscriptionCreateRequest {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
-  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
-  // Service User Number to specify a payment reference for Bacs payments.</p>
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
+  //
+  // Restricted: You need your own Service User Number to specify a payment
+  // reference for Bacs payments.
 
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
+  // Important: To be able to use intelligent retries, Success+ needs to be
+  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
+  //
 
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. Must be on or after
-  // the [mandate](#core-endpoints-mandates)'s `next_possible_charge_date`. When
-  // left blank and `month` or `day_of_month` are provided, this will be set to
-  // the date of the first payment. If created without `month` or `day_of_month`
-  // this will be set as the mandate's `next_possible_charge_date`
+  // the mandate
+  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // `next_possible_charge_date`. When left blank and `month` or `day_of_month`
+  // are provided, this will be set to the date of the first payment. If created
+  // without `month` or `day_of_month` this will be set as the mandate's
+  // `next_possible_charge_date`
 
   start_date?: string;
 }
@@ -131,14 +133,14 @@ interface SubscriptionListRequest {
   mandate?: string;
 
   // Upto 5 of:
-  // <ul>
-  // <li>`pending_customer_approval`</li>
-  // <li>`customer_approval_denied`</li>
-  // <li>`active`</li>
-  // <li>`finished`</li>
-  // <li>`cancelled`</li>
-  // <li>`paused`</li>
-  // </ul>
+  //
+  // - `pending_customer_approval`
+  // - `customer_approval_denied`
+  // - `active`
+  // - `finished`
+  // - `cancelled`
+  // - `paused`
+  //
   // Omit entirely to include subscriptions in all states.
 
   status?: `${Types.SubscriptionStatus}`[];
@@ -170,18 +172,20 @@ interface SubscriptionUpdateRequest {
   // payment
   // created and will appear on your customer's bank statement. See the
   // documentation for
-  // the [create payment endpoint](#payments-create-a-payment) for more details.
-  // <br />
-  // <p class="restricted-notice"><strong>Restricted</strong>: You need your own
-  // Service User Number to specify a payment reference for Bacs payments.</p>
+  // the create payment endpoint
+  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
+  // for more details.
+  //
+  // Restricted: You need your own Service User Number to specify a payment
+  // reference for Bacs payments.
 
   payment_reference?: string;
 
-  // On failure, automatically retry payments using [intelligent
-  // retries](/success-plus/overview). Default is `false`. <p
-  // class="notice"><strong>Important</strong>: To be able to use intelligent
-  // retries, Success+ needs to be enabled in [GoCardless
-  // dashboard](https://manage.gocardless.com/success-plus). </p>
+  // On failure, automatically retry payments using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
+  // Important: To be able to use intelligent retries, Success+ needs to be
+  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
+  //
 
   retry_if_possible?: boolean;
 }
@@ -195,11 +199,11 @@ interface SubscriptionPauseRequest {
   // The number of cycles to pause a subscription for. A cycle is one duration of
   // `interval` and `interval_unit`. This should be a non zero positive value.
   // For AUD subscriptions with `interval_unit: weekly` the minimum value varies
-  // between `3` & `4` because of the [mandatory minimum waiting
-  // period](#subscriptions-resume-a-subscription).
+  // between `3` & `4` because of the mandatory minimum waiting period
+  // (https://developer.gocardless.com/api-reference/#subscriptions-resume-a-subscription).
   // For NZD subscriptions with `interval_unit: weekly` the minimum value is `2`
-  // because of the [mandatory minimum waiting
-  // period](#subscriptions-resume-a-subscription).
+  // because of the mandatory minimum waiting period
+  // (https://developer.gocardless.com/api-reference/#subscriptions-resume-a-subscription).
 
   pause_cycles?: number;
 }

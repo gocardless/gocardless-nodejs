@@ -61,10 +61,6 @@ interface BlockListRequest {
 
   before?: string;
 
-  // ID of a [Block](#core-endpoints-blocks).
-
-  block?: string;
-
   // Type of entity we will seek to match against when blocking the mandate. This
   // can currently be one of 'email', 'email_domain', 'bank_account', or
   // 'bank_name'.
@@ -85,11 +81,6 @@ interface BlockListRequest {
   // above then 'other' can be selected but you must provide a reason description.
 
   reason_type?: `${Types.BlockReasonType}`;
-
-  // Fixed [timestamp](#api-usage-dates-and-times), recording when this
-  // resource was updated.
-
-  updated_at?: string;
 }
 
 interface BlockBlockByRefRequest {
