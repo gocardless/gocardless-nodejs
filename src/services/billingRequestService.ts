@@ -188,12 +188,6 @@ interface BillingRequestListRequest {
 
   before?: string;
 
-  // Fixed timestamp
-  // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
-  // recording when this resource was created.
-
-  created_at?: string;
-
   // ID of a customer
   // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
   // If specified, this endpoint will return all requests for the given customer.
