@@ -1,5 +1,9 @@
 name: test & publish
-on: push
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, reopened, synchronize]
 
 permissions:
   id-token: write  # Required for OIDC
