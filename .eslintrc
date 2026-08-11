@@ -7,16 +7,6 @@
     "no-multiple-empty-lines": [
       "error",
       {"max": 2}
-    ],
-    /* Allow empty types {} for Institution ID */
-    "@typescript-eslint/ban-types": [
-      "error",
-      {
-        "extendDefaults": true,
-        "types": {
-          "{}": false
-        }
-      }
     ]
   }
 }

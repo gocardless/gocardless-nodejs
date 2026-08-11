@@ -4783,6 +4783,7 @@ export enum ExportExportType {
   PaymentsImportTemplate = 'payments_import_template',
   PaymentAccountStatement = 'payment_account_statement',
   OutboundPaymentsIndex = 'outbound_payments_index',
+  PaymentAccountTransactions = 'payment_account_transactions',
 }
 
 /** Type for a fundsavailability resource. */
@@ -4994,15 +4995,19 @@ export type Institution = {
 };
 
 /** Type for a institutionbranchcode resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionBranchCode schema has no properties
 export type InstitutionBranchCode = {};
 
 /** Type for a institutionfeature resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionFeature schema has no properties
 export type InstitutionFeature = {};
 
 /** Type for a institutionscheme resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionScheme schema has no properties
 export type InstitutionScheme = {};
 
 /** Type for a institutionid resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionId schema has no properties
 export type InstitutionId = {};
 
 /** Type for a institutionlimits resource. */
@@ -6294,6 +6299,13 @@ export type Payment = {
   // EUR).
   amount_refunded?: string;
 
+  // The amount to be deducted from the payment as the OAuth app''s fee,
+  // in the lowest denomination for the currency (e.g. pence in GBP, cents in
+  // EUR).
+  //
+  // Only present if the payment was created via an app.
+  app_fee?: string | null;
+
   // A future date on which the payment should be collected. If not specified,
   // the payment will be collected as soon as possible. If the value is before
   // the mandate
@@ -7523,7 +7535,8 @@ type JsonField = boolean | number | string | null;
 export interface JsonMap {
   [key: string]: JsonField | JsonMap | JsonArray;
 }
-export type JsonArray = Array<JsonField>
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- just aliasing Array<JsonField> under a name we can self-reference from JsonMap
+export interface JsonArray extends Array<JsonField> {}
 
 export type APIResponse = {
   __response__: object;

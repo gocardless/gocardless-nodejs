@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface BillingRequestWithActionResponse extends Types.BillingRequestWithAction, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface BillingRequestWithActionListResponse extends Types.APIResponse {
   billing_request_with_actions: Array<Types.BillingRequestWithAction>;
   meta: Types.ListMeta;
@@ -72,7 +74,7 @@ export class BillingRequestWithActionService {
 
   public async createWithActions(
     requestParameters: BillingRequestWithActionCreateWithActionsRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestWithActionResponse> {
     const urlParameters = [];

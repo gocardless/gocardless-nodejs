@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface MandatePdfResponse extends Types.MandatePdf, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface MandatePdfListResponse extends Types.APIResponse {
   mandate_pdfs: Array<Types.MandatePdf>;
   meta: Types.ListMeta;
@@ -166,7 +168,7 @@ export class MandatePdfService {
 
   public async create(
     requestParameters: MandatePdfCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<MandatePdfResponse> {
     const urlParameters = [];

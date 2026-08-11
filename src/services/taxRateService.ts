@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface TaxRateResponse extends Types.TaxRate, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface TaxRateListResponse extends Types.APIResponse {
   tax_rates: Array<Types.TaxRate>;
   meta: Types.ListMeta;

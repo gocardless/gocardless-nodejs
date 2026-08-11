@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface CreditorResponse extends Types.Creditor, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface CreditorListResponse extends Types.APIResponse {
   creditors: Array<Types.Creditor>;
   meta: Types.ListMeta;
@@ -108,7 +110,7 @@ export class CreditorService {
 
   public async create(
     requestParameters: CreditorCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<CreditorResponse> {
     const urlParameters = [];

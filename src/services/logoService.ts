@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface LogoResponse extends Types.Logo, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface LogoListResponse extends Types.APIResponse {
   logos: Array<Types.Logo>;
   meta: Types.ListMeta;
@@ -26,7 +28,7 @@ export class LogoService {
 
   public async createForCreditor(
     requestParameters: LogoCreateForCreditorRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<LogoResponse> {
     const urlParameters = [];

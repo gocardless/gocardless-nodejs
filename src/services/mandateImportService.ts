@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface MandateImportResponse extends Types.MandateImport, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface MandateImportListResponse extends Types.APIResponse {
   mandate_imports: Array<Types.MandateImport>;
   meta: Types.ListMeta;
@@ -28,7 +30,7 @@ export class MandateImportService {
 
   public async create(
     requestParameters: MandateImportCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<MandateImportResponse> {
     const urlParameters = [];

@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface BillingRequestFlowResponse extends Types.BillingRequestFlow, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface BillingRequestFlowListResponse extends Types.APIResponse {
   billing_request_flows: Array<Types.BillingRequestFlow>;
   meta: Types.ListMeta;
@@ -106,7 +108,7 @@ export class BillingRequestFlowService {
 
   public async create(
     requestParameters: BillingRequestFlowCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<BillingRequestFlowResponse> {
     const urlParameters = [];

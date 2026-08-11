@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface BankAccountHolderVerificationResponse extends Types.BankAccountHolderVerification, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface BankAccountHolderVerificationListResponse extends Types.APIResponse {
   bank_account_holder_verifications: Array<Types.BankAccountHolderVerification>;
   meta: Types.ListMeta;
@@ -28,7 +30,7 @@ export class BankAccountHolderVerificationService {
 
   public async create(
     requestParameters: BankAccountHolderVerificationCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<BankAccountHolderVerificationResponse> {
     const urlParameters = [];

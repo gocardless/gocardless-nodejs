@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface BlockResponse extends Types.Block, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface BlockListResponse extends Types.APIResponse {
   blocks: Array<Types.Block>;
   meta: Types.ListMeta;
@@ -131,7 +133,7 @@ export class BlockService {
 
   public async create(
     requestParameters: BlockCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<BlockResponse> {
     const urlParameters = [];

@@ -1,6 +1,6 @@
 {
   "name": "gocardless-nodejs",
-  "version": "8.5.0",
+  "version": "8.6.0",
   "description": "Node.js client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments",
   "author": "GoCardless Ltd <client-libraries@gocardless.com>",
   "repository": {
@@ -111,17 +111,17 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^22.14.1",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.57.0",
+    "@types/node": "^22.20.1",
+    "@typescript-eslint/eslint-plugin": "^8.67.0",
+    "@typescript-eslint/parser": "^8.67.0",
     "eslint": "^8.57.1",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^4.2.5",
     "jest": "^30.4.2",
     "nock": "^13.5.6",
-    "prettier": "^2.8.8",
-    "prettier-eslint": "^15.0.1",
-    "prettier-eslint-cli": "^7.1.0",
+    "prettier": "^3.9.6",
+    "prettier-eslint": "^17.1.1",
+    "prettier-eslint-cli": "^9.2.1",
     "ts-jest": "29.4.12",
     "typescript": "^5.9.3"
   },
