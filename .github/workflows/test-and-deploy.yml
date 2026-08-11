@@ -126,10 +126,11 @@ jobs:
         git tag v${{ needs.check_version.outputs.version }}
         git push origin v${{ needs.check_version.outputs.version }}
         NOTES="${{ steps.notes.outputs.notes }}"
+        TAG="v${{ needs.check_version.outputs.version }}"
         if [ -n "$(echo "$NOTES" | tr -d '[:space:]')" ]; then
-          gh release create v${{ needs.check_version.outputs.version }} --notes "$NOTES"
+          gh release create "$TAG" --title "$TAG" --notes "$NOTES"
         else
-          gh release create v${{ needs.check_version.outputs.version }} --generate-notes
+          gh release create "$TAG" --title "$TAG" --generate-notes
         fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
