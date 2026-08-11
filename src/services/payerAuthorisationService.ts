@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface PayerAuthorisationResponse extends Types.PayerAuthorisation, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface PayerAuthorisationListResponse extends Types.APIResponse {
   payer_authorisations: Array<Types.PayerAuthorisation>;
   meta: Types.ListMeta;
@@ -68,7 +70,7 @@ export class PayerAuthorisationService {
 
   public async create(
     requestParameters: PayerAuthorisationCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<PayerAuthorisationResponse> {
     const urlParameters = [];

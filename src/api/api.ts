@@ -31,6 +31,7 @@ interface APIRequestParameters {
   requestParameters?: object;
   payloadKey?: string | null;
   idempotencyKey?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the response shape depends on the resource calling this generic client
   fetch?: (identity: string) => Promise<any> | null;
   customHeaders?: object;
 }
@@ -195,7 +196,7 @@ export class Api {
     return {
       agent: this._agent,
       prefixUrl: this._baseUrl,
-      // tslint:disable-next-line:no-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- got's `method` type is a narrower literal union than the strings we build up
       method: method as any,
       responseType: 'json' as const,
       headers,

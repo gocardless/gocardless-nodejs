@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface RedirectFlowResponse extends Types.RedirectFlow, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface RedirectFlowListResponse extends Types.APIResponse {
   redirect_flows: Array<Types.RedirectFlow>;
   meta: Types.ListMeta;
@@ -73,7 +75,7 @@ export class RedirectFlowService {
 
   public async create(
     requestParameters: RedirectFlowCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<RedirectFlowResponse> {
     const urlParameters = [];

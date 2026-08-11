@@ -4995,15 +4995,19 @@ export type Institution = {
 };
 
 /** Type for a institutionbranchcode resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionBranchCode schema has no properties
 export type InstitutionBranchCode = {};
 
 /** Type for a institutionfeature resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionFeature schema has no properties
 export type InstitutionFeature = {};
 
 /** Type for a institutionscheme resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionScheme schema has no properties
 export type InstitutionScheme = {};
 
 /** Type for a institutionid resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionId schema has no properties
 export type InstitutionId = {};
 
 /** Type for a institutionlimits resource. */
@@ -7531,7 +7535,8 @@ type JsonField = boolean | number | string | null;
 export interface JsonMap {
   [key: string]: JsonField | JsonMap | JsonArray;
 }
-export type JsonArray = Array<JsonField>
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- just aliasing Array<JsonField> under a name we can self-reference from JsonMap
+export interface JsonArray extends Array<JsonField> {}
 
 export type APIResponse = {
   __response__: object;

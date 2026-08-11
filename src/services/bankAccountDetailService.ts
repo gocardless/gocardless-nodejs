@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface BankAccountDetailResponse extends Types.BankAccountDetail, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface BankAccountDetailListResponse extends Types.APIResponse {
   bank_account_details: Array<Types.BankAccountDetail>;
   meta: Types.ListMeta;

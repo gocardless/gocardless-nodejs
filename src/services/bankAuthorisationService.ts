@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface BankAuthorisationResponse extends Types.BankAuthorisation, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface BankAuthorisationListResponse extends Types.APIResponse {
   bank_authorisations: Array<Types.BankAuthorisation>;
   meta: Types.ListMeta;
@@ -49,7 +51,7 @@ export class BankAuthorisationService {
 
   public async create(
     requestParameters: BankAuthorisationCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<BankAuthorisationResponse> {
     const urlParameters = [];

@@ -1,8 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface OutboundPaymentImportResponse extends Types.OutboundPaymentImport, Types.APIResponse {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
 interface OutboundPaymentImportListResponse extends Types.APIResponse {
   outbound_payment_imports: Array<Types.OutboundPaymentImport>;
   meta: Types.ListMeta;
@@ -57,7 +59,7 @@ export class OutboundPaymentImportService {
 
   public async create(
     requestParameters: OutboundPaymentImportCreateRequest,
-    idempotencyKey = '',
+    idempotencyKey: string = '',
     customHeaders: Types.JsonMap = {},
   ): Promise<OutboundPaymentImportResponse> {
     const urlParameters = [];
