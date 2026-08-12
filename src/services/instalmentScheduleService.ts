@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface InstalmentScheduleResponse extends Types.InstalmentSchedule, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface InstalmentScheduleListResponse extends Types.APIResponse {
   instalment_schedules: Array<Types.InstalmentSchedule>;
   meta: Types.ListMeta;
@@ -325,9 +325,9 @@ export class InstalmentScheduleService {
   ): AsyncGenerator<Types.InstalmentSchedule, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const instalmentschedule of list.instalment_schedules) {
+      for (let instalmentschedule of list.instalment_schedules) {
         yield instalmentschedule;
       }
 

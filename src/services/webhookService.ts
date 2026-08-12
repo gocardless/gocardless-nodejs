@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface WebhookResponse extends Types.Webhook, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface WebhookListResponse extends Types.APIResponse {
   webhooks: Array<Types.Webhook>;
   meta: Types.ListMeta;
@@ -72,9 +72,9 @@ export class WebhookService {
   ): AsyncGenerator<Types.Webhook, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const webhook of list.webhooks) {
+      for (let webhook of list.webhooks) {
         yield webhook;
       }
 

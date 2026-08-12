@@ -4,7 +4,7 @@ import * as Types from '../types/Types.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface CurrencyExchangeRateResponse extends Types.CurrencyExchangeRate, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface CurrencyExchangeRateListResponse extends Types.APIResponse {
   currency_exchange_rates: Array<Types.CurrencyExchangeRate>;
   meta: Types.ListMeta;
@@ -69,9 +69,9 @@ export class CurrencyExchangeRateService {
   ): AsyncGenerator<Types.CurrencyExchangeRate, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const currencyexchangerate of list.currency_exchange_rates) {
+      for (let currencyexchangerate of list.currency_exchange_rates) {
         yield currencyexchangerate;
       }
 

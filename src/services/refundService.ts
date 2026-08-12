@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface RefundResponse extends Types.Refund, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface RefundListResponse extends Types.APIResponse {
   refunds: Array<Types.Refund>;
   meta: Types.ListMeta;
@@ -182,9 +182,9 @@ export class RefundService {
   ): AsyncGenerator<Types.Refund, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const refund of list.refunds) {
+      for (let refund of list.refunds) {
         yield refund;
       }
 

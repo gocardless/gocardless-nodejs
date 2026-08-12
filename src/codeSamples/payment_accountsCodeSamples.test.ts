@@ -6,6 +6,6 @@
 // No code samples exist for PaymentAccounts in the schema.
 
 describe.skip('PaymentAccounts Code Samples', () => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   test.skip('no code samples in schema', () => {});
 });

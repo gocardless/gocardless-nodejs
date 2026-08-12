@@ -45,11 +45,11 @@ describe('MandatePdfs Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
-      /* eslint-disable @typescript-eslint/no-unused-vars */
+       
       await client.mandatePdfs.create({
         links: {
           mandate: 'MD123',
@@ -74,7 +74,7 @@ describe('MandatePdfs Code Samples', () => {
         '',
         { 'Accept-Language': 'fr' },
       );
-      /* eslint-enable @typescript-eslint/no-unused-vars */
+       
     } finally {
       console.log = originalLog;
     }

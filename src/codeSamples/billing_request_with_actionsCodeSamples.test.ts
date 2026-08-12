@@ -6,6 +6,6 @@
 // No code samples exist for BillingRequestWithActions in the schema.
 
 describe.skip('BillingRequestWithActions Code Samples', () => {
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   test.skip('no code samples in schema', () => {});
 });

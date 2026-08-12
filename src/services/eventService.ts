@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface EventResponse extends Types.Event, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface EventListResponse extends Types.APIResponse {
   events: Array<Types.Event>;
   meta: Types.ListMeta;
@@ -193,9 +193,9 @@ export class EventService {
   ): AsyncGenerator<Types.Event, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const event of list.events) {
+      for (let event of list.events) {
         yield event;
       }
 

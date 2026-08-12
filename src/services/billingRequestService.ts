@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface BillingRequestResponse extends Types.BillingRequest, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface BillingRequestListResponse extends Types.APIResponse {
   billing_requests: Array<Types.BillingRequest>;
   meta: Types.ListMeta;
@@ -435,9 +435,9 @@ export class BillingRequestService {
   ): AsyncGenerator<Types.BillingRequest, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const billingrequest of list.billing_requests) {
+      for (let billingrequest of list.billing_requests) {
         yield billingrequest;
       }
 
