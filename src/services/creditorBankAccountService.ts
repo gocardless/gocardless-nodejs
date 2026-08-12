@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface CreditorBankAccountResponse extends Types.CreditorBankAccount, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface CreditorBankAccountListResponse extends Types.APIResponse {
   creditor_bank_accounts: Array<Types.CreditorBankAccount>;
   meta: Types.ListMeta;
@@ -168,9 +168,9 @@ export class CreditorBankAccountService {
   ): AsyncGenerator<Types.CreditorBankAccount, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const creditorbankaccount of list.creditor_bank_accounts) {
+      for (let creditorbankaccount of list.creditor_bank_accounts) {
         yield creditorbankaccount;
       }
 

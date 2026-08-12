@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface VerificationDetailResponse extends Types.VerificationDetail, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface VerificationDetailListResponse extends Types.APIResponse {
   verification_details: Array<Types.VerificationDetail>;
   meta: Types.ListMeta;
@@ -132,9 +132,9 @@ export class VerificationDetailService {
   ): AsyncGenerator<Types.VerificationDetail, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const verificationdetail of list.verification_details) {
+      for (let verificationdetail of list.verification_details) {
         yield verificationdetail;
       }
 

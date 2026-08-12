@@ -45,15 +45,15 @@ describe('Balances Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
-      /* eslint-disable @typescript-eslint/no-unused-vars */
+       
       await client.balances.list({
         creditor: 'CR123',
       });
-      /* eslint-enable @typescript-eslint/no-unused-vars */
+       
     } finally {
       console.log = originalLog;
     }

@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface MandateResponse extends Types.Mandate, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface MandateListResponse extends Types.APIResponse {
   mandates: Array<Types.Mandate>;
   meta: Types.ListMeta;
@@ -196,9 +196,9 @@ export class MandateService {
   ): AsyncGenerator<Types.Mandate, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const mandate of list.mandates) {
+      for (let mandate of list.mandates) {
         yield mandate;
       }
 

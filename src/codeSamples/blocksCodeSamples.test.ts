@@ -13,7 +13,7 @@
 import * as nock from 'nock';
 import { GoCardlessClient } from '../client';
 import { Environments } from '../constants';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+ 
 import * as Types from '../types/Types';
 
 describe('Blocks Code Samples', () => {
@@ -45,7 +45,7 @@ describe('Blocks Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
@@ -74,7 +74,7 @@ describe('Blocks Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
@@ -99,16 +99,16 @@ describe('Blocks Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
-      /* eslint-disable @typescript-eslint/no-unused-vars */
+       
       for await (const block of client.blocks.all({})) {
         console.log(block.id);
         console.log(block.block_type);
       }
-      /* eslint-enable @typescript-eslint/no-unused-vars */
+       
     } finally {
       console.log = originalLog;
     }
@@ -127,7 +127,7 @@ describe('Blocks Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
@@ -152,7 +152,7 @@ describe('Blocks Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
@@ -177,7 +177,7 @@ describe('Blocks Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {

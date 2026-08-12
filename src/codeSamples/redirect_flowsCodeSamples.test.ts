@@ -45,7 +45,7 @@ describe('RedirectFlows Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
@@ -79,7 +79,7 @@ describe('RedirectFlows Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {
@@ -104,7 +104,7 @@ describe('RedirectFlows Code Samples', () => {
 
     // Suppress console.log from code samples
     const originalLog = console.log;
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     console.log = () => {};
 
     try {

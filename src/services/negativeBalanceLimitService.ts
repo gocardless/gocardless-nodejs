@@ -4,7 +4,7 @@ import * as Types from '../types/Types.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface NegativeBalanceLimitResponse extends Types.NegativeBalanceLimit, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface NegativeBalanceLimitListResponse extends Types.APIResponse {
   negative_balance_limits: Array<Types.NegativeBalanceLimit>;
   meta: Types.ListMeta;
@@ -71,9 +71,9 @@ export class NegativeBalanceLimitService {
   ): AsyncGenerator<Types.NegativeBalanceLimit, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const negativebalancelimit of list.negative_balance_limits) {
+      for (let negativebalancelimit of list.negative_balance_limits) {
         yield negativebalancelimit;
       }
 

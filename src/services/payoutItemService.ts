@@ -4,7 +4,7 @@ import * as Types from '../types/Types.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
 interface PayoutItemResponse extends Types.PayoutItem, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface PayoutItemListResponse extends Types.APIResponse {
   payout_items: Array<Types.PayoutItem>;
   meta: Types.ListMeta;
@@ -70,9 +70,9 @@ export class PayoutItemService {
   ): AsyncGenerator<Types.PayoutItem, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const payoutitem of list.payout_items) {
+      for (let payoutitem of list.payout_items) {
         yield payoutitem;
       }
 

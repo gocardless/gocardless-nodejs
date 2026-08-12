@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface CustomerResponse extends Types.Customer, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface CustomerListResponse extends Types.APIResponse {
   customers: Array<Types.Customer>;
   meta: Types.ListMeta;
@@ -291,9 +291,9 @@ export class CustomerService {
   ): AsyncGenerator<Types.Customer, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const customer of list.customers) {
+      for (let customer of list.customers) {
         yield customer;
       }
 

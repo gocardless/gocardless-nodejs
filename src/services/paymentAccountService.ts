@@ -1,10 +1,10 @@
 import { Api } from '../api/api.js';
 import * as Types from '../types/Types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose list methods
+ 
 interface PaymentAccountResponse extends Types.PaymentAccount, Types.APIResponse {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- unused for resources that only expose singular (get/create) methods
+ 
 interface PaymentAccountListResponse extends Types.APIResponse {
   payment_accounts: Array<Types.PaymentAccount>;
   meta: Types.ListMeta;
@@ -82,9 +82,9 @@ export class PaymentAccountService {
   ): AsyncGenerator<Types.PaymentAccount, void, unknown> {
     let cursor = undefined;
     do {
-      const list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
+      let list = await this.list({ ...requestParameters, after: cursor }, customHeaders);
 
-      for (const paymentaccount of list.payment_accounts) {
+      for (let paymentaccount of list.payment_accounts) {
         yield paymentaccount;
       }
 
