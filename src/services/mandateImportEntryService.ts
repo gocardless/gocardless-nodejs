@@ -54,7 +54,7 @@ interface MandateImportEntryListRequest {
 
   // One of:
   //
-  // - `sucessfully_processed`: the entry has been imported and the associated
+  // - `successfully_processed`: the entry has been imported and the associated
   // records created.
   // - `unsuccessfully_processed`: the entry could not be processed due to an
   // error, see the 'processing_errors' value
