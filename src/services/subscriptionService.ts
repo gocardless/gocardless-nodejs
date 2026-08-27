@@ -134,7 +134,7 @@ interface SubscriptionListRequest {
 
   mandate?: string;
 
-  // Upto 5 of:
+  // Up to 5 of:
   //
   // - `pending_customer_approval`
   // - `customer_approval_denied`
