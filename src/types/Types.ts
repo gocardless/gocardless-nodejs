@@ -4778,6 +4778,7 @@ export enum ExportExportType {
   CustomerBankAccounts = 'customer_bank_accounts',
   Users = 'users',
   OrganisationAuthorisations = 'organisation_authorisations',
+  AppConnectedOrganisations = 'app_connected_organisations',
   GcInvalidAuthorisationRequests = 'gc_invalid_authorisation_requests',
   PartnerFees = 'partner_fees',
   PaymentsImportTemplate = 'payments_import_template',
