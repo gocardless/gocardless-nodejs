@@ -3,7 +3,7 @@ enum Environments {
   Sandbox = 'SANDBOX',
 }
 
-const CLIENT_VERSION = '8.7.2';
+const CLIENT_VERSION = '8.7.1';
 const API_VERSION = '2015-07-06';
 
 export { Environments, CLIENT_VERSION, API_VERSION };
