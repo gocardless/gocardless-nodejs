@@ -1,6 +1,28 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 9.0.0 (2026-09-07)
+
+### Breaking Changes
+
+#### Correct amount field types from `string` to `integer`
+
+Where fields such as `amount`, `deducted_fees` or pagination `limit` are returned by the API, they are as integers.
+
+However, for backwards compatibility and convenience, our API accepts either number or strings in _requests_.
+
+We incorrectly used `string` as the only type for those fields in both requests and responses in this client library.
+
+We now only specify them as `integer` so that they are correct for responses and still work for requests.
+
+We might add support for `string` _or_ `integer` in the request bodies for these fields at a later date.
+
+## 8.7.3 (2026-09-07)
+
+### Fixes
+
+- Update code samples to match change to integer types for amounts etc
+
 ## 8.7.2 (2026-09-04)
 
 ### Fixes

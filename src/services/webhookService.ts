@@ -28,7 +28,7 @@ interface WebhookListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Show only successful/failed webhooks
 

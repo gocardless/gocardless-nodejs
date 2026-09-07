@@ -33,7 +33,7 @@ interface OutboundPaymentImportListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // The status of the outbound payment import.
   //

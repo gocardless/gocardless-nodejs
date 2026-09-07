@@ -102,7 +102,7 @@ interface CreditorBankAccountListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 }
 
 export class CreditorBankAccountService {

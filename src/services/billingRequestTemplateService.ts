@@ -21,7 +21,7 @@ interface BillingRequestTemplateListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer` and

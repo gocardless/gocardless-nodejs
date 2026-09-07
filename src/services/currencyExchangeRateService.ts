@@ -21,7 +21,7 @@ interface CurrencyExchangeRateListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Source currency
 

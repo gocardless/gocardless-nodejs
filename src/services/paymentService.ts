@@ -22,12 +22,12 @@ interface PaymentCreateRequest {
   // `max_amount_per_payment`
   // constraint.
 
-  amount: string;
+  amount: number;
 
   // The amount to be deducted from the payment as the OAuth app's fee, in the
   // lowest denomination for the currency (e.g. pence in GBP, cents in EUR).
 
-  app_fee?: string;
+  app_fee?: number;
 
   // A future date on which the payment should be collected. If not specified, the
   // payment will be collected as soon as possible. If the value is before the
@@ -160,7 +160,7 @@ interface PaymentListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.

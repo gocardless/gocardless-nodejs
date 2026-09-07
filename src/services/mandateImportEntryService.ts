@@ -46,7 +46,7 @@ interface MandateImportEntryListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Unique identifier, beginning with "IM".
 

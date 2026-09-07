@@ -31,7 +31,7 @@ interface NegativeBalanceLimitListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 }
 
 export class NegativeBalanceLimitService {

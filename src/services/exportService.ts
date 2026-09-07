@@ -21,7 +21,7 @@ interface ExportListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 }
 
 export class ExportService {

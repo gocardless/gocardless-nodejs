@@ -51,11 +51,11 @@ describe('Subscriptions Code Samples', () => {
     try {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       const subscription = await client.subscriptions.create({
-        amount: '2500',
+        amount: 2500,
         currency: 'GBP',
         name: 'Monthly Magazine',
         interval_unit: 'monthly',
-        day_of_month: '1',
+        day_of_month: 1,
         metadata: {
           order_no: 'ABCD1234',
         },
@@ -141,7 +141,7 @@ describe('Subscriptions Code Samples', () => {
     try {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       const subscription = await client.subscriptions.update('SB123', {
-        amount: '42',
+        amount: 42,
         name: 'New Name',
       });
       /* eslint-enable @typescript-eslint/no-unused-vars */

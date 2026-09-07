@@ -13,7 +13,7 @@ interface RefundListResponse extends Types.APIResponse {
 interface RefundCreateRequest {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
 
-  amount: string;
+  amount: number;
 
   // Resources linked to this Refund.
   links: Types.RefundCreateRequestLinks;
@@ -76,7 +76,7 @@ interface RefundCreateRequest {
   // contact our support team (mailto:support@gocardless.com) for more
   // information.
 
-  total_amount_confirmation?: string;
+  total_amount_confirmation?: number;
 }
 
 interface RefundListRequest {
@@ -93,7 +93,7 @@ interface RefundListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.

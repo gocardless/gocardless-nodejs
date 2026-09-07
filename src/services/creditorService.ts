@@ -50,7 +50,7 @@ interface CreditorListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 }
 
 interface CreditorUpdateRequest {

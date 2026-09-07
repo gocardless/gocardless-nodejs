@@ -122,7 +122,7 @@ describe('OutboundPaymentImports Code Samples', () => {
     try {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       const resp = await client.outboundPaymentImports.list({
-        limit: '10',
+        limit: 10,
       });
       /* eslint-enable @typescript-eslint/no-unused-vars */
     } finally {

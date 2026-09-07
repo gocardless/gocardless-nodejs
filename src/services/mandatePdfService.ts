@@ -144,7 +144,7 @@ interface MandatePdfCreateRequest {
   // mandate. In the lowest denomination for the currency (cents in USD). Is
   // required if `subscription_frequency` has been provided.
 
-  subscription_amount?: string;
+  subscription_amount?: number;
 
   // For American customers only. Frequency of the subscription being authorised
   // by the mandate. One of `weekly`, `monthly` or `yearly`. Is required if

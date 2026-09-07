@@ -51,8 +51,8 @@ describe('Refunds Code Samples', () => {
     try {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       const refund = await client.refunds.create({
-        amount: '100',
-        total_amount_confirmation: '150',
+        amount: 100,
+        total_amount_confirmation: 150,
         reference: 'Acme refund',
         metadata: {
           reason: 'late delivery',

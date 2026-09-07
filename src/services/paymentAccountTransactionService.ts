@@ -27,7 +27,7 @@ interface PaymentAccountTransactionListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // The beginning of query period
 

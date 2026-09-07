@@ -53,7 +53,7 @@ describe('BillingRequests Code Samples', () => {
       const billingRequest = await client.billingRequests.create({
         payment_request: {
           description: 'First Payment',
-          amount: '500',
+          amount: 500,
           currency: 'GBP',
         },
         mandate_request: {
