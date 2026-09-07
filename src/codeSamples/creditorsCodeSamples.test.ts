@@ -83,7 +83,7 @@ describe('Creditors Code Samples', () => {
       const creditors = await client.creditors.list();
 
       // List the first three creditors.
-      const limitedCreditors = await client.creditors.list({ limit: '3' });
+      const limitedCreditors = await client.creditors.list({ limit: 3 });
       /* eslint-enable @typescript-eslint/no-unused-vars */
     } finally {
       console.log = originalLog;

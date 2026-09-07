@@ -15,7 +15,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
 
-  app_fee?: string;
+  app_fee?: number;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
@@ -100,7 +100,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
   // error
   // will be returned.
 
-  total_amount: string;
+  total_amount: number;
 }
 
 interface InstalmentScheduleCreateWithScheduleRequest {
@@ -108,7 +108,7 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
 
-  app_fee?: string;
+  app_fee?: number;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
@@ -194,7 +194,7 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // error
   // will be returned.
 
-  total_amount: string;
+  total_amount: number;
 }
 
 interface InstalmentScheduleListRequest {
@@ -216,7 +216,7 @@ interface InstalmentScheduleListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // ID of the associated mandate
   // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)

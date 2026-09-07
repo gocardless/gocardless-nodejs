@@ -121,7 +121,7 @@ interface CustomerListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // The direction to sort in.
   // One of:

@@ -51,7 +51,7 @@ describe('Payments Code Samples', () => {
     try {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       const payment = await client.payments.create({
-        amount: '100',
+        amount: 100,
         currency: 'GBP',
         charge_date: '2014-05-19',
         reference: 'WINEBOX001',

@@ -14,17 +14,17 @@ interface SubscriptionCreateRequest {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP, cents
   // in EUR).
 
-  amount: string;
+  amount: number;
 
   // The amount to be deducted from each payment as an app fee, to be paid to the
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
 
-  app_fee?: string;
+  app_fee?: number;
 
   // The total number of payments that should be taken by this subscription.
 
-  count?: string;
+  count?: number;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
   // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
@@ -35,7 +35,7 @@ interface SubscriptionCreateRequest {
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
   // `-1` to indicate the last day of the month.
 
-  day_of_month?: string;
+  day_of_month?: number;
 
   // Date on or after which no further payments should be created.
   //
@@ -51,7 +51,7 @@ interface SubscriptionCreateRequest {
   // than or equal to `1`. Must result in at least one charge date per year.
   // Defaults to `1`.
 
-  interval?: string;
+  interval?: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly` or
   // `yearly`.
@@ -127,7 +127,7 @@ interface SubscriptionListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Unique identifier, beginning with "MD". Note that this prefix may not apply
   // to mandates created before 2016.
@@ -152,13 +152,13 @@ interface SubscriptionUpdateRequest {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP, cents
   // in EUR).
 
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from each payment as an app fee, to be paid to the
   // partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
 
-  app_fee?: string;
+  app_fee?: number;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.

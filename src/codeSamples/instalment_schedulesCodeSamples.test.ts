@@ -53,21 +53,21 @@ describe('InstalmentSchedules Code Samples', () => {
       const instalmentSchedule = await client.instalmentSchedules.createWithDates(
         {
           name: 'ACME Invoice 103',
-          total_amount: '10000', // 100 GBP in pence
-          app_fee: '10', // Your 10 pence fee per instalment
+          total_amount: 10000, // 100 GBP in pence
+          app_fee: 10, // Your 10 pence fee per instalment
           currency: 'GBP',
           instalments: [
             {
               charge_date: '2019-08-20',
-              amount: '3400',
+              amount: 3400,
             },
             {
               charge_date: '2019-09-03',
-              amount: '3400',
+              amount: 3400,
             },
             {
               charge_date: '2019-09-17',
-              amount: '3200',
+              amount: 3200,
             },
           ],
           links: {
@@ -104,15 +104,15 @@ describe('InstalmentSchedules Code Samples', () => {
       const instalmentSchedule = await client.instalmentSchedules.createWithSchedule(
         {
           name: 'ACME Invoice 103',
-          total_amount: '10000', // 100 GBP in pence, collected from the customer
-          app_fee: '10', // Your 10 pence fee, applied to each instalment,
+          total_amount: 10000, // 100 GBP in pence, collected from the customer
+          app_fee: 10, // Your 10 pence fee, applied to each instalment,
           // to be paid out to you
           currency: 'GBP',
           instalments: {
             start_date: '2019-08-20',
             interval_unit: 'weekly',
             interval: 2,
-            amounts: ['3400', '3400', '3200'],
+            amounts: [3400, 3400, 3200],
           },
           links: {
             mandate: 'MD0000XH9A3T4C',

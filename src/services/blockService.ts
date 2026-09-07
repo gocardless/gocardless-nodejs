@@ -74,7 +74,7 @@ interface BlockListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // The reason you wish to block this payer, can currently be one of
   // 'identity_fraud',

@@ -52,7 +52,7 @@ describe('OutboundPaymentImportEntries Code Samples', () => {
       /* eslint-disable @typescript-eslint/no-unused-vars */
       const resp = await client.outboundPaymentImportEntries.list({
         outbound_payment_import: 'IM123',
-        limit: '10',
+        limit: 10,
       });
       /* eslint-enable @typescript-eslint/no-unused-vars */
     } finally {

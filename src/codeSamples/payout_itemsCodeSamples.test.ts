@@ -53,7 +53,7 @@ describe('PayoutItems Code Samples', () => {
       const payoutItems = await client.payoutItems.list({ payout: 'P0123' });
 
       // List the first three payout items for a payout
-      const limitedPayoutItems = await client.payoutItems.list({ payout: 'P0123', limit: '3' });
+      const limitedPayoutItems = await client.payoutItems.list({ payout: 'P0123', limit: 3 });
       /* eslint-enable @typescript-eslint/no-unused-vars */
     } finally {
       console.log = originalLog;

@@ -71,7 +71,7 @@ interface EventListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // ID of a mandate
   // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates). If

@@ -90,7 +90,7 @@ interface MandateListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Mandate type
 

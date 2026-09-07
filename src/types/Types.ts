@@ -643,7 +643,7 @@ export type BillingRequestInstalmentScheduleRequest = {
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
@@ -696,7 +696,7 @@ export type BillingRequestInstalmentScheduleRequest = {
   // EUR). If the requested payment amounts do not sum up correctly, a
   // validation error
   // will be returned.
-  total_amount?: string;
+  total_amount?: number;
 };
 
 /** Type for a billingrequestinstalmentschedulerequestinstalmentswithdate resource. */
@@ -711,7 +711,7 @@ export type BillingRequestInstalmentScheduleRequestInstalmentsWithDate = {
   // For Variable Recurring Payments (VRP), this must not exceed the mandate's
   // `max_amount_per_payment`
   // constraint.
-  amount: string;
+  amount: number;
 
   // A future date on which the payment should be collected. If the date
   // is before the next_possible_charge_date on the
@@ -732,7 +732,7 @@ export type BillingRequestInstalmentScheduleRequestInstalmentsWithDate = {
 export type BillingRequestInstalmentScheduleRequestInstalmentsWithSchedule = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. cents in USD).
-  amounts: string[];
+  amounts: number[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
@@ -1057,12 +1057,12 @@ export enum BillingRequestMandateRequestVerify {
 /** Type for a billingrequestpaymentrequest resource. */
 export type BillingRequestPaymentRequest = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from the payment as an app fee, to be paid to the
   // partner integration which created the billing request, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
@@ -1324,15 +1324,15 @@ export type BillingRequestResourcesCustomerBillingDetail = {
 export type BillingRequestSubscriptionRequest = {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // The total number of payments that should be taken by this subscription.
-  count?: string | null;
+  count?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
@@ -1340,12 +1340,12 @@ export type BillingRequestSubscriptionRequest = {
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
   // `-1` to indicate the last day of the month.
-  day_of_month?: string | null;
+  day_of_month?: number | null;
 
   // Number of `interval_units` between customer charge dates. Must be greater
   // than or equal to `1`. Must result in at least one charge date per year.
   // Defaults to `1`.
-  interval?: string;
+  interval?: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
@@ -2259,12 +2259,12 @@ export enum BillingRequestWithActionPaymentContextCode {
 /** Type for a billingrequestwithactionpaymentrequest resource. */
 export type BillingRequestWithActionPaymentRequest = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from the payment as an app fee, to be paid to the
   // partner integration which created the billing request, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
@@ -2842,7 +2842,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
@@ -2895,7 +2895,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequest = {
   // EUR). If the requested payment amounts do not sum up correctly, a
   // validation error
   // will be returned.
-  total_amount?: string;
+  total_amount?: number;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsinstalmentschedulerequestinstalmentswithdate resource. */
@@ -2910,7 +2910,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInst
   // For Variable Recurring Payments (VRP), this must not exceed the mandate's
   // `max_amount_per_payment`
   // constraint.
-  amount: string;
+  amount: number;
 
   // A future date on which the payment should be collected. If the date
   // is before the next_possible_charge_date on the
@@ -2931,7 +2931,7 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInst
 export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestInstalmentsWithSchedule = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. cents in USD).
-  amounts: string[];
+  amounts: number[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
@@ -3256,12 +3256,12 @@ export enum BillingRequestWithActionBillingRequestsMandateRequestVerify {
 /** Type for a billingrequestwithactionbillingrequestspaymentrequest resource. */
 export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from the payment as an app fee, to be paid to the
   // partner integration which created the billing request, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
@@ -3523,15 +3523,15 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetai
 export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // The total number of payments that should be taken by this subscription.
-  count?: string | null;
+  count?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "USD" and "CAD" are supported.
@@ -3539,12 +3539,12 @@ export type BillingRequestWithActionBillingRequestsSubscriptionRequest = {
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
   // `-1` to indicate the last day of the month.
-  day_of_month?: string | null;
+  day_of_month?: number | null;
 
   // Number of `interval_units` between customer charge dates. Must be greater
   // than or equal to `1`. Must result in at least one charge date per year.
   // Defaults to `1`.
-  interval?: string;
+  interval?: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
@@ -4845,7 +4845,7 @@ export type InstalmentSchedule = {
   // EUR). If the requested payment amounts do not sum up correctly, a
   // validation error
   // will be returned.
-  total_amount?: string;
+  total_amount?: number;
 };
 
 export enum InstalmentScheduleCurrency {
@@ -4871,7 +4871,7 @@ export type InstalmentScheduleInstalment = {
   // For Variable Recurring Payments (VRP), this must not exceed the mandate's
   // `max_amount_per_payment`
   // constraint.
-  amount: string;
+  amount: number;
 
   // A future date on which the payment should be collected. If the date
   // is before the next_possible_charge_date on the
@@ -4900,7 +4900,7 @@ export type InstalmentScheduleCreateWithDatesRequestLinks = {
 export type InstalmentScheduleInstalments = {
   // List of amounts of each instalment, in the lowest denomination for the
   // currency (e.g. pence in GBP, cents in EUR).
-  amounts: string[];
+  amounts: number[];
 
   // Number of `interval_units` between charge dates. Must be greater than or
   // equal to `1`.
@@ -5583,7 +5583,7 @@ export enum MandatePdfSubscriptionFrequency {
 /** Type for a negativebalancelimit resource. */
 export type NegativeBalanceLimit = {
   // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
-  balance_limit?: string;
+  balance_limit?: number;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
@@ -6292,20 +6292,20 @@ export type Payment = {
   // For Variable Recurring Payments (VRP), this must not exceed the mandate's
   // `max_amount_per_payment`
   // constraint.
-  amount?: string;
+  amount?: number;
 
   // Amount refunded
   // (https://developer.gocardless.com/api-reference/#core-endpoints-refunds),
   // in the lowest denomination for the currency (e.g. pence in GBP, cents in
   // EUR).
-  amount_refunded?: string;
+  amount_refunded?: number;
 
   // The amount to be deducted from the payment as the OAuth app''s fee,
   // in the lowest denomination for the currency (e.g. pence in GBP, cents in
   // EUR).
   //
   // Only present if the payment was created via an app.
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // A future date on which the payment should be collected. If not specified,
   // the payment will be collected as soon as possible. If the value is before
@@ -6502,7 +6502,7 @@ export type PaymentFx = {
 
   // Amount that was paid out in the `fx_currency` after foreign exchange.
   // Present only after the resource has been paid out.
-  fx_amount?: string | null;
+  fx_amount?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
   // currency in which amounts will be paid out (after foreign exchange).
@@ -6663,7 +6663,7 @@ export type PaymentAccountTransactionLinks = {
 /** Type for a payout resource. */
 export type Payout = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // Date the payout is due to arrive in the creditor's bank account.
   // One of:
@@ -6695,7 +6695,7 @@ export type Payout = {
   //
   // If the merchant is invoiced for fees separately from the payout, then
   // `deducted_fees` will be 0.
-  deducted_fees?: string;
+  deducted_fees?: number;
 
   //
   fx?: PayoutFx;
@@ -6770,7 +6770,7 @@ export type PayoutFx = {
 
   // Amount that was paid out in the `fx_currency` after foreign exchange.
   // Present only after the resource has been paid out.
-  fx_amount?: string | null;
+  fx_amount?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
   // currency in which amounts will be paid out (after foreign exchange).
@@ -7127,7 +7127,7 @@ export type RedirectFlowLinks = {
 /** Type for a refund resource. */
 export type Refund = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
@@ -7241,7 +7241,7 @@ export type RefundFx = {
 
   // Amount that was paid out in the `fx_currency` after foreign exchange.
   // Present only after the resource has been paid out.
-  fx_amount?: string | null;
+  fx_amount?: number | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
   // currency in which amounts will be paid out (after foreign exchange).
@@ -7601,15 +7601,15 @@ export interface ListMetaCursor {
 export type Subscription = {
   // Amount in the lowest denomination for the currency (e.g. pence in GBP,
   // cents in EUR).
-  amount?: string;
+  amount?: number;
 
   // The amount to be deducted from each payment as an app fee, to be paid to
   // the partner integration which created the subscription, in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR).
-  app_fee?: string | null;
+  app_fee?: number | null;
 
   // The total number of payments that should be taken by this subscription.
-  count?: string | null;
+  count?: number | null;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
@@ -7623,7 +7623,7 @@ export type Subscription = {
 
   // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
   // `-1` to indicate the last day of the month.
-  day_of_month?: string | null;
+  day_of_month?: number | null;
 
   // The earliest date that will be used as a `charge_date` on payments
   // created for this subscription if it is resumed. Only present for `paused`
@@ -7646,7 +7646,7 @@ export type Subscription = {
   // Number of `interval_units` between customer charge dates. Must be greater
   // than or equal to `1`. Must result in at least one charge date per year.
   // Defaults to `1`.
-  interval?: string;
+  interval?: number;
 
   // The unit of time between customer charge dates. One of `weekly`, `monthly`
   // or `yearly`.
@@ -7767,7 +7767,7 @@ export enum SubscriptionStatus {
 export type SubscriptionUpcomingPayment = {
   // The amount of this payment, in minor unit (e.g. pence in GBP, cents in
   // EUR).
-  amount?: string;
+  amount?: number;
 
   // The date on which this payment will be charged.
   charge_date?: string;

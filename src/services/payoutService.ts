@@ -38,7 +38,7 @@ interface PayoutListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters. Note: This should not be

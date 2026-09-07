@@ -98,7 +98,7 @@ interface CustomerBankAccountListRequest {
 
   // Number of records to return.
 
-  limit?: string;
+  limit?: number;
 }
 
 interface CustomerBankAccountUpdateRequest {
