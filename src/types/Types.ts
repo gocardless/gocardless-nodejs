@@ -304,7 +304,7 @@ export type BillingRequest = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata?: { [key: string]: string } | null;
 
   // Specifies the context or scenario in which the payment is being made.
   // Defines whether the payment is for advance/arrears billing, point of sale
@@ -601,7 +601,7 @@ export enum BillingRequestActionBankAuthorisationAuthorisationType {
 /** Type for a billingrequestactioncollectcustomerdetails resource. */
 export type BillingRequestActionCollectCustomerDetails = {
   // Default customer country code, as determined by scheme and payer location
-  default_country_code?: string;
+  default_country_code?: string | null;
 
   //
   incomplete_fields?: BillingRequestActionCollectCustomerDetailsIncompleteFields;
@@ -941,7 +941,7 @@ export type BillingRequestMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  end_date?: string;
+  end_date?: string | null;
 
   // The maximum amount that can be charged for a single payment in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
@@ -969,7 +969,7 @@ export type BillingRequestMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  start_date?: string;
+  start_date?: string | null;
 };
 
 /** Type for a billingrequestmandaterequestconstraintsperiodiclimit resource. */
@@ -1003,7 +1003,7 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
   // limit.
   //
   // Note: Only supported for the PayTo scheme, where it is optional.
-  max_payments?: number;
+  max_payments?: number | null;
 
   // The maximum total amount that can be charged for all payments in this
   // periodic limit,
@@ -1011,7 +1011,7 @@ export type BillingRequestMandateRequestConstraintsPeriodicLimit = {
   // EUR).
   //
   // Note: Required for VRP. This is not permitted for the PayTo scheme.
-  max_total_amount?: number;
+  max_total_amount?: number | null;
 
   // The repeating period for this mandate. Required whenever a periodic limit
   // is provided
@@ -1199,7 +1199,7 @@ export type BillingRequestResourcesCustomerBankAccount = {
   bank_account_token?: string | null;
 
   // Name of bank, taken from the bank details.
-  bank_name?: string;
+  bank_name?: string | null;
 
   // ISO 3166-1 alpha-2 code
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
@@ -1693,7 +1693,7 @@ export type BillingRequestTemplateMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  end_date?: string;
+  end_date?: string | null;
 
   // The maximum amount that can be charged for a single payment in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
@@ -1721,7 +1721,7 @@ export type BillingRequestTemplateMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  start_date?: string;
+  start_date?: string | null;
 };
 
 /** Type for a billingrequesttemplatemandaterequestconstraintsperiodiclimit resource. */
@@ -1755,7 +1755,7 @@ export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
   // limit.
   //
   // Note: Only supported for the PayTo scheme, where it is optional.
-  max_payments?: number;
+  max_payments?: number | null;
 
   // The maximum total amount that can be charged for all payments in this
   // periodic limit,
@@ -1763,7 +1763,7 @@ export type BillingRequestTemplateMandateRequestConstraintsPeriodicLimit = {
   // EUR).
   //
   // Note: Required for VRP. This is not permitted for the PayTo scheme.
-  max_total_amount?: number;
+  max_total_amount?: number | null;
 
   // The repeating period for this mandate. Required whenever a periodic limit
   // is provided
@@ -2142,7 +2142,7 @@ export type BillingRequestWithActionMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  end_date?: string;
+  end_date?: string | null;
 
   // The maximum amount that can be charged for a single payment in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
@@ -2170,7 +2170,7 @@ export type BillingRequestWithActionMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  start_date?: string;
+  start_date?: string | null;
 };
 
 /** Type for a billingrequestwithactionmandaterequestconstraintsperiodiclimit resource. */
@@ -2204,7 +2204,7 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
   // limit.
   //
   // Note: Only supported for the PayTo scheme, where it is optional.
-  max_payments?: number;
+  max_payments?: number | null;
 
   // The maximum total amount that can be charged for all payments in this
   // periodic limit,
@@ -2212,7 +2212,7 @@ export type BillingRequestWithActionMandateRequestConstraintsPeriodicLimit = {
   // EUR).
   //
   // Note: Required for VRP. This is not permitted for the PayTo scheme.
-  max_total_amount?: number;
+  max_total_amount?: number | null;
 
   // The repeating period for this mandate. Required whenever a periodic limit
   // is provided
@@ -2503,7 +2503,7 @@ export type BillingRequestWithActionBillingRequests = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata?: { [key: string]: string } | null;
 
   // Specifies the context or scenario in which the payment is being made.
   // Defines whether the payment is for advance/arrears billing, point of sale
@@ -2800,7 +2800,7 @@ export enum BillingRequestWithActionBillingRequestsActionBankAuthorisationAuthor
 /** Type for a billingrequestwithactionbillingrequestsactioncollectcustomerdetails resource. */
 export type BillingRequestWithActionBillingRequestsActionCollectCustomerDetails = {
   // Default customer country code, as determined by scheme and payer location
-  default_country_code?: string;
+  default_country_code?: string | null;
 
   //
   incomplete_fields?: BillingRequestWithActionBillingRequestsActionCollectCustomerDetailsIncompleteFields;
@@ -3140,7 +3140,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraints = {
   // will not have an end date. Keep in mind the end date must take into account
   // how long it will
   // take the user to set up this agreement via the Billing Request.
-  end_date?: string;
+  end_date?: string | null;
 
   // The maximum amount that can be charged for a single payment in the lowest
   // denomination for the currency (e.g. pence in GBP, cents in EUR). Note:
@@ -3168,7 +3168,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraints = {
   // This is an optional field and if it is not supplied the start date will be
   // set to the day
   // authorisation happens.
-  start_date?: string;
+  start_date?: string | null;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsmandaterequestconstraintsperiodiclimit resource. */
@@ -3202,7 +3202,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   // limit.
   //
   // Note: Only supported for the PayTo scheme, where it is optional.
-  max_payments?: number;
+  max_payments?: number | null;
 
   // The maximum total amount that can be charged for all payments in this
   // periodic limit,
@@ -3210,7 +3210,7 @@ export type BillingRequestWithActionBillingRequestsMandateRequestConstraintsPeri
   // EUR).
   //
   // Note: Required for VRP. This is not permitted for the PayTo scheme.
-  max_total_amount?: number;
+  max_total_amount?: number | null;
 
   // The repeating period for this mandate. Required whenever a periodic limit
   // is provided
@@ -3398,7 +3398,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
   bank_account_token?: string | null;
 
   // Name of bank, taken from the bank details.
-  bank_name?: string;
+  bank_name?: string | null;
 
   // ISO 3166-1 alpha-2 code
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
