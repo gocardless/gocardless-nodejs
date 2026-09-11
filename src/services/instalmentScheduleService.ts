@@ -250,7 +250,7 @@ export class InstalmentScheduleService {
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/instalment_schedules',
+      path: '/instalment_schedules/create_with_dates',
       method: 'post',
       urlParameters,
       requestParameters,
@@ -276,7 +276,7 @@ export class InstalmentScheduleService {
   ): Promise<InstalmentScheduleResponse> {
     const urlParameters = [];
     const requestParams = {
-      path: '/instalment_schedules',
+      path: '/instalment_schedules/create_with_schedule',
       method: 'post',
       urlParameters,
       requestParameters,
