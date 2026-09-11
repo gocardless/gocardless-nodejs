@@ -34,7 +34,7 @@ describe('InstalmentSchedules Code Samples', () => {
 
   test('create_with_dates code sample executes without error', async () => {
     // Convert :param placeholders to regex wildcards for flexible matching
-    const stubUrl = '/instalment_schedules';
+    const stubUrl = '/instalment_schedules/create_with_dates';
     const pathPattern = new RegExp('^' + stubUrl.replace(/:[\w]+/g, '[^/?]+') + '(?:\\?.*)?$');
 
     // Mock response - repeat multiple times to handle code samples with multiple API calls
@@ -85,7 +85,7 @@ describe('InstalmentSchedules Code Samples', () => {
 
   test('create_with_schedule code sample executes without error', async () => {
     // Convert :param placeholders to regex wildcards for flexible matching
-    const stubUrl = '/instalment_schedules';
+    const stubUrl = '/instalment_schedules/create_with_schedule';
     const pathPattern = new RegExp('^' + stubUrl.replace(/:[\w]+/g, '[^/?]+') + '(?:\\?.*)?$');
 
     // Mock response - repeat multiple times to handle code samples with multiple API calls
