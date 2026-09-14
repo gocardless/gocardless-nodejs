@@ -4586,6 +4586,8 @@ export enum EventDetailsScheme {
   PayTo = 'pay_to',
   SepaCore = 'sepa_core',
   SepaCor1 = 'sepa_cor1',
+  SepaCreditTransfer = 'sepa_credit_transfer',
+  SepaInstantCreditTransfer = 'sepa_instant_credit_transfer',
 }
 
 /** Type for a eventlinks resource. */
@@ -4740,6 +4742,10 @@ export enum EventSourceType {
   User = 'user',
   GcTeam = 'gc_team',
   AccessToken = 'access_token',
+  BillingRequest = 'billing_request',
+  BillingRequestFlow = 'billing_request_flow',
+  Dropin = 'dropin',
+  HostedPaymentPage = 'hosted_payment_page',
 }
 
 /** Type for a export resource. */
