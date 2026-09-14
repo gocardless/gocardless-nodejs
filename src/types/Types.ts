@@ -1631,7 +1631,7 @@ export type BillingRequestTemplate = {
   mandate_request_scheme?: string | null;
 
   // Verification preference for the mandate.
-  mandate_request_verify?: string | null;
+  mandate_request_verify?: `${BillingRequestTemplateMandateRequestVerify}` | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
@@ -1682,6 +1682,13 @@ export type BillingRequestTemplateCreateRequestLinks = {
   // Only required if your account manages multiple creditors.
   creditor?: string;
 };
+
+export enum BillingRequestTemplateMandateRequestVerify {
+  Minimum = 'minimum',
+  Recommended = 'recommended',
+  WhenAvailable = 'when_available',
+  Always = 'always',
+}
 
 /** Type for a billingrequesttemplatemandaterequestconstraints resource. */
 export type BillingRequestTemplateMandateRequestConstraints = {
