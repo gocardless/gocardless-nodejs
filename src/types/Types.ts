@@ -1795,17 +1795,8 @@ export enum BillingRequestTemplateMandateRequestConstraintsPeriodicLimitPeriod {
 
 /** Type for a billingrequestwithaction resource. */
 export type BillingRequestWithAction = {
-  // Bank Authorisations can be used to authorise Billing Requests.
-  // Authorisations
-  // are created against a specific bank, usually the bank that provides the
-  // payer's
-  // account.
-  //
-  // Creation of Bank Authorisations is only permitted from GoCardless hosted
-  // UIs
-  // (see Billing Request Flows) to ensure we meet regulatory requirements for
-  // checkout flows.
-  bank_authorisations?: BillingRequestWithActionBankAuthorisations;
+  // Bank authorisation resource, or null if no bank authorisation was created.
+  bank_authorisations?: BillingRequestWithActionBankAuthorisations | null;
 
   // Billing Requests help create resources that require input or action from a
   // customer. An example of required input might be additional customer billing
@@ -2443,14 +2434,6 @@ export type BillingRequestWithActionBankAuthorisations = {
 
   // URL for an oauth flow that will allow the user to authorise the payment
   url?: string;
-};
-
-/** Type for a billingrequestwithactionbankauthorisationscreaterequestlinks resource. */
-export type BillingRequestWithActionBankAuthorisationsCreateRequestLinks = {
-  // ID of the billing request
-  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests)
-  // against which this authorisation was created.
-  billing_request?: string;
 };
 
 export enum BillingRequestWithActionBankAuthorisationsAuthorisationType {
@@ -3923,7 +3906,7 @@ export type CreditorLinks = {
 /** Type for a creditorschemeidentifier resource. */
 export type CreditorSchemeIdentifier = {
   // The first line of the scheme identifier's support address.
-  address_line1?: string;
+  address_line1?: string | null;
 
   // The second line of the scheme identifier's support address.
   address_line2?: string | null;
@@ -3936,7 +3919,7 @@ export type CreditorSchemeIdentifier = {
   can_specify_mandate_reference?: boolean;
 
   // The city of the scheme identifier's support address.
-  city?: string;
+  city?: string | null;
 
   // ISO 3166-1 alpha-2 code.
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
@@ -3951,7 +3934,7 @@ export type CreditorSchemeIdentifier = {
   currency?: `${CreditorSchemeIdentifierCurrency}`;
 
   // Scheme identifier's support email address.
-  email?: string;
+  email?: string | null;
 
   // Unique identifier, usually beginning with "SU".
   id?: string;
@@ -3971,13 +3954,13 @@ export type CreditorSchemeIdentifier = {
   name?: string;
 
   // Scheme identifier's support phone number.
-  phone_number?: string;
+  phone_number?: string | null;
 
   // The scheme identifier's support postal code.
   postal_code?: string;
 
   // The scheme-unique identifier against which payments are submitted.
-  reference?: string;
+  reference?: string | null;
 
   // The scheme identifier's support address region, county or department.
   region?: string | null;
@@ -4046,7 +4029,7 @@ export type CreditorBankAccount = {
   account_type?: `${CreditorBankAccountAccountType}`;
 
   // Name of bank, taken from the bank details.
-  bank_name?: string;
+  bank_name?: string | null;
 
   // ISO 3166-1 alpha-2 code
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
@@ -4258,7 +4241,7 @@ export type CustomerBankAccount = {
   bank_account_token?: string | null;
 
   // Name of bank, taken from the bank details.
-  bank_name?: string;
+  bank_name?: string | null;
 
   // ISO 3166-1 alpha-2 code
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
@@ -5203,6 +5186,9 @@ export type MandateConsentParameters = {
   // The repeating period for this mandate
   period?: `${MandateConsentParametersPeriod}`;
 
+  // The alignment of the payment period.
+  period_alignment?: `${MandateConsentParametersPeriodAlignment}`;
+
   // The date from which payments can be taken
   start_date?: string;
 };
@@ -5213,6 +5199,11 @@ export enum MandateConsentParametersPeriod {
   Month = 'month',
   Year = 'year',
   Flexible = 'flexible',
+}
+
+export enum MandateConsentParametersPeriodAlignment {
+  Calendar = 'calendar',
+  Consent = 'consent',
 }
 
 export enum MandateConsentType {
@@ -5671,7 +5662,7 @@ export type OutboundPayment = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with
   // key names up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata?: { [key: string]: string } | null;
 
   // An optional reference that will appear on your customer's bank statement.
   // The character limit for this reference is dependent on the scheme.
@@ -5856,7 +5847,7 @@ export type OutboundPaymentImportEntryItem = {
 
   // Key-value store of custom data. Up to 3 keys are permitted, with
   // key names up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata?: { [key: string]: string } | null;
 
   // ID of the customer bank account which receives the outbound payment.
   recipient_bank_account_id: string;
@@ -6588,7 +6579,7 @@ export type PaymentAccount = {
   account_number_ending?: string;
 
   // Name of bank, taken from the bank details.
-  bank_name?: string;
+  bank_name?: string | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
@@ -6976,7 +6967,7 @@ export type RedirectFlow = {
 
   // A description of the item the customer is paying for. This will be shown on
   // the hosted payment pages.
-  description?: string;
+  description?: string | null;
 
   // Unique identifier, beginning with "RE".
   id?: string;
@@ -7439,7 +7430,7 @@ export type ScenarioSimulatorRunRequestLinks = {
 /** Type for a schemeidentifier resource. */
 export type SchemeIdentifier = {
   // The first line of the scheme identifier's support address.
-  address_line1?: string;
+  address_line1?: string | null;
 
   // The second line of the scheme identifier's support address.
   address_line2?: string | null;
@@ -7452,7 +7443,7 @@ export type SchemeIdentifier = {
   can_specify_mandate_reference?: boolean;
 
   // The city of the scheme identifier's support address.
-  city?: string;
+  city?: string | null;
 
   // ISO 3166-1 alpha-2 code.
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
@@ -7467,7 +7458,7 @@ export type SchemeIdentifier = {
   currency?: `${SchemeIdentifierCurrency}`;
 
   // Scheme identifier's support email address.
-  email?: string;
+  email?: string | null;
 
   // Unique identifier, usually beginning with "SU".
   id?: string;
@@ -7487,13 +7478,13 @@ export type SchemeIdentifier = {
   name?: string;
 
   // Scheme identifier's support phone number.
-  phone_number?: string;
+  phone_number?: string | null;
 
   // The scheme identifier's support postal code.
   postal_code?: string;
 
   // The scheme-unique identifier against which payments are submitted.
-  reference?: string;
+  reference?: string | null;
 
   // The scheme identifier's support address region, county or department.
   region?: string | null;
@@ -7935,16 +7926,16 @@ export type Webhook = {
   request_headers?: JsonMap;
 
   // The body of the response from the webhook URL
-  response_body?: string;
+  response_body?: string | null;
 
   // Boolean value indicating the webhook response body was truncated
   response_body_truncated?: boolean;
 
   // The response code from the webhook request
-  response_code?: number;
+  response_code?: number | null;
 
   // The headers sent with the response from the webhook URL
-  response_headers?: JsonMap;
+  response_headers?: JsonMap | null;
 
   // Boolean indicating the content of response headers was truncated
   response_headers_content_truncated?: boolean;
