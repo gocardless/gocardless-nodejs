@@ -66,7 +66,7 @@ interface BillingRequestTemplateCreateRequest {
 
   // Verification preference for the mandate.
 
-  mandate_request_verify?: string;
+  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
@@ -143,7 +143,7 @@ interface BillingRequestTemplateUpdateRequest {
 
   // Verification preference for the mandate.
 
-  mandate_request_verify?: string;
+  mandate_request_verify?: `${Types.BillingRequestTemplateMandateRequestVerify}`;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names up
   // to 50 characters and values up to 500 characters.
