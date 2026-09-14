@@ -1,6 +1,22 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.0.0 (2026-09-14)
+
+### Breaking Changes
+
+#### Add typed nullable references for billing request template fields
+
+`mandate_request_verify`, `mandate_currency`, and `payment_currency` on
+`billing_request_template` are now generated as typed nullable fields instead
+of untyped objects. For example, `mandate_request_verify` is now typed as
+`MandateRequestVerify` (or the language equivalent) rather than a generic
+object type.
+
+This is a breaking change — code that accesses these fields using untyped
+patterns (e.g. casting from `Object` in Java) will need to be updated to
+use the new typed accessors.
+
 ## 9.1.0 (2026-09-11)
 
 ### Features
