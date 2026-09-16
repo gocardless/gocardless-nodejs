@@ -1,6 +1,12 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.0.3 (2026-09-16)
+
+### Fixes
+
+- Clean up docs and use a shared definition of event `include` and `resource_type` enums
+
 ## 10.0.2 (2026-09-14)
 
 ### Fixes
