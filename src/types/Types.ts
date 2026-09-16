@@ -4437,21 +4437,7 @@ export type Event = {
   // from performing a GET request on a mandate.
   resource_metadata?: JsonMap;
 
-  // The resource type for this event. One of:
-  //
-  // - `billing_requests`
-  // - `creditors`
-  // - `exports`
-  // - `instalment_schedules`
-  // - `mandates`
-  // - `payer_authorisations`
-  // - `payments`
-  // - `payouts`
-  // - `refunds`
-  // - `scheme_identifiers`
-  // - `subscriptions`
-  // - `outbound_payments`
-  // - `payment_account_transactions`
+  // The resource type for this event.
   resource_type?: `${EventResourceType}`;
 
   // Audit information about the source of the event.

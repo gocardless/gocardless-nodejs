@@ -45,20 +45,7 @@ interface EventListRequest {
   export?: string;
 
   // Includes linked resources in the response. Must be used with the
-  // `resource_type` parameter specified. The include should be one of:
-  //
-  // - `billing_request`
-  // - `creditor`
-  // - `instalment_schedule`
-  // - `mandate`
-  // - `payer_authorisation`
-  // - `payment`
-  // - `payout`
-  // - `refund`
-  // - `scheme_identifier`
-  // - `subscription`
-  // - `outbound_payment`
-  // - `payment_account_transaction`
+  // `resource_type` parameter specified.
 
   include?: `${Types.EventInclude}`;
 
@@ -123,21 +110,6 @@ interface EventListRequest {
   // `export`,`instalment_schedule`, `mandate`, `payer_authorisation`, `payment`,
   // `payout`, `refund`, `scheme_identifier`, `subscription`, `outbound_payment`
   // or `payment_account_transaction` parameters.
-  // The type can be one of:
-  //
-  // - `billing_requests`
-  // - `creditors`
-  // - `exports`
-  // - `instalment_schedules`
-  // - `mandates`
-  // - `payer_authorisations`
-  // - `payments`
-  // - `payouts`
-  // - `refunds`
-  // - `scheme_identifiers`
-  // - `subscriptions`
-  // - `outbound_payments`
-  // - `payment_account_transactions`
 
   resource_type?: `${Types.EventResourceType}`;
 
