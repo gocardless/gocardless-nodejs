@@ -14,6 +14,11 @@ interface BankAccountHolderVerificationCreateRequest {
   // Resources linked to this BankAccountHolderVerification.
   links: Types.BankAccountHolderVerificationCreateRequestLinks;
 
+  // An alphanumeric reference code used by some financial institutions to
+  // identify an individual account.
+
+  reference?: string;
+
   // Type of the verification that has been performed
   // eg. Confirmation of Payee
   // (https://www.wearepay.uk/what-we-do/overlay-services/confirmation-of-payee/)

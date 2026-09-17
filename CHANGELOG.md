@@ -1,6 +1,12 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.1.0 (2026-09-17)
+
+### Features
+
+- Add "reference" to Create Bank Account Holder Verification
+
 ## 10.0.3 (2026-09-16)
 
 ### Fixes
