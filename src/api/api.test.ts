@@ -3,6 +3,7 @@ import * as nock from 'nock';
 import { Api } from './api';
 import { Environments } from '../constants';
 import * as GoCardlessErrors from '../errors';
+import { ApiRequestSignatureHelper } from '../apiRequestSigning.js';
 
 describe('.request', () => {
   const token = '<TOKEN>';
@@ -559,6 +560,107 @@ describe('.request', () => {
           expect(check.isDone()).toEqual(true);
         });
       });
+    });
+  });
+});
+
+// Records the params `signApiRequest` builds, while leaving the real signing
+// behaviour in place for the tests above.
+jest.mock('../apiRequestSigning.js', () => {
+  const actual = jest.requireActual('../apiRequestSigning.js');
+  const calls: object[] = [];
+
+  class SpiedApiRequestSignatureHelper extends actual.ApiRequestSignatureHelper {
+    static calls = calls;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- mirrors the real constructor's params
+    constructor(params: any) {
+      super(params);
+      calls.push(params);
+    }
+  }
+
+  return { ...actual, ApiRequestSignatureHelper: SpiedApiRequestSignatureHelper };
+});
+
+describe('.signApiRequest', () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- `calls` only exists on the spy
+  const helperCalls = () => (ApiRequestSignatureHelper as any).calls as any[];
+  const token = '<TOKEN>';
+  // In test mode the helper substitutes fixed values for the signature,
+  // `created` and `nonce`, so it needs no real key.
+  const apiRequestSigningOptions = {
+    privateKeyPem: '<PRIVATE_KEY_PEM>',
+    publicKeyId: 'PublicKeyId',
+    testMode: true,
+  };
+
+  // `signApiRequest` and `createRequestOptions` are private, so we reach into
+  // the instance rather than going through the whole `request` flow.
+  const sign = (path: string, method: string, requestParameters = {}) => {
+    const api = new Api(token, Environments.Live, { apiRequestSigningOptions });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const requestOptions = (api as any).createRequestOptions(method, requestParameters);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const signed = (api as any).signApiRequest(path, requestOptions);
+
+    return { signed, signerParams: helperCalls()[helperCalls().length - 1] };
+  };
+
+  beforeEach(() => {
+    helperCalls().length = 0;
+  });
+
+  test('it signs the request and leaves the rest of the request options alone', () => {
+    const { signed, signerParams } = sign('/customers', 'get');
+
+    expect(signerParams).toMatchObject({
+      apiRequestSigningOptions,
+      httpMethod: 'GET',
+      host: 'https://api.gocardless.com',
+      requestPath: '/customers',
+      contentType: 'application/json',
+      created: 'created',
+      nonce: 'nonce',
+    });
+    expect(signed.headers['Gc-Signature']).toEqual('sig-1=:SIG:');
+    expect(signed.headers['Gc-Signature-Input']).toEqual(
+      'sig-1=("@method" "@authority" "@request-target");keyid="PublicKeyId";created=created;nonce="nonce"',
+    );
+    expect(signed.method).toEqual('get');
+    expect(signed.prefixUrl).toEqual('https://api.gocardless.com');
+    expect(signed.headers['Authorization']).toEqual(`Bearer ${token}`);
+  });
+
+  describe('query parameters', () => {
+    test('when present, they are part of the signed request path', () => {
+      const { signerParams } = sign('/customers', 'get', { key: 'value', foo: 'bar' });
+
+      expect(signerParams.requestPath).toEqual('/customers?key=value&foo=bar');
+    });
+
+    test('when absent, the signed request path is just the path', () => {
+      const { signerParams } = sign('/customers', 'get');
+
+      expect(signerParams.requestPath).toEqual('/customers');
+    });
+  });
+
+  describe('a request body', () => {
+    test('when present, its digest and length are signed and the digest header is set', () => {
+      const { signed, signerParams } = sign('/customers', 'post', { key: 'value' });
+
+      expect(signerParams.contentDigest).toEqual('bQMpn7uk4o1bZQB6zs1kNCPbcQv93mxnUNjb8o+A/Iw=');
+      expect(signerParams.contentLength).toEqual(Buffer.byteLength(JSON.stringify({ data: { key: 'value' } })));
+      expect(signed.headers['Content-Digest']).toEqual('sha256=:bQMpn7uk4o1bZQB6zs1kNCPbcQv93mxnUNjb8o+A/Iw=:');
+    });
+
+    test('when absent, no content is signed and no digest header is set', () => {
+      const { signed, signerParams } = sign('/customers', 'get');
+
+      expect(signerParams.contentDigest).toBeUndefined();
+      expect(signerParams.contentLength).toBeUndefined();
+      expect(signed.headers['Content-Digest']).toBeUndefined();
     });
   });
 });

@@ -140,9 +140,10 @@ export class Api {
         : undefined;
     const contentDigest = body !== undefined ? ApiRequestSignatureHelper.getSha256Digest(body) : undefined;
     const contentLength = body !== undefined ? Buffer.byteLength(body, 'utf8') : undefined;
+    const query = requestOptions.searchParams?.toString();
     const signer = new ApiRequestSignatureHelper({
       apiRequestSigningOptions: this.apiRequestSigningOptions,
-      requestPath: path,
+      requestPath: query ? `${path}?${query}` : path,
       contentType: 'application/json',
       host: this._baseUrl,
       httpMethod: requestOptions.method.toUpperCase(),
