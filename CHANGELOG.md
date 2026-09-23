@@ -1,6 +1,12 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.1.3 (2026-09-23)
+
+### Fixes
+
+- Fix a bug where API request signing didn't work when a query parameter was added to the request.
+
 ## 10.1.2 (2026-09-22)
 
 ### Fixes
