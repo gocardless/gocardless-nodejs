@@ -250,6 +250,21 @@ export type BankDetailsLookup = {
   // collect payments from it - you should refer to the available_debit_schemes
   // attribute to determine reachability.
   bic?: string | null;
+
+  // The result of the payer name verification check performed during the
+  // lookup. `null` if no check was performed.
+  //
+  // - `full`: The name provided matches the name held by the bank.
+  // - `close`: The name provided is a close but not exact match to the name
+  // held by the bank.
+  // - `cannot_perform_verification`: A verification was attempted but could not
+  // be completed. This can happen for a number of reasons, including the
+  // account holder's bank not participating in the verification scheme, the
+  // account not being eligible for verification (e.g. the account holder has
+  // opted out), or the bank details not being resolvable, among others.
+  // - `null`: Verification was not triggered. Either PNV is not supported for
+  // the scheme, or PNV feature is disabled for your organisation.
+  payer_name_verification_result?: `${BankDetailsLookupPayerNameVerificationResult}` | null;
 };
 
 export enum BankDetailsLookupAvailableDebitScheme {
@@ -263,6 +278,12 @@ export enum BankDetailsLookupAvailableDebitScheme {
   Pad = 'pad',
   PayTo = 'pay_to',
   SepaCore = 'sepa_core',
+}
+
+export enum BankDetailsLookupPayerNameVerificationResult {
+  Full = 'full',
+  Close = 'close',
+  CannotPerformVerification = 'cannot_perform_verification',
 }
 
 /** Type for a billingrequest resource. */
