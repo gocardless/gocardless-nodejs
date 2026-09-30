@@ -6109,6 +6109,9 @@ export type PayerAuthorisationBankAccount = {
   // for more information. Alternatively you can provide an `iban`.
   bank_code?: string | null;
 
+  // Name of bank, taken from the bank details.
+  bank_name?: string | null;
+
   // Branch code - see local details
   // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
   // for more information. Alternatively you can provide an `iban`.
