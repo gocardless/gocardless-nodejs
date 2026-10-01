@@ -4962,11 +4962,6 @@ export enum InstalmentScheduleStatus {
 
 /** Type for a institution resource. */
 export type Institution = {
-  // Flag to show if selecting this institution in the select_institution action
-  // can auto-complete the collect_bank_account action. The bank can return the
-  // payer's bank account details to GoCardless.
-  autocompletes_collect_bank_account?: boolean;
-
   // ISO 3166-1
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
   // alpha-2 code. The country code of the institution. If nothing is provided,
@@ -4991,9 +4986,6 @@ export type Institution = {
   // The roles assigned to this institution, representing the open banking
   // features it supports.
   roles?: string[];
-
-  // The status of the institution
-  status?: `${InstitutionStatus}`;
 };
 
 /** Type for a institutionbranchcode resource. */
@@ -5025,12 +5017,6 @@ export type InstitutionLimits = {
   // generated access token
   single?: JsonMap | null;
 };
-
-export enum InstitutionStatus {
-  Enabled = 'enabled',
-  Disabled = 'disabled',
-  TemporarilyDisabled = 'temporarily_disabled',
-}
 
 /** Type for a logo resource. */
 export type Logo = {
@@ -5174,25 +5160,38 @@ export enum MandateMandateType {
 
 /** Type for a mandateconsentparameters resource. */
 export type MandateConsentParameters = {
+  // The currency for the consent parameters
+  currency?: string;
+
   // The latest date at which payments can be taken, must occur after start_date
   // if present
-  end_date?: string;
+  end_date?: string | null;
+
+  // The fixed amount for each payment, in the lowest denomination for the
+  // currency
+  fixed_amount_per_payment?: number | null;
+
+  // Unique identifier for the consent parameters
+  id?: string;
 
   // The maximum amount that can be charged for a single payment
-  max_amount_per_payment?: number;
+  max_amount_per_payment?: number | null;
 
   // The maximum total amount that can be charged for all payments in this
   // period
-  max_amount_per_period?: number;
+  max_amount_per_period?: number | null;
 
   // The maximum number of payments that can be collected in this period
-  max_payments_per_period?: number;
+  max_payments_per_period?: number | null;
 
   // The repeating period for this mandate
   period?: `${MandateConsentParametersPeriod}`;
 
   // The alignment of the payment period.
   period_alignment?: `${MandateConsentParametersPeriodAlignment}`;
+
+  // The scheme associated with the consent parameters
+  scheme?: string;
 
   // The date from which payments can be taken
   start_date?: string;
@@ -5209,6 +5208,7 @@ export enum MandateConsentParametersPeriod {
 export enum MandateConsentParametersPeriodAlignment {
   Calendar = 'calendar',
   Consent = 'consent',
+  CreationDate = 'creation_date',
 }
 
 export enum MandateConsentType {
