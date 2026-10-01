@@ -1,6 +1,12 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.6.0 (2026-10-01)
+
+### Features
+
+- Made account_number_ending nullable across all resources that reference this shared definition
+
 ## 10.5.0 (2026-10-01)
 
 ### Features
