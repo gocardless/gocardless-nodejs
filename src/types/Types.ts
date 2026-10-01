@@ -1207,7 +1207,7 @@ export type BillingRequestResourcesCustomerBankAccount = {
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-  account_number_ending?: string;
+  account_number_ending?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
@@ -3403,7 +3403,7 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBankAccount 
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-  account_number_ending?: string;
+  account_number_ending?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
@@ -4048,7 +4048,7 @@ export type CreditorBankAccount = {
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-  account_number_ending?: string;
+  account_number_ending?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
@@ -4256,7 +4256,7 @@ export type CustomerBankAccount = {
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-  account_number_ending?: string;
+  account_number_ending?: string | null;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
@@ -6095,7 +6095,7 @@ export type PayerAuthorisationBankAccount = {
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-  account_number_ending?: string;
+  account_number_ending?: string | null;
 
   // Account number suffix (only for bank accounts denominated in NZD) - see
   // local details
@@ -6591,7 +6591,7 @@ export type PaymentAccount = {
 
   // The last few digits of the account number. Currently 4 digits for NZD bank
   // accounts and 2 digits for other currencies.
-  account_number_ending?: string;
+  account_number_ending?: string | null;
 
   // Name of bank, taken from the bank details.
   bank_name?: string | null;
