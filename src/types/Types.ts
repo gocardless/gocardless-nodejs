@@ -4368,16 +4368,14 @@ export type CustomerNotification = {
   links?: CustomerNotificationLinks;
 
   // The type of notification the customer shall receive.
-  // One of:
   //
-  // - `payment_created`
-  // - `payment_cancelled`
-  // - `mandate_created`
-  // - `mandate_blocked`
-  // - `subscription_created`
-  // - `subscription_cancelled`
-  // - `instalment_schedule_created`
-  // - `instalment_schedule_cancelled`
+  // Note: today, only `payment_created`, `mandate_created` and
+  // `subscription_created`
+  // notifications are actually supported. The remaining values are reserved for
+  // now.
+  //
+  // Making a request for an event of any other type will get a `403`
+  // `customer_notifications_notification_type_forbidden` error.
   type?: `${CustomerNotificationType}`;
 };
 
