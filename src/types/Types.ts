@@ -1602,6 +1602,13 @@ export type BillingRequestFlowPrefilledCustomer = {
   // Customer's first name.
   given_name?: string | null;
 
+  // ISO 639-1 (https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code.
+  // Used as the language for the payment page.
+  language?: string | null;
+
+  // The customer's phone number.
+  phone_number?: string | null;
+
   // The customer's postal code.
   postal_code?: string | null;
 
