@@ -7944,7 +7944,7 @@ export type Webhook = {
   response_body?: string | null;
 
   // Boolean value indicating the webhook response body was truncated
-  response_body_truncated?: boolean;
+  response_body_truncated?: boolean | null;
 
   // The response code from the webhook request
   response_code?: number | null;
@@ -7953,10 +7953,10 @@ export type Webhook = {
   response_headers?: JsonMap | null;
 
   // Boolean indicating the content of response headers was truncated
-  response_headers_content_truncated?: boolean;
+  response_headers_content_truncated?: boolean | null;
 
   // Boolean indicating the number of response headers was truncated
-  response_headers_count_truncated?: boolean;
+  response_headers_count_truncated?: boolean | null;
 
   // Boolean indicating whether the request was successful or failed
   successful?: boolean;
