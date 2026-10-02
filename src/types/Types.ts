@@ -204,7 +204,7 @@ export type BankAuthorisation = {
   redirect_uri?: string;
 
   // URL for an oauth flow that will allow the user to authorise the payment
-  url?: string;
+  url?: string | null;
 };
 
 /** Type for a bankauthorisationcreaterequestlinks resource. */
@@ -1842,7 +1842,7 @@ export type BillingRequestWithAction = {
 /** Type for a billingrequestwithactionactions resource. */
 export type BillingRequestWithActionActions = {
   // URL for an oauth flow that will allow the user to authorise the payment
-  bank_authorisation_redirect_uri?: string;
+  bank_authorisation_redirect_uri?: string | null;
 
   //
   collect_bank_account?: BillingRequestWithActionActionsCollectBankAccount;
@@ -2461,7 +2461,7 @@ export type BillingRequestWithActionBankAuthorisations = {
   redirect_uri?: string;
 
   // URL for an oauth flow that will allow the user to authorise the payment
-  url?: string;
+  url?: string | null;
 };
 
 export enum BillingRequestWithActionBankAuthorisationsAuthorisationType {
