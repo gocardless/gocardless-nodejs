@@ -1,6 +1,12 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.8.0 (2026-10-02)
+
+### Features
+
+- Fixed response_body_truncated, response_headers_content_truncated, and response_headers_count_truncated fields on Webhooks to correctly allow null values.
+
 ## 10.7.0 (2026-10-02)
 
 ### Features
