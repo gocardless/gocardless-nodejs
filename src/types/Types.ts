@@ -3951,7 +3951,7 @@ export type CreditorSchemeIdentifier = {
 
   // ISO 3166-1 alpha-2 code.
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-  country_code?: string;
+  country_code?: string | null;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
@@ -3985,7 +3985,7 @@ export type CreditorSchemeIdentifier = {
   phone_number?: string | null;
 
   // The scheme identifier's support postal code.
-  postal_code?: string;
+  postal_code?: string | null;
 
   // The scheme-unique identifier against which payments are submitted.
   reference?: string | null;
@@ -7462,7 +7462,7 @@ export type SchemeIdentifier = {
 
   // ISO 3166-1 alpha-2 code.
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-  country_code?: string;
+  country_code?: string | null;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
@@ -7496,7 +7496,7 @@ export type SchemeIdentifier = {
   phone_number?: string | null;
 
   // The scheme identifier's support postal code.
-  postal_code?: string;
+  postal_code?: string | null;
 
   // The scheme-unique identifier against which payments are submitted.
   reference?: string | null;
