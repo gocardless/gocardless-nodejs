@@ -1,6 +1,7 @@
 import * as fs from 'node:fs';
 import * as nock from 'nock';
 import { Api } from './api';
+import { GoCardlessClient } from '../client';
 import { Environments } from '../constants';
 import * as GoCardlessErrors from '../errors';
 import { ApiRequestSignatureHelper } from '../apiRequestSigning.js';
@@ -559,6 +560,126 @@ describe('.request', () => {
 
           expect(check.isDone()).toEqual(true);
         });
+      });
+    });
+
+    describe('URL parameter encoding', () => {
+      let api;
+
+      beforeEach(() => {
+        api = new Api(token, environment, {});
+      });
+
+      const request = (identity: string) =>
+        api.request({
+          path: '/customers/:identity',
+          method: 'get',
+          urlParameters: [{ key: 'identity', value: identity }],
+          fetch: null,
+        });
+
+      test('leaves a well-formed identity unchanged', async () => {
+        const check = nock('https://api.gocardless.com').get('/customers/CU123').reply(200, {});
+
+        await request('CU123');
+
+        expect(check.isDone()).toEqual(true);
+      });
+
+      test('rejects a slash rather than sending a request that cannot succeed', async () => {
+        const traversed = nock('https://api.gocardless.com').get('/mandates').reply(200, {});
+        const encoded = nock('https://api.gocardless.com').get('/customers/..%2Fmandates').reply(200, {});
+
+        await expect(request('../mandates')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+
+        expect(traversed.isDone()).toEqual(false);
+        expect(encoded.isDone()).toEqual(false);
+      });
+
+      test('rejects a question mark so the identity cannot inject query parameters', async () => {
+        const injected = nock('https://api.gocardless.com').get('/customers/').query({ limit: '500' }).reply(200, {});
+
+        await expect(request('?limit=500')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+
+        expect(injected.isDone()).toEqual(false);
+      });
+
+      test('rejects a fragment marker', async () => {
+        await expect(request('CU123#x')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+      });
+
+      test('rejects a control character', async () => {
+        await expect(request('CU123\n')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+      });
+
+      test('rejects a dot identity rather than collapsing to the collection endpoint', async () => {
+        const collection = nock('https://api.gocardless.com').get('/customers/').reply(200, {});
+
+        await expect(request('.')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+
+        expect(collection.isDone()).toEqual(false);
+      });
+
+      test('rejects a double-dot identity rather than walking up the path', async () => {
+        const parent = nock('https://api.gocardless.com').get('/').reply(200, {});
+
+        await expect(request('..')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+
+        expect(parent.isDone()).toEqual(false);
+      });
+
+      test('rejects an empty identity rather than addressing the collection', async () => {
+        const collection = nock('https://api.gocardless.com').get('/customers/').reply(200, {});
+
+        await expect(request('')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+
+        expect(collection.isDone()).toEqual(false);
+      });
+
+      test('applies to identities passed through a resource service', async () => {
+        const collection = nock('https://api.gocardless.com').get('/customers/').reply(200, { customers: [] });
+        const client = new GoCardlessClient(token, environment);
+
+        await expect(client.customers.find('.')).rejects.toThrow(GoCardlessErrors.GoCardlessException);
+
+        expect(collection.isDone()).toEqual(false);
+      });
+    });
+
+    describe('request path and the configured origin', () => {
+      // `got` builds the final URL by concatenating `prefixUrl` with the path, so a path that
+      // looks like an absolute or scheme-relative URL stays on the configured host instead of
+      // replacing it. The access token travels with every request, so this behaviour is what
+      // keeps a path from sending the token elsewhere - these tests pin it, since a change to
+      // how `got` joins the two would be a silent regression.
+      let api;
+
+      beforeEach(() => {
+        api = new Api(token, environment, {});
+      });
+
+      const requestPath = (path: string) => api.request({ path, method: 'get', fetch: null });
+
+      test('keeps an absolute URL on the configured host', async () => {
+        const elsewhere = nock('http://elsewhere.example.com').get('/capture').reply(200, {});
+        const configured = nock('https://api.gocardless.com').get(/.*/).reply(200, {});
+
+        await requestPath('http://elsewhere.example.com/capture');
+
+        expect(elsewhere.isDone()).toEqual(false);
+        expect(configured.isDone()).toEqual(true);
+      });
+
+      test('never sends a scheme-relative URL to the host it names', async () => {
+        // The leading slash is stripped for `prefixUrl`, leaving a path `got` refuses to join
+        // rather than one that resolves away from the configured host. Either way the request
+        // does not reach the named host, which is what matters here.
+        const elsewhere = nock('https://elsewhere.example.com').get('/capture').reply(200, {});
+        nock('https://api.gocardless.com').get(/.*/).reply(200, {});
+
+        await expect(requestPath('//elsewhere.example.com/capture')).rejects.toThrow();
+
+        expect(elsewhere.isDone()).toEqual(false);
       });
     });
   });
