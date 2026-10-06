@@ -557,6 +557,10 @@ export enum BillingRequestNotificationType {
 
 /** Type for a billingrequestaction resource. */
 export type BillingRequestAction = {
+  // List of country codes supported for collecting bank account details, for
+  // the collect_bank_account action
+  available_country_codes?: string[];
+
   // List of currencies the current mandate supports
   available_currencies?: string[];
 
@@ -1115,6 +1119,13 @@ export type BillingRequestPaymentRequest = {
   // for payments on the PayTo scheme or payments using the Direct Funds
   // settlement model on the Faster Payments scheme.
   reference?: string | null;
+
+  // On failure, automatically retry the payment using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
+  retry_if_possible?: boolean;
 
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
@@ -2753,6 +2764,10 @@ export enum BillingRequestWithActionBillingRequestsNotificationType {
 
 /** Type for a billingrequestwithactionbillingrequestsaction resource. */
 export type BillingRequestWithActionBillingRequestsAction = {
+  // List of country codes supported for collecting bank account details, for
+  // the collect_bank_account action
+  available_country_codes?: string[];
+
   // List of currencies the current mandate supports
   available_currencies?: string[];
 
@@ -3311,6 +3326,13 @@ export type BillingRequestWithActionBillingRequestsPaymentRequest = {
   // for payments on the PayTo scheme or payments using the Direct Funds
   // settlement model on the Faster Payments scheme.
   reference?: string | null;
+
+  // On failure, automatically retry the payment using intelligent retries
+  // (https://developer.gocardless.com/success-plus/overview). Default is
+  // `false`. Important: To be able to use intelligent retries, Success+ needs
+  // to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
+  retry_if_possible?: boolean;
 
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
