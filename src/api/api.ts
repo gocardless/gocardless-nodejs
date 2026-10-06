@@ -36,6 +36,32 @@ interface APIRequestParameters {
   customHeaders?: object;
 }
 
+// A URL parameter is a single path segment, so values that could move the request to a
+// different endpoint - path separators, control characters, `.`, `..` (encoding can't make
+// these safe - `got`'s URL parser strips them regardless), and empty values - are rejected
+// instead.
+const FORBIDDEN_URL_PARAMETER_CHARACTERS = /[/?#\u0000-\u001f\u007f]/;
+
+const encodeUrlParameter = (key: string, value: string): string => {
+  if (value === undefined || value === null || value === '') {
+    throw new GoCardlessErrors.GoCardlessException(`No value provided for URL parameter '${key}'`);
+  }
+
+  if (value === '.' || value === '..') {
+    throw new GoCardlessErrors.GoCardlessException(
+      `Invalid value for URL parameter '${key}': '${value}' would change which endpoint the request is sent to`,
+    );
+  }
+
+  if (FORBIDDEN_URL_PARAMETER_CHARACTERS.test(value)) {
+    throw new GoCardlessErrors.GoCardlessException(
+      `Invalid value for URL parameter '${key}': '${value}' contains a character that is not allowed in a path segment`,
+    );
+  }
+
+  return encodeURIComponent(value);
+};
+
 export class Api {
   private _token: string;
   private _environment: Environments;
@@ -81,7 +107,7 @@ export class Api {
     fetch,
   }: APIRequestParameters) {
     urlParameters.forEach((urlParameter) => {
-      path = path.replace(`:${urlParameter.key}`, urlParameter.value);
+      path = path.replace(`:${urlParameter.key}`, encodeUrlParameter(urlParameter.key, urlParameter.value));
     });
 
     // `got` adds a slash to the end of `prefix_url` so we don't want one at the
