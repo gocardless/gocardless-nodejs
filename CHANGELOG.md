@@ -1,6 +1,29 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.10.0 (2026-10-06)
+
+### Features
+
+#### Reject URL parameters that could change which endpoint is addressed
+
+A URL parameter is a single path segment — a resource identity — but the escaping
+applied to one varied by language, and in Go, Node, PHP and .NET there was none at
+all. A value carrying path syntax could move a request to an endpoint the caller
+never asked for: `find("../mandates")` reached the mandates collection, and
+`find("?limit=500")` injected a query parameter.
+
+Escaping alone cannot fix this, because `.` and `..` are dot segments that a path
+resolver strips whether or not they are encoded, and an empty value addresses the
+collection rather than one resource. Values that could change which endpoint is
+addressed are therefore rejected rather than escaped: `/`, `?`, `#`, control
+characters, `.`, `..` and the empty string now raise an error instead of producing a
+request that quietly 404s. Everything else is escaped as before.
+
+No valid GoCardless resource identity contains any of these characters, so correct
+code is unaffected. Ruby and Java previously encoded `/` as `%2F` and sent the
+request; they now raise.
+
 ## 10.9.0 (2026-10-05)
 
 ### Features
