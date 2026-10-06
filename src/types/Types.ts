@@ -239,17 +239,17 @@ export type BankDetailsLookup = {
   // (https://developer.gocardless.com/api-reference/#mandates_scheme) supported
   // for this bank account. This will be an empty array if the bank account is
   // not reachable by any schemes.
-  available_debit_schemes?: `${BankDetailsLookupAvailableDebitScheme}`[];
+  available_debit_schemes: `${BankDetailsLookupAvailableDebitScheme}`[];
 
   // The name of the bank with which the account is held (if available).
-  bank_name?: string | null;
+  bank_name: string | null;
 
   // ISO 9362 SWIFT BIC of the bank with which the account is held.
   //
   // Even if no BIC is returned for an account, GoCardless may still be able to
   // collect payments from it - you should refer to the available_debit_schemes
   // attribute to determine reachability.
-  bic?: string | null;
+  bic: string | null;
 
   // The result of the payer name verification check performed during the
   // lookup. `null` if no check was performed.
@@ -264,7 +264,7 @@ export type BankDetailsLookup = {
   // opted out), or the bank details not being resolvable, among others.
   // - `null`: Verification was not triggered. Either PNV is not supported for
   // the scheme, or PNV feature is disabled for your organisation.
-  payer_name_verification_result?: `${BankDetailsLookupPayerNameVerificationResult}` | null;
+  payer_name_verification_result: `${BankDetailsLookupPayerNameVerificationResult}` | null;
 };
 
 export enum BankDetailsLookupAvailableDebitScheme {
@@ -1624,67 +1624,67 @@ export type BillingRequestFlowPrefilledCustomer = {
 export type BillingRequestTemplate = {
   // Permanent URL that customers can visit to allow them to complete a flow
   // based on this template, before being returned to the `redirect_uri`.
-  authorisation_url?: string;
+  authorisation_url: string;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // Unique identifier, beginning with "BRT".
-  id?: string;
+  id: string;
 
   // Constraints that will apply to the mandate_request. (Optional) Specifically
   // required for PayTo and VRP.
-  mandate_request_constraints?: BillingRequestTemplateMandateRequestConstraints | null;
+  mandate_request_constraints: BillingRequestTemplateMandateRequestConstraints | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code.
-  mandate_request_currency?: string | null;
+  mandate_request_currency: string | null;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  mandate_request_description?: string | null;
+  mandate_request_description: string | null;
 
   // Key-value store of custom data that will be applied to the mandate created
   // when this request is fulfilled. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  mandate_request_metadata?: { [key: string]: string } | null;
+  mandate_request_metadata: { [key: string]: string } | null;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to" and
   // "sepa_core" are supported. Optional for mandate only requests - if left
   // blank, the payer will be able to select the currency/scheme to pay with
   // from a list of your available schemes.
-  mandate_request_scheme?: string | null;
+  mandate_request_scheme: string | null;
 
   // Verification preference for the mandate.
-  mandate_request_verify?: `${BillingRequestTemplateMandateRequestVerify}` | null;
+  mandate_request_verify: `${BillingRequestTemplateMandateRequestVerify}` | null;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata: { [key: string]: string };
 
   // Name for the template. Provides a friendly human name for the template, as
   // it is shown in the dashboard. Must not exceed 255 characters.
-  name?: string;
+  name: string;
 
   // Amount in full.
-  payment_request_amount?: string | null;
+  payment_request_amount: string | null;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. `GBP` and `EUR` supported; `GBP` with your customers in the UK and
   // for `EUR` with your customers in supported Eurozone countries only.
-  payment_request_currency?: string | null;
+  payment_request_currency: string | null;
 
   // A human-readable description of the payment and/or mandate. This will be
   // displayed to the payer when authorising the billing request.
-  payment_request_description?: string | null;
+  payment_request_description: string | null;
 
   // Key-value store of custom data that will be applied to the payment created
   // when this request is fulfilled. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  payment_request_metadata?: { [key: string]: string } | null;
+  payment_request_metadata: { [key: string]: string } | null;
 
   // (Optional) A scheme used for Open Banking payments. Currently
   // `faster_payments` is supported in the UK (GBP) and `sepa_credit_transfer`
@@ -1692,15 +1692,15 @@ export type BillingRequestTemplate = {
   // countries (EUR). For Eurozone countries, `sepa_credit_transfer` is used as
   // the default. Please be aware that `sepa_instant_credit_transfer` may incur
   // an additional fee for your customer.
-  payment_request_scheme?: string | null;
+  payment_request_scheme: string | null;
 
   // URL that the payer can be redirected to after completing the request flow.
-  redirect_uri?: string | null;
+  redirect_uri: string | null;
 
   // Dynamic timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times)
   // recording when this resource was last updated.
-  updated_at?: string;
+  updated_at: string;
 };
 
 /** Type for a billingrequesttemplatecreaterequestlinks resource. */
@@ -4125,16 +4125,16 @@ export enum CreditorBankAccountVerificationStatus {
 export type CurrencyExchangeRate = {
   // The exchange rate from the source to target currencies provided with up to
   // 10 decimal places.
-  rate?: string;
+  rate: string;
 
   // Source currency
-  source?: string;
+  source: string;
 
   // Target currency
-  target?: string;
+  target: string;
 
   // Time at which the rate was retrieved from the provider.
-  time?: string;
+  time: string;
 };
 
 /** Type for a customer resource. */
@@ -5028,7 +5028,7 @@ export type InstitutionLimits = {
 /** Type for a logo resource. */
 export type Logo = {
   // Unique identifier, beginning with "LO".
-  id?: string;
+  id: string;
 };
 
 /** Type for a logocreateforcreditorrequestlinks resource. */
@@ -5268,18 +5268,18 @@ export type MandateImport = {
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // Unique identifier, beginning with "IM".
-  id?: string;
+  id: string;
 
   // Resources linked to this MandateImport.
-  links?: MandateImportLinks;
+  links: MandateImportLinks;
 
   // The scheme of the mandates to be imported.
   // All mandates in a single mandate
   // import must be for the same scheme.
-  scheme?: `${MandateImportScheme}`;
+  scheme: `${MandateImportScheme}`;
 
   // The status of the mandate import.
   //
@@ -5294,7 +5294,7 @@ export type MandateImport = {
   // - `processing`: Once a mandate import has been approved by a GoCardless
   // team member it will be in this state while mandates are imported.
   // - `processed`: When all mandates have been imported successfully.
-  status?: `${MandateImportStatus}`;
+  status: `${MandateImportStatus}`;
 };
 
 /** Type for a mandateimportcreaterequestlinks resource. */
@@ -5336,20 +5336,20 @@ export type MandateImportEntry = {
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // Resources linked to this MandateImportEntry.
-  links?: MandateImportEntryLinks;
+  links: MandateImportEntryLinks;
 
   // Per-resource processing errors
-  processing_errors?: JsonMap | null;
+  processing_errors: JsonMap | null;
 
   // A unique identifier for this entry, which you can use (once the import has
   // been
   // processed by GoCardless) to identify the records that have been created.
   // Limited
   // to 255 characters.
-  record_identifier?: string | null;
+  record_identifier: string | null;
 };
 
 /** Type for a mandateimportentryamendment resource. */
@@ -5599,23 +5599,23 @@ export enum MandatePdfSubscriptionFrequency {
 /** Type for a negativebalancelimit resource. */
 export type NegativeBalanceLimit = {
   // The limit amount in pence (e.g. 10000 for a -100 GBP limit).
-  balance_limit?: number;
+  balance_limit: number;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this limit was created.
-  created_at?: string;
+  created_at: string;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: `${NegativeBalanceLimitCurrency}`;
+  currency: `${NegativeBalanceLimitCurrency}`;
 
   // Unique identifier, beginning with "NBL".
-  id?: string;
+  id: string;
 
   // Resources linked to this NegativeBalanceLimit.
-  links?: NegativeBalanceLimitLinks;
+  links: NegativeBalanceLimitLinks;
 };
 
 export enum NegativeBalanceLimitCurrency {
@@ -6040,29 +6040,29 @@ export type PayerAuthorisation = {
   // All details required for the creation of a
   // Customer Bank Account
   // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
-  bank_account?: PayerAuthorisationBankAccount;
+  bank_account: PayerAuthorisationBankAccount;
 
   // Timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this Payer Authorisation was created.
-  created_at?: string | null;
+  created_at: string | null;
 
   // All details required for the creation of a Customer
   // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
-  customer?: PayerAuthorisationCustomer;
+  customer: PayerAuthorisationCustomer;
 
   // Unique identifier, beginning with "PA".
-  id?: string;
+  id: string;
 
   // An array of fields which are missing and is required to set up the mandate.
-  incomplete_fields?: PayerAuthorisationIncompleteField[];
+  incomplete_fields: PayerAuthorisationIncompleteField[];
 
   // Resources linked to this PayerAuthorisation.
-  links?: PayerAuthorisationLinks;
+  links: PayerAuthorisationLinks;
 
   // All details required for the creation of a Mandate
   // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates).
-  mandate?: PayerAuthorisationMandate;
+  mandate: PayerAuthorisationMandate;
 
   // One of:
   //
@@ -6075,7 +6075,7 @@ export type PayerAuthorisation = {
   // bank_account and mandate has been created
   // - `failed`: The PayerAuthorisation has failed and customer, bank_account
   // and mandate is not created
-  status?: `${PayerAuthorisationStatus}`;
+  status: `${PayerAuthorisationStatus}`;
 };
 
 /** Type for a payerauthorisationbankaccount resource. */
@@ -6311,13 +6311,13 @@ export type Payment = {
   // For Variable Recurring Payments (VRP), this must not exceed the mandate's
   // `max_amount_per_payment`
   // constraint.
-  amount?: number;
+  amount: number;
 
   // Amount refunded
   // (https://developer.gocardless.com/api-reference/#core-endpoints-refunds),
   // in the lowest denomination for the currency (e.g. pence in GBP, cents in
   // EUR).
-  amount_refunded?: number;
+  amount_refunded: number;
 
   // The amount to be deducted from the payment as the OAuth app''s fee,
   // in the lowest denomination for the currency (e.g. pence in GBP, cents in
@@ -6332,23 +6332,23 @@ export type Payment = {
   // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
   // `next_possible_charge_date` creation will fail. If the value is not a
   // working day it will be rolled forwards to the next available one.
-  charge_date?: string | null;
+  charge_date: string | null;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: `${PaymentCurrency}`;
+  currency: `${PaymentCurrency}`;
 
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
   // does not send its own notifications (see compliance requirements
   // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
-  description?: string | null;
+  description: string | null;
 
   // This field indicates whether the ACH payment is processed through Faster
   // ACH or standard ACH.
@@ -6357,17 +6357,17 @@ export type Payment = {
   faster_ach?: boolean | null;
 
   //
-  fx?: PaymentFx;
+  fx: PaymentFx;
 
   // Unique identifier, beginning with "PM".
-  id?: string;
+  id: string;
 
   // Resources linked to this Payment.
-  links?: PaymentLinks;
+  links: PaymentLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
   // The character limit for this reference is dependent on the scheme.
@@ -6407,20 +6407,20 @@ export type Payment = {
   // if you're on the GoCardless Plus, Pro or Enterprise packages
   // (https://gocardless.com/pricing).
   //  Restricted: You can not specify a payment reference for Faster Payments.
-  reference?: string | null;
+  reference: string | null;
 
   // On failure, automatically retry the payment using intelligent retries
   // (https://developer.gocardless.com/success-plus/overview). Default is
   // `false`. Important: To be able to use intelligent retries, Success+ needs
   // to be enabled in GoCardless dashboard
   // (https://manage.gocardless.com/success-plus).
-  retry_if_possible?: boolean;
+  retry_if_possible: boolean;
 
   // A bank payment scheme. Currently "ach", "autogiro", "bacs", "becs",
   // "becs_nz", "betalingsservice", "faster_payments", "pad", "pay_to",
   // "sepa_core", "sepa_credit_transfer" and "sepa_instant_credit_transfer" are
   // supported.
-  scheme?: string | null;
+  scheme: string | null;
 
   // One of:
   //
@@ -6438,7 +6438,7 @@ export type Payment = {
   // - `failed`: the payment failed to be processed. Note that payments can fail
   // after being confirmed if the failure message is sent late by the banks.
   // - `charged_back`: the payment has been charged back
-  status?: `${PaymentStatus}`;
+  status: `${PaymentStatus}`;
 };
 
 export enum PaymentCurrency {
@@ -6682,7 +6682,7 @@ export type PaymentAccountTransactionLinks = {
 /** Type for a payout resource. */
 export type Payout = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: number;
+  amount: number;
 
   // Date the payout is due to arrive in the creditor's bank account.
   // One of:
@@ -6690,17 +6690,17 @@ export type Payout = {
   // - `yyyy-mm-dd`: the payout has been paid and is due to arrive in the
   // creditor's bank account on this day
   // - `null`: the payout hasn't been paid yet
-  arrival_date?: string | null;
+  arrival_date: string | null;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD"
   // are supported.
-  currency?: `${PayoutCurrency}`;
+  currency: `${PayoutCurrency}`;
 
   // Fees that have already been deducted from the payout amount in minor unit
   // (e.g. pence in GBP, cents in EUR), inclusive of tax if applicable.
@@ -6714,27 +6714,27 @@ export type Payout = {
   //
   // If the merchant is invoiced for fees separately from the payout, then
   // `deducted_fees` will be 0.
-  deducted_fees?: number;
+  deducted_fees: number;
 
   //
-  fx?: PayoutFx;
+  fx: PayoutFx;
 
   // Unique identifier, beginning with "PO".
-  id?: string;
+  id: string;
 
   // Resources linked to this Payout.
-  links?: PayoutLinks;
+  links: PayoutLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters. Note: This should not
   // be used for storing PII data.
-  metadata?: { [key: string]: string };
+  metadata: { [key: string]: string };
 
   // Whether a payout contains merchant revenue or partner fees.
-  payout_type?: `${PayoutPayoutType}`;
+  payout_type: `${PayoutPayoutType}`;
 
   // Reference which appears on the creditor's bank statement.
-  reference?: string;
+  reference: string;
 
   // One of:
   //
@@ -6743,13 +6743,13 @@ export type Payout = {
   // - `paid`: the payout has been sent to the your bank. FX payouts will become
   // `paid` after we emit the `fx_rate_confirmed` webhook.
   // - `bounced`: the payout bounced when sent, the payout can be retried.
-  status?: `${PayoutStatus}`;
+  status: `${PayoutStatus}`;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) code for the
   // currency in which tax is paid out to the tax authorities of your tax
   // jurisdiction. Currently “EUR”, “GBP”, for French or British merchants, this
   // will be `null` if tax is not applicable beta
-  tax_currency?: string | null;
+  tax_currency: string | null;
 };
 
 export enum PayoutCurrency {
@@ -6838,16 +6838,16 @@ export type PayoutItem = {
   //
   // To calculate the final amount of the payout, we sum all of the items and
   // then round to the nearest currency unit.
-  amount?: string;
+  amount: string;
 
   // Resources linked to this PayoutItem.
-  links?: PayoutItemLinks;
+  links: PayoutItemLinks;
 
   // An array of tax items beta
   //
   // Note: VAT applies to transaction and surcharge fees for merchants operating
   // in the UK and France.
-  taxes?: PayoutItemTaxis[];
+  taxes: PayoutItemTaxis[];
 
   // The type of the credit (positive) or debit (negative) item in the payout
   // (inclusive of VAT if applicable). One of:
@@ -6874,7 +6874,7 @@ export type PayoutItem = {
   // the payment failed or was charged back, or refunded a surcharge fee as the
   // bank or customer cancelled the chargeback. Will include taxes if applicable
   // for merchants.
-  type?: `${PayoutItemType}`;
+  type: `${PayoutItemType}`;
 };
 
 export enum PayoutItemInclude2020TaxCutover {
@@ -7146,30 +7146,30 @@ export type RedirectFlowLinks = {
 /** Type for a refund resource. */
 export type Refund = {
   // Amount in minor unit (e.g. pence in GBP, cents in EUR).
-  amount?: number;
+  amount: number;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
   // code. This is set to the currency of the refund's payment
   // (https://developer.gocardless.com/api-reference/#core-endpoints-payments).
-  currency?: string;
+  currency: string;
 
   //
-  fx?: RefundFx;
+  fx: RefundFx;
 
   // Unique identifier, beginning with "RF".
-  id?: string;
+  id: string;
 
   // Resources linked to this Refund.
-  links?: RefundLinks;
+  links: RefundLinks;
 
   // Key-value store of custom data. Up to 3 keys are permitted, with key names
   // up to 50 characters and values up to 500 characters.
-  metadata?: { [key: string]: string };
+  metadata: { [key: string]: string };
 
   // An optional reference that will appear on your customer's bank statement.
   // The character limit for this reference is dependent on the scheme.
@@ -7209,7 +7209,7 @@ export type Refund = {
   // if you're on the GoCardless Plus, Pro or Enterprise packages
   // (https://gocardless.com/pricing).
   //  Restricted: You can not specify a payment reference for Faster Payments.
-  reference?: string | null;
+  reference: string | null;
 
   // One of:
   //
@@ -7222,7 +7222,7 @@ export type Refund = {
   // - `cancelled`: the refund has been cancelled
   // - `bounced`: the refund has failed to be paid
   // - `funds_returned`: the refund has had its funds returned
-  status?: `${RefundStatus}`;
+  status: `${RefundStatus}`;
 };
 
 /** Type for a refundcreaterequestlinks resource. */
@@ -7431,7 +7431,7 @@ export type ScenarioSimulator = {
   // billing request must be in the `pending` state, with all actions completed
   // except for `bank_authorisation`. Only billing requests with a
   // `payment_request` are supported.
-  id?: string;
+  id: string;
 };
 
 /** Type for a scenariosimulatorrunrequestlinks resource. */
@@ -7445,38 +7445,38 @@ export type ScenarioSimulatorRunRequestLinks = {
 /** Type for a schemeidentifier resource. */
 export type SchemeIdentifier = {
   // The first line of the scheme identifier's support address.
-  address_line1?: string | null;
+  address_line1: string | null;
 
   // The second line of the scheme identifier's support address.
-  address_line2?: string | null;
+  address_line2: string | null;
 
   // The third line of the scheme identifier's support address.
-  address_line3?: string | null;
+  address_line3: string | null;
 
   // Whether a custom reference can be submitted for mandates using this scheme
   // identifier.
-  can_specify_mandate_reference?: boolean;
+  can_specify_mandate_reference: boolean;
 
   // The city of the scheme identifier's support address.
-  city?: string | null;
+  city: string | null;
 
   // ISO 3166-1 alpha-2 code.
   // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
-  country_code?: string | null;
+  country_code: string | null;
 
   // Fixed timestamp
   // (https://developer.gocardless.com/api-reference/#api-usage-dates-and-times),
   // recording when this resource was created.
-  created_at?: string;
+  created_at: string;
 
   // The currency of the scheme identifier.
-  currency?: `${SchemeIdentifierCurrency}`;
+  currency: `${SchemeIdentifierCurrency}`;
 
   // Scheme identifier's support email address.
-  email?: string | null;
+  email: string | null;
 
   // Unique identifier, usually beginning with "SU".
-  id?: string;
+  id: string;
 
   // The minimum interval, in working days, between the sending of a
   // pre-notification to the customer, and the charge date of a payment using
@@ -7486,30 +7486,30 @@ export type SchemeIdentifier = {
   // our compliance requirements
   // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)
   // for more details.
-  minimum_advance_notice?: number;
+  minimum_advance_notice: number;
 
   // The name which appears on customers' bank statements. This should usually
   // be the merchant's trading name.
-  name?: string;
+  name: string;
 
   // Scheme identifier's support phone number.
-  phone_number?: string | null;
+  phone_number: string | null;
 
   // The scheme identifier's support postal code.
-  postal_code?: string | null;
+  postal_code: string | null;
 
   // The scheme-unique identifier against which payments are submitted.
-  reference?: string | null;
+  reference: string | null;
 
   // The scheme identifier's support address region, county or department.
-  region?: string | null;
+  region: string | null;
 
   // The scheme which this scheme identifier applies to.
-  scheme?: `${SchemeIdentifierScheme}`;
+  scheme: `${SchemeIdentifierScheme}`;
 
   // The status of the scheme identifier. Only `active` scheme identifiers will
   // be applied to a creditor and used against payments.
-  status?: `${SchemeIdentifierStatus}`;
+  status: `${SchemeIdentifierStatus}`;
 };
 
 /** Type for a schemeidentifiercreaterequestlinks resource. */
@@ -7796,22 +7796,22 @@ export type SubscriptionUpcomingPayment = {
 export type TaxRate = {
   // Date at which GoCardless stopped applying the tax rate for the
   // jurisdiction.
-  end_date?: string | null;
+  end_date: string | null;
 
   // The unique identifier created by the jurisdiction, tax type and version
-  id?: string;
+  id: string;
 
   // The jurisdiction this tax rate applies to
-  jurisdiction?: string;
+  jurisdiction: string;
 
   // The percentage of tax that is applied onto of GoCardless fees
-  percentage?: string;
+  percentage: string;
 
   // Date at which GoCardless started applying the tax rate in the jurisdiction.
-  start_date?: string;
+  start_date: string;
 
   // The type of tax applied by this rate
-  type?: string;
+  type: string;
 };
 
 /** Type for a transferredmandate resource. */
@@ -7846,40 +7846,40 @@ export type TransferredMandateLinks = {
 /** Type for a verificationdetail resource. */
 export type VerificationDetail = {
   // The first line of the company's address.
-  address_line1?: string;
+  address_line1: string;
 
   // The second line of the company's address.
-  address_line2?: string | null;
+  address_line2: string | null;
 
   // The third line of the company's address.
-  address_line3?: string | null;
+  address_line3: string | null;
 
   // The city of the company's address.
-  city?: string;
+  city: string;
 
   // The company's registration number.
-  company_number?: string;
+  company_number: string;
 
   // The country code of the company's address.
-  country_code?: string;
+  country_code: string;
 
   // A summary describing what the company does.
-  description?: string;
+  description: string;
 
   // The company's directors.
-  directors?: VerificationDetailDirector[];
+  directors: VerificationDetailDirector[];
 
   // Resources linked to this VerificationDetail.
-  links?: VerificationDetailLinks;
+  links: VerificationDetailLinks;
 
   // The company's legal name.
-  name?: string;
+  name: string;
 
   // The company's postal code.
-  postal_code?: string;
+  postal_code: string;
 
   // The region of the company's address.
-  region?: string | null;
+  region: string | null;
 };
 
 /** Type for a verificationdetailcreaterequestlinks resource. */
