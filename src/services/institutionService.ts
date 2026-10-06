@@ -33,7 +33,7 @@ interface InstitutionListRequest {
   // response. If not provided or set to false, only enabled institutions will be
   // returned.
 
-  include_disabled?: boolean;
+  include_disabled?: `${Types.InstitutionIncludeDisabled}`;
 
   // The scheme that institutions support. The available options include
   // `faster_payments`, `sepa_credit_transfer`, and
@@ -57,10 +57,10 @@ interface InstitutionListForBillingRequestRequest {
   ids?: string[];
 
   // Indicates whether to include temporarily disabled institutions in the
-  // response.
-  // If not provided or set to false, only enabled institutions will be returned.
+  // response. If not provided or set to false, only enabled institutions will be
+  // returned.
 
-  include_disabled?: boolean;
+  include_disabled?: `${Types.InstitutionIncludeDisabled}`;
 
   // A search substring for retrieving institution(s), based on the institution's
   // name.
