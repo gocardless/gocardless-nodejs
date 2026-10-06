@@ -5025,6 +5025,11 @@ export type InstitutionBranchCode = {};
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionFeature schema has no properties
 export type InstitutionFeature = {};
 
+export enum InstitutionIncludeDisabled {
+  True = 'true',
+  False = 'false',
+}
+
 /** Type for a institutionscheme resource. */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the InstitutionScheme schema has no properties
 export type InstitutionScheme = {};
