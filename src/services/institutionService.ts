@@ -24,15 +24,21 @@ interface InstitutionListRequest {
   country_code?: string;
 
   // The feature that institutions support. The available options include `pis`,
-  // and `vrp_sweeping`. If nothing is provided, institutions supporting 'pis' are
-  // returned by default.
+  // `vrp_sweeping`, and `vrp_commercial`. If nothing is provided, institutions
+  // supporting 'pis' are returned by default.
 
   feature?: string;
 
+  // Indicates whether to include temporarily disabled institutions in the
+  // response. If not provided or set to false, only enabled institutions will be
+  // returned.
+
+  include_disabled?: boolean;
+
   // The scheme that institutions support. The available options include
   // `faster_payments`, `sepa_credit_transfer`, and
-  // `sepa_instant_credit_transfer`. If nothing is provided, institutions
-  // supporting 'faster_payments' are returned by default.
+  // `sepa_instant_credit_transfer`. If nothing is provided, no scheme filter is
+  // applied to the returned institutions.
 
   scheme?: string;
 }
