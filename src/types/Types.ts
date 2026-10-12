@@ -5184,6 +5184,10 @@ export type MandateCreateRequestLinks = {
   customer_bank_account: string;
 };
 
+/** Type for a mandateinclude resource. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the MandateInclude schema has no properties
+export type MandateInclude = {};
+
 export enum MandateMandateType {
   BankDebit = 'bank_debit',
   Instant = 'instant',

@@ -88,6 +88,11 @@ interface MandateListRequest {
 
   customer_bank_account?: string;
 
+  // Includes linked resources in the response. Use `customer` to embed customer
+  // details, or `bank_account` to embed bank account details.
+
+  include?: string[];
+
   // Number of records to return.
 
   limit?: number;
