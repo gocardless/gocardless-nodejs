@@ -1,26 +1,3 @@
-// ESM-only packages (uuid, got and got's ESM-only transitive dependencies) that Jest must transform
-const esmDependencies = [
-  'uuid',
-  'got',
-  '@sindresorhus/is',
-  '@keyv/serialize',
-  '@sec-ant/readable-stream',
-  'byte-counter',
-  'cacheable-request',
-  'chunk-data',
-  'decompress-response',
-  'get-stream',
-  'is-stream',
-  'keyv',
-  'lowercase-keys',
-  'mimic-response',
-  'normalize-url',
-  'responselike',
-  'tagged-tag',
-  'type-fest',
-  'uint8array-extras',
-];
-
 export default {
   preset: 'ts-jest',
   testEnvironment: 'node',
@@ -34,7 +11,7 @@ export default {
       {
         useESM: true,
         tsconfig: {
-          esModuleInterop: true,
+          esModuleInterop: false,
         },
       },
     ],
@@ -46,6 +23,6 @@ export default {
     ],
   },
   transformIgnorePatterns: [
-    `node_modules/(?!(${esmDependencies.join('|')})/)`,
+    'node_modules/(?!uuid)',
   ],
 };

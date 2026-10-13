@@ -5,7 +5,7 @@
  * method signatures, particularly for list methods with URI parameters.
  */
 
-import nock from 'nock';
+import * as nock from 'nock';
 import gocardless from '../index';
 import { Environments } from '../constants';
 

@@ -105,7 +105,7 @@
     "build:package-markers": "cp dist-esm-package.json dist/esm/package.json && cp dist-cjs-package.json dist/cjs/package.json"
   },
   "dependencies": {
-    "got": "^16.1.0",
+    "got": "^11.8.6",
     "uuid": "^14.0.3",
     "qs": "^6.16.0"
   },
@@ -133,6 +133,6 @@
     "README.md"
   ],
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=18.0"
   }
 }

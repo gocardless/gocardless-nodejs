@@ -4,7 +4,7 @@
     "allowJs": true,
     "target": "es2018",
     "pretty": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,

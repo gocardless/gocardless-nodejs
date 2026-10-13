@@ -10,7 +10,7 @@
 // IMPORTANT: These tests do NOT verify business logic - they only verify that
 // the code samples compile and execute without syntax errors.
 
-import nock from 'nock';
+import * as nock from 'nock';
 import { GoCardlessClient } from '../client';
 import { Environments } from '../constants';
  
