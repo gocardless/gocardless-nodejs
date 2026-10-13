@@ -2,7 +2,7 @@ import * as os from 'os';
 import * as process from 'process';
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
-import got, { Agents, OptionsOfJSONResponseBody } from 'got';
+import got, { Agents, HTTPError, OptionsOfJSONResponseBody, ParseError } from 'got';
 import * as qs from 'qs';
 
 import { Environments, CLIENT_VERSION, API_VERSION } from '../constants.js';
@@ -141,11 +141,11 @@ export class Api {
         },
       };
     } catch (e) {
-      if (e instanceof got.ParseError) {
+      if (e instanceof ParseError) {
         throw new GoCardlessErrors.MalformedResponseError('Malformed JSON received from GoCardless API', e.response);
       }
 
-      if (e instanceof got.HTTPError) {
+      if (e instanceof HTTPError) {
         const err = GoCardlessErrors.ApiError.buildFromResponse(e.response);
 
         if (err instanceof GoCardlessErrors.IdempotentCreationConflictError && !this.raiseOnIdempotencyConflict) {
@@ -223,6 +223,8 @@ export class Api {
     return {
       agent: this._agent,
       prefixUrl: this._baseUrl,
+      // `got` v16 lets an absolute URL replace `prefixUrl`, which would send the token to another host
+      allowAbsoluteUrls: false,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- got's `method` type is a narrower literal union than the strings we build up
       method: method as any,
       responseType: 'json' as const,

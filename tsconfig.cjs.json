@@ -2,6 +2,11 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "node",
+    "paths": {
+      "got": ["node_modules/got/dist/source/index.d.ts"],
+      "*": ["node_modules/*", "src/types/*"]
+    },
     "outDir": "dist/cjs",
     "declaration": false,
     "declarationMap": false
