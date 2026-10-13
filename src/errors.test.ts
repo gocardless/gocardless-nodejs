@@ -1,4 +1,10 @@
-const { ApiError, GoCardlessInternalError, MalformedResponseError } = require('./errors');
+const {
+  ApiError,
+  AuthenticationError,
+  GoCardlessException,
+  GoCardlessInternalError,
+  MalformedResponseError,
+} = require('./errors');
 
 describe('MalformedResponseError', () => {
   test('includes status code and body preview in message', () => {
@@ -94,5 +100,63 @@ describe('ApiError.buildFromResponse', () => {
     expect(err.message).toBe('Validation failed');
     expect(err.errorType).toBe('validation_failed');
     expect(err.code).toBe(422);
+  });
+
+  test('exposes status code and headers', () => {
+    const response = {
+      statusCode: 429,
+      headers: { 'x-request-id': 'REQ999', 'ratelimit-reset': 'Tue, 13 Oct 2026 10:00:00 GMT' },
+      body: {
+        error: {
+          message: 'Rate limit exceeded',
+          errors: [],
+          type: 'invalid_api_usage',
+          request_id: 'REQ999',
+          code: 429,
+        },
+      },
+    };
+
+    const err = ApiError.buildFromResponse(response);
+
+    expect(err.statusCode).toBe(429);
+    expect(err.headers).toEqual(response.headers);
+  });
+
+  test('exposes status code and headers when error body is a string', () => {
+    const response = {
+      statusCode: 400,
+      headers: { 'x-request-id': 'REQ123' },
+      body: { error: 'bank_authorisation_expired' },
+    };
+
+    const err = ApiError.buildFromResponse(response);
+
+    expect(err.statusCode).toBe(400);
+    expect(err.headers).toEqual({ 'x-request-id': 'REQ123' });
+  });
+});
+
+describe('error names', () => {
+  const apiResponse = (statusCode: number) => ({
+    statusCode,
+    headers: {},
+    body: {
+      error: { message: 'Nope', errors: [], type: 'invalid_api_usage', code: statusCode },
+    },
+  });
+
+  test('subclasses are named after their class', () => {
+    expect(new GoCardlessException('x').name).toBe('GoCardlessException');
+    expect(new MalformedResponseError('x', {}).name).toBe('MalformedResponseError');
+    expect(ApiError.buildFromResponse(apiResponse(401)).name).toBe('AuthenticationError');
+    expect(ApiError.buildFromResponse(apiResponse(400)).name).toBe('InvalidApiUsageError');
+    expect(new AuthenticationError(apiResponse(401)).name).toBe('AuthenticationError');
+  });
+
+  test('stack trace starts with the class name and message', () => {
+    const err = ApiError.buildFromResponse(apiResponse(401));
+
+    expect(err.stack).toMatch(/^AuthenticationError: Nope\n/);
   });
 });

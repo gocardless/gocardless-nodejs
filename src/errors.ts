@@ -1,4 +1,12 @@
-class GoCardlessException extends Error {}
+class GoCardlessException extends Error {
+  public constructor(message?: string) {
+    super(message);
+
+    this.name = new.target.name;
+    // The stack header is built during super(), before name is set
+    Error.captureStackTrace?.(this, new.target);
+  }
+}
 
 class MalformedResponseError extends GoCardlessException {
   static BODY_PREVIEW_MAX_LENGTH = 500;
@@ -49,6 +57,8 @@ class ApiError extends GoCardlessException {
   public errorType: string;
   public requestId: string;
   public code: string;
+  public statusCode: number | null;
+  public headers: Record<string, string | string[] | undefined>;
   public response: object;
 
   public constructor(response) {
@@ -66,6 +76,8 @@ class ApiError extends GoCardlessException {
     this.errorType = type;
     this.requestId = requestId;
     this.code = code;
+    this.statusCode = response?.statusCode ?? null;
+    this.headers = response?.headers ?? {};
   }
 
   static buildFromResponse(response) {
