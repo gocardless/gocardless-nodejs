@@ -1,5 +1,5 @@
 import * as fs from 'node:fs';
-import * as nock from 'nock';
+import nock from 'nock';
 import { Api } from './api';
 import { GoCardlessClient } from '../client';
 import { Environments } from '../constants';
@@ -647,11 +647,10 @@ describe('.request', () => {
     });
 
     describe('request path and the configured origin', () => {
-      // `got` builds the final URL by concatenating `prefixUrl` with the path, so a path that
-      // looks like an absolute or scheme-relative URL stays on the configured host instead of
-      // replacing it. The access token travels with every request, so this behaviour is what
-      // keeps a path from sending the token elsewhere - these tests pin it, since a change to
-      // how `got` joins the two would be a silent regression.
+      // The access token travels with every request, so a path that looks like an absolute or
+      // scheme-relative URL must never send the request to the host it names. These tests pin
+      // that, since a change to how `got` joins `prefixUrl` and the path would otherwise be a
+      // silent regression.
       let api;
 
       beforeEach(() => {
@@ -660,20 +659,21 @@ describe('.request', () => {
 
       const requestPath = (path: string) => api.request({ path, method: 'get', fetch: null });
 
-      test('keeps an absolute URL on the configured host', async () => {
+      test('never sends an absolute URL to the host it names', async () => {
+        // `allowAbsoluteUrls: false` makes `got` refuse an absolute URL rather than let it
+        // replace `prefixUrl`.
         const elsewhere = nock('http://elsewhere.example.com').get('/capture').reply(200, {});
         const configured = nock('https://api.gocardless.com').get(/.*/).reply(200, {});
 
-        await requestPath('http://elsewhere.example.com/capture');
+        await expect(requestPath('http://elsewhere.example.com/capture')).rejects.toThrow();
 
         expect(elsewhere.isDone()).toEqual(false);
-        expect(configured.isDone()).toEqual(true);
+        expect(configured.isDone()).toEqual(false);
       });
 
       test('never sends a scheme-relative URL to the host it names', async () => {
         // The leading slash is stripped for `prefixUrl`, leaving a path `got` refuses to join
-        // rather than one that resolves away from the configured host. Either way the request
-        // does not reach the named host, which is what matters here.
+        // rather than one that resolves away from the configured host.
         const elsewhere = nock('https://elsewhere.example.com').get('/capture').reply(200, {});
         nock('https://api.gocardless.com').get(/.*/).reply(200, {});
 
