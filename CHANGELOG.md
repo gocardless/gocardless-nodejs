@@ -1,6 +1,14 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 11.0.0 (2026-10-13)
+
+### Breaking Changes
+
+#### Drop support for node < 22
+
+Upgrade `got` to v16, which requires at least node 22.
+
 ## 10.14.0 (2026-10-13)
 
 ### Features
