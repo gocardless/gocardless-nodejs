@@ -1,6 +1,22 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 10.14.0 (2026-10-13)
+
+### Features
+
+#### Expose `statusCode` and `headers` on `ApiError`
+
+`ApiError` (and its subclasses) now have `statusCode` and `headers` properties, matching `MalformedResponseError`.
+
+### Fixes
+
+#### Improve error readability and grouping in error trackers
+
+Errors now have a `name` matching their class, for example `RateLimitError` or `MalformedResponseError`, where previously every error reported `name` as `"Error"`. Loggers and error trackers typically use `name` to identify the error type, so this should help with error readability and grouping.
+
+Stack traces have also been cleaned up, removing the error constructor lines and starting with the class name too.
+
 ## 10.13.0 (2026-10-12)
 
 ### Features
