@@ -267,8 +267,10 @@ export class Api {
   }
 
   private formatQueryParameters(parameters) {
+    // The result is parsed by URLSearchParams in createRequestOptions, so keys and values
+    // must stay percent-encoded here. Otherwise a `&` in a value starts a new parameter,
+    // `+` is read as a space and `%XX` sequences are decoded, changing what was sent.
     return qs.stringify(parameters, {
-      encode: false,
       indices: false,
       arrayFormat: 'comma',
     });
