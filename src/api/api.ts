@@ -2,7 +2,7 @@ import * as os from 'os';
 import * as process from 'process';
 import { v4 as uuidv4 } from 'uuid';
 import * as url from 'url';
-import got, { Agents, HTTPError, OptionsOfJSONResponseBody, ParseError } from 'got';
+import got, { Agents, Delays, HTTPError, OptionsOfJSONResponseBody, ParseError } from 'got';
 import * as qs from 'qs';
 
 import { Environments, CLIENT_VERSION, API_VERSION } from '../constants.js';
@@ -13,8 +13,11 @@ import {
   ApiRequestSigningOptionsInternal,
 } from '../apiRequestSigning.js';
 
+export const DEFAULT_TIMEOUT_MS = 60000;
+
 export interface APIOptions {
   proxy?: Agents;
+  timeout?: number | Delays;
   raiseOnIdempotencyConflict?: boolean;
   apiRequestSigningOptions?: ApiRequestSigningOptions;
 }
@@ -67,6 +70,7 @@ export class Api {
   private _environment: Environments;
   private _baseUrl: string;
   private _agent: Agents | undefined;
+  private _timeout: Delays | undefined;
   private raiseOnIdempotencyConflict: boolean;
   private apiRequestSigningOptions: ApiRequestSigningOptionsInternal | null = null;
 
@@ -86,6 +90,13 @@ export class Api {
     this._agent = undefined;
     if (options.proxy) {
       this._agent = options.proxy;
+    }
+
+    const timeout = options.timeout ?? DEFAULT_TIMEOUT_MS;
+    if (typeof timeout === 'number') {
+      this._timeout = timeout > 0 ? { request: timeout } : undefined;
+    } else {
+      this._timeout = timeout;
     }
 
     this.raiseOnIdempotencyConflict = options.raiseOnIdempotencyConflict || false;
@@ -222,6 +233,7 @@ export class Api {
     const json = this.getRequestBody(method, requestParameters, payloadKey);
     return {
       agent: this._agent,
+      timeout: this._timeout,
       prefixUrl: this._baseUrl,
       // `got` v16 lets an absolute URL replace `prefixUrl`, which would send the token to another host
       allowAbsoluteUrls: false,
