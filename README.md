@@ -100,6 +100,7 @@ for await (const payment of client.payments.all()) {
 ### Available client options
 
 - `raiseOnIdempotencyConflict`: set to `true` to raise exceptions on [idempotency](https://developer.gocardless.com/api-reference/#making-requests-idempotency-keys) conflicts. Defaults to `false`.
+- `timeout`: how long to wait for a response, in milliseconds, before aborting the request with a `TimeoutError` (from [`got`](https://github.com/sindresorhus/got/blob/main/documentation/6-timeout.md), which this library uses to make requests). A number applies to the whole request; an object such as `{ connect: 1000, response: 5000 }` sets limits for individual phases of the request. Defaults to 60000 (60 seconds); set it to `0` to disable the timeout.
 
 
 ### CommonJS backwards compatibility

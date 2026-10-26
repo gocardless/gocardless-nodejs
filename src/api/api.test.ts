@@ -1,6 +1,6 @@
 import * as fs from 'node:fs';
 import nock from 'nock';
-import { Api } from './api';
+import { Api, DEFAULT_TIMEOUT_MS } from './api';
 import { GoCardlessClient } from '../client';
 import { Environments } from '../constants';
 import * as GoCardlessErrors from '../errors';
@@ -76,6 +76,51 @@ describe('.request', () => {
 
         expect(check.isDone()).toEqual(true);
       });
+    });
+  });
+
+  describe('timeout option', () => {
+    const requestOptions = (options = {}) =>
+      new Api(token, Environments.Live, options)['createRequestOptions']('post', {});
+
+    test('applies a default timeout when none is configured', () => {
+      expect(DEFAULT_TIMEOUT_MS).toEqual(60000);
+      expect(requestOptions().timeout).toEqual({ request: DEFAULT_TIMEOUT_MS });
+    });
+
+    test('a configured timeout replaces the default', () => {
+      expect(requestOptions({ timeout: 5000 }).timeout).toEqual({ request: 5000 });
+      expect(requestOptions({ timeout: { connect: 1000 } }).timeout).toEqual({ connect: 1000 });
+    });
+
+    test('a timeout of 0 disables the timeout', () => {
+      expect(requestOptions({ timeout: 0 }).timeout).toBeUndefined();
+    });
+
+    // POST so that `got` does not retry the timed out request
+    const params = { path: '/', method: 'post', requestParameters: {}, fetch: null };
+
+    test('aborts the request when a numeric timeout is exceeded', async () => {
+      const api = new Api(token, Environments.Live, { timeout: 50 });
+      nock('https://api.gocardless.com').post('/').delay(500).reply(200, {});
+
+      await expect(api.request(params)).rejects.toMatchObject({ name: 'TimeoutError' });
+    });
+
+    test('aborts the request when a per-phase timeout is exceeded', async () => {
+      const api = new Api(token, Environments.Live, { timeout: { response: 50 } });
+      nock('https://api.gocardless.com').post('/').delay(500).reply(200, {});
+
+      await expect(api.request(params)).rejects.toMatchObject({ name: 'TimeoutError' });
+    });
+
+    test('does not affect requests that complete in time', async () => {
+      const api = new Api(token, Environments.Live, { timeout: 5000 });
+      const check = nock('https://api.gocardless.com').post('/').reply(200, {});
+
+      await api.request(params);
+
+      expect(check.isDone()).toEqual(true);
     });
   });
 
