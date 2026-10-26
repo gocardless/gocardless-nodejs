@@ -516,6 +516,49 @@ describe('.request', () => {
           expect(check.isDone()).toEqual(true);
         });
 
+        describe('with special characters in a value', () => {
+          // nock's `.query(object)` only matches when the request carries exactly these
+          // parameters, so an injected extra parameter makes the match (and the test) fail.
+          test.each([
+            ['an ampersand', 'MD0000000001&limit=500&customer=CU0000000000'],
+            ['a plus sign', 'a+b@example.com'],
+            ['a percent-encoded sequence', '100%41'],
+            ['an equals sign', 'a=b'],
+            ['a space', 'a b'],
+          ])('sends a value containing %s as a single parameter', async (_label, value) => {
+            const check = nock('https://api.gocardless.com').get('/').query({ key: value }).reply(200, {});
+
+            const params = {
+              path: '/',
+              method: 'get',
+              requestParameters: { key: value },
+              fetch: null,
+            };
+
+            await api.request(params);
+
+            expect(check.isDone()).toEqual(true);
+          });
+
+          test('does not let a value add parameters alongside other filters', async () => {
+            const check = nock('https://api.gocardless.com')
+              .get('/')
+              .query({ mandate: 'MD1&limit=500', status: 'paid_out' })
+              .reply(200, {});
+
+            const params = {
+              path: '/',
+              method: 'get',
+              requestParameters: { mandate: 'MD1&limit=500', status: 'paid_out' },
+              fetch: null,
+            };
+
+            await api.request(params);
+
+            expect(check.isDone()).toEqual(true);
+          });
+        });
+
         test('without request parameters', async () => {
           const check = nock('https://api.gocardless.com').get('/').reply(200, {});
 
