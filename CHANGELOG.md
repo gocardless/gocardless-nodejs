@@ -1,6 +1,22 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 11.1.0 (2026-10-26)
+
+### Features
+
+#### Add a `timeout` client option, with a 60 second default
+
+`GoCardlessClient` now accepts a `timeout` option, in milliseconds, that aborts a request with a `TimeoutError` if no response completes in time. Pass an object such as `{ connect: 1000, response: 5000 }` to set limits for individual phases of the request, or `0` to disable the timeout.
+
+```js
+const client = new GoCardlessClient(token, Environments.Live, { timeout: 10000 });
+```
+
+Previously requests had no timeout, so a stalled connection could hang forever. Requests now time out after 60 seconds by default. If you rely on requests taking longer than that, set a larger `timeout` or pass `0`.
+
+Note that `GET` requests that time out are retried by the underlying HTTP client, so the total time before an error is raised can exceed `timeout`.
+
 ## 11.0.0 (2026-10-13)
 
 ### Breaking Changes
