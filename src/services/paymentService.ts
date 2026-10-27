@@ -158,6 +158,11 @@ interface PaymentListRequest {
 
   customer?: string;
 
+  // Includes linked resources in the response. Use `customer` to embed customer
+  // details, or `mandate` to embed mandate details.
+
+  include?: `${Types.PaymentInclude}`[];
+
   // Number of records to return.
 
   limit?: number;

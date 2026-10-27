@@ -32,8 +32,10 @@ interface SubscriptionCreateRequest {
 
   currency: string;
 
-  // As per RFC 2445. The day of the month to charge customers on. `1`-`28` or
-  // `-1` to indicate the last day of the month.
+  // As per RFC 2445. The day of the month to charge customers on. `1`-`31` or
+  // `-1` to indicate the last day of the month. If the chosen day does not exist
+  // in a given month (e.g. `31` in April), the charge is made on the last day of
+  // that month.
 
   day_of_month?: number;
 

@@ -1,6 +1,16 @@
 <!-- This file is generated, please add to it using `knope document-change` in the client-library-templates repo -->
 # Changelog
 
+## 11.1.1 (2026-10-26)
+
+### Fixes
+
+#### Percent-encode query parameter values in GET requests
+
+`Api.formatQueryParameters()` serialised GET parameters with `qs.stringify(..., { encode: false })` and the result was then re-parsed by `URLSearchParams`. Because values were not encoded, a literal `&` in a value started a new query parameter (so a caller-supplied filter could append parameters such as `limit` or extra filters), `+` was read as a space and `%XX` sequences were decoded, silently changing the value that was sent.
+
+Keys and values are now percent-encoded before parsing, so every value is sent exactly as given. Arrays and nested parameters are unchanged on the wire.
+
 ## 11.1.0 (2026-10-26)
 
 ### Features
