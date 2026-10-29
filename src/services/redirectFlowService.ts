@@ -73,7 +73,7 @@ export class RedirectFlowService {
     this.api = api;
   }
 
-  /** @deprecated Redirect Flows are legacy APIs and cannot be used by new integrators. The Billing Request flow (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for your payment flows. */
+  /** @deprecated Redirect Flows are legacy APIs and cannot be used by new integrators. The Billing Request flow (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for your payment flows. */
   public async create(
     requestParameters: RedirectFlowCreateRequest,
     idempotencyKey: string = '',
@@ -100,7 +100,7 @@ export class RedirectFlowService {
     return formattedResponse;
   }
 
-  /** @deprecated Redirect Flows are legacy APIs and cannot be used by new integrators. The Billing Request flow (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for your payment flows. */
+  /** @deprecated Redirect Flows are legacy APIs and cannot be used by new integrators. The Billing Request flow (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for your payment flows. */
   public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<RedirectFlowResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -122,7 +122,7 @@ export class RedirectFlowService {
     return formattedResponse;
   }
 
-  /** @deprecated Redirect Flows are legacy APIs and cannot be used by new integrators. The Billing Request flow (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for your payment flows. */
+  /** @deprecated Redirect Flows are legacy APIs and cannot be used by new integrators. The Billing Request flow (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for your payment flows. */
   public async complete(
     identity: string,
     requestParameters?: Partial<RedirectFlowCompleteRequest>,

@@ -42,9 +42,9 @@ interface MandateCreateRequest {
   payer_ip_address?: string;
 
   // Unique reference. Different schemes have different length and character set
-  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
-  // requirements. GoCardless will generate a unique reference satisfying the
-  // different scheme requirements if this field is left blank.
+  // (https://docs.gocardless.com/docs/api-reference/character-sets) requirements.
+  // GoCardless will generate a unique reference satisfying the different scheme
+  // requirements if this field is left blank.
 
   reference?: string;
 
@@ -67,24 +67,22 @@ interface MandateListRequest {
   // The creation date of this Mandate.
   created_at?: Types.CreatedAtFilter;
 
-  // ID of a creditor
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // ID of a creditor (https://docs.gocardless.com/docs/api-reference/creditor).
   // If specified, this endpoint will return all mandates for the given creditor.
   // Cannot be used in conjunction with `customer` or `customer_bank_account`
 
   creditor?: string;
 
-  // ID of a customer
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // ID of a customer (https://docs.gocardless.com/docs/api-reference/customer).
   // If specified, this endpoint will return all mandates for the given customer.
   // Cannot be used in conjunction with `customer_bank_account` or `creditor`
 
   customer?: string;
 
   // ID of a customer bank account
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
-  // If specified, this endpoint will return all mandates for the given bank
-  // account. Cannot be used in conjunction with `customer` or `creditor`
+  // (https://docs.gocardless.com/docs/api-reference/customer-bank-account). If
+  // specified, this endpoint will return all mandates for the given bank account.
+  // Cannot be used in conjunction with `customer` or `creditor`
 
   customer_bank_account?: string;
 
@@ -102,9 +100,9 @@ interface MandateListRequest {
   mandate_type?: `${Types.MandateMandateType}`;
 
   // Unique reference. Different schemes have different length and character set
-  // (https://developer.gocardless.com/api-reference/#appendix-character-sets)
-  // requirements. GoCardless will generate a unique reference satisfying the
-  // different scheme requirements if this field is left blank.
+  // (https://docs.gocardless.com/docs/api-reference/character-sets) requirements.
+  // GoCardless will generate a unique reference satisfying the different scheme
+  // requirements if this field is left blank.
 
   reference?: string;
 

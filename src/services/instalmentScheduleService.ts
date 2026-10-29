@@ -25,7 +25,7 @@ interface InstalmentScheduleCreateWithDatesRequest {
 
   // An explicit array of instalment payments, each specifying at least an
   // `amount` and `charge_date`. See create (with dates)
-  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-dates)
+  // (https://docs.gocardless.com/docs/api-reference/instalment-schedule#create-with-schedule)
 
   instalments: Types.InstalmentScheduleInstalment[];
 
@@ -85,10 +85,10 @@ interface InstalmentScheduleCreateWithDatesRequest {
   payment_reference?: string;
 
   // On failure, automatically retry payments using intelligent retries
-  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
-  // Important: To be able to use intelligent retries, Success+ needs to be
-  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
-  //
+  // (https://docs.gocardless.com/docs/optimise/reduced-failed-payments-with-success-plus).
+  // Default is `false`. Important: To be able to use intelligent retries,
+  // Success+ needs to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
 
   retry_if_possible?: boolean;
 
@@ -120,7 +120,7 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   // payment
   // amounts to be collected, with a specified start date for the first payment.
   // See create (with schedule)
-  // (https://developer.gocardless.com/api-reference/#instalment-schedules-create-with-schedule)
+  // (https://docs.gocardless.com/docs/api-reference/instalment-schedule#create-with-schedule)
   instalments: Types.InstalmentScheduleInstalments;
 
   // Resources linked to this InstalmentSchedule.
@@ -179,10 +179,10 @@ interface InstalmentScheduleCreateWithScheduleRequest {
   payment_reference?: string;
 
   // On failure, automatically retry payments using intelligent retries
-  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
-  // Important: To be able to use intelligent retries, Success+ needs to be
-  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
-  //
+  // (https://docs.gocardless.com/docs/optimise/reduced-failed-payments-with-success-plus).
+  // Default is `false`. Important: To be able to use intelligent retries,
+  // Success+ needs to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
 
   retry_if_possible?: boolean;
 
@@ -210,7 +210,7 @@ interface InstalmentScheduleListRequest {
   created_at?: Types.CreatedAtFilter;
 
   // ID of the associated customer
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // (https://docs.gocardless.com/docs/api-reference/customer).
 
   customer?: string;
 
@@ -219,8 +219,8 @@ interface InstalmentScheduleListRequest {
   limit?: number;
 
   // ID of the associated mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)
-  // which the instalment schedule will create payments against.
+  // (https://docs.gocardless.com/docs/api-reference/mandate) which the instalment
+  // schedule will create payments against.
 
   mandate?: string;
 

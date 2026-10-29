@@ -13,30 +13,30 @@ interface PayerAuthorisationListResponse extends Types.APIResponse {
 interface PayerAuthorisationCreateRequest {
   // All details required for the creation of a
   // Customer Bank Account
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
+  // (https://docs.gocardless.com/docs/api-reference/customer-bank-account).
   bank_account: Types.PayerAuthorisationBankAccount;
 
   // All details required for the creation of a Customer
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // (https://docs.gocardless.com/docs/api-reference/customer).
   customer: Types.PayerAuthorisationCustomer;
 
   // All details required for the creation of a Mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates).
+  // (https://docs.gocardless.com/docs/api-reference/mandate).
   mandate: Types.PayerAuthorisationMandate;
 }
 
 interface PayerAuthorisationUpdateRequest {
   // All details required for the creation of a
   // Customer Bank Account
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customer-bank-accounts).
+  // (https://docs.gocardless.com/docs/api-reference/customer-bank-account).
   bank_account: Types.PayerAuthorisationBankAccount;
 
   // All details required for the creation of a Customer
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // (https://docs.gocardless.com/docs/api-reference/customer).
   customer: Types.PayerAuthorisationCustomer;
 
   // All details required for the creation of a Mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates).
+  // (https://docs.gocardless.com/docs/api-reference/mandate).
   mandate: Types.PayerAuthorisationMandate;
 }
 
@@ -47,7 +47,7 @@ export class PayerAuthorisationService {
     this.api = api;
   }
 
-  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for any new integrations. */
+  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for any new integrations. */
   public async find(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -69,7 +69,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for any new integrations. */
+  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for any new integrations. */
   public async create(
     requestParameters: PayerAuthorisationCreateRequest,
     idempotencyKey: string = '',
@@ -96,7 +96,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for any new integrations. */
+  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for any new integrations. */
   public async update(
     identity: string,
     requestParameters?: Partial<PayerAuthorisationUpdateRequest>,
@@ -122,7 +122,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for any new integrations. */
+  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for any new integrations. */
   public async submit(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {
@@ -144,7 +144,7 @@ export class PayerAuthorisationService {
     return formattedResponse;
   }
 
-  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://developer.gocardless.com/api-reference/#billing-requests) API should be used for any new integrations. */
+  /** @deprecated Payer Authorisation is legacy API and cannot be used by new integrators. The Billing Request (https://docs.gocardless.com/docs/api-reference/billing-request) API should be used for any new integrations. */
   public async confirm(identity: string, customHeaders: Types.JsonMap = {}): Promise<PayerAuthorisationResponse> {
     const urlParameters = [{ key: 'identity', value: identity }];
     const requestParams = {

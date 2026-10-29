@@ -31,8 +31,7 @@ interface PaymentCreateRequest {
 
   // A future date on which the payment should be collected. If not specified, the
   // payment will be collected as soon as possible. If the value is before the
-  // mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // mandate (https://docs.gocardless.com/docs/api-reference/mandate)'s
   // `next_possible_charge_date` creation will fail. If the value is not a working
   // day it will be rolled forwards to the next available one.
 
@@ -47,7 +46,7 @@ interface PaymentCreateRequest {
   // A human-readable description of the payment. This will be included in the
   // notification email GoCardless sends to your customer if your organisation
   // does not send its own notifications (see compliance requirements
-  // (https://developer.gocardless.com/api-reference/#appendix-compliance-requirements)).
+  // (https://docs.gocardless.com/docs/api-reference/compliance-requirements)).
 
   description?: string;
 
@@ -119,10 +118,10 @@ interface PaymentCreateRequest {
   reference?: string;
 
   // On failure, automatically retry the payment using intelligent retries
-  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
-  // Important: To be able to use intelligent retries, Success+ needs to be
-  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
-  //
+  // (https://docs.gocardless.com/docs/optimise/reduced-failed-payments-with-success-plus).
+  // Default is `false`. Important: To be able to use intelligent retries,
+  // Success+ needs to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
 
   retry_if_possible?: boolean;
 }
@@ -204,7 +203,7 @@ interface PaymentListRequest {
   // - `submitted`: the payment has been submitted to the banks
   // - `confirmed`: the payment has been confirmed as collected
   // - `paid_out`: the payment has been included in a payout
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts)
+  // (https://docs.gocardless.com/docs/api-reference/payout)
   // - `cancelled`: the payment has been cancelled
   // - `customer_approval_denied`: the customer has denied approval for the
   // payment. You should contact the customer directly
@@ -226,10 +225,10 @@ interface PaymentUpdateRequest {
   metadata?: Types.JsonMap;
 
   // On failure, automatically retry the payment using intelligent retries
-  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
-  // Important: To be able to use intelligent retries, Success+ needs to be
-  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
-  //
+  // (https://docs.gocardless.com/docs/optimise/reduced-failed-payments-with-success-plus).
+  // Default is `false`. Important: To be able to use intelligent retries,
+  // Success+ needs to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
 
   retry_if_possible?: boolean;
 }
@@ -244,8 +243,7 @@ interface PaymentCancelRequest {
 interface PaymentRetryRequest {
   // A future date on which the payment should be collected. If not specified, the
   // payment will be collected as soon as possible. If the value is before the
-  // mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // mandate (https://docs.gocardless.com/docs/api-reference/mandate)'s
   // `next_possible_charge_date` creation will fail. If the value is not a working
   // day it will be rolled forwards to the next available one.
 

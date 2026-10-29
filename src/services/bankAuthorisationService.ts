@@ -27,12 +27,12 @@ interface BankAuthorisationCreateRequest {
   // Please note: bank authorisations can still fail despite an `outcome=success`
   // on the `redirect_uri`. It is therefore recommended to wait for the relevant
   // bank authorisation event, such as `BANK_AUTHORISATION_AUTHORISED`
-  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationauthorised),
+  // (https://docs.gocardless.com/docs/api-reference/events/billing-request),
   // `BANK_AUTHORISATION_DENIED`
-  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationdenied),
-  // or `BANK_AUTHORISATION_FAILED`
-  // (https://developer.gocardless.com/api-reference/#billing-request-bankauthorisationfailed)
-  // in order to show the correct outcome to the user.
+  // (https://docs.gocardless.com/docs/api-reference/events/billing-request), or
+  // `BANK_AUTHORISATION_FAILED`
+  // (https://docs.gocardless.com/docs/api-reference/events/billing-request) in
+  // order to show the correct outcome to the user.
   //
   // The BillingRequestFlow ID will also be appended to the `redirect_uri` as
   // query parameter `id=BRF123`.

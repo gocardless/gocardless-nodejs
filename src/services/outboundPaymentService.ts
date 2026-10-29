@@ -119,21 +119,21 @@ interface OutboundPaymentListRequest {
   // One of:
   //
   // - `verifying`: The payment has been created
-  // (https://developer.gocardless.com/api-reference/#outbound-payments-create-an-outbound-payment)
+  // (https://docs.gocardless.com/docs/api-reference/outbound-payment#create-an-outbound-payment)
   // and the verification process has begun.
   // - `pending_approval`: The payment is awaiting approval
-  // (https://developer.gocardless.com/api-reference/#outbound-payments-approve-an-outbound-payment).
+  // (https://docs.gocardless.com/docs/api-reference/outbound-payment#approve-an-outbound-payment).
   // - `scheduled`: The payment has passed verification & approval
-  // (https://developer.gocardless.com/api-reference/#outbound-payments-approve-an-outbound-payment),
+  // (https://docs.gocardless.com/docs/api-reference/outbound-payment#approve-an-outbound-payment),
   // but processing has not yet begun.
   // - `executing`: The execution date has arrived and the payment has been placed
   // in queue for processing.
   // - `executed`: The payment has been accepted by the scheme and is now on its
   // way to the recipient.
   // - `cancelled`: The payment has been cancelled
-  // (https://developer.gocardless.com/api-reference/#outbound-payments-cancel-an-outbound-payment)
+  // (https://docs.gocardless.com/docs/api-reference/outbound-payment#cancel-an-outbound-payment)
   // or was not approved
-  // (https://developer.gocardless.com/api-reference/#outbound-payments-approve-an-outbound-payment)
+  // (https://docs.gocardless.com/docs/api-reference/outbound-payment#approve-an-outbound-payment)
   // on time.
   // - `failed`: The payment was not sent, usually due to an error while or after
   // executing.
