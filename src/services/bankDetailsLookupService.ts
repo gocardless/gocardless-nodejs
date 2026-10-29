@@ -18,20 +18,20 @@ interface BankDetailsLookupCreateRequest {
   account_holder_name?: string;
 
   // Bank account number - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
   // Bank code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
   // Branch code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
@@ -42,8 +42,7 @@ interface BankDetailsLookupCreateRequest {
   country_code?: string;
 
   // International Bank Account Number. Alternatively you can provide local
-  // details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // details (https://docs.gocardless.com/docs/api-reference/local-bank-details).
 
   iban?: string;
 }

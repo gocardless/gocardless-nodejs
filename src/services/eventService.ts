@@ -24,8 +24,8 @@ interface EventListRequest {
   before?: string;
 
   // ID of a billing request
-  // (https://developer.gocardless.com/api-reference/#billing-requests-billing-requests).
-  // If specified, this endpoint will return all events for the given billing
+  // (https://docs.gocardless.com/docs/api-reference/billing-request). If
+  // specified, this endpoint will return all events for the given billing
   // request.
 
   billing_request?: string;
@@ -33,8 +33,7 @@ interface EventListRequest {
   // The creation date of this Event.
   created_at?: Types.CreatedAtFilter;
 
-  // ID of an creditor
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // ID of an creditor (https://docs.gocardless.com/docs/api-reference/creditor).
   // If specified, this endpoint will return all events for the given creditor.
 
   creditor?: string;
@@ -50,8 +49,8 @@ interface EventListRequest {
   include?: `${Types.EventInclude}`;
 
   // ID of an instalment schedule
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-instalment-schedules).
-  // If specified, this endpoint will return all events for the given instalment
+  // (https://docs.gocardless.com/docs/api-reference/instalment-schedule). If
+  // specified, this endpoint will return all events for the given instalment
   // schedule.
 
   instalment_schedule?: string;
@@ -60,15 +59,14 @@ interface EventListRequest {
 
   limit?: number;
 
-  // ID of a mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates). If
+  // ID of a mandate (https://docs.gocardless.com/docs/api-reference/mandate). If
   // specified, this endpoint will return all events for the given mandate.
 
   mandate?: string;
 
   // ID of an outbound_payment
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-outbound-payments).
-  // If specified, this endpoint will return all events for the given payment.
+  // (https://docs.gocardless.com/docs/api-reference/outbound-payment). If
+  // specified, this endpoint will return all events for the given payment.
 
   outbound_payment?: string;
 
@@ -78,12 +76,11 @@ interface EventListRequest {
   parent_event?: string;
 
   // ID of a payer authorisation
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-payer-authorisations).
+  // (https://docs.gocardless.com/docs/api-reference/payer-authorisation).
 
   payer_authorisation?: string;
 
-  // ID of a payment
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-payments). If
+  // ID of a payment (https://docs.gocardless.com/docs/api-reference/payment). If
   // specified, this endpoint will return all events for the given payment.
 
   payment?: string;
@@ -93,14 +90,12 @@ interface EventListRequest {
 
   payment_account_transaction?: string;
 
-  // ID of a payout
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-payouts). If
+  // ID of a payout (https://docs.gocardless.com/docs/api-reference/payout). If
   // specified, this endpoint will return all events for the given payout.
 
   payout?: string;
 
-  // ID of a refund
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-refunds). If
+  // ID of a refund (https://docs.gocardless.com/docs/api-reference/refund). If
   // specified, this endpoint will return all events for the given refund.
 
   refund?: string;
@@ -114,16 +109,15 @@ interface EventListRequest {
   resource_type?: `${Types.EventResourceType}`;
 
   // ID of a scheme identifier
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-scheme-identifiers).
-  // If specified, this endpoint will return all events for the given scheme
+  // (https://docs.gocardless.com/docs/api-reference/scheme-identifier). If
+  // specified, this endpoint will return all events for the given scheme
   // identifier.
 
   scheme_identifier?: string;
 
   // ID of a subscription
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-subscriptions).
-  // If specified, this endpoint will return all events for the given
-  // subscription.
+  // (https://docs.gocardless.com/docs/api-reference/subscription). If specified,
+  // this endpoint will return all events for the given subscription.
 
   subscription?: string;
 }

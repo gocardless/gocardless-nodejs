@@ -84,8 +84,8 @@ interface SubscriptionCreateRequest {
   // created and will appear on your customer's bank statement. See the
   // documentation for
   // the create payment endpoint
-  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
-  // for more details.
+  // (https://docs.gocardless.com/docs/api-reference/payment#create-a-payment) for
+  // more details.
   //
   // Restricted: You need your own Service User Number to specify a payment
   // reference for Bacs payments.
@@ -93,16 +93,15 @@ interface SubscriptionCreateRequest {
   payment_reference?: string;
 
   // On failure, automatically retry payments using intelligent retries
-  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
-  // Important: To be able to use intelligent retries, Success+ needs to be
-  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
-  //
+  // (https://docs.gocardless.com/docs/optimise/reduced-failed-payments-with-success-plus).
+  // Default is `false`. Important: To be able to use intelligent retries,
+  // Success+ needs to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
 
   retry_if_possible?: boolean;
 
   // The date on which the first payment should be charged. Must be on or after
-  // the mandate
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-mandates)'s
+  // the mandate (https://docs.gocardless.com/docs/api-reference/mandate)'s
   // `next_possible_charge_date`. When left blank and `month` or `day_of_month`
   // are provided, this will be set to the date of the first payment. If created
   // without `month` or `day_of_month` this will be set as the mandate's
@@ -177,8 +176,8 @@ interface SubscriptionUpdateRequest {
   // created and will appear on your customer's bank statement. See the
   // documentation for
   // the create payment endpoint
-  // (https://developer.gocardless.com/api-reference/#payments-create-a-payment)
-  // for more details.
+  // (https://docs.gocardless.com/docs/api-reference/payment#create-a-payment) for
+  // more details.
   //
   // Restricted: You need your own Service User Number to specify a payment
   // reference for Bacs payments.
@@ -186,10 +185,10 @@ interface SubscriptionUpdateRequest {
   payment_reference?: string;
 
   // On failure, automatically retry payments using intelligent retries
-  // (https://developer.gocardless.com/success-plus/overview). Default is `false`.
-  // Important: To be able to use intelligent retries, Success+ needs to be
-  // enabled in GoCardless dashboard (https://manage.gocardless.com/success-plus).
-  //
+  // (https://docs.gocardless.com/docs/optimise/reduced-failed-payments-with-success-plus).
+  // Default is `false`. Important: To be able to use intelligent retries,
+  // Success+ needs to be enabled in GoCardless dashboard
+  // (https://manage.gocardless.com/success-plus).
 
   retry_if_possible?: boolean;
 }
@@ -204,10 +203,10 @@ interface SubscriptionPauseRequest {
   // `interval` and `interval_unit`. This should be a non zero positive value.
   // For AUD subscriptions with `interval_unit: weekly` the minimum value varies
   // between `3` & `4` because of the mandatory minimum waiting period
-  // (https://developer.gocardless.com/api-reference/#subscriptions-resume-a-subscription).
+  // (https://docs.gocardless.com/docs/api-reference/subscription#resume-a-subscription).
   // For NZD subscriptions with `interval_unit: weekly` the minimum value is `2`
   // because of the mandatory minimum waiting period
-  // (https://developer.gocardless.com/api-reference/#subscriptions-resume-a-subscription).
+  // (https://docs.gocardless.com/docs/api-reference/subscription#resume-a-subscription).
 
   pause_cycles?: number;
 }

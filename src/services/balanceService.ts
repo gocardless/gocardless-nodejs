@@ -19,8 +19,7 @@ interface BalanceListRequest {
 
   before?: string;
 
-  // ID of a creditor
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
+  // ID of a creditor (https://docs.gocardless.com/docs/api-reference/creditor).
 
   creditor: string;
 

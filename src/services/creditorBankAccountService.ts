@@ -13,33 +13,33 @@ interface CreditorBankAccountListResponse extends Types.APIResponse {
 interface CreditorBankAccountCreateRequest {
   // Name of the account holder, as known by the bank. Usually this is the same as
   // the name stored with the linked creditor
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-creditors).
-  // This field will be transliterated, upcased and truncated to 18 characters.
+  // (https://docs.gocardless.com/docs/api-reference/creditor). This field will be
+  // transliterated, upcased and truncated to 18 characters.
 
   account_holder_name: string;
 
   // Bank account number - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
-  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details#united-states)
   // for more information.
 
   account_type?: `${Types.CreditorBankAccountAccountType}`;
 
   // Bank code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
   // Branch code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
@@ -57,11 +57,10 @@ interface CreditorBankAccountCreateRequest {
   currency?: string;
 
   // International Bank Account Number. Alternatively you can provide local
-  // details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // details (https://docs.gocardless.com/docs/api-reference/local-bank-details).
   // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
   // must supply local details
-  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details#sweden).
 
   iban?: string;
 

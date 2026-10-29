@@ -16,7 +16,7 @@ interface BillingRequestCreateRequest {
   // Should not be set if GoCardless payment intelligence feature is used.
   //
   // See Billing Requests: Retain customers with Fallbacks
-  // (https://developer.gocardless.com/billing-requests/retain-customers-with-fallbacks/)
+  // (https://docs.gocardless.com/docs/optimise/retain-customers-with-fallbacks)
   // for more information.
 
   fallback_enabled?: boolean;
@@ -47,8 +47,8 @@ interface BillingRequestCreateRequest {
   // or type of service/goods the payment relates to, improving straight-through
   // processing and compliance.
   // See VRP Commercial Payment Purpose Codes
-  // (https://developer.gocardless.com/vrp-commercial-payment-purpose-codes/) for
-  // the complete list of valid codes.
+  // (https://docs.gocardless.com/docs/collect-payments/scheme-guidance/vrp-purpose-codes)
+  // for the complete list of valid codes.
 
   payment_purpose_code?: string;
 
@@ -59,8 +59,8 @@ interface BillingRequestCreateRequest {
   // set of pre-defined categories. Provides context on the nature and reason for
   // the payment to facilitate processing and compliance.
   // See Billing Request Purpose Codes
-  // (https://developer.gocardless.com/billing-request-purpose-codes/) for the
-  // complete list of valid codes.
+  // (https://docs.gocardless.com/docs/collect-payments/scheme-guidance/billing-request-purpose-codes)
+  // for the complete list of valid codes.
 
   purpose_code?: `${Types.BillingRequestPurposeCode}`;
 
@@ -82,39 +82,39 @@ interface BillingRequestCollectBankAccountRequest {
   // transliterated, upcased, and truncated to 18 characters in bank submissions.
   // This field is required unless the request includes a customer bank account
   // token
-  // (https://developer.gocardless.com/api-reference/#javascript-flow-customer-bank-account-tokens).
+  // (https://docs.gocardless.com/docs/collect-payments/integration-types/javascript-drop-in-flow).
 
   account_holder_name?: string;
 
   // Bank account number - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
   // Account number suffix (only for bank accounts denominated in NZD) - see local
   // details
-  // (https://developer.gocardless.com/api-reference/#local-bank-details-new-zealand)
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details#new-zealand)
   // for more information.
 
   account_number_suffix?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
-  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details#united-states)
   // for more information.
 
   account_type?: `${Types.BillingRequestAccountType}`;
 
   // Bank code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
   // Branch code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
@@ -132,11 +132,10 @@ interface BillingRequestCollectBankAccountRequest {
   currency?: string;
 
   // International Bank Account Number. Alternatively you can provide local
-  // details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // details (https://docs.gocardless.com/docs/api-reference/local-bank-details).
   // IBANs are not accepted for Swedish bank accounts denominated in SEK - you
   // must supply local details
-  // (https://developer.gocardless.com/api-reference/#local-bank-details-sweden).
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details#sweden).
 
   iban?: string;
 
@@ -190,8 +189,7 @@ interface BillingRequestListRequest {
 
   before?: string;
 
-  // ID of a customer
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
+  // ID of a customer (https://docs.gocardless.com/docs/api-reference/customer).
   // If specified, this endpoint will return all requests for the given customer.
 
   customer?: string;

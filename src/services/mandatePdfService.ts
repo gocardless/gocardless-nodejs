@@ -13,20 +13,20 @@ interface MandatePdfListResponse extends Types.APIResponse {
 interface MandatePdfCreateRequest {
   // Name of the account holder, as known by the bank. Usually this matches the
   // name of the customer
-  // (https://developer.gocardless.com/api-reference/#core-endpoints-customers).
-  // This field cannot exceed 18 characters.
+  // (https://docs.gocardless.com/docs/api-reference/customer). This field cannot
+  // exceed 18 characters.
 
   account_holder_name?: string;
 
   // Bank account number - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   account_number?: string;
 
   // Bank account type. Required for USD-denominated bank accounts. Must not be
   // provided for bank accounts in other currencies. See local details
-  // (https://developer.gocardless.com/api-reference/#local-bank-details-united-states)
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details#united-states)
   // for more information.
 
   account_type?: `${Types.MandatePdfAccountType}`;
@@ -44,20 +44,20 @@ interface MandatePdfCreateRequest {
   address_line3?: string;
 
   // Bank code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   bank_code?: string;
 
   // SWIFT BIC. Will be derived automatically if a valid `iban` or local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // are provided.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) are
+  // provided.
 
   bic?: string;
 
   // Branch code - see local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // for more information. Alternatively you can provide an `iban`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) for more
+  // information. Alternatively you can provide an `iban`.
 
   branch_code?: string;
 
@@ -94,8 +94,7 @@ interface MandatePdfCreateRequest {
   given_name?: string;
 
   // International Bank Account Number. Alternatively you can provide local
-  // details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details).
+  // details (https://docs.gocardless.com/docs/api-reference/local-bank-details).
   // IBANs cannot be provided for Autogiro mandates.
 
   iban?: string;
@@ -131,8 +130,8 @@ interface MandatePdfCreateRequest {
   // Direct Debit scheme. Can be supplied or automatically detected from the bank
   // account details provided. If you do not provide a scheme, you must provide
   // either a mandate, an `iban`, or local details
-  // (https://developer.gocardless.com/api-reference/#appendix-local-bank-details)
-  // including a `country_code`.
+  // (https://docs.gocardless.com/docs/api-reference/local-bank-details) including
+  // a `country_code`.
 
   scheme?: string;
 
