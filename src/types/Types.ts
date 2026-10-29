@@ -287,6 +287,9 @@ export enum BankDetailsLookupPayerNameVerificationResult {
 
 /** Type for a billingrequest resource. */
 export type BillingRequest = {
+  // Request for account information
+  account_information_request?: BillingRequestAccountInformationRequest | null;
+
   // List of actions that can be performed before this billing request can be
   // fulfilled.
   actions?: BillingRequestAction[];
@@ -554,6 +557,20 @@ export enum BillingRequestNotificationType {
   Email = 'email',
 }
 
+/** Type for a billingrequestaccountinformationrequest resource. */
+export type BillingRequestAccountInformationRequest = {
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code: string;
+
+  // List of scopes for the account information request
+  scopes: `${BillingRequestAccountInformationRequestScope}`[];
+};
+
+export enum BillingRequestAccountInformationRequestScope {
+  AccountVerification = 'account_verification',
+}
+
 /** Type for a billingrequestaction resource. */
 export type BillingRequestAction = {
   // List of country codes supported for collecting bank account details, for
@@ -790,6 +807,9 @@ export type BillingRequestInstalmentScheduleRequestLinks = {
 
 /** Type for a billingrequestlinks resource. */
 export type BillingRequestLinks = {
+  // (Optional) ID of associated account information request
+  account_information_request?: string;
+
   // (Optional) ID of the bank authorisation
   // (https://docs.gocardless.com/docs/api-reference/bank-authorisation) that
   // was used to verify this request.
@@ -2494,6 +2514,9 @@ export type BillingRequestWithActionBankAuthorisationsLinks = {
 
 /** Type for a billingrequestwithactionbillingrequests resource. */
 export type BillingRequestWithActionBillingRequests = {
+  // Request for account information
+  account_information_request?: BillingRequestWithActionBillingRequestsAccountInformationRequest | null;
+
   // List of actions that can be performed before this billing request can be
   // fulfilled.
   actions?: BillingRequestWithActionBillingRequestsAction[];
@@ -2761,6 +2784,20 @@ export enum BillingRequestWithActionBillingRequestsNotificationType {
   Email = 'email',
 }
 
+/** Type for a billingrequestwithactionbillingrequestsaccountinformationrequest resource. */
+export type BillingRequestWithActionBillingRequestsAccountInformationRequest = {
+  // ISO 3166-1 alpha-2 code.
+  // (https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements)
+  country_code: string;
+
+  // List of scopes for the account information request
+  scopes: `${BillingRequestWithActionBillingRequestsAccountInformationRequestScope}`[];
+};
+
+export enum BillingRequestWithActionBillingRequestsAccountInformationRequestScope {
+  AccountVerification = 'account_verification',
+}
+
 /** Type for a billingrequestwithactionbillingrequestsaction resource. */
 export type BillingRequestWithActionBillingRequestsAction = {
   // List of country codes supported for collecting bank account details, for
@@ -2997,6 +3034,9 @@ export type BillingRequestWithActionBillingRequestsInstalmentScheduleRequestLink
 
 /** Type for a billingrequestwithactionbillingrequestslinks resource. */
 export type BillingRequestWithActionBillingRequestsLinks = {
+  // (Optional) ID of associated account information request
+  account_information_request?: string;
+
   // (Optional) ID of the bank authorisation
   // (https://docs.gocardless.com/docs/api-reference/bank-authorisation) that
   // was used to verify this request.

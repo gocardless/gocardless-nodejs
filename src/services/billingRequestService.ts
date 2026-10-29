@@ -11,6 +11,9 @@ interface BillingRequestListResponse extends Types.APIResponse {
 }
 
 interface BillingRequestCreateRequest {
+  //
+  account_information_request?: Types.BillingRequestAccountInformationRequest;
+
   // (Optional) If true, this billing request can fallback from instant payment to
   // direct debit.
   // Should not be set if GoCardless payment intelligence feature is used.
