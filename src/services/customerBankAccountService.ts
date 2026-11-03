@@ -52,9 +52,14 @@ interface CustomerBankAccountCreateRequest {
 
   country_code?: string;
 
-  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency code.
-  // Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
+  // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217#Active_codes) currency
+  // code. Currently "AUD", "CAD", "DKK", "EUR", "GBP", "NZD", "SEK" and "USD" are
   // supported.
+  //
+  // Optional, as the currency is normally worked out from the bank details.
+  // An IBAN from a country that is not in the Eurozone, such as a GB IBAN,
+  // is treated as a bank account in that country's own currency. Set `EUR`
+  // to use it for SEPA Core Direct Debit.
 
   currency?: string;
 
