@@ -5050,6 +5050,9 @@ export type Institution = {
   // The roles assigned to this institution, representing the open banking
   // features it supports.
   roles?: string[];
+
+  // The status of the institution
+  status?: `${InstitutionStatus}`;
 };
 
 /** Type for a institutionbranchcode resource. */
@@ -5086,6 +5089,12 @@ export type InstitutionLimits = {
   // generated access token
   single?: JsonMap | null;
 };
+
+export enum InstitutionStatus {
+  Enabled = 'enabled',
+  Disabled = 'disabled',
+  TemporarilyDisabled = 'temporarily_disabled',
+}
 
 /** Type for a logo resource. */
 export type Logo = {
