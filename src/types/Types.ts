@@ -7420,8 +7420,15 @@ export type ScenarioSimulator = {
   // proceeding any further. It must start in the `pending_submission` state.
   // - `mandate_activated`: Transitions a mandate through to `activated`, having
   // been submitted to the banks and set up successfully. It must start in the
-  // `pending_submission` state. Not compatible with ACH, BECS, BECS_NZ and SEPA
-  // mandates, which are submitted and activated with their first payment.
+  // `pending_submission` or `submitted` state. Not compatible with ACH, BECS,
+  // BECS_NZ and SEPA mandates, which are submitted and activated with their
+  // first payment.
+  // - `mandate_submitted`: Transitions a mandate to `submitted`, as if it had
+  // been sent to the banks, without proceeding any further. It must start in
+  // the `pending_submission` state. Only compatible with Bacs, Autogiro and
+  // Betalingsservice mandates; ACH, BECS, BECS_NZ and SEPA mandates are
+  // submitted and activated with their first payment. Use `mandate_activated`
+  // or `mandate_failed` to move the mandate on afterwards.
   // - `mandate_customer_approval_granted`: Transitions a mandate through to
   // `pending_submission`, as if the customer approved the mandate creation. It
   // must start in the `pending_customer_approval` state. Compatible only with
