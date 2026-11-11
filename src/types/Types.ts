@@ -1176,6 +1176,9 @@ export type BillingRequestResources = {
 
   // Embedded customer billing detail
   customer_billing_detail?: BillingRequestResourcesCustomerBillingDetail;
+
+  // Embedded mandate, only once the mandate request has been fulfilled
+  mandate?: BillingRequestResourcesMandate;
 };
 
 /** Type for a billingrequestresourcescustomer resource. */
@@ -1367,6 +1370,19 @@ export type BillingRequestResourcesCustomerBillingDetail = {
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
+};
+
+/** Type for a billingrequestresourcesmandate resource. */
+export type BillingRequestResourcesMandate = {
+  // Unique identifier, beginning with "MD". Note that this prefix may not apply
+  // to mandates created before 2016.
+  id?: string;
+
+  // Unique reference. Different schemes have different length and character set
+  // (https://docs.gocardless.com/docs/api-reference/character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
+  reference?: string | null;
 };
 
 /** Type for a billingrequestsubscriptionrequest resource. */
@@ -3403,6 +3419,9 @@ export type BillingRequestWithActionBillingRequestsResources = {
 
   // Embedded customer billing detail
   customer_billing_detail?: BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetail;
+
+  // Embedded mandate, only once the mandate request has been fulfilled
+  mandate?: BillingRequestWithActionBillingRequestsResourcesMandate;
 };
 
 /** Type for a billingrequestwithactionbillingrequestsresourcescustomer resource. */
@@ -3594,6 +3613,19 @@ export type BillingRequestWithActionBillingRequestsResourcesCustomerBillingDetai
   // supplied if the customer's bank account is denominated in Swedish krona
   // (SEK). This field cannot be changed once it has been set.
   swedish_identity_number?: string | null;
+};
+
+/** Type for a billingrequestwithactionbillingrequestsresourcesmandate resource. */
+export type BillingRequestWithActionBillingRequestsResourcesMandate = {
+  // Unique identifier, beginning with "MD". Note that this prefix may not apply
+  // to mandates created before 2016.
+  id?: string;
+
+  // Unique reference. Different schemes have different length and character set
+  // (https://docs.gocardless.com/docs/api-reference/character-sets)
+  // requirements. GoCardless will generate a unique reference satisfying the
+  // different scheme requirements if this field is left blank.
+  reference?: string | null;
 };
 
 /** Type for a billingrequestwithactionbillingrequestssubscriptionrequest resource. */
