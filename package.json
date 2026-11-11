@@ -1,6 +1,6 @@
 {
   "name": "gocardless-nodejs",
-  "version": "11.6.0",
+  "version": "11.7.0",
   "description": "Node.js client for the GoCardless API - a powerful, simple solution for the collection of recurring bank-to-bank payments",
   "author": "GoCardless Ltd <client-libraries@gocardless.com>",
   "repository": {
