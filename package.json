@@ -105,9 +105,9 @@
     "build:package-markers": "cp dist-esm-package.json dist/esm/package.json && cp dist-cjs-package.json dist/cjs/package.json"
   },
   "dependencies": {
-    "got": "^16.1.0",
+    "got": "^16.2.0",
     "uuid": "^14.0.3",
-    "qs": "^6.16.0"
+    "qs": "^6.17.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
@@ -122,7 +122,7 @@
     "prettier": "^3.9.10",
     "prettier-eslint": "^17.1.2",
     "prettier-eslint-cli": "^9.2.1",
-    "ts-jest": "29.4.14",
+    "ts-jest": "29.4.15",
     "typescript": "^5.9.3"
   },
   "files": [
