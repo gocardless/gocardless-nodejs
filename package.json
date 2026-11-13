@@ -107,7 +107,7 @@
   "dependencies": {
     "got": "^16.2.0",
     "uuid": "^14.0.3",
-    "qs": "^6.16.0"
+    "qs": "^6.17.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
