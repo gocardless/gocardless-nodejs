@@ -5836,6 +5836,7 @@ export type OutboundPaymentCreateRequestLinks = {
 
 export enum OutboundPaymentScheme {
   FasterPayments = 'faster_payments',
+  Bacs = 'bacs',
 }
 
 /** Type for a outboundpaymentwithdrawrequestlinks resource. */
@@ -5986,6 +5987,7 @@ export type OutboundPaymentImportEntryItem = {
 
 export enum OutboundPaymentImportEntryItemScheme {
   FasterPayments = 'faster_payments',
+  Bacs = 'bacs',
 }
 
 /** Type for a outboundpaymentimportcreaterequestlinks resource. */
@@ -6106,6 +6108,7 @@ export type OutboundPaymentImportEntryLinks = {
 
 export enum OutboundPaymentImportEntryScheme {
   FasterPayments = 'faster_payments',
+  Bacs = 'bacs',
 }
 
 /** Type for a outboundpaymentimportentryvalidationerrors resource. */
@@ -6132,6 +6135,7 @@ export type OutboundPaymentImportEntryValidationErrorsOutboundPayment = {
 
 export enum OutboundPaymentImportEntryValidationErrorsOutboundPaymentScheme {
   FasterPayments = 'faster_payments',
+  Bacs = 'bacs',
 }
 
 export enum OutboundPaymentImportEntryVerificationResult {
